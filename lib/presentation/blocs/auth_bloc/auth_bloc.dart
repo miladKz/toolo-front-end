@@ -16,10 +16,7 @@ part 'auth_event.dart';
 
 part 'auth_state.dart';
 
-late final TextEditingController _userNameController;
-late final TextEditingController _passwordController;
-late final TextEditingController _urlController;
-late final TextEditingController _portController;
+
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool userNameInputValid = true;
@@ -29,7 +26,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   var tryCount = 0;
   var maxTry = 1;
   AuthBaseData? authBaseData;
-
+  late  TextEditingController _userNameController;
+  late  TextEditingController _passwordController;
+  late  TextEditingController _urlController;
+  late  TextEditingController _portController;
   AuthBloc({this.isRemember = true}) : super(AuthInitial(isRemember)) {
     _userNameController = TextEditingController(text: 'user1');
     _passwordController = TextEditingController(text: 'password1');
@@ -39,6 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     NetworkConnectionState.networkConnectionStateNotifier
         .addListener(NetworkConnectionState.networkConnectionStateListener);
 
+    String token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InVzZXIxIiwiZGlzcGxheV9uYW1lIjoi2KfYqNmI2KfZhNmB2LbZhCDYudio2KfYs9uMIiwiYWRtaW4iOnRydWUsImV4cCI6MTcwODAzMzYxMn0.GNuLN3mYy1_K7ZgFCnbx9tJbZY173R4kz5bbylNrwpI';
+    authBaseData=AuthBaseData(baseUrl: 'http://46.249.101.180:8090', token: token);
     on<Authentication>(_authentication);
   }
 
@@ -57,6 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _authentication(
       Authentication event, Emitter<AuthState> emit) async {
     if (event.userName.isNotEmpty) {
+      emit(AuthLoadingOnView(isRemember, isShow: true));
       String baseUrl = event.baseUrl;
       String cleanPassWord = event.cleanPassWord;
       HttpClient.urlNotifier.value = baseUrl;

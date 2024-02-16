@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/atras_direction.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
@@ -7,18 +8,20 @@ import 'package:toolo_gostar/presentation/validator/validators.dart';
 import 'package:toolo_gostar/presentation/validator/validators/password_validators_enum.dart';
 import 'package:toolo_gostar/presentation/validator/validators/url_validators_enum.dart';
 import 'package:toolo_gostar/presentation/validator/validators/user_name_validators_enum.dart';
+import 'package:toolo_gostar/presentation/widgets/exit_app.dart';
 import 'package:toolo_gostar/presentation/widgets/snakbar.dart';
 
-LayoutBuilder mainBox(
+bool isEnable = true;
+
+LayoutBuilder authMainBox(
     {required AuthBloc authBloc,
     required BoxConstraints boxConstraints,
     required double inputBorder,
-    required double inputGapPadding}) {
-  final urlBoxMaxWith = boxConstraints.maxWidth / 2.2;
+    required double inputGapPadding,
+    required bool enable}) {
+  isEnable = enable;
   return LayoutBuilder(
     builder: (context, constraints) {
-      print(
-          ' constraints.maxWidth/2.2: ${boxConstraints.maxWidth} || ${boxConstraints.maxWidth / 2.2}');
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
@@ -28,11 +31,12 @@ LayoutBuilder mainBox(
               child: ConstrainedBox(
                 constraints: boxConstraints,
                 child: Column(
-                  textDirection: TextDirection.rtl,
+                  textDirection: atrasDirection(context),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Assets.img.icnTooloPadideh.image(width: boxConstraints.maxWidth, height: 40),
+                    Assets.img.icnTooloPadideh
+                        .image(width: boxConstraints.maxWidth, height: 40),
                     UserNameBox(
                         inputController: authBloc.userNameController,
                         inputBorder: inputBorder,
@@ -81,38 +85,46 @@ LayoutBuilder mainBox(
 Row authBox({required AuthBloc authBloc}) {
   return Row(
     children: [
-      Container(
-        width: 36,
-        height: 36,
-        margin: const EdgeInsets.only(right: 8, top: 4),
-        clipBehavior: Clip.antiAlias,
-        decoration: ShapeDecoration(
-          color: const Color(0xFFD9BCE4),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        child: const Icon(
-          Icons.exit_to_app,
-          color: Colors.white,
-          size: 20,
+      InkWell(
+        onTap: () => isEnable ? exitApp() : null,
+        child: Container(
+          width: 36,
+          height: 36,
+          margin: const EdgeInsets.only(right: 8, top: 4),
+          clipBehavior: Clip.antiAlias,
+          decoration: ShapeDecoration(
+            color: const Color(0xFFD9BCE4),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: const Icon(
+            Icons.exit_to_app,
+            color: Colors.white,
+            size: 20,
+          ),
         ),
       ),
       Expanded(
           child: InkWell(
+        onTap: isEnable
+            ? () {
+                if (authBloc.isInputDataValid) {
+                  final String userName = authBloc.userNameController.text;
+                  final String password = authBloc.passwordController.text;
+                  final String url =
+                      '${authBloc.urlController.text}:${authBloc.portController.text}';
+                  authBloc.add(Authentication(
+                      userName: userName,
+                      cleanPassWord: password,
+                      baseUrl: url));
+                } else {
+                  showSnack(
+                      title: localization.authErrorTitle,
+                      message: localization.authInputDataInvalid);
+                }
+              }
+            : null,
         child: btnAuth(),
-        onTap: () {
-          if (authBloc.isInputDataValid) {
-            final String userName = authBloc.userNameController.text;
-            final String password = authBloc.passwordController.text;
-            final String url =
-                '${authBloc.urlController.text}:${authBloc.portController.text}';
-            authBloc.add(Authentication(
-                userName: userName, cleanPassWord: password, baseUrl: url));
-          } else {
-            showSnack(
-                title: localization.authErrorTitle,
-                message: localization.authInputDataInvalid);
-          }
-        },
       )),
     ],
   );
@@ -148,89 +160,6 @@ Container btnAuth() {
   );
 }
 
-Positioned rightView(double rightItemHeight, double borderRadius,
-    double rightItemMargin, double rightItemWith) {
-  return Positioned(
-    right: 0,
-    bottom: (rightItemHeight / 2 + borderRadius),
-    child: Container(
-      margin: EdgeInsets.only(right: rightItemMargin),
-      padding: const EdgeInsets.all(2),
-      width: rightItemWith,
-      height: rightItemHeight,
-      child: Container(
-        width: rightItemWith,
-        height: rightItemHeight,
-        decoration: const ShapeDecoration(
-          color: Color(0xFF6C3483),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              bottomRight: Radius.circular(50),
-            ),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Assets.ico.icWebsite.image(width: 20, height: 20),
-            const SizedBox(height: 8),
-            Assets.ico.icSupportEmail.image(width: 20, height: 20),
-            const SizedBox(height: 8),
-            Assets.ico.icSupportCall.image(width: 20, height: 20),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget version() {
-  return Transform(
-    transform: Matrix4.identity()
-      ..translate(0.0, 0.0)
-      ..rotateZ(3.14),
-    child: Container(
-      width: 20,
-      height: 120,
-      decoration: const ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(50),
-            bottomRight: Radius.circular(50),
-          ),
-        ),
-        shadows: [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 4,
-            offset: Offset(-2, 2),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: Center(child: textVersion()),
-    ),
-  );
-}
-
-Widget textVersion() {
-  return const RotatedBox(
-    quarterTurns: 1,
-    child: Text(
-      'Version 10',
-      style: TextStyle(
-        color: Color(0xFF6D3483),
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        height: 0,
-      ),
-    ),
-  );
-}
 
 class UserNameBox extends StatefulWidget {
   const UserNameBox({
@@ -275,6 +204,7 @@ class _UserNameBoxState extends State<UserNameBox> {
         ),
         SizedBox(
           child: TextFormField(
+            enabled: isEnable,
             focusNode: _textFieldFocus,
             textDirection: TextDirection.rtl,
             controller: widget.inputController,
@@ -377,6 +307,7 @@ class _PasswordBoxState extends State<PasswordBox> {
             ),
             SizedBox(
               child: TextFormField(
+                enabled: isEnable,
                 focusNode: _textFieldFocus,
                 textDirection: TextDirection.rtl,
                 controller: widget.inputController,
@@ -502,6 +433,7 @@ class _UrlBoxState extends State<UrlBox> {
           ),
         ),
         TextFormField(
+          enabled: isEnable,
           focusNode: _textFieldFocus,
           textDirection: TextDirection.ltr,
           controller: widget.inputController,
@@ -595,6 +527,7 @@ class _PortBoxState extends State<PortBox> {
         ),
         SizedBox(
           child: TextFormField(
+            enabled: isEnable,
             focusNode: _textFieldFocus,
             textDirection: TextDirection.ltr,
             controller: widget.inputController,

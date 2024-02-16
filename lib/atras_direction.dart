@@ -7,3 +7,8 @@ TextDirection atrasDirection(BuildContext context) {
       ? TextDirection.rtl
       : TextDirection.ltr;
 }
+AlignmentGeometry atrasAlignment(BuildContext context) {
+  return intl.Bidi.isRtlLanguage(Localizations.localeOf(context).languageCode)
+      ? Alignment.centerRight
+      : Alignment.centerLeft;
+}

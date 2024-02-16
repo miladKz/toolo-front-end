@@ -4,7 +4,7 @@ enum AuthErrorState{
   usernameOrPassCanNotEmpty,
   usernameOrPassInvalid,
   serverUrlInvalid,
-  biometricsNotSoport,
+  biometricsNotSuport,
   biometricsAuthNotValid,
   unknownError,
 

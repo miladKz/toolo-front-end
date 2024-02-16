@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.1.0
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,10 +39,11 @@ dependencies:
   get: ^4.6.6
   get_it: ^7.6.7
   injectable: ^2.3.2
-  get_storage: ^2.1.1
+  shared_preferences: ^2.2.2
   atras_data_parser:
     path: D:/src/flutter/Flutter_Atras_Package_DataParser
-  intl: any
+  intl: ^0.18.1
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +54,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.3
   build_runner:
   flutter_gen_runner:
 
@@ -105,6 +106,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
+dark: false
+author:
+ui:
 flutter_gen:
   integrations:
     flutter_svg: true

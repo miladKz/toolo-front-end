@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AtrasPageRouter{
- static goTo(BuildContext context,{required Widget widget}){
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => widget));
+ static goTo(BuildContext context,{required bool closeCurrent,required Widget widget}){
+   if(closeCurrent){
+     Navigator.pushReplacement(context,MaterialPageRoute(
+         builder: (_) => widget));
+   }else{
+     Navigator.push(context,MaterialPageRoute(
+         builder: (_) => widget));
+   }
+
   }
+
 }
 

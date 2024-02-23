@@ -3,8 +3,8 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
-import 'package:toolo_gostar/presentation/widgets/auth_screen_widget.dart';
-import 'package:toolo_gostar/presentation/widgets/fiscal_year_screen_widget.dart';
+import 'package:toolo_gostar/presentation/widgets/auth/auth_screen_widget.dart';
+import 'package:toolo_gostar/presentation/widgets/fiscal_year/fiscal_year_screen_widget.dart';
 
 const double rightItemHeight = 142;
 const double rightItemMargin = 20;
@@ -25,10 +25,8 @@ Widget baseBody({
       child: LayoutBuilder(
         builder: (context, constraints) {
           double maxHeight = constraints.maxHeight;
-          print('max= ${maxHeight}|| ${(constraints.maxHeight / 3.96)}');
           double maxWith = constraints.maxWidth / 1.45;
           double mainMaxWith = maxWith / 3.34;
-          //double leftViewMaxWith = (constraints.maxWidth / 2.1) - mainMaxWith;
           double leftViewMaxWith = (constraints.maxWidth / 2.1);
           const double rightViewMaxWith = 41;
           return Stack(alignment: Alignment.center, children: [
@@ -63,24 +61,16 @@ Widget baseBody({
                       enable:isEnable)
                       : fiscalYearMainBox(inputBorder: inputBorder,
                       inputGapPadding: inputGapPadding,
-                      boxConstraints: BoxConstraints(
-                          maxWidth: mainMaxWith,
-                          maxHeight: constraints.maxHeight),
-                      fiscalYearBloc: locator<FiscalYearBloc>(),
-                      enable: isEnable)
-              ),
+                          boxConstraints: BoxConstraints(
+                              maxWidth: mainMaxWith,
+                              maxHeight: constraints.maxHeight),
+                          fiscalYearBloc: locator<FiscalYearBloc>(),
+                          enable: isEnable)),
             ),
             Positioned(
                 top: (maxHeight / 3.9) + 50,
                 left: 10,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    version(),
-                  ],
-                )),
+                child: versionLeftView()),
             Positioned(
               left: 0,
               child: Assets.img.imgLeft.image(
@@ -93,6 +83,43 @@ Widget baseBody({
           ]);
         },
       ));
+}
+
+Widget versionLeftView() {
+  return Column(
+    children: [
+      const SizedBox(
+        height: 50,
+      ),
+      Transform(
+        transform: Matrix4.identity()
+          ..translate(0.0, 0.0)
+          ..rotateZ(3.14),
+        child: Container(
+          width: 20,
+          height: 120,
+          decoration: const ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(50),
+                bottomRight: Radius.circular(50),
+              ),
+            ),
+            shadows: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(-2, 2),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: Center(child: textVersion()),
+        ),
+      ),
+    ],
+  );
 }
 
 Positioned rightView(double rightItemHeight, double borderRadius,
@@ -134,35 +161,6 @@ Positioned rightView(double rightItemHeight, double borderRadius,
   );
 }
 
-Widget version() {
-  return Transform(
-    transform: Matrix4.identity()
-      ..translate(0.0, 0.0)
-      ..rotateZ(3.14),
-    child: Container(
-      width: 20,
-      height: 120,
-      decoration: const ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(50),
-            bottomRight: Radius.circular(50),
-          ),
-        ),
-        shadows: [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 4,
-            offset: Offset(-2, 2),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: Center(child: textVersion()),
-    ),
-  );
-}
 
 Widget textVersion() {
   return const RotatedBox(

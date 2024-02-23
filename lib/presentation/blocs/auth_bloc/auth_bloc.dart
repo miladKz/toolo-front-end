@@ -75,7 +75,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final String token = data.findAsString('token');
           authBaseData = AuthBaseData(baseUrl: baseUrl, token: token);
           emit(AuthSuccess(isRemember, authBaseData: authBaseData!));
-          print(token);
         }
       } catch (e) {
         e.toString();

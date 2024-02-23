@@ -91,12 +91,14 @@ flutter:
   fonts:
     - family: vazir
       fonts:
-        - asset: assets/fonts/vazir_matn.ttf
+        - asset: assets/fonts/vazir_regular_fd.ttf
           weight: 400
-#        - asset: assets/fonts/vazir_matn.ttf
-#          weight: 700
-#        - asset: assets/fonts/vazir_matn.ttf
-#          weight: 900
+        - asset: assets/fonts/vazir_medium_fd.ttf
+          weight: 500
+        - asset: assets/fonts/vazir_bold_fd.ttf
+          weight: 700
+        - asset: assets/fonts/vazir_black_fd.ttf
+          weight: 900
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

@@ -5,9 +5,9 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_fiscal_year.dart';
-import 'package:toolo_gostar/presentation/widgets/base_body.dart';
-import 'package:toolo_gostar/presentation/widgets/progress_dialog.dart';
-import 'package:toolo_gostar/presentation/widgets/snakbar.dart';
+import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
+import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
+import 'package:toolo_gostar/presentation/widgets/auth/base_body.dart';
 
 class ScreenAuth extends StatefulWidget {
   const ScreenAuth({super.key});
@@ -41,6 +41,7 @@ class _ScreenAuthState extends State<ScreenAuth> {
           }
         },
         child: BlocBuilder<AuthBloc, AuthState>(
+
           builder: (context, state) {
             if (state is AuthError) {
               showSnack(

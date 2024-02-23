@@ -1,5 +1,6 @@
 {
   "appTitle": "Toolo Gostar",
+   "version": "ورژن 10",
   "authErrorTitle": "خطای احراز هویت",
   "errorTitle": "خطای برنامه",
   "authErrorUsernamePasswordIisEmpty": "نام کاربری یا رمز عبور نامعتبر است!",
@@ -37,5 +38,12 @@
   "titleBack": "برگشت",
   "fiscalYearInputDataInvalid": "سال مالی و نام شرکت به درستی وارد نشده است!",
   "titleFiscalYearError": "پیغام خطا",
-  "version": "ورژن 10"
+
+ "titleReceiveMessages": "پیام های دریافتی",
+ "titleDashboard": "داشبورد",
+ "titlePinsMenu": "نشان شده ها",
+ "titleDesktop": "میز کار",
+ "titleInputData": "ورود داده",
+ "titleAccounting": "حسابداری",
+ "hintSearch": "جستجو کنید..."
 }

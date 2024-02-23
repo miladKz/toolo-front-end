@@ -25,41 +25,41 @@ class MyAppThemeConfig {
   final Brightness brightness;
 
   MyAppThemeConfig.dark()
-      : primaryTextColor = const Color(0xff181717),
-        secondaryTextColor = const Color(0xff006ea4),
+      : primaryTextColor = const Color(0xff6C3483),
+        secondaryTextColor = const Color(0xff0C0C0C),
         onSecondaryTextColor = Colors.white,
-        smallTextColor = const Color(0xff818791),
-        primaryColor = const Color(0xff008fd5),
-        appBarColor = const Color(0xff008fd5),
-        onAppBarColor = Colors.white,
+        smallTextColor = const Color(0xff828282),
+        primaryColor = const Color(0xff6C3483),
+        appBarColor = const Color(0xffD9BCE4),
+        onAppBarColor = const Color(0xff6C3483),
         onPrimaryColor = Colors.white,
         surfaceColor = Colors.white,
-        onSurfaceColor = const Color(0x66a7a9ac),
-        scaffoldBackgroundColor = Colors.white,
-        onBackgroundColor = const Color(0xff376AED),
-        errorColor = Colors.black,
+        onSurfaceColor = const Color(0xff0C0C0C),
+        scaffoldBackgroundColor =const Color(0xffF9F9F9),
+        onBackgroundColor = const Color(0xff6C3483),
+        errorColor = const Color(0xffDC3545),
         onErrorColor = Colors.white,
-        outlineColor = const Color(0xffE0E0E0),
-        tertiaryColor = const Color(0x66a7a9ac),
-        brightness = Brightness.light;
+        outlineColor = const Color(0xffF9F9F9),
+        tertiaryColor = const Color(0xff7B7B84),
+        brightness = Brightness.dark;
 
   MyAppThemeConfig.light()
-      : primaryTextColor = const Color(0xff006ea4),
-        secondaryTextColor = const Color(0xff181717),
+      : primaryTextColor = const Color(0xff6C3483),
+        secondaryTextColor = const Color(0xff0C0C0C),
         onSecondaryTextColor = Colors.white,
-        smallTextColor = const Color(0xff818791),
-        primaryColor = const Color(0xff008fd5),
-        appBarColor = const Color(0xff008fd5),
-        onAppBarColor = Colors.white,
+        smallTextColor = const Color(0xff828282),
+        primaryColor = const Color(0xff6C3483),
+        appBarColor = const Color(0xffD9BCE4),
+        onAppBarColor = const Color(0xff6C3483),
         onPrimaryColor = Colors.white,
         surfaceColor = Colors.white,
-        onSurfaceColor = const Color(0xff000000),
-        scaffoldBackgroundColor = Colors.white,
-        onBackgroundColor = const Color(0xff376AED),
-        errorColor = Colors.black,
+        onSurfaceColor = const Color(0xff0C0C0C),
+        scaffoldBackgroundColor =const Color(0xffF9F9F9),
+        onBackgroundColor = const Color(0xff6C3483),
+        errorColor = const Color(0xffDC3545),
         onErrorColor = Colors.white,
-        outlineColor = const Color(0xffE0E0E0),
-        tertiaryColor = const Color(0x66a7a9ac),
+        outlineColor = const Color(0xffF9F9F9),
+        tertiaryColor = const Color(0xff7B7B84),
         brightness = Brightness.light;
 
   ThemeData getTheme(String languageCode) {
@@ -85,17 +85,22 @@ class MyAppThemeConfig {
       appBarTheme: AppBarTheme(
           titleSpacing: 0,
           centerTitle: false,
-          titleTextStyle: titleMesiumStyle().copyWith(color: onAppBarColor),
+          titleTextStyle: titleMediumStyle().copyWith(color: onAppBarColor),
           backgroundColor: appBarColor,
           actionsIconTheme: IconThemeData(size: 36, color: onAppBarColor),
           foregroundColor: onAppBarColor),
       snackBarTheme: SnackBarThemeData(
-        contentTextStyle: titleMesiumStyle(),
+        contentTextStyle: titleMediumStyle(),
         backgroundColor: onBackgroundColor,
       ),
       inputDecorationTheme: InputDecorationTheme(
-          labelStyle:
-              const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+          labelStyle:TextStyle(
+              fontWeight: FontWeight.w400,
+              wordSpacing: _wordSpacing,
+              fontSize: 14,
+              height: 1.5,
+              color: primaryTextColor,
+              fontFamily: faPrimaryFontFamily),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,
@@ -121,46 +126,46 @@ class MyAppThemeConfig {
 
   get baseTextTheme => TextTheme(
         titleLarge: titleLargeStyle(),
-        titleMedium: titleMesiumStyle(),
+        titleMedium: titleMediumStyle(),
         titleSmall: titleSmallStyle(),
         bodyLarge: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
             height: 1.5,
             color: primaryTextColor,
             fontFamily: faPrimaryFontFamily),
         bodyMedium: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
             wordSpacing: _wordSpacing,
             color: primaryTextColor,
             height: 1.5,
             fontFamily: faPrimaryFontFamily),
         bodySmall: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
             wordSpacing: _wordSpacing,
             color: smallTextColor,
             height: 1.5,
             fontFamily: faPrimaryFontFamily),
         labelLarge: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
             wordSpacing: _wordSpacing,
             fontSize: 16,
             height: 1.5,
             color: primaryTextColor,
             fontFamily: faPrimaryFontFamily),
         labelMedium: TextStyle(
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.w400,
             wordSpacing: _wordSpacing,
             fontSize: 14,
             height: 1.5,
             color: primaryTextColor,
             fontFamily: faPrimaryFontFamily),
         labelSmall: TextStyle(
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.w400,
             wordSpacing: _wordSpacing,
-            fontSize: 9,
+            fontSize: 12,
             height: 1.5,
             color: smallTextColor,
             fontFamily: faPrimaryFontFamily),
@@ -168,20 +173,20 @@ class MyAppThemeConfig {
 
   TextStyle titleSmallStyle() {
     return TextStyle(
-        fontSize: 12,
+        fontSize: 14,
         wordSpacing: _wordSpacing,
         height: 1.5,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.bold,
         color: smallTextColor,
         fontFamily: faPrimaryFontFamily);
   }
 
-  TextStyle titleMesiumStyle() {
+  TextStyle titleMediumStyle() {
     return TextStyle(
-        fontSize: 15,
+        fontSize: 20,
         wordSpacing: _wordSpacing,
         height: 1.5,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.bold,
         color: primaryTextColor,
         fontFamily: faPrimaryFontFamily);
   }
@@ -190,7 +195,7 @@ class MyAppThemeConfig {
     return TextStyle(
         fontWeight: FontWeight.bold,
         wordSpacing: _wordSpacing,
-        fontSize: 17,
+        fontSize: 24,
         height: 1.5,
         color: primaryTextColor,
         fontFamily: faPrimaryFontFamily);

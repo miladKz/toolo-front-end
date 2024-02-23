@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/atras_direction.dart';
+import 'package:toolo_gostar/presentation/widgets/main/main_base_body.dart';
 
 class ScreenMain extends StatefulWidget {
   const ScreenMain({super.key});
@@ -11,32 +12,9 @@ class ScreenMain extends StatefulWidget {
 class _ScreenMainState extends State<ScreenMain> {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: atrasDirection(context),
-      child: Container(
-        width: 100,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.person_2,
-                  size: 52,
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Column(
-                  children: [
-                    Text('مهدی زمانی',style: TextStyle(fontSize: 14,color: Colors.black),),
-                    Text('برنامه نویس',style: TextStyle(fontSize: 12,color: Colors.grey),),
-                  ],
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+    return  Scaffold(
+      body: Directionality(textDirection: atrasDirection(context),
+      child: Container(color: Color(0xFFF9F9F9),child: const MainBaseBody())),
     );
   }
 }

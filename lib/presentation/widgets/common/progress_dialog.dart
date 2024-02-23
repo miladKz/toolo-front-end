@@ -20,7 +20,6 @@ void _showProgressDialog() {
 void _dismissProgressDialog() {
   try {
     if (isDialogOpen) {
-      print('atras mobile app Get.currentRoute? ${Get.currentRoute}');
       Get.back();
     }
   } catch (e) {
@@ -30,7 +29,6 @@ void _dismissProgressDialog() {
 
 bool get isDialogOpen {
   bool? isDialogOpen = Get.isDialogOpen;
-  print('atras mobile app isDialogOpen? $isDialogOpen');
   if (!isDialogOpen!) {
     return false;
   } else {

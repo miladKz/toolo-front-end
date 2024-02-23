@@ -7,8 +7,8 @@ import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_fiscal_year.dart';
-import 'package:toolo_gostar/presentation/widgets/back_screen.dart';
-import 'package:toolo_gostar/presentation/widgets/snakbar.dart';
+import 'package:toolo_gostar/presentation/widgets/common/back_screen.dart';
+import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
 
 bool isEnable = true;
 

@@ -8,8 +8,8 @@ import 'package:toolo_gostar/presentation/validator/validators.dart';
 import 'package:toolo_gostar/presentation/validator/validators/password_validators_enum.dart';
 import 'package:toolo_gostar/presentation/validator/validators/url_validators_enum.dart';
 import 'package:toolo_gostar/presentation/validator/validators/user_name_validators_enum.dart';
-import 'package:toolo_gostar/presentation/widgets/exit_app.dart';
-import 'package:toolo_gostar/presentation/widgets/snakbar.dart';
+import 'package:toolo_gostar/presentation/widgets/common/exit_app.dart';
+import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
 
 bool isEnable = true;
 
@@ -204,6 +204,7 @@ class _UserNameBoxState extends State<UserNameBox> {
         ),
         SizedBox(
           child: TextFormField(
+            autovalidateMode: AutovalidateMode.always,
             enabled: isEnable,
             focusNode: _textFieldFocus,
             textDirection: TextDirection.rtl,
@@ -307,6 +308,7 @@ class _PasswordBoxState extends State<PasswordBox> {
             ),
             SizedBox(
               child: TextFormField(
+                autovalidateMode: AutovalidateMode.always,
                 enabled: isEnable,
                 focusNode: _textFieldFocus,
                 textDirection: TextDirection.rtl,
@@ -433,6 +435,7 @@ class _UrlBoxState extends State<UrlBox> {
           ),
         ),
         TextFormField(
+          autovalidateMode: AutovalidateMode.always,
           enabled: isEnable,
           focusNode: _textFieldFocus,
           textDirection: TextDirection.ltr,
@@ -527,6 +530,7 @@ class _PortBoxState extends State<PortBox> {
         ),
         SizedBox(
           child: TextFormField(
+            autovalidateMode: AutovalidateMode.always,
             enabled: isEnable,
             focusNode: _textFieldFocus,
             textDirection: TextDirection.ltr,

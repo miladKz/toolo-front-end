@@ -45,5 +45,6 @@
  "titleDesktop": "میز کار",
  "titleInputData": "ورود داده",
  "titleAccounting": "حسابداری",
- "hintSearch": "جستجو کنید..."
+ "hintSearch": "جستجو کنید...",
+ "میز کار":"workspace"
 }

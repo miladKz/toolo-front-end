@@ -10,6 +10,8 @@ import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
+import 'presentation/pages/screen_main.dart';
+
 part 'presentation/theme/my_theme.dart';
 
 late AppLocalizations localization;
@@ -49,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         init(context, themData);
-        return authScreen();
+        return ScreenMain();
       }),
     );
   }
@@ -67,3 +69,4 @@ Widget authScreen() {
     child: const ScreenAuth(),
   );
 }
+

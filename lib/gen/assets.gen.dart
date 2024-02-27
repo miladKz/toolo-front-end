@@ -12,6 +12,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsIcoGen {
   const $AssetsIcoGen();
 
+  /// File path: assets/ico/close_menu.png
+  AssetGenImage get closeMenu =>
+      const AssetGenImage('assets/ico/close_menu.png');
+
   /// File path: assets/ico/ic_calendar.png
   AssetGenImage get icCalendar =>
       const AssetGenImage('assets/ico/ic_calendar.png');
@@ -93,6 +97,7 @@ class $AssetsIcoGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        closeMenu,
         icCalendar,
         icCartableNotSelected,
         icCartableSelected,

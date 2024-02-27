@@ -66,7 +66,7 @@ Widget authScreen() {
     create: (_) {
       return locator<AuthBloc>();
     },
-    child: const ScreenAuth(),
+    child: const ScreenMain(),
   );
 }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../../gen/assets.gen.dart';
-import 'workspace_menue_item.dart';
+import 'workspace_menu_item.dart';
 
 class Workspace extends StatefulWidget {
   const Workspace({
@@ -32,7 +32,7 @@ class _WorkspaceState extends State<Workspace> {
           shape: const Border(),
           collapsedIconColor: const Color(0xFFBD8AD0),
           tilePadding:
-              const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 4),
+              const EdgeInsets.only(left: 8, right: 1, top: 5, bottom: 4),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -48,7 +48,7 @@ class _WorkspaceState extends State<Workspace> {
                     const SizedBox(
                       width: 5,
                     ),
-                     Text(
+                    Text(
                       localization.workSpace,
                       style: TextStyle(
                           fontSize: 13,

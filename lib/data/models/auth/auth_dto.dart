@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:toolo_gostar/data/enum/auth_error_state.dart';
 
 class AuthDto {
@@ -10,8 +12,9 @@ class AuthDto {
       {required this.isSuccess,
       this.errorMessage = '',
       this.authErrorState,
-      String? result}) {
+      dynamic? result}) {
     if (result != null) {
+      result = Map<String, dynamic>.from(result);
       data = {key: result};
     }
   }

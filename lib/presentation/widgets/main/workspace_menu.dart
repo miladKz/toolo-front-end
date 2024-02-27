@@ -32,7 +32,7 @@ class _WorkspaceState extends State<Workspace> {
           shape: const Border(),
           collapsedIconColor: const Color(0xFFBD8AD0),
           tilePadding:
-              const EdgeInsets.only(left: 8, right: 1, top: 5, bottom: 4),
+              const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 4),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

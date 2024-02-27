@@ -1,6 +1,8 @@
+import 'package:toolo_gostar/data/models/auth/user_data.dart';
+
 class AuthBaseData {
-  final String baseUrl;
+  final UserData userData;
   final String token;
 
-  AuthBaseData({required this.baseUrl, required this.token});
+  AuthBaseData({required this.userData, required this.token});
 }

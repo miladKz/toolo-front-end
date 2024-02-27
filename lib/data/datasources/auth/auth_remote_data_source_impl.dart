@@ -14,19 +14,20 @@ final Dio httpClient;
   Future<AuthDto> login({required String userName, required String cleanPassWord, required String baseUrl})async {
     final Map<String, dynamic> param = {
       "username": userName,
-      "password": cleanPassWord
+      "password": Uri.decodeFull(cleanPassWord)
     };
+    String apiAddress = "/api/user/login";
+    String fullPath = baseUrl + apiAddress;
     try {
       Response<dynamic> response =
-      await httpClient.post("/api/user/login", queryParameters: param);
+      await httpClient.post(fullPath, queryParameters: param);
       if (response.statusCode == 200) {
-        return AuthDto.toMap(isSuccess: true,result: jsonDecode(response.data));
+        return  AuthDto.toMap(isSuccess: true,result: response.data);
       }else{
         return AuthDto.toMap(isSuccess: false);
       }
     } catch (e) {
-      e.toString();
-      return AuthDto.toMap(isSuccess: false);
+      return AuthDto.toMap(isSuccess: false, errorMessage: e.toString());
     }
   }
 

@@ -1,8 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/atras_direction.dart';
-import 'package:toolo_gostar/data/models/fiscal_year/fiscal_year_data.dart';
-import 'package:toolo_gostar/data/models/fiscal_year/work_group_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/fiscal/fiscal_year.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
@@ -40,19 +39,7 @@ LayoutBuilder fiscalYearMainBox(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          flex: 4,
-                          child: YearBox(
-                              fiscalYearsBloc: fiscalYearBloc,
-                              inputController:
-                                  fiscalYearBloc.fiscalYearController,
-                              inputBorder: inputBorder,
-                              inputGapPadding: inputGapPadding),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Flexible(
-                          flex: 6,
+                          flex: 1,
                           child: WorkGroupBox(
                               fiscalYearsBloc: fiscalYearBloc,
                               inputController:
@@ -123,8 +110,7 @@ Row successBox({required FiscalYearBloc bloc}) {
 setData({required FiscalYearBloc bloc, required String token}) {
   if (bloc.isInputDataValid) {
     bloc.add(FiscalYearSetData(
-        token: token,
-        activeYearId: bloc.selectedValueFiscalYear!.fiscalYearId));
+        token: token, activeYearId: bloc.selectedValueFiscalYear!.id));
   } else {
     showSnack(
         title: localization.titleFiscalYearError,
@@ -186,8 +172,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
 
   @override
   Widget build(BuildContext context) {
-    final workGroupData =
-        widget.fiscalYearsBloc.fiscalYearResponse.workGroupsData;
+    final fiscalYears = widget.fiscalYearsBloc.fiscalYears;
     const boxColor = Color(0xFFF2F2F2);
     const iconColor = Color(0xFF6C3483);
     return Column(
@@ -208,7 +193,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                   BorderRadius.all(Radius.circular(widget.inputBorder))),
           child: Center(
             child: DropdownButtonHideUnderline(
-              child: DropdownButton2<WorkGroupData>(
+              child: DropdownButton2<FiscalYear>(
                 iconStyleData: const IconStyleData(
                     icon: Padding(
                       padding: EdgeInsets.all(2),
@@ -229,7 +214,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                     color: Theme.of(context).hintColor,
                   ),
                 ),
-                items: workGroupData.map((item) {
+                items: fiscalYears.map((item) {
                   return DropdownMenuItem(
                     enabled: isEnable,
                     alignment: atrasAlignment(context),
@@ -237,7 +222,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                     child: Directionality(
                       textDirection: atrasDirection(context),
                       child: Text(
-                        item.workGroupName,
+                        "${item.displayName}.........${item.activeYear}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -247,10 +232,10 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                     ),
                   );
                 }).toList(),
-                value: widget.fiscalYearsBloc.selectedValueWorkGroup,
+                value: widget.fiscalYearsBloc.selectedValueFiscalYear,
                 onChanged: (value) {
                   setState(() {
-                    widget.fiscalYearsBloc.selectedValueWorkGroup = value;
+                    widget.fiscalYearsBloc.selectedValueFiscalYear = value;
                   });
                 },
                 buttonStyleData: const ButtonStyleData(
@@ -294,154 +279,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                     ),
                   ),
                   searchMatchFn: (item, searchValue) {
-                    return item.value!.workGroupName.contains(searchValue);
-                  },
-                ),
-                //This to clear the search value when you close the menu
-                onMenuStateChange: (isOpen) {
-                  if (!isOpen) {
-                    widget.inputController.clear();
-                  }
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class YearBox extends StatefulWidget {
-  const YearBox({
-    super.key,
-    required this.fiscalYearsBloc,
-    required this.inputController,
-    required this.inputBorder,
-    required this.inputGapPadding,
-  });
-
-  final FiscalYearBloc fiscalYearsBloc;
-  final TextEditingController inputController;
-  final double inputBorder;
-  final double inputGapPadding;
-
-  @override
-  State<YearBox> createState() => _YearBoxState();
-}
-
-class _YearBoxState extends State<YearBox> {
-  String title = localization.titleFiscalYear;
-  Color unFocusColor = const Color(0xFFF2F2F2);
-
-  @override
-  Widget build(BuildContext context) {
-    final fiscalYearData =
-        widget.fiscalYearsBloc.fiscalYearResponse.fiscalYearsData;
-    const boxColor = Color(0xFFF2F2F2);
-    const iconColor = Color(0xFF6C3483);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(4),
-          child: Text(
-            title,
-            maxLines: 1,
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: boxColor,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(widget.inputBorder))),
-          child: Center(
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2<FiscalYearData>(
-                iconStyleData: const IconStyleData(
-                    icon: Padding(
-                      padding: EdgeInsets.all(2),
-                      child: Icon(
-                        Icons.date_range,
-                      ),
-                    ),
-                    iconSize: 20,
-                    iconEnabledColor: iconColor),
-                alignment: atrasAlignment(context),
-                isExpanded: true,
-                hint: Text(
-                  localization.titleSelectFiscalYear,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).hintColor,
-                  ),
-                ),
-                items: fiscalYearData.map((item) {
-                  return DropdownMenuItem(
-                    enabled: isEnable,
-                    alignment: Alignment.centerRight,
-                    value: item,
-                    child: Text(
-                      item.fiscalYearName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  );
-                }).toList(),
-                value: widget.fiscalYearsBloc.selectedValueFiscalYear,
-                onChanged: (value) {
-                  setState(() {
-                    widget.fiscalYearsBloc.selectedValueFiscalYear = value;
-                  });
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  height: 40,
-                  width: double.infinity,
-                ),
-                dropdownStyleData: const DropdownStyleData(
-                  maxHeight: double.infinity,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
-                ),
-                dropdownSearchData: DropdownSearchData(
-                  searchController: widget.inputController,
-                  searchInnerWidgetHeight: 50,
-                  searchInnerWidget: Container(
-                    height: 50,
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 4,
-                      right: 8,
-                      left: 8,
-                    ),
-                    child: TextFormField(
-                      expands: true,
-                      maxLines: null,
-                      controller: widget.inputController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        hintText: localization.searchHintFiscalYear,
-                        hintStyle: const TextStyle(fontSize: 12),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  searchMatchFn: (item, searchValue) {
-                    return item.value!.fiscalYearName.contains(searchValue);
+                    return item.value!.displayName.contains(searchValue);
                   },
                 ),
                 //This to clear the search value when you close the menu

@@ -23,5 +23,5 @@ abstract class IAuthLocalDataSource {
 
   Future<String> getCleanPassword();
 
-  Future<String> getToken();
+  String getToken();
 }

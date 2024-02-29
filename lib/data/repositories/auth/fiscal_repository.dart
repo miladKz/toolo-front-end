@@ -1,0 +1,42 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
+import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source_impl.dart';
+import 'package:toolo_gostar/domain/entities/auth/fiscal/fiscal_year.dart';
+
+import '../../../domain/repositories/fiscal/fiscal_repository.dart';
+import '../../datasources/auth/remote_data_source.dart';
+import '../../models/fiscal_year/fiscal_year_dto.dart';
+
+class FiscalRepositoryImpl extends FiscalRepository {
+  final RemoteDataSource remoteDataSource;
+  final AuthLocalDataSourceImpl localDataSource;
+
+  FiscalRepositoryImpl(this.remoteDataSource, this.localDataSource);
+
+  @override
+  Future<List<FiscalYear>> getFiscalYearData() async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.getFiscalYearData(token: token);
+      if (serverResponse.isSuccess) {
+        List<FiscalYear> fiscalYearList = [];
+        List<Map<String, dynamic>> receivedDataList =
+            serverResponse.data!.toList();
+        for (var element in receivedDataList[0]["items"]) {
+          fiscalYearList.add(FiscalYearDto.fromMap(element));
+        }
+        return fiscalYearList;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  String _getToken() {
+    return localDataSource.getToken();
+  }
+}

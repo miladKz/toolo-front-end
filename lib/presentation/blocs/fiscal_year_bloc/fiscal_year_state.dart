@@ -10,7 +10,7 @@ class FiscalYearInitial extends FiscalYearState {
 }
 
 class FiscalYearSuccess extends FiscalYearState {
-  final FiscalYearResponse fiscalYearResponse;
+  final List<FiscalYear> fiscalYearResponse;
 
   const FiscalYearSuccess({required this.fiscalYearResponse});
 

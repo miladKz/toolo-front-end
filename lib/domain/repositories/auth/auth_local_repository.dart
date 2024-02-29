@@ -22,5 +22,4 @@ abstract class IAuthLocalRepository {
 
   Future<String> getCleanPassword();
 
-  Future<String> getToken();
 }

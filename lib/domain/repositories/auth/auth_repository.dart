@@ -7,4 +7,5 @@ abstract class AuthRepository {
     required String serverAddress,
   });
 
+  String getToken();
 }

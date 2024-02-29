@@ -24,7 +24,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool isRemember;
   var tryCount = 0;
   var maxTry = 1;
-  AuthBaseData? authBaseData;
   late TextEditingController _userNameController;
   late TextEditingController _passwordController;
   late TextEditingController _urlController;
@@ -68,8 +67,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             password: cleanPassWord,
             serverAddress: baseUrl);
 
-        AuthBaseData result = await loginUseCase(loginParam);
-        emit(AuthSuccess(isRemember, authBaseData: result));
+        AuthBaseData authBaseData = await loginUseCase(loginParam);
+        emit(AuthSuccess(isRemember, authBaseData: authBaseData));
       } catch (e) {
         e.toString();
         emit(AuthError(isRemember,

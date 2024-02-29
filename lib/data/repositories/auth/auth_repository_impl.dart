@@ -37,4 +37,9 @@ class AuthRepositoryImpl extends AuthRepository {
       rethrow;
     }
   }
+
+  @override
+ String getToken() {
+    return localDataSource.getToken();
+  }
 }

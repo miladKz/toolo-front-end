@@ -8,6 +8,9 @@ import '../../models/auth/params/login_param_dto.dart';
 
 class RemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
+  late String baseUrl ="http://46.249.101.180:8090";
+  final jsonContentType = 'application/json;charset=utf-8';
+  final soapContentType = 'application/soap+xml;charset=utf-8';
 
   RemoteDataSource({required this.httpClient});
 
@@ -19,6 +22,26 @@ class RemoteDataSource with HttpResponseValidator {
     try {
       Response<dynamic> response =
           await httpClient.post(fullPath, queryParameters: loginParam.toMap());
+      return ServerResponseDto.fromMap(response.data);
+    } catch (e) {
+      throw HttpException(e.toString());
+    }
+  }
+
+  @override
+  Future<ServerResponseDto> getFiscalYearData({required String token}) async {
+    String apiAddress = "/api/user/accessible-year";
+    String fullPath = baseUrl + apiAddress;
+
+    try {
+      Response<dynamic> response = await httpClient.get(
+        fullPath,
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+          'content-type': jsonContentType,
+        }, contentType: jsonContentType),
+      );
+
       return ServerResponseDto.fromMap(response.data);
     } catch (e) {
       throw HttpException(e.toString());

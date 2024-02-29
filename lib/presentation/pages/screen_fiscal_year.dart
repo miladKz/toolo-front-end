@@ -22,7 +22,6 @@ class _ScreenFiscalYearState extends State<ScreenFiscalYear> {
   Widget build(BuildContext context) {
     AuthBloc bloc = locator<AuthBloc>();
     FiscalYearBloc fiscalYearBloc = locator<FiscalYearBloc>();
-    token = bloc.authBaseData!.token;
     fiscalYearBloc.add(FiscalYearGetData(token: token));
     bool isDisable = false;
     return Scaffold(

@@ -7,7 +7,8 @@ import 'package:toolo_gostar/app_exception.dart';
 import 'package:toolo_gostar/data/common/network_connection/http_client.dart';
 import 'package:toolo_gostar/data/common/network_connection/network_connection_state.dart';
 import 'package:toolo_gostar/data/enum/auth_error_state.dart';
-import 'package:toolo_gostar/data/models/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/params/login_param.dart';
 import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
 
 import '../../../di/di.dart';
@@ -62,10 +63,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       HttpClient.urlNotifier.value = baseUrl;
       try {
         LoginUseCase loginUseCase = locator<LoginUseCase>();
-         AuthBaseData result = await loginUseCase(
+        LoginParam loginParam = LoginParam(
             userName: userNameController.text,
-            password: Uri.decodeFull(cleanPassWord),
-            baseUrl: baseUrl);
+            password: cleanPassWord,
+            serverAddress: baseUrl);
+
+        AuthBaseData result = await loginUseCase(loginParam);
         emit(AuthSuccess(isRemember, authBaseData: result));
       } catch (e) {
         e.toString();

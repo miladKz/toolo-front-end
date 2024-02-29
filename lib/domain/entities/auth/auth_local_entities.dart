@@ -1,4 +1,4 @@
-import 'package:toolo_gostar/data/models/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
 
 abstract class IAuthLocalEntities {
   Future<AuthBaseData> persistAuthBaseData(

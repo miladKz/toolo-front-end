@@ -1,28 +1,33 @@
-import 'package:toolo_gostar/data/models/auth/auth_base_data.dart';
-import 'package:toolo_gostar/data/models/auth/user_data.dart';
-import 'package:toolo_gostar/domain/entities/auth/auth_remote_entities.dart';
-import 'package:toolo_gostar/domain/repositories/auth/auth_remote_repository.dart';
+import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
+import 'package:toolo_gostar/data/models/auth/auth_base_data_dto.dart';
+import 'package:toolo_gostar/data/models/auth/params/login_param_dto.dart';
+import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 
-class AuthRemoteRepositoryImpl extends IAuthRemoteRepository {
-  final IAuthRemoteEntities dataSource;
+import '../../datasources/auth/remote_data_source.dart';
 
-  AuthRemoteRepositoryImpl(this.dataSource);
+class AuthRemoteRepositoryImpl extends AuthRepository {
+  final RemoteDataSource remoteDataSource;
+
+  AuthRemoteRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<AuthBaseData> login(
       {required String userName,
-      required String cleanPassWord,
-      required String baseUrl}) async {
-
-    final dto = await dataSource.login(
-        userName: userName, cleanPassWord: cleanPassWord, baseUrl: baseUrl);
-    if (dto.isSuccess) {
-      final Map<String, dynamic> data = dto.data!['data'];
-      final String token = data['MetaData']['Token'];
-      final UserData userData = UserData.fromMap(data['MetaData']['User']);
-      return AuthBaseData(token: token, userData: userData);
-    } else {
-      throw dto.authErrorState!;
+      required String password,
+      required String serverAddress}) async {
+    LoginParamDto param = LoginParamDto(
+        userName: userName, password: password, serverAddress: serverAddress);
+    try {
+      ServerResponseDto serverResponse =
+          await remoteDataSource.login(loginParam: param);
+      if (serverResponse.isSuccess) {
+        return AuthBaseDataDto.fromMap(serverResponse.data!);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

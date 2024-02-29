@@ -31,6 +31,11 @@ class _ScreenAuthState extends State<ScreenAuth> {
             progressDialog(isShow: false);
             Future.delayed(Duration.zero);
             isDisable = false;
+
+            if (state is AuthError) {
+              showSnack(
+                  title: 'Error Login', message: state.appException.message);
+            }
           }
 
           if (state is AuthSuccess) {
@@ -42,10 +47,7 @@ class _ScreenAuthState extends State<ScreenAuth> {
         },
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is AuthError) {
-              showSnack(
-                  title: 'Error Login', message: state.appException.message);
-            }
+
             final authBloc = context.read<AuthBloc>();
 
             return Directionality(

@@ -29,8 +29,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   late TextEditingController _portController;
 
   AuthBloc({this.isRemember = true}) : super(AuthInitial(isRemember)) {
-    _userNameController = TextEditingController(text: 'supervisor');
-    _passwordController = TextEditingController(text: 'Sudo@2024%231402@');
+    _userNameController = TextEditingController(text: 'abbasi');
+    _passwordController = TextEditingController(text: '123456');
     _urlController = TextEditingController(text: 'http://46.249.101.180');
     _portController = TextEditingController(text: '8090');
     HttpClient.urlNotifier.addListener(HttpClient.urlListener);

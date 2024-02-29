@@ -1,9 +1,9 @@
 class FiscalYear {
-  late final int id;
+   final int id;
 
-  late final String activeYear;
+  final String activeYear;
 
-  late final String displayName;
+  final String displayName;
 
   FiscalYear(
       {required this.id, required this.displayName, required this.activeYear});

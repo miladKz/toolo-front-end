@@ -17,7 +17,6 @@ part 'fiscal_year_state.dart';
 class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
   late List<FiscalYear> fiscalYears;
   late TextEditingController _fiscalYearController;
-  late TextEditingController _workGroupController;
   FiscalYear? selectedValueFiscalYear;
 
   FiscalYearBloc() : super(FiscalYearInitial()) {
@@ -32,7 +31,6 @@ class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
   FutureOr<void> _fiscalYearGetData(
       FiscalYearGetData event, Emitter<FiscalYearState> emit) async {
     _fiscalYearController = TextEditingController(text: '');
-    _workGroupController = TextEditingController(text: '');
 
     try {
       GetFiscalYearsUseCase useCase = locator<GetFiscalYearsUseCase>();
@@ -43,9 +41,8 @@ class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
     }
   }
 
-  TextEditingController get fiscalYearController => _fiscalYearController;
 
-  TextEditingController get workGroupController => _workGroupController;
+  TextEditingController get fiscalYearController => _fiscalYearController;
 
   FutureOr<void> _fiscalYearSetData(
       FiscalYearSetData event, Emitter<FiscalYearState> emit) async {

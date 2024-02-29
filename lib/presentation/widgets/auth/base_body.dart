@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
@@ -80,7 +81,7 @@ Widget baseBody({
                   height: constraints.maxHeight / 1.49),
             ),
             rightView(rightItemHeight, borderRadius, rightItemMargin,
-                rightViewMaxWith),
+                rightViewMaxWith).visible(isAuthView),
           ]);
         },
       ));

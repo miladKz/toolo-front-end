@@ -23,11 +23,11 @@ class FiscalRepositoryImpl extends FiscalRepository {
           await remoteDataSource.getFiscalYearData(token: token);
       if (serverResponse.isSuccess) {
         List<FiscalYear> fiscalYearList = [];
-        List<Map<String, dynamic>> receivedDataList =
-            serverResponse.data!.toList();
-        for (var element in receivedDataList[0]["items"]) {
-          fiscalYearList.add(FiscalYearDto.fromMap(element) as FiscalYear);
-        }
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('items');
+        fiscalYearList = List<FiscalYear>.from(itemsAsMap.map((data) {
+          return FiscalYearDto.fromMap(data);
+        }));
         return fiscalYearList;
       } else {
         throw Exception();
@@ -56,7 +56,6 @@ class FiscalRepositoryImpl extends FiscalRepository {
     }
   }
 
-  @override
   String _getToken() {
     return localDataSource.getToken();
   }

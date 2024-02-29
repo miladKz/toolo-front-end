@@ -1,3 +1,5 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
+
 class ServerResponseDto {
   final int result;
   final String message;
@@ -12,10 +14,10 @@ class ServerResponseDto {
 
   factory ServerResponseDto.fromMap(Map<String, dynamic> map) {
     return ServerResponseDto(
-      result: map['Result'],
-      message: map['Message'],
-      debugMessage: map.containsKey('DebugMessage') ? map['DebugMessage'] : "",
-      data: map['MetaData'],
+      result: map.findAsInt('Result'),
+      message: map.findAsString('Message'),
+      debugMessage: map.findAsString('DebugMessage'),
+      data: map.findAsDynamic('MetaData'),
     );
   }
 

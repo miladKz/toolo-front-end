@@ -41,10 +41,10 @@ LayoutBuilder fiscalYearMainBox(
                       children: [
                         Flexible(
                           flex: 1,
-                          child: WorkGroupBox(
+                          child: FiscalYearBox(
                               fiscalYearsBloc: fiscalYearBloc,
                               inputController:
-                                  fiscalYearBloc.workGroupController,
+                                  fiscalYearBloc.fiscalYearController,
                               inputBorder: inputBorder,
                               inputGapPadding: inputGapPadding),
                         ),
@@ -148,8 +148,8 @@ Container btnSuccess() {
   );
 }
 
-class WorkGroupBox extends StatefulWidget {
-  const WorkGroupBox({
+class FiscalYearBox extends StatefulWidget {
+  const FiscalYearBox({
     super.key,
     required this.fiscalYearsBloc,
     required this.inputController,
@@ -163,11 +163,11 @@ class WorkGroupBox extends StatefulWidget {
   final double inputGapPadding;
 
   @override
-  State<WorkGroupBox> createState() => _WorkGroupBox();
+  State<FiscalYearBox> createState() => _WorkGroupBox();
 }
 
-class _WorkGroupBox extends State<WorkGroupBox> {
-  String title = localization.titleSelectWorkGroup;
+class _WorkGroupBox extends State<FiscalYearBox> {
+  String title = localization.titleFiscalYear;
   Color unFocusColor = const Color(0xFFF2F2F2);
 
   @override
@@ -206,7 +206,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                 alignment: atrasAlignment(context),
                 isExpanded: true,
                 hint: Text(
-                  localization.titleSelectWorkGroup,
+                  localization.titleSelectFiscalYear,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -222,7 +222,7 @@ class _WorkGroupBox extends State<WorkGroupBox> {
                     child: Directionality(
                       textDirection: atrasDirection(context),
                       child: Text(
-                        "${item.displayName}.........${item.activeYear}",
+                        "${item.displayName}-${item.activeYear}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

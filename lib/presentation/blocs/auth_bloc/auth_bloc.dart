@@ -14,7 +14,6 @@ import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
 import '../../../di/di.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

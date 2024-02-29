@@ -5,8 +5,8 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
-import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/auth/base_body.dart';
+import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
 
 String token = '';
 
@@ -45,7 +45,7 @@ class _ScreenFiscalYearState extends State<ScreenFiscalYear> {
             return isSuccess
                 ? Directionality(
                     textDirection: TextDirection.ltr,
-                child: baseBody(
+                    child: baseBody(
                         isAuthView: false, authBloc: bloc, enable: !isDisable))
                 : const Center(child: CircularProgressIndicator());
           },

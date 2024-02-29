@@ -2,7 +2,9 @@ part of 'auth_bloc.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState(this.isRemember);
+
   final bool isRemember;
+
   @override
   List<Object> get props => [isRemember];
 }
@@ -17,6 +19,7 @@ class AuthLoading extends AuthState {
 
 class AuthLoadingOnView extends AuthState {
   final bool isShow;
+
   const AuthLoadingOnView(super.isRemember, {required this.isShow});
 }
 
@@ -34,7 +37,9 @@ class AuthError extends AuthState {
 
 class AuthSuccess extends AuthState {
   final AuthBaseData authBaseData;
+
   const AuthSuccess(super.isRemember, {required this.authBaseData});
+
   @override
   List<Object> get props => [isRemember, authBaseData];
 }

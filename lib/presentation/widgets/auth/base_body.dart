@@ -15,7 +15,8 @@ bool isEnable = true;
 
 Widget baseBody({
   required bool isAuthView,
-  required AuthBloc authBloc, required bool enable,
+  required AuthBloc authBloc,
+  required bool enable,
 }) {
   isEnable = enable;
   return Container(
@@ -49,18 +50,18 @@ Widget baseBody({
                       )
                     ],
                   ),
-
                   child: isAuthView
                       ? authMainBox(
-                      inputBorder: inputBorder,
-                      inputGapPadding: inputGapPadding,
-                      boxConstraints: BoxConstraints(
-                          maxWidth: mainMaxWith,
-                          maxHeight: constraints.maxHeight),
-                      authBloc: authBloc,
-                      enable:isEnable)
-                      : fiscalYearMainBox(inputBorder: inputBorder,
-                      inputGapPadding: inputGapPadding,
+                          inputBorder: inputBorder,
+                          inputGapPadding: inputGapPadding,
+                          boxConstraints: BoxConstraints(
+                              maxWidth: mainMaxWith,
+                              maxHeight: constraints.maxHeight),
+                          authBloc: authBloc,
+                          enable: isEnable)
+                      : fiscalYearMainBox(
+                          inputBorder: inputBorder,
+                          inputGapPadding: inputGapPadding,
                           boxConstraints: BoxConstraints(
                               maxWidth: mainMaxWith,
                               maxHeight: constraints.maxHeight),
@@ -160,7 +161,6 @@ Positioned rightView(double rightItemHeight, double borderRadius,
     ),
   );
 }
-
 
 Widget textVersion() {
   return const RotatedBox(

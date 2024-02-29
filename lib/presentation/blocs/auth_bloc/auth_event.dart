@@ -16,8 +16,8 @@ class Authentication extends AuthEvent {
 
   const Authentication(
       {required this.userName,
-        required this.cleanPassWord,
-        required this.baseUrl});
+      required this.cleanPassWord,
+      required this.baseUrl});
 }
 
 class BiometricsAuthentication extends AuthEvent {

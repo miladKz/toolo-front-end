@@ -1,4 +1,3 @@
-
 enum NetworkConnectionStateEnum {
   /// networkDisconnected: The server access denied.
   networkDisconnected,
@@ -11,5 +10,4 @@ enum NetworkConnectionStateEnum {
 
   /// networkReconnecting reconnecting to server.
   networkReconnecting,
-
 }

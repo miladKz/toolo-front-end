@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:toolo_gostar/data/enum/auth_error_state.dart';
 
 class AuthDto {

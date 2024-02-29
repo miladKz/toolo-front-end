@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/constants/http/constants_network_connection.dart';
@@ -15,16 +14,18 @@ final httpClient = Dio(BaseOptions(
 
 class HttpClient {
   static final ValueNotifier<String> urlNotifier = ValueNotifier<String>('');
+
   static void urlListener() {
     httpClient.interceptors.add(LogInterceptor(responseBody: true));
     httpClient.options.baseUrl = urlNotifier.value;
     debugPrint('url: ${httpClient.options.baseUrl}');
   }
 
-  static void setContentType({String contentType=jsonContentType}){
-    httpClient.options.contentType = contentType;
-  }  
-  static void setMethodType({String contentType=jsonContentType}){
+  static void setContentType({String contentType = jsonContentType}) {
     httpClient.options.contentType = contentType;
   }
-} 
+
+  static void setMethodType({String contentType = jsonContentType}) {
+    httpClient.options.contentType = contentType;
+  }
+}

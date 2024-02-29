@@ -12,9 +12,11 @@ class ScreenMain extends StatefulWidget {
 class _ScreenMainState extends State<ScreenMain> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: Directionality(textDirection: atrasDirection(context),
-      child: Container(color: Color(0xFFF9F9F9),child: const MainBaseBody())),
+    return Scaffold(
+      body: Directionality(
+          textDirection: atrasDirection(context),
+          child:
+              Container(color: Color(0xFFF9F9F9), child: const MainBaseBody())),
     );
   }
 }

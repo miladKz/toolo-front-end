@@ -1,7 +1,7 @@
-
 part of main_toolo_gostar;
 
 const double _wordSpacing = -2;
+
 class MyAppThemeConfig {
   static const String faPrimaryFontFamily = FontFamily.vazir;
   static const String enPrimaryFontFamily = FontFamily.vazir;
@@ -35,7 +35,7 @@ class MyAppThemeConfig {
         onPrimaryColor = Colors.white,
         surfaceColor = Colors.white,
         onSurfaceColor = const Color(0xff0C0C0C),
-        scaffoldBackgroundColor =const Color(0xffF9F9F9),
+        scaffoldBackgroundColor = const Color(0xffF9F9F9),
         onBackgroundColor = const Color(0xff6C3483),
         errorColor = const Color(0xffDC3545),
         onErrorColor = Colors.white,
@@ -54,7 +54,7 @@ class MyAppThemeConfig {
         onPrimaryColor = Colors.white,
         surfaceColor = Colors.white,
         onSurfaceColor = const Color(0xff0C0C0C),
-        scaffoldBackgroundColor =const Color(0xffF9F9F9),
+        scaffoldBackgroundColor = const Color(0xffF9F9F9),
         onBackgroundColor = const Color(0xff6C3483),
         errorColor = const Color(0xffDC3545),
         onErrorColor = Colors.white,
@@ -94,7 +94,7 @@ class MyAppThemeConfig {
         backgroundColor: onBackgroundColor,
       ),
       inputDecorationTheme: InputDecorationTheme(
-          labelStyle:TextStyle(
+          labelStyle: TextStyle(
               fontWeight: FontWeight.w400,
               wordSpacing: _wordSpacing,
               fontSize: 14,
@@ -115,8 +115,7 @@ class MyAppThemeConfig {
         ),
       ),
       dividerColor: surfaceColor,
-      textTheme:
-          languageCode == 'fa' ? faPrimaryTextTheme : enPrimaryTextTheme,
+      textTheme: languageCode == 'fa' ? faPrimaryTextTheme : enPrimaryTextTheme,
     );
   }
 

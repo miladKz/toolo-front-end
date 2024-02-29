@@ -140,7 +140,7 @@ Container btnAuth() {
       color: const Color(0xFF6C3483),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
-    child:  Row(
+    child: Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,7 +159,6 @@ Container btnAuth() {
     ),
   );
 }
-
 
 class UserNameBox extends StatefulWidget {
   const UserNameBox({

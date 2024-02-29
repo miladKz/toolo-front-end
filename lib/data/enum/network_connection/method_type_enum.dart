@@ -1,5 +1,5 @@
-enum MethodTypeEnum{
-    /// 'GET'
+enum MethodTypeEnum {
+  /// 'GET'
   get,
 
   /// 'POST'
@@ -7,6 +7,4 @@ enum MethodTypeEnum{
 
   /// 'PUT'
   put,
-
-
 }

@@ -34,8 +34,6 @@ class AuthLocalRepositoryImpl extends IAuthLocalRepository {
     return await dataSource.loadAuthBaseData();
   }
 
-
-
   @override
   Future<void> persistLoginInfo(
       {required String userName,
@@ -51,7 +49,9 @@ class AuthLocalRepositoryImpl extends IAuthLocalRepository {
   }
 
   @override
-  Future<AuthBaseData> persistAuthBaseData({required AuthBaseDataDto authBaseData}) async{
-    return await dataSource.persistAuthBaseData(authBaseData: authBaseData) as AuthBaseData;
+  Future<AuthBaseData> persistAuthBaseData(
+      {required AuthBaseDataDto authBaseData}) async {
+    return await dataSource.persistAuthBaseData(authBaseData: authBaseData)
+        as AuthBaseData;
   }
 }

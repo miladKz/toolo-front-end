@@ -39,7 +39,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
- String getToken() {
+  String getToken() {
     return localDataSource.getToken();
   }
 }

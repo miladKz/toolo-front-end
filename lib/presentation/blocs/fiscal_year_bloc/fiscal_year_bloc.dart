@@ -12,7 +12,6 @@ import '../../../domain/entities/fiscal/fiscal_year.dart';
 import '../../../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
 
 part 'fiscal_year_event.dart';
-
 part 'fiscal_year_state.dart';
 
 class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {

@@ -1,4 +1,4 @@
-enum AuthErrorState{
+enum AuthErrorState {
   serverAccessDenied,
   invalidLicense,
   usernameOrPassCanNotEmpty,
@@ -7,5 +7,4 @@ enum AuthErrorState{
   biometricsNotSuport,
   biometricsAuthNotValid,
   unknownError,
-
 }

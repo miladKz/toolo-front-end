@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:atras_data_parser/atras_data_parser.dart';
@@ -16,9 +15,8 @@ mixin HttpResponseValidator {
       try {
         resultAsMap = jsonDecode(data);
       } on FormatException {
-         resultAsMap = {"data": data.charDecoder()};
+        resultAsMap = {"data": data.charDecoder()};
       }
-      
     } else {
       resultAsMap = {"data": data.charDecoder()};
     }

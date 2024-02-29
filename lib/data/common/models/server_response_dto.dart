@@ -4,7 +4,11 @@ class ServerResponseDto {
   final String debugMessage;
   late final Map<String, dynamic>? data;
 
-  ServerResponseDto({required this.result,this.message = "", this.debugMessage = "", this.data});
+  ServerResponseDto(
+      {required this.result,
+      this.message = "",
+      this.debugMessage = "",
+      this.data});
 
   factory ServerResponseDto.fromMap(Map<String, dynamic> map) {
     return ServerResponseDto(

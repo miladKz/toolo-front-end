@@ -1,13 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/atras_direction.dart';
-import 'package:toolo_gostar/domain/entities/auth/fiscal/fiscal_year.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_fiscal_year.dart';
 import 'package:toolo_gostar/presentation/widgets/common/back_screen.dart';
 import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
+
+import '../../../domain/entities/fiscal/fiscal_year.dart';
 
 bool isEnable = true;
 
@@ -109,8 +110,7 @@ Row successBox({required FiscalYearBloc bloc}) {
 
 setData({required FiscalYearBloc bloc, required String token}) {
   if (bloc.isInputDataValid) {
-    bloc.add(FiscalYearSetData(
-        token: token, activeYearId: bloc.selectedValueFiscalYear!.id));
+    bloc.add(FiscalYearSetData(activeYearId: bloc.selectedValueFiscalYear!.id));
   } else {
     showSnack(
         title: localization.titleFiscalYearError,

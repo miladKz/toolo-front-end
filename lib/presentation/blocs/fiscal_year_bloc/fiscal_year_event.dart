@@ -10,16 +10,14 @@ class FiscalYearGetData extends FiscalYearEvent {
   const FiscalYearGetData({required this.token});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [token];
 }
 
 class FiscalYearSetData extends FiscalYearEvent {
-  final String token;
   final int activeYearId;
 
-  const FiscalYearSetData({required this.token, required this.activeYearId});
+  const FiscalYearSetData({required this.activeYearId});
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [token, activeYearId];
+  List<Object?> get props => [activeYearId];
 }

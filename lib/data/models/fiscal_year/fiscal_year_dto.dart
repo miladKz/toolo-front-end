@@ -1,4 +1,4 @@
-import '../../../domain/entities/auth/fiscal/fiscal_year.dart';
+import '../../../domain/entities/fiscal/fiscal_year.dart';
 
 class FiscalYearDto extends FiscalYear {
   FiscalYearDto(

@@ -4,10 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/data/common/network_connection/http_client.dart';
-import 'package:toolo_gostar/domain/entities/auth/fiscal/fiscal_year.dart';
+import 'package:toolo_gostar/domain/entities/fiscal/params/set_current_fiscal_year_param.dart';
+import 'package:toolo_gostar/domain/usecases/auth/fiscal/set_current_fiscal_year_use_case.dart';
 
 import '../../../di/di.dart';
+import '../../../domain/entities/fiscal/fiscal_year.dart';
 import '../../../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
 
 part 'fiscal_year_event.dart';
@@ -51,18 +52,16 @@ class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
       FiscalYearSetData event, Emitter<FiscalYearState> emit) async {
     try {
       emit(const FiscalYearLoadingOnView(isShow: true));
-      final Map<String, dynamic> param = {
-        "active_year_id": event.activeYearId,
-      };
-      Response<dynamic> response = await httpClient.post(
-        "/api/user/set-current-db",
-        queryParameters: param,
-        options: Options(headers: {
-          "Authorization": "Bearer ${event.token}",
-          'content-type': jsonContentType,
-        }, contentType: jsonContentType),
-      );
-      if (response.statusCode == 200) {
+
+      SetCurrentFiscalYearUseCase useCase =
+          locator<SetCurrentFiscalYearUseCase>();
+
+      SetCurrentFiscalYearParam param =
+          SetCurrentFiscalYearParam(id: event.activeYearId);
+
+      int result = await useCase(param);
+
+      if (result > 0) {
         emit(FiscalYearFinishWork());
       } else {
         emit(const FiscalYearLoadingOnView(isShow: false));

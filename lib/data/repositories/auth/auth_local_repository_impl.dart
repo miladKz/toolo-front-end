@@ -21,7 +21,7 @@ class AuthLocalRepositoryImpl extends IAuthLocalRepository {
 
   @override
   Future<String> getToken() async {
-    return await dataSource.getToken();
+    return dataSource.getToken();
   }
 
   @override

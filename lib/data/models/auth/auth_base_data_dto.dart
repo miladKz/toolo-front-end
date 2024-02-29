@@ -10,4 +10,19 @@ class AuthBaseDataDto extends AuthBaseData {
       userData: UserDataDto.fromMap(map['User']),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {"Token": token, "User": _getUserDataAsDto().toMap()};
+  }
+
+  UserDataDto _getUserDataAsDto() {
+    return UserDataDto(
+        id: userData.id,
+        workGroupID: userData.workGroupID,
+        userType: userData.userType,
+        userGroupsID: userData.userGroupsID,
+        defaultDatabaseID: userData.defaultDatabaseID,
+        displayName: userData.displayName,
+        userName: userData.userName);
+  }
 }

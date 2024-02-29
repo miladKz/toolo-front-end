@@ -1,8 +1,11 @@
+import 'package:toolo_gostar/data/models/auth/auth_base_data_dto.dart';
 import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
 
-abstract class IAuthLocalEntities {
-  Future<AuthBaseData> persistAuthBaseData(
-      {required AuthBaseData authBaseData});
+abstract class IAuthLocalDataSource {
+  final keyLoginUserInfo = "LOGIN_USER_INFO";
+
+  Future<AuthBaseDataDto> persistAuthBaseData(
+      {required AuthBaseDataDto authBaseData});
 
   Future<AuthBaseData> loadAuthBaseData();
 

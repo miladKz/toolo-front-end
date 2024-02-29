@@ -1,9 +1,11 @@
+import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source.dart';
 import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
-import 'package:toolo_gostar/domain/entities/auth/auth_local_entities.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_local_repository.dart';
 
+import '../../models/auth/auth_base_data_dto.dart';
+
 class AuthLocalRepositoryImpl extends IAuthLocalRepository {
-  final IAuthLocalEntities dataSource;
+  final IAuthLocalDataSource dataSource;
 
   AuthLocalRepositoryImpl(this.dataSource);
 
@@ -32,11 +34,7 @@ class AuthLocalRepositoryImpl extends IAuthLocalRepository {
     return await dataSource.loadAuthBaseData();
   }
 
-  @override
-  Future<AuthBaseData> persistAuthBaseData(
-      {required AuthBaseData authBaseData}) async {
-    return await dataSource.persistAuthBaseData(authBaseData: authBaseData);
-  }
+
 
   @override
   Future<void> persistLoginInfo(
@@ -50,5 +48,10 @@ class AuthLocalRepositoryImpl extends IAuthLocalRepository {
   @override
   Future<bool> persistRemember(bool isRemember) async {
     return await dataSource.persistRemember(isRemember);
+  }
+
+  @override
+  Future<AuthBaseData> persistAuthBaseData({required AuthBaseDataDto authBaseData}) async{
+    return await dataSource.persistAuthBaseData(authBaseData: authBaseData) as AuthBaseData;
   }
 }

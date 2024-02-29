@@ -21,4 +21,16 @@ class UserDataDto extends UserData {
       userName: map['UserName'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "ID": id,
+      "WorkGroupID": workGroupID,
+      "UserType": userType,
+      "UserGroupsID": userGroupsID,
+      "DefaultDatabaseID": defaultDatabaseID,
+      "DisplayName": displayName,
+      "UserName": userName
+    };
+  }
 }

@@ -2,7 +2,7 @@ class UserData {
   int id;
   int workGroupID;
   int userType;
-  int userGroupsID;
+  String userGroupsID;
   int defaultDatabaseID;
   String displayName;
   String userName;

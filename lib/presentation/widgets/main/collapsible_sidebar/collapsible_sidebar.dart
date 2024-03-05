@@ -191,12 +191,13 @@ class _CollapsibleSidebarState extends State<CollapsibleSidebar>
 
   @override
   Widget build(BuildContext context) {
+
     Widget sidebar = GestureDetector(
       onHorizontalDragUpdate: _onHorizontalDragUpdate,
       onHorizontalDragEnd: _onHorizontalDragEnd,
       child: CollapsibleContainer(
         height: widget.height,
-        width: _currWidth,
+        width: _currWidth ,
         padding: widget.padding,
         color: widget.backgroundColor,
         child: Column(
@@ -295,38 +296,6 @@ class _CollapsibleSidebarState extends State<CollapsibleSidebar>
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: item.iconImage,
             );
-      /* return CollapsibleItemWidget(
-        item: item.content,
-        onHoverPointer: widget.onHoverPointer,
-        padding: widget.itemPadding,
-        offsetX:
-            widget.customItemOffsetX >= 0 ? widget.customItemOffsetX : _offsetX,
-        scale: _fraction,
-        leading: _isCollapsed
-                ? CircleAvatar(
-                    radius: widget.iconSize / 2,
-                    backgroundImage: item.iconImage,
-                    backgroundColor: Colors.transparent,
-                  )
-                : SizedBox(
-                        width: widget.iconSize,
-                        height: widget.iconSize,
-                      ),
-        iconSize: widget.iconSize,
-        isCollapsed: _isCollapsed,
-        minWidth: widget.minWidth,
-        isSelected: item.isSelected,
-        parentComponent: true,
-        onTap: () {
-          if (item.isSelected) return;
-          if(item.onPressed != null){
-            item.onPressed!();
-          }
-          item.isSelected = true;
-          widget.items[_selectedItemIndex].isSelected = false;
-          setState(() => _selectedItemIndex = index);
-        },
-      );*/
     });
   }
 

@@ -22,15 +22,14 @@ class MainBaseBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double widthScree = MediaQuery.sizeOf(context).width;
-    double mockupWidth = 247;
-    double scale = widthScree / mockupWidth;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CollapsibleSidebar(
-          maxWidth: 300 ,
-          minWidth: 100,
-          isCollapsed: MediaQuery.of(context).size.width <= 800,
+          maxWidth: (widthScree * 0.17) ,
+          minWidth: 70,
+          isCollapsed: MediaQuery.of(context).size.width <= 950,
           items: _items,
           body: Container(),
           collapseOnBodyTap: true,

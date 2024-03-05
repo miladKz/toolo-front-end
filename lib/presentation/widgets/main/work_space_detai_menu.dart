@@ -8,7 +8,7 @@ class WorkSpaceDetailMenu extends StatefulWidget {
   final bool isRoot;
   double titleFontSize = 17;
   double iconSize = 17;
-
+  late double widthScreen;
   WorkSpaceDetailMenu(
       {Key? key,
       required this.item,
@@ -29,8 +29,8 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
   @override
   Widget build(BuildContext context) {
     double mockupWidth = 247;
-    double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
-    double textScale = widthScreen / mockupWidth;
+    widget.widthScreen = MediaQuery.sizeOf(context).width * 0.2;
+    double textScale =  widget.widthScreen / mockupWidth;
     return ExpansionTile(
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),
@@ -50,7 +50,8 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
                 const SizedBox(width: 5),
                 Text(
                   widget.item.title,
-                  textScaler: TextScaler.linear(textScale - 0.2),
+                  textScaler:
+                      TextScaler.linear( widget.widthScreen < 200 ? textScale : 1),
                   style: TextStyle(
                     fontSize: widget.titleFontSize,
                     fontWeight: FontWeight.bold,
@@ -88,8 +89,8 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
               child: WorkSpaceDetailMenu(
                 item: item,
                 isRoot: false,
-                titleFontSize: widget.titleFontSize - 1,
-                iconSize: widget.iconSize - 1,
+                titleFontSize: widget.titleFontSize -0.5,
+                iconSize: widget.iconSize,
               ))
           : _buildItem(item, textScale);
     }).toList();
@@ -116,7 +117,7 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
                   const SizedBox(width: 5),
                   Text(
                     item.title,
-                    textScaler: TextScaler.linear(textScale),
+                    textScaler: TextScaler.linear( widget.widthScreen < 200 ? textScale : 1),
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -155,13 +156,13 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
                   const SizedBox(width: 5),
                   Text(
                     item.title,
-                    textScaler: TextScaler.linear(textScale),
+                    textScaler: TextScaler.linear(widget.widthScreen < 200 ? textScale : 1),
                     style: TextStyle(
                         color: item.isHovered
                             ? const Color(0xFF6C3483)
                             : const Color(0xFF7B7B84),
                         fontWeight: FontWeight.normal,
-                        fontSize: widget.titleFontSize - 3),
+                        fontSize: widget.titleFontSize - 2),
                   ),
                 ],
               ),

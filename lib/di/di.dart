@@ -14,6 +14,7 @@ import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_blo
 import '../data/datasources/auth/auth_remote_data_source_impl.dart';
 import '../data/repositories/auth/auth_remote_repository_impl.dart';
 import '../domain/entities/auth/auth_remote_entities.dart';
+import '../presentation/blocs/main_bloc/main_bloc.dart';
 final locator = GetIt.instance;
 @InjectableInit(
   initializerName: 'init', // default
@@ -23,7 +24,10 @@ final locator = GetIt.instance;
 Future<void> setupLocator() async{
   locator.allowReassignment = true;
   locator.registerLazySingleton<AppLocalizations>(()=>localization);
+
+  //Bloc
   locator.registerLazySingleton<AuthBloc>(()=>AuthBloc());
+  locator.registerLazySingleton<MainBloc>(()=>MainBloc());
   locator.registerLazySingleton<FiscalYearBloc>(()=>FiscalYearBloc());
   locator.registerLazySingleton<ThemeData>(()=>Theme.of(Get.context!));
   locator.registerLazySingleton(() => Dio());

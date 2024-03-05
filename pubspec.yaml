@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.18.1
   dropdown_button2: ^2.3.9
   flutter_fancy_tree_view: ^1.4.1
+  flutter_simple_treeview: ^3.0.2
 
 dev_dependencies:
   flutter_test:

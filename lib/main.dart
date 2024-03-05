@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/fonts.gen.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
@@ -19,7 +20,18 @@ late AppLocalizations localization;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(
+      create: (_) {
+        return locator<AuthBloc>();
+      },
+    ),
+    BlocProvider(
+      create: (_) {
+        return locator<MainBloc>();
+      }
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -61,12 +73,12 @@ class _MyAppState extends State<MyApp> {
     await setupLocator();
   }
 }
-Widget authScreen() {
+/*Widget authScreen() {
   return BlocProvider(
     create: (_) {
       return locator<AuthBloc>();
     },
     child: const ScreenAuth(),
   );
-}
+}*/
 

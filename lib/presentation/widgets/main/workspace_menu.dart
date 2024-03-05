@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../blocs/main_bloc/main_bloc.dart';
 import 'workspace_menu_item.dart';
 
 class Workspace extends StatefulWidget {
@@ -63,7 +65,7 @@ class _WorkspaceState extends State<Workspace> {
               )
             ],
           ),
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.only(bottom: 5, right: 15, left: 15),
               child: Divider(
@@ -71,15 +73,33 @@ class _WorkspaceState extends State<Workspace> {
                 color: Color(0xFFEFEFF4),
               ),
             ),
-            WorkspaceMenuItem(
-              title: 'جسابداری',
-              width: 100,
+            BlocBuilder<MainBloc, MainState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    WorkspaceMenuItem(
+                      title: localization.titleAccounting,
+                      width: 100,
+                      onTap: () {
+                        context.read<MainBloc>().add(AccountingEvent());
+                      },
+                    ),
+                    WorkspaceMenuItem(
+                        title: localization.suppliersAndProcurement,
+                        onTap: () {}),
+                    WorkspaceMenuItem(
+                        title: localization.customersAndSales, onTap: () {}),
+                    WorkspaceMenuItem(title: localization.tax, onTap: () {}),
+                    WorkspaceMenuItem(
+                        title: localization.inventoryAndAccounting,
+                        onTap: () {}),
+                    WorkspaceMenuItem(
+                        title: localization.receivablesAndPayables,
+                        onTap: () {})
+                  ],
+                );
+              },
             ),
-            WorkspaceMenuItem(title: 'تامین کنندگان و خرید'),
-            WorkspaceMenuItem(title: 'مشترییان و فروش'),
-            WorkspaceMenuItem(title: 'مالیاتی'),
-            WorkspaceMenuItem(title: 'انبار و حسابداری'),
-            WorkspaceMenuItem(title: 'دریافت و پرداخت'),
           ],
         ),
       ),

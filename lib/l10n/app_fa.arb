@@ -45,6 +45,18 @@
  "titleDesktop": "میز کار",
  "titleInputData": "ورود داده",
  "titleAccounting": "حسابداری",
+ "suppliersAndProcurement": "تامین کنندگان و خرید",
+ "customersAndSales": "مشتریان و فروش",
+ "inventoryAndAccounting": "انبار و حسابداری",
+ "tax": "مالیاتی",
+ "receivablesAndPayables": "دریافت و پرداخت",
  "hintSearch": "جستجو کنید...",
- "میز کار":"workspace"
+ "newAccount": "حساب جدید",
+ "remove": "حذف",
+ "removeShortcut": "(ctrl+t)",
+ "edit": "ویرایش",
+ "send": "ارسال",
+ "reset": "باتزنشانی",
+ "print": "چاپ",
+ "deactivate": "غیرفعال"
 }

@@ -17,11 +17,10 @@ import '../data/datasources/auth/remote_data_source.dart';
 import '../data/repositories/auth/auth_repository_impl.dart';
 import '../data/repositories/auth/fiscal_repository.dart';
 import '../domain/repositories/fiscal/fiscal_repository.dart';
-
 import '../domain/usecases/auth/auth/get_token_usecase.dart';
 import '../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
-import '../domain/usecases/auth/fiscal/set_current_fiscal_year_use_case.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
+
 final locator = GetIt.instance;
 
 @InjectableInit(
@@ -32,20 +31,19 @@ final locator = GetIt.instance;
 Future<void> setupLocator() async {
   locator.allowReassignment = true;
   locator.registerLazySingleton<AppLocalizations>(() => localization);
-  locator.registerLazySingleton<AuthBloc>(() => AuthBloc());
-  locator.registerLazySingleton<FiscalYearBloc>(() => FiscalYearBloc());
   locator.registerLazySingleton<ThemeData>(() => Theme.of(Get.context!));
 
   //Bloc
-  locator.registerLazySingleton<AuthBloc>(()=>AuthBloc());
-  locator.registerLazySingleton<MainBloc>(()=>MainBloc());
-  locator.registerLazySingleton<FiscalYearBloc>(()=>FiscalYearBloc());
-  locator.registerLazySingleton<ThemeData>(()=>Theme.of(Get.context!));
-  locator.registerLazySingleton(() => Dio());
+  locator.registerLazySingleton<AuthBloc>(() => AuthBloc());
+  locator.registerLazySingleton<MainBloc>(() => MainBloc());
+  locator.registerLazySingleton<FiscalYearBloc>(() => FiscalYearBloc());
+  locator.registerLazySingleton<ThemeData>(() => Theme.of(Get.context!));
 
-  //AuthUseCsses
+  //AuthUseCases
   locator.registerLazySingleton(() => LoginUseCase(locator()));
   locator.registerLazySingleton(() => GetTokenUseCase(locator()));
+
+  //FiscalUseCases
   locator.registerLazySingleton(() => GetFiscalYearsUseCase(locator()));
   locator.registerLazySingleton(() => SetCurrentFiscalYearUseCase(locator()));
 
@@ -56,6 +54,7 @@ Future<void> setupLocator() async {
   //FiscalRepository
   locator.registerLazySingleton<FiscalRepository>(
       () => FiscalRepositoryImpl(locator(), locator()));
+  
   //DataSource
   locator.registerLazySingleton(() => RemoteDataSource(httpClient: locator()));
   locator.registerLazySingleton(() => AuthLocalDataSourceImpl(locator()));

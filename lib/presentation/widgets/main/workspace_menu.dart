@@ -49,7 +49,7 @@ class _WorkspaceState extends State<Workspace> {
                       width: 5,
                     ),
                     Text(
-                      localization.workSpace,
+                      localization.titleDesktop,
                       style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,

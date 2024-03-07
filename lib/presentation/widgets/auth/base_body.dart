@@ -81,7 +81,8 @@ Widget baseBody({
                   height: constraints.maxHeight / 1.49),
             ),
             rightView(rightItemHeight, borderRadius, rightItemMargin,
-                rightViewMaxWith).visible(isAuthView),
+                    rightViewMaxWith)
+                .visible(isAuthView),
           ]);
         },
       ));
@@ -150,7 +151,10 @@ Positioned rightView(double rightItemHeight, double borderRadius,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Assets.ico.icWebsite.image(width: 20, height: 20),
+            InkWell(
+            onTap:  () {
+              locator.get<AuthBloc>().add(AuthChangeUrlBoxVisibiliti());
+            },child: Assets.ico.icWebsite.image(width: 20, height: 20)),
             const SizedBox(height: 8),
             Assets.ico.icSupportEmail.image(width: 20, height: 20),
             const SizedBox(height: 8),

@@ -7,16 +7,16 @@ class WorkSpaceDetailMenu extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
   bool isExpanded = false;
-  double titleFontSize = 17;
-  double iconSize = 17;
+  double titleFontSize;
+  double iconSize;
   late double widthScreen;
 
   WorkSpaceDetailMenu(
       {Key? key,
       required this.item,
       required this.isRoot,
-      this.titleFontSize = 17,
-      this.iconSize = 17})
+      this.titleFontSize = 12,
+      this.iconSize = 15})
       : super(key: key);
 
   @override

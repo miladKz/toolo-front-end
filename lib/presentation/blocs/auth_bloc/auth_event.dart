@@ -44,3 +44,10 @@ class AutoAuthentication extends AuthEvent {
 class AuthRememberStatusChange extends AuthEvent {
   const AuthRememberStatusChange();
 }
+
+
+class AuthChangeUrlBoxVisibiliti extends AuthEvent {
+
+  const AuthChangeUrlBoxVisibiliti();
+}
+

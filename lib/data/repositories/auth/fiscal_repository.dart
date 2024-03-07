@@ -24,7 +24,7 @@ class FiscalRepositoryImpl extends FiscalRepository {
       if (serverResponse.isSuccess) {
         List<FiscalYear> fiscalYearList = [];
 
-        final itemsAsMap = serverResponse.data!.findAsDynamic('items');
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         fiscalYearList = List<FiscalYear>.from(itemsAsMap.map((data) {
           return FiscalYearDto.fromMap(data);
         }));

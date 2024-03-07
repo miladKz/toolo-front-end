@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:toolo_gostar/data/common/mixin/http_response_validator.dart';
 import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
 
@@ -15,14 +17,13 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> getActionList({required String token}) async {
     String apiAddress = "/api/pub/actions-list/list";
-    String fullPath = baseUrl + apiAddress;
     try {
       Response<dynamic> response = await httpClient.get(
-        fullPath,
+        apiAddress,
         options: _getHeaders(token),
       );
-      return ServerResponseDto.fromMap(response.data);
-    } catch (e) {
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
       throw HttpException(e.toString());
     }
   }
@@ -35,16 +36,21 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         fullPath,
         options: _getHeaders(token),
       );
-      print(response.data);
-      return ServerResponseDto.fromMap(response.data);
-    } catch (e) {
+      debugPrint(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
       throw HttpException(e.toString());
     }
   }
+
   Options _getHeaders(String token) {
     return Options(headers: {
       "Authorization": "Bearer $token",
       'content-type': jsonContentType,
     }, contentType: jsonContentType);
+  }
+
+  Map<String, dynamic> getData(Response response) {
+  return  jsonDecode(response.data);
   }
 }

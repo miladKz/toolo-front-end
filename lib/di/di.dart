@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toolo_gostar/data/common/network_connection/http_client.dart';
 import 'package:toolo_gostar/data/datasources/accounting/accounting_remote_data_source.dart';
 import 'package:toolo_gostar/data/repositories/accounting/account_repository_impl.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
@@ -80,5 +81,5 @@ Future<void> setupLocator() async {
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();
   locator.registerLazySingleton(() => sharedPreferences);
-  locator.registerLazySingleton(() => Dio());
+  locator.registerLazySingleton(() => httpClient);
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
 import 'package:toolo_gostar/presentation/widgets/auth/base_body.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
@@ -61,6 +62,11 @@ class _ScreenFiscalYearState extends State<ScreenFiscalYear> {
   }
 
   Widget screenMain() {
-    return const ScreenMain();
+    return BlocProvider(
+      create: (_) {
+        return locator<MainBloc>();
+      },
+      child: const ScreenMain(),
+    );
   }
 }

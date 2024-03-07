@@ -14,6 +14,7 @@ import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
 import '../../../di/di.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -38,6 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .addListener(NetworkConnectionState.networkConnectionStateListener);
 
     on<Authentication>(_authentication);
+    on<AuthChangeUrlBoxVisibiliti>(_authChangeUrlBoxVisibiliti);
+    on<AtrasEmitState>(_atrasEmitState);
   }
 
   TextEditingController get userNameController => _userNameController;
@@ -79,5 +82,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           appException: AppException(message: ''),
           errorState: AuthErrorState.usernameOrPassCanNotEmpty));
     }
+  }
+
+  FutureOr<void> _authChangeUrlBoxVisibiliti(
+      AuthChangeUrlBoxVisibiliti event, Emitter<AuthState> emit) {
+    add(AtrasEmitState(AuthVisibleUrlBox(isRemember)));
+  }
+
+  FutureOr<void> _atrasEmitState(
+      AtrasEmitState event, Emitter<AuthState> emit) {
+    emit(event.uthState);
   }
 }

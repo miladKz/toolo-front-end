@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -17,31 +18,26 @@ class RemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> login({required LoginParamDto loginParam}) async {
     String apiAddress = "/api/pub/user/login";
-    String fullPath = loginParam.serverAddress + apiAddress;
-
     try {
-      Response<dynamic> response =
-          await httpClient.post(fullPath, queryParameters: loginParam.toMap());
-      return ServerResponseDto.fromMap(response.data);
-    } catch (e) {
+      Response<dynamic> response = await httpClient.post(apiAddress,
+          queryParameters: loginParam.toMap());
+      return ServerResponseDto.fromMap(jsonDecode(response.data));
+    } on DioException catch (e) {
       print(e);
       throw HttpException(e.toString());
     }
   }
 
-
   Future<ServerResponseDto> getFiscalYearData({required String token}) async {
     String apiAddress = "/api/pub/user/accessible-year";
-    String fullPath = baseUrl + apiAddress;
-
     try {
       Response<dynamic> response = await httpClient.get(
-        fullPath,
+        apiAddress,
         options: _getHeaders(token),
       );
 
-      return ServerResponseDto.fromMap(response.data);
-    } catch (e) {
+      return ServerResponseDto.fromMap(jsonDecode(response.data));
+    } on DioException catch (e) {
       throw HttpException(e.toString());
     }
   }
@@ -50,17 +46,15 @@ class RemoteDataSource with HttpResponseValidator {
       {required String token,
       required SetCurrentFiscalYearParamDto param}) async {
     String apiAddress = "/api/pub/user/set-current-year";
-    String fullPath = baseUrl + apiAddress;
-
     try {
       Response<dynamic> response = await httpClient.post(
-        fullPath,
+        apiAddress,
         queryParameters: param.toMap(),
         options: _getHeaders(token),
       );
 
-      return ServerResponseDto.fromMap(response.data);
-    } catch (e) {
+      return ServerResponseDto.fromMap(jsonDecode(response.data));
+    } on DioException catch (e) {
       throw HttpException(e.toString());
     }
   }

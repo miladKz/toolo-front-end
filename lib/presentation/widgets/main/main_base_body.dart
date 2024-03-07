@@ -15,6 +15,7 @@ import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
 import 'expandable_menu/expandable_menu.dart';
+import 'tree_view/tree_view_item.dart';
 
 class MainBaseBody extends StatelessWidget {
   const MainBaseBody({super.key});
@@ -27,7 +28,7 @@ class MainBaseBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CollapsibleSidebar(
-          maxWidth: (widthScree * 0.17) ,
+          maxWidth: (widthScree * 0.17),
           minWidth: 70,
           isCollapsed: MediaQuery.of(context).size.width <= 950,
           items: _items,
@@ -82,7 +83,7 @@ class MainBaseBody extends StatelessWidget {
                     BlocBuilder<MainBloc, MainState>(
                       builder: (context, state) {
                         return Flexible(
-                          flex: 3,
+                          flex: 2,
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -115,6 +116,7 @@ class MainBaseBody extends StatelessWidget {
                                     items: _expandableItems(widthScree),
                                   ),
                                 ),
+                                TreeView()
                               ],
                             ),
                           ),
@@ -473,5 +475,65 @@ class MainBaseBody extends StatelessWidget {
             return WorkSpaceDetailMenu(item: items[index], isRoot: true);
           },
         ));
+  }
+}
+
+class TreeView extends StatefulWidget {
+
+  double iconSize;
+
+  TreeView(
+      {Key? key,
+        this.iconSize = 15})
+      : super(key: key);
+  @override
+  State<TreeView> createState() => _TreeViewState();
+}
+
+class _TreeViewState extends State<TreeView> {
+  bool _isExpanded = false;
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      onExpansionChanged: (isExpanded) =>
+          setState(() => _isExpanded = isExpanded),
+        trailing: SizedBox(),
+        title: Expanded(
+            child: Container(
+          padding: EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
+          decoration: BoxDecoration(
+              color: Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(5)),
+          child: Row(children: [
+            _isExpanded
+                ? Icon(Icons.remove,
+                size: widget.iconSize, color: Color(0xFF6C3483))
+                : Icon(Icons.add,
+                size: widget.iconSize, color: Color(0xFFBD8AD0)),
+            const SizedBox(width: 5),
+            Text(
+              "10 - دارایی غیر تجاری",
+              style: TextStyle(fontSize: 14, color: Color(0xFF616161), fontWeight: FontWeight.bold),
+            )
+          ],),
+        )),
+      children: [
+        Container(
+          margin: EdgeInsets.only(right: 20, left: 55),
+            decoration: BoxDecoration(
+              border: Border(
+                right: BorderSide(
+                  color: Color(0xFFDFE3E7),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Column(children: [
+              TreeViewItem(title: "زمین", fontSize: 18,textScale: 1,onTap: (){},),
+              TreeViewItem(title: "ساختمان", fontSize: 18,textScale: 1,onTap: (){},),
+              TreeViewItem(title: "تاسیسات", fontSize: 18,textScale: 1,onTap: (){},),
+            ], )
+        ),
+      ],
+    );
   }
 }

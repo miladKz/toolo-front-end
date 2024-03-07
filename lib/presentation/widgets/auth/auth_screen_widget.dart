@@ -1,6 +1,8 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
@@ -45,28 +47,9 @@ LayoutBuilder authMainBox(
                         inputController: authBloc.passwordController,
                         inputBorder: inputBorder,
                         inputGapPadding: inputGapPadding),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: UrlBox(
-                              inputController: authBloc.urlController,
-                              inputBorder: inputBorder,
-                              inputGapPadding: inputGapPadding),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: PortBox(
-                              inputController: authBloc.portController,
-                              inputBorder: inputBorder,
-                              inputGapPadding: inputGapPadding),
-                        ),
-                      ],
-                    ),
+                    UrlBoxWidget(
+                        inputBorder: inputBorder,
+                        inputGapPadding: inputGapPadding),
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: authBox(authBloc: authBloc),
@@ -80,6 +63,60 @@ LayoutBuilder authMainBox(
       );
     },
   );
+}
+
+class UrlBoxWidget extends StatefulWidget {
+  bool isVisible = false;
+  final double inputBorder;
+  final double inputGapPadding;
+
+  UrlBoxWidget({
+    super.key,
+    required this.inputBorder,
+    required this.inputGapPadding,
+  });
+
+  @override
+  State<UrlBoxWidget> createState() => _UrlBoxWidgetState();
+}
+
+class _UrlBoxWidgetState extends State<UrlBoxWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final authBloc = locator.get<AuthBloc>();
+    updateBox();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          flex: 3,
+          child: UrlBox(
+              inputController: authBloc.urlController,
+              inputBorder: widget.inputBorder,
+              inputGapPadding: widget.inputGapPadding),
+        ),
+        const SizedBox(
+          width: 2,
+        ),
+        Flexible(
+          flex: 2,
+          child: PortBox(
+              inputController: authBloc.portController,
+              inputBorder: widget.inputBorder,
+              inputGapPadding: widget.inputGapPadding),
+        ),
+      ],
+    ).visible(widget.isVisible);
+  }
+
+  updateBox() {
+    final state = context.watch<AuthBloc>().state;
+    if (state is AuthVisibleUrlBox) {
+      setState(() {
+        widget.isVisible = !widget.isVisible;
+      });
+    }
+  }
 }
 
 Row authBox({required AuthBloc authBloc}) {

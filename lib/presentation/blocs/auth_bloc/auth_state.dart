@@ -47,3 +47,7 @@ class AuthSuccess extends AuthState {
 class AuthFailed extends AuthState {
   const AuthFailed(super.isRemember);
 }
+
+class AuthVisibleUrlBox extends AuthState {
+  const AuthVisibleUrlBox(super.isRemember);
+}

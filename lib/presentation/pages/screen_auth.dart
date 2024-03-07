@@ -46,8 +46,13 @@ class _ScreenAuthState extends State<ScreenAuth> {
           }
         },
         child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (previous, current) {
+            if(current is AuthVisibleUrlBox){
+              return false;
+            }
+            return true;
+          },
           builder: (context, state) {
-
             final authBloc = context.read<AuthBloc>();
 
             return Directionality(

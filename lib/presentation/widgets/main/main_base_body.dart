@@ -5,10 +5,10 @@ import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
-import 'package:toolo_gostar/presentation/widgets/main/work_space_detai_menu.dart';
+import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/work_space_detai_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
-import '../../../domain/entities/main/work_space_detal_item.dart';
+import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
 import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
@@ -82,15 +82,15 @@ class MainBaseBody extends StatelessWidget {
                     BlocBuilder<MainBloc, MainState>(
                       builder: (context, state) {
                         return Flexible(
-                          flex: 2,
+                          flex: 3,
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 color: const Color(0xFFF0F0F0),
                                 borderRadius: BorderRadius.circular(11)),
-                            child: state != AccountingSuccess
-                                ? _buildWorkSpaceDetailMenu(fakeItems)
-                                : const CircularProgressIndicator(),
+                            child: state is AccountingActionsReceived
+                                ? _buildWorkSpaceDetailMenu(state.actions)
+                                : const SizedBox(),
                           ),
                         );
                       },
@@ -463,56 +463,15 @@ class MainBaseBody extends StatelessWidget {
     ];
   }
 
-  Widget _buildWorkSpaceDetailMenu(List<WorkspaceDetailItem> items) {
+  Widget _buildWorkSpaceDetailMenu(List<AccountingAction> items) {
     return Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(11)),
         child: ListView.builder(
-          itemCount: fakeItems.length,
+          itemCount: items.length,
           itemBuilder: (context, index) {
             return WorkSpaceDetailMenu(item: items[index], isRoot: true);
           },
         ));
   }
 }
-
-List<WorkspaceDetailItem> fakeItems = [
-  WorkspaceDetailItem(
-    title: "عنوان 1",
-    hasChildren: true,
-    children: [
-      WorkspaceDetailItem(
-        title: "عنوان فرعی 1.1",
-      ),
-      WorkspaceDetailItem(
-        title: "عنوان فرعی 1.2",
-      ),
-    ],
-  ),
-  WorkspaceDetailItem(
-    title: "عنوان 2",
-    hasChildren: true,
-    children: [
-      WorkspaceDetailItem(
-        title: "عنوان فرعی 2.1",
-      ),
-      WorkspaceDetailItem(
-        title: "عنوان فرعی 2.2",
-      ),
-    ],
-  ),
-  WorkspaceDetailItem(title: "عنوان 3", hasChildren: true, children: [
-    WorkspaceDetailItem(
-      title: "عنوان 1",
-      hasChildren: true,
-      children: [
-        WorkspaceDetailItem(
-          title: "عنوان فرعی 1.1",
-        ),
-        WorkspaceDetailItem(
-          title: "عنوان فرعی 1.2",
-        ),
-      ],
-    )
-  ]),
-];

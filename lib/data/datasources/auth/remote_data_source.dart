@@ -15,9 +15,8 @@ class RemoteDataSource with HttpResponseValidator {
 
   RemoteDataSource({required this.httpClient});
 
-  @override
   Future<ServerResponseDto> login({required LoginParamDto loginParam}) async {
-    String apiAddress = "/api/user/login";
+    String apiAddress = "/api/pub/user/login";
     String fullPath = loginParam.serverAddress + apiAddress;
 
     try {
@@ -25,13 +24,14 @@ class RemoteDataSource with HttpResponseValidator {
           await httpClient.post(fullPath, queryParameters: loginParam.toMap());
       return ServerResponseDto.fromMap(response.data);
     } catch (e) {
+      print(e);
       throw HttpException(e.toString());
     }
   }
 
-  @override
+
   Future<ServerResponseDto> getFiscalYearData({required String token}) async {
-    String apiAddress = "/api/user/accessible-year";
+    String apiAddress = "/api/pub/user/accessible-year";
     String fullPath = baseUrl + apiAddress;
 
     try {
@@ -46,11 +46,10 @@ class RemoteDataSource with HttpResponseValidator {
     }
   }
 
-  @override
   Future<ServerResponseDto> setCurrentFiscalYear(
       {required String token,
       required SetCurrentFiscalYearParamDto param}) async {
-    String apiAddress = "/api/user/set-current-year";
+    String apiAddress = "/api/pub/user/set-current-year";
     String fullPath = baseUrl + apiAddress;
 
     try {

@@ -5,10 +5,19 @@ abstract class MainState {}
 
 class MainInitial extends MainState {}
 
-class MainLoading extends MainState{}
+class MainLoading extends MainState {
+  final bool isShow;
 
-class AccountingSuccess extends MainState{
-
+   MainLoading({required this.isShow});
 }
 
-class MainError extends MainState{}
+class AccountingActionsReceived extends MainState {
+  final List<AccountingAction> actions;
+
+  AccountingActionsReceived(this.actions);
+}
+
+class MainError extends MainState {
+  final AppException appException;
+  MainError(this.appException);
+}

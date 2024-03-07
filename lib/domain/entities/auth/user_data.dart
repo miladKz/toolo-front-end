@@ -15,16 +15,4 @@ class UserData {
       required this.defaultDatabaseID,
       required this.displayName,
       required this.userName});
-
-  factory UserData.fromMap(Map<String, dynamic> map) {
-    return UserData(
-      id: map['ID'],
-      workGroupID: map['WorkGroupID'],
-      userType: map['UserType'],
-      userGroupsID: map['UserGroupsID'],
-      defaultDatabaseID: map['DefaultDatabaseID'],
-      displayName: map['DisplayName'],
-      userName: map['UserName'],
-    );
-  }
 }

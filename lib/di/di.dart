@@ -5,7 +5,11 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toolo_gostar/data/datasources/accounting/accounting_remote_data_source.dart';
+import 'package:toolo_gostar/data/repositories/accounting/account_repository_impl.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/auth/fiscal/set_current_fiscal_year_use_case.dart';
 import 'package:toolo_gostar/main.dart';
@@ -17,6 +21,7 @@ import '../data/datasources/auth/remote_data_source.dart';
 import '../data/repositories/auth/auth_repository_impl.dart';
 import '../data/repositories/auth/fiscal_repository.dart';
 import '../domain/repositories/fiscal/fiscal_repository.dart';
+import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/auth/auth/get_token_usecase.dart';
 import '../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
@@ -47,6 +52,11 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => GetFiscalYearsUseCase(locator()));
   locator.registerLazySingleton(() => SetCurrentFiscalYearUseCase(locator()));
 
+  //AccountingUseCases
+  locator.registerLazySingleton(() => GetActionsUseCase(locator()));
+  locator.registerLazySingleton(() => GetAccountListUseCase(locator()));
+
+
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));
@@ -54,10 +64,18 @@ Future<void> setupLocator() async {
   //FiscalRepository
   locator.registerLazySingleton<FiscalRepository>(
       () => FiscalRepositoryImpl(locator(), locator()));
-  
+
+  //AccountingRepository
+  locator.registerLazySingleton<IAccountingRepository>(
+      () => AccountingRepositoryImpl(locator(), locator()));
+
   //DataSource
   locator.registerLazySingleton(() => RemoteDataSource(httpClient: locator()));
   locator.registerLazySingleton(() => AuthLocalDataSourceImpl(locator()));
+
+  //AccountingDataSource
+  locator.registerLazySingleton(
+      () => AccountingRemoteDataSource(httpClient: locator()));
 
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();

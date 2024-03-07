@@ -5,11 +5,12 @@ abstract class MainState {}
 
 class MainInitial extends MainState {}
 
-class MainLoading extends MainState {
+class MainLoadingOnView extends MainState {
   final bool isShow;
 
-   MainLoading({required this.isShow});
+  MainLoadingOnView({required this.isShow});
 }
+
 
 class AccountingActionsReceived extends MainState {
   final List<AccountingAction> actions;

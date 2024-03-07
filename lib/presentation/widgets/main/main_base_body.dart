@@ -80,21 +80,15 @@ class MainBaseBody extends StatelessWidget {
                     child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BlocBuilder<MainBloc, MainState>(
-                      builder: (context, state) {
-                        return Flexible(
-                          flex: 2,
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: const Color(0xFFF0F0F0),
-                                borderRadius: BorderRadius.circular(11)),
-                            child: state is AccountingActionsReceived
-                                ? _buildWorkSpaceDetailMenu(state.actions)
-                                : const SizedBox(),
-                          ),
-                        );
-                      },
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(11)),
+                        child:WorkSpaceDetailWidgetTree(),
+                      ),
                     ),
                     const SizedBox(
                       width: 2,
@@ -465,16 +459,41 @@ class MainBaseBody extends StatelessWidget {
     ];
   }
 
-  Widget _buildWorkSpaceDetailMenu(List<AccountingAction> items) {
+}
+
+class WorkSpaceDetailWidgetTree extends StatefulWidget {
+
+  List<AccountingAction> items=List.empty();
+   WorkSpaceDetailWidgetTree({
+    super.key,
+  });
+
+  @override
+  State<WorkSpaceDetailWidgetTree> createState() => _WorkSpaceDetailWidgetTreeState();
+}
+
+class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
+  @override
+  Widget build(BuildContext context) {
+    updateList();
     return Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(11)),
         child: ListView.builder(
-          itemCount: items.length,
+          itemCount: widget.items.length,
           itemBuilder: (context, index) {
-            return WorkSpaceDetailMenu(item: items[index], isRoot: true);
+            return WorkSpaceDetailMenu(item:  widget.items[index], isRoot: true);
           },
         ));
+  }
+
+  updateList(){
+   final state= context.watch<MainBloc>().state;
+   if(state is AccountingActionsReceived){
+     setState(() {
+       widget.items=state.actions;
+     });
+   }
   }
 }
 

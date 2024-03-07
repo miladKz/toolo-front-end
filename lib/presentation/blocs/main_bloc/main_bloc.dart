@@ -9,17 +9,19 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   MainBloc() : super(MainInitial()) {
-    on<MainEvent>((event, emit) {});
-    on<AccountingEvent>((event, emit) async {
-      emit(MainLoading(isShow: true));
-      GetActionsUseCase useCase = locator<GetActionsUseCase>();
-      List<AccountingAction> actions = await useCase();
-      emit(AccountingActionsReceived(actions));
-    });
+    on<AccountingEvent>(_accontingEvent);
+  }
+
+  FutureOr<void> _accontingEvent(
+      AccountingEvent event, Emitter<MainState> emit) async {
+    emit(MainLoadingOnView(isShow: true));
+    GetActionsUseCase useCase = locator<GetActionsUseCase>();
+    List<AccountingAction> actions = await useCase();
+    emit(MainLoadingOnView(isShow: false));
+    emit(AccountingActionsReceived(actions));
   }
 }

@@ -44,10 +44,19 @@ class AccountDto extends Account {
       indexOrder2: map.findAsInt("IndexOrder2"),
       isActive: map.findAsBool("IsActive"),
       isAmalyati: map.findAsBool("IsAmalyati"),
-      items: map.findAsDynamic("Items"),
+      items: _getChildren(map),
       type: map.findAsInt("Mahiat"),
       mahiatRialy: map.findAsBool("MahiatRialy"),
       balanceSheetType: map.findAsInt("TaraznameType"),
     );
+  }
+
+  static List<AccountDto> _getChildren(Map<String, dynamic> map){
+    List<dynamic> childrenData = map.findAsDynamic("Items");
+    List<AccountDto> children = [];
+    for (var childMap in childrenData) {
+      children.add(AccountDto.fromMap(childMap));
+    }
+    return children;
   }
 }

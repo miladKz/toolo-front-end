@@ -27,6 +27,20 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+  Future<ServerResponseDto> getAccountList({required String token}) async {
+    String apiAddress = "/api/acc/accounts/list";
+    String fullPath = baseUrl + apiAddress;
+    try {
+      Response<dynamic> response = await httpClient.get(
+        fullPath,
+        options: _getHeaders(token),
+      );
+      print(response.data);
+      return ServerResponseDto.fromMap(response.data);
+    } catch (e) {
+      throw HttpException(e.toString());
+    }
+  }
   Options _getHeaders(String token) {
     return Options(headers: {
       "Authorization": "Bearer $token",

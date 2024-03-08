@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:toolo_gostar/di/di.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
@@ -77,12 +79,30 @@ class _WorkspaceState extends State<Workspace> {
               builder: (context, state) {
                 return Column(
                   children: [
-                    WorkspaceMenuItem(
-                      title: localization.titleAccounting,
-                      width: 100,
-                      onTap: () {
-                        context.read<MainBloc>().add(AccountingEvent());
+                    Shortcuts(
+                      shortcuts: <ShortcutActivator, Intent>{
+                        LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                            const GetAccontingActionIntent(),
                       },
+                      child: Actions(
+                        actions: <Type, Action<Intent>>{
+                          GetAccontingActionIntent:
+                              CallbackAction<GetAccontingActionIntent>(
+                            onInvoke: (GetAccontingActionIntent intent) =>
+                                getAccontingAction(),
+                          ),
+                        },
+                        child: Focus(
+                          autofocus: true,
+                          child: WorkspaceMenuItem(
+                            title: localization.titleAccounting,
+                            width: 100,
+                            onTap: () {
+                              getAccontingAction();
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                     WorkspaceMenuItem(
                         title: localization.suppliersAndProcurement,
@@ -105,4 +125,12 @@ class _WorkspaceState extends State<Workspace> {
       ),
     );
   }
+
+  getAccontingAction() {
+    locator.get<MainBloc>().add(AccountingEvent());
+  }
+}
+
+class GetAccontingActionIntent extends Intent {
+  const GetAccontingActionIntent();
 }

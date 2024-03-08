@@ -62,8 +62,8 @@ class _ExpandableIconState extends State<ExpandableIcon>
 
   @override
   void initState() {
-    iconWidth = widget.width * 0.8;
-    iconHeight = widget.height * 0.8;
+    iconWidth = widget.width ;
+    iconHeight = widget.height ;
 
     _hamburgerAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
@@ -126,7 +126,7 @@ class _ExpandableIconState extends State<ExpandableIcon>
           color: Color(0xFFefe0f5),
           child: Padding(padding: EdgeInsets.all(5),
             child: InkWell(
-              borderRadius: BorderRadius.all(Radius.circular(widget.width)),
+              borderRadius: BorderRadius.all(Radius.circular(4)),
               onTap: () {
                 if (!_isAnimating) {
                   if (_hamburgerAnimationController.isCompleted) {

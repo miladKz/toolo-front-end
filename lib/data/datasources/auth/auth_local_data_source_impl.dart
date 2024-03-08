@@ -24,8 +24,10 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
 
   @override
   String getToken() {
-    var test = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
-    return AuthBaseDataDto.fromMap(jsonDecode(test)).token;
+    //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MDk4NTQyNjd9.hH2DZBMjlhyiM6Ikb87rGjmqq4JjLXutBF-aCitzJWI";
+
+    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;
   }
 
   @override
@@ -61,7 +63,7 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
       keyLoginUserInfo,
       jsonEncode(authBaseData.toMap()),
     );
-    var test = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
-    return AuthBaseDataDto.fromMap(jsonDecode(test));
+    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    return AuthBaseDataDto.fromMap(jsonDecode(object));
   }
 }

@@ -3,54 +3,44 @@ library expandable_menu;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/atras_direction.dart';
 
 import 'expandable_icon.dart';
 
-/// This class is main class of [ExpandableMenu] widget.
-class ExpandableMenu extends StatefulWidget {
-  /// This property declare width of widget when
-  /// it's not expanded in initial state.
-  final double width;
-
+/// This class is main class of [CustomExpandableMenu] widget.
+class CustomExpandableMenu extends StatefulWidget {
   /// This property declare height of widget.
   final double height;
-  double widthScreen;
+  final double maxSpaceWidth;
 
   /// This property will contains items in list of menu.
   final List<Widget> items;
 
   /// This property declare background color of widget
   /// and default value is [Color(0xFF4B5042)].
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// This property declare item background color
   /// and if it's be null default value is [Colors.white.withOpacity(.4)]
   final Color? itemContainerColor;
 
-  ExpandableMenu({
+  const CustomExpandableMenu({
     Key? key,
-    this.width = 70.0,
-    this.height = 70.0,
-    required this.widthScreen,
+    this.height = 40,
+    required this.maxSpaceWidth,
     required this.items,
-    this.backgroundColor = const Color(0x00ffffff),
+    this.backgroundColor,
     this.itemContainerColor,
   }) : super(key: key);
 
   @override
-  State<ExpandableMenu> createState() => _ExpandableMenuState();
+  State<CustomExpandableMenu> createState() => _CustomExpandableMenuState();
 }
 
-class _ExpandableMenuState extends State<ExpandableMenu>
+class _CustomExpandableMenuState extends State<CustomExpandableMenu>
     with TickerProviderStateMixin {
-  /// This private property declare to width of widget.
-  late double _width;
-
   /// This private property declare for measure expanded state of widget.
   final _spacerKey = GlobalKey();
-
-  /// This private property declare list widget.
-  double _listWidth = 0;
 
   /// This private property declare list items size.
   /// Every item size computed with [itemSize] method
@@ -78,9 +68,8 @@ class _ExpandableMenuState extends State<ExpandableMenu>
 
   @override
   void initState() {
-    _width = widget.width;
     _containerAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -100,10 +89,8 @@ class _ExpandableMenuState extends State<ExpandableMenu>
 
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      _width = _width + _spacerKey.currentContext!.size!.width;
-      _listWidth = _width - widget.width;
-      _listItemSize = itemSize();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _listItemSize = widget.height;
     });
   }
 
@@ -115,49 +102,41 @@ class _ExpandableMenuState extends State<ExpandableMenu>
 
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.sizeOf(context).width;
-    double heightScreen = MediaQuery.sizeOf(context).height;
+    double maxWidth = widget.maxSpaceWidth;
+    double maxListWidth = widget.maxSpaceWidth * 0.9;
+    double iconWith = widget.height;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Spacer(
           key: _spacerKey,
         ),
         Container(
           clipBehavior: Clip.antiAlias,
-          width: (widget.widthScreen * 0.65) * _containerProgress,
-          constraints: BoxConstraints(
-              minWidth: widget.widthScreen * 0.03, minHeight: heightScreen * 0.02),
+          constraints: BoxConstraints(minWidth: 50, maxWidth: maxWidth),
           decoration: BoxDecoration(
               color: widget.backgroundColor,
-              borderRadius: BorderRadius.all(Radius.circular(
-                  widget.width >= widget.height
-                      ? widget.width
-                      : widget.height))),
+              borderRadius: const BorderRadius.all(Radius.circular(4))),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: widget.width * .15,
-              ),
               ExpandableIcon(
-                width: widget.width,
+                width: iconWith,
                 height: widget.height,
                 onClicked: () {
                   onExpandableIconClicked();
                 },
               ),
               SizedBox(
-                width: _containerProgress < 0.9
-                    ? 0
-                    : _listWidth * _containerProgress,
+                width: _containerProgress < 0.9 ? 0 : maxListWidth,
                 height: widget.height,
                 child: Directionality(
-                  textDirection: Directionality.of(context) == TextDirection.rtl
-                      ? TextDirection.ltr
-                      : TextDirection.rtl,
+                  textDirection: atrasDirection(context),
                   child: ListView(
+                    shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     children: _listWidget,
                   ),
@@ -178,7 +157,7 @@ class _ExpandableMenuState extends State<ExpandableMenu>
       if (_isExpanded) {
         _containerAnimationController.forward();
         if (_listWidget.isEmpty) {
-          Timer.periodic(const Duration(milliseconds: 60), (timer) {
+          Timer.periodic(const Duration(milliseconds: 5), (timer) {
             _listTimer = timer;
             final allWidgets = widget.items;
             if (_listWidget.length < allWidgets.length) {
@@ -208,14 +187,13 @@ class _ExpandableMenuState extends State<ExpandableMenu>
         width: _listItemSize,
         height: _listItemSize,
         decoration: BoxDecoration(
-            color: widget.itemContainerColor ?? Colors.white.withOpacity(.4),
-            borderRadius: BorderRadius.all(Radius.circular(widget.height))),
-        margin: const EdgeInsets.all(4.0),
+            color: widget.itemContainerColor,
+            borderRadius: const BorderRadius.all(Radius.circular(4))),
+        margin: const EdgeInsets.all(4),
         child: child,
       ),
     );
   }
 
   /// This method will return size of item.
-  double itemSize() => widget.height * .75;
 }

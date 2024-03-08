@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/widgets/main/expandable_menu/accounting_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
@@ -82,12 +83,16 @@ class MainBaseBody extends StatelessWidget {
                   children: [
                     Flexible(
                       flex: 2,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFF0F0F0),
-                            borderRadius: BorderRadius.circular(11)),
-                        child:WorkSpaceDetailWidgetTree(),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Container(
+                            constraints: BoxConstraints(maxWidth: constraints.maxWidth,minWidth: constraints.minWidth),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFF0F0F0),
+                                borderRadius: BorderRadius.circular(11)),
+                            child:WorkSpaceDetailWidgetTree(),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(
@@ -103,11 +108,18 @@ class MainBaseBody extends StatelessWidget {
                               children: [
                                 Directionality(
                                   textDirection: TextDirection.ltr,
-                                  child: ExpandableMenu(
-                                    widthScreen: widthScree,
-                                    height: 40,
-                                    width: widthScree * 0.035,
-                                    items: _expandableItems(widthScree),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6),
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        final maxWith = constraints.maxWidth;
+                                        return CustomExpandableMenu(
+                                          maxSpaceWidth: maxWith,
+                                          height: 40,
+                                          items: accountingActionsItem(maxWith),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                                 TreeView()
@@ -196,269 +208,6 @@ class MainBaseBody extends StatelessWidget {
       )
     ];
   }
-
-  List<Widget> _expandableItems(double widthScree) {
-    double textSize = widthScree * 0.008;
-    const double marginIconAndText = 6;
-    double buttonWidth = widthScree * 0.079;
-    double iconSize = widthScree * 0.014;
-
-    return [
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFd1e7dd),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          ),
-          onPressed: () {},
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.control_point_rounded,
-                  color: Color(0xFF198754),
-                  size: iconSize,
-                ),
-                const SizedBox(
-                  width: marginIconAndText,
-                ),
-                Text(
-                  localization.newAccount,
-                  style: TextStyle(
-                      color: Color(0xFF198754),
-                      fontWeight: FontWeight.bold,
-                      fontSize: textSize),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xfff8d7da),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.delete_outline,
-                  color: Color(0xffdc3545),
-                  size: iconSize,
-                ),
-                const SizedBox(
-                  width: marginIconAndText,
-                ),
-                Text(
-                  localization.remove + localization.removeShortcut,
-                  style: TextStyle(
-                      color: Color(0xffdc3545),
-                      fontWeight: FontWeight.bold,
-                      fontSize: textSize),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xffe9dcff),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.mode_outlined,
-                    color: Color(0xFF6610f2),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.edit,
-                    style: const TextStyle(
-                        color: Color(0xFF6610f2),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFffe5d0),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.send_outlined,
-                    color: Color(0xFFfd7e14),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.send,
-                    style: TextStyle(
-                        color: Color(0xFFfd7e14),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFefe0f5),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.rotate_90_degrees_cw_outlined,
-                    color: Color(0xFF6c3483),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.reset,
-                    style: TextStyle(
-                        color: Color(0xFF6c3483),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFf7d6e6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.print_outlined,
-                    color: Color(0xFFb02a37),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.print,
-                    style: const TextStyle(
-                      color: Color(0xFFb02a37),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFdee2e6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.toggle_off_outlined,
-                    color: Color(0xFF6c757d),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.deactivate,
-                    style: TextStyle(
-                        color: Color(0xFF6c757d),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ];
-  }
-
 }
 
 class WorkSpaceDetailWidgetTree extends StatefulWidget {
@@ -476,15 +225,18 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
   @override
   Widget build(BuildContext context) {
     updateList();
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(11)),
-        child: ListView.builder(
-          itemCount: widget.items.length,
-          itemBuilder: (context, index) {
-            return WorkSpaceDetailMenu(item:  widget.items[index], isRoot: true);
-          },
-        ));
+    return SizedBox(
+      child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(11)),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.items.length,
+            itemBuilder: (context, index) {
+              return WorkSpaceDetailMenu(item:  widget.items[index], isRoot: true);
+            },
+          )),
+    );
   }
 
   updateList(){
@@ -516,22 +268,27 @@ class _TreeViewState extends State<TreeView> {
     return ExpansionTile(
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),
-        trailing: SizedBox(),
-        title: Expanded(
-            child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-          decoration: BoxDecoration(
-              color: Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(5)),
-          child: Row(children: [
+      trailing: const SizedBox(),
+      title: Expanded(
+          child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
+        decoration: BoxDecoration(
+            color: const Color(0xFFF0F0F0),
+            borderRadius: BorderRadius.circular(5)),
+        child: Row(
+          children: [
             _isExpanded
                 ? Icon(Icons.remove,
-                size: widget.iconSize, color: Color(0xFF6C3483))
+                    size: widget.iconSize, color: Color(0xFF6C3483))
                 : Icon(Icons.add,
-                size: widget.iconSize, color: Color(0xFFBD8AD0)),
+                    size: widget.iconSize, color: Color(0xFFBD8AD0)),
             const SizedBox(width: 5),
             Text(
               "10 - دارایی غیر تجاری",
-              style: TextStyle(fontSize: 14, color: Color(0xFF616161), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF616161),
+                  fontWeight: FontWeight.bold),
             )
           ],),
         )),

@@ -29,9 +29,9 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
 
   @override
   Widget build(BuildContext context) {
-    double mockupWidth = 247;
-    widget.widthScreen = MediaQuery.sizeOf(context).width * 0.2;
-    double textScale = widget.widthScreen / mockupWidth;
+    //double mockupWidth = 247;
+    widget.widthScreen = MediaQuery.sizeOf(context).width * 0.9;
+    double textScale = widget.widthScreen ;
     return ExpansionTile(
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),

@@ -6,3 +6,7 @@ abstract class MainEvent {}
 class AccountingEvent extends MainEvent {
 
 }
+
+class MainAccountList extends MainEvent{
+
+}

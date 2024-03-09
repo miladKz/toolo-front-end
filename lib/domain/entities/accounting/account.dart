@@ -16,10 +16,12 @@ class Account {
   final int indexOrder2;
   final bool isActive;
   final bool isAmalyati;
-  final List<Account> items;
+  final List<Account> children;
+  final bool hasChildren;
   final int type;
-  final bool mahiatRialy;
+  final int mahiatRialy;
   final int balanceSheetType;
+  final String displayName;
 
   const Account(
       {required this.id,
@@ -39,8 +41,10 @@ class Account {
       required this.indexOrder2,
       required this.isActive,
       required this.isAmalyati,
-      this.items = const [],
+      this.children = const [],
+      this.hasChildren = false,
       required this.type,
       required this.mahiatRialy,
+      required this.displayName,
       required this.balanceSheetType});
 }

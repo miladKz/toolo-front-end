@@ -20,7 +20,9 @@ class TreeViewItem extends StatefulWidget {
 
 class _TreeViewItemState extends State<TreeViewItem> {
   bool _isHovered = false;
-  EdgeInsets childMargin = const EdgeInsets.only(right: 5,);
+  EdgeInsets childMargin = const EdgeInsets.only(
+    right: 5,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +49,8 @@ class _TreeViewItemState extends State<TreeViewItem> {
                   const EdgeInsets.only(right: 10, left: 10, bottom: 4, top: 4),
               child: Text(
                 widget.title,
-                textScaler: TextScaler.linear(
-                    widthScreen < 200 ? widget.textScale : 1),
+                textScaler:
+                    TextScaler.linear(widthScreen < 200 ? widget.textScale : 1),
                 style: TextStyle(
                     color: _isHovered
                         ? const Color(0xFF6C3483)

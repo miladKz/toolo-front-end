@@ -14,10 +14,12 @@ class MainLoadingOnView extends MainState {
 
 class AccountingActionsReceived extends MainState {
   final List<AccountingAction> actions;
-
   AccountingActionsReceived(this.actions);
 }
-
+class MainAccountReceived extends MainState {
+  final List<Account> accounts;
+  MainAccountReceived(this.accounts);
+}
 class MainError extends MainState {
   final AppException appException;
   MainError(this.appException);

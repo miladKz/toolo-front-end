@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         init(context, themData);
-        return authScreen();
+        return screenMain();
       }),
     );
   }

@@ -27,7 +27,9 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        print("test");
+      },
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
@@ -52,6 +54,8 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
                         : Color(0xFFE7E7E7)),
                 const SizedBox(width: 5),
                 Text(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   widget.title,
                   textScaler: TextScaler.linear(
                       widthScreen < 200 ? widget.textScale : 1),

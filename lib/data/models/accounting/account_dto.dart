@@ -20,10 +20,12 @@ class AccountDto extends Account {
       required super.indexOrder2,
       required super.isActive,
       required super.isAmalyati,
-      super.items = const [],
+      super.children = const [],
       required super.type,
       required super.mahiatRialy,
-      required super.balanceSheetType});
+      required super.balanceSheetType,
+      required super.displayName,
+      super.hasChildren});
 
   factory AccountDto.fromMap(Map<String, dynamic> map) {
     return AccountDto(
@@ -44,9 +46,11 @@ class AccountDto extends Account {
       indexOrder2: map.findAsInt("IndexOrder2"),
       isActive: map.findAsBool("IsActive"),
       isAmalyati: map.findAsBool("IsAmalyati"),
-      items: _getChildren(map),
+      children: _getChildren(map),
+      hasChildren: (map.findAsDynamic("Items") as List).isNotEmpty,
       type: map.findAsInt("Mahiat"),
-      mahiatRialy: map.findAsBool("MahiatRialy"),
+      mahiatRialy: map.findAsInt("MahiatRialy"),
+      displayName: map.findAsString("DisplayName"),
       balanceSheetType: map.findAsInt("TaraznameType"),
     );
   }

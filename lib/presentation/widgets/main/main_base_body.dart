@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/main/expandable_menu/accounting_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/work_space_detai_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
+import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
 import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
+import 'expandable_menu/accounting_action_items.dart';
 import 'expandable_menu/expandable_menu.dart';
 import 'tree_view/tree_view_item.dart';
 
@@ -23,7 +24,12 @@ class MainBaseBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double widthScree = MediaQuery.sizeOf(context).width;
+    double widthScree = MediaQuery
+        .sizeOf(context)
+        .width;
+    double heightScree = MediaQuery
+        .sizeOf(context)
+        .height;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -31,7 +37,10 @@ class MainBaseBody extends StatelessWidget {
         CollapsibleSidebar(
           maxWidth: (widthScree * 0.17),
           minWidth: 70,
-          isCollapsed: MediaQuery.of(context).size.width <= 950,
+          isCollapsed: MediaQuery
+              .of(context)
+              .size
+              .width <= 950,
           items: _items,
           body: Container(),
           collapseOnBodyTap: true,
@@ -59,18 +68,18 @@ class MainBaseBody extends StatelessWidget {
                                 .image(width: 70, height: 30),
                             Expanded(
                                 child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: actionBarBadgedButton(),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: logoutButton(),
-                                ),
-                              ],
-                            ))
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: actionBarBadgedButton(),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: logoutButton(),
+                                    ),
+                                  ],
+                                ))
                           ],
                         ),
                       ],
@@ -189,7 +198,7 @@ class MainBaseBody extends StatelessWidget {
       CollapsibleItem(
         content: const DashboardMenu(),
         iconImage:
-            Assets.ico.icDashboardNotSelected.image(width: 20, height: 20),
+        Assets.ico.icDashboardNotSelected.image(width: 20, height: 20),
         //`iconImage` has priority over `icon` property
         isSelected: false,
       ),
@@ -202,23 +211,323 @@ class MainBaseBody extends StatelessWidget {
       CollapsibleItem(
         content: const Workspace(),
         iconImage:
-            Assets.ico.icCartableNotSelected.image(width: 20, height: 20),
+        Assets.ico.icCartableNotSelected.image(width: 20, height: 20),
         //`iconImage` has priority over `icon` property
         isSelected: false,
       )
     ];
   }
+
+  List<Widget> _expandableItems(double widthScree) {
+    double textSize = widthScree * 0.008;
+    const double marginIconAndText = 6;
+    double buttonWidth = widthScree * 0.079;
+    double iconSize = widthScree * 0.014;
+
+    return [
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFd1e7dd),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          ),
+          onPressed: () {},
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.control_point_rounded,
+                  color: Color(0xFF198754),
+                  size: iconSize,
+                ),
+                const SizedBox(
+                  width: marginIconAndText,
+                ),
+                Text(
+                  localization.newAccount,
+                  style: TextStyle(
+                      color: Color(0xFF198754),
+                      fontWeight: FontWeight.bold,
+                      fontSize: textSize),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xfff8d7da),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.delete_outline,
+                  color: Color(0xffdc3545),
+                  size: iconSize,
+                ),
+                const SizedBox(
+                  width: marginIconAndText,
+                ),
+                Text(
+                  localization.remove + localization.removeShortcut,
+                  style: TextStyle(
+                      color: Color(0xffdc3545),
+                      fontWeight: FontWeight.bold,
+                      fontSize: textSize),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xffe9dcff),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.mode_outlined,
+                    color: Color(0xFF6610f2),
+                    size: iconSize,
+                  ),
+                  const SizedBox(
+                    width: marginIconAndText,
+                  ),
+                  Text(
+                    localization.edit,
+                    style: const TextStyle(
+                        color: Color(0xFF6610f2),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFffe5d0),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.send_outlined,
+                    color: Color(0xFFfd7e14),
+                    size: iconSize,
+                  ),
+                  const SizedBox(
+                    width: marginIconAndText,
+                  ),
+                  Text(
+                    localization.send,
+                    style: TextStyle(
+                        color: Color(0xFFfd7e14),
+                        fontWeight: FontWeight.bold,
+                        fontSize: textSize),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFefe0f5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.rotate_90_degrees_cw_outlined,
+                    color: Color(0xFF6c3483),
+                    size: iconSize,
+                  ),
+                  const SizedBox(
+                    width: marginIconAndText,
+                  ),
+                  Text(
+                    localization.reset,
+                    style: TextStyle(
+                        color: Color(0xFF6c3483),
+                        fontWeight: FontWeight.bold,
+                        fontSize: textSize),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFf7d6e6),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.print_outlined,
+                    color: Color(0xFFb02a37),
+                    size: iconSize,
+                  ),
+                  const SizedBox(
+                    width: marginIconAndText,
+                  ),
+                  Text(
+                    localization.print,
+                    style: const TextStyle(
+                      color: Color(0xFFb02a37),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        width: buttonWidth,
+        child: TextButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFdee2e6),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.toggle_off_outlined,
+                    color: Color(0xFF6c757d),
+                    size: iconSize,
+                  ),
+                  const SizedBox(
+                    width: marginIconAndText,
+                  ),
+                  Text(
+                    localization.deactivate,
+                    style: TextStyle(
+                        color: Color(0xFF6c757d),
+                        fontWeight: FontWeight.bold,
+                        fontSize: textSize),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ];
+  }
+
 }
 
-class WorkSpaceDetailWidgetTree extends StatefulWidget {
+class AccountTreeViewWidget extends StatefulWidget {
+  List<Account> items = List.empty();
 
-  List<AccountingAction> items=List.empty();
-   WorkSpaceDetailWidgetTree({
+  AccountTreeViewWidget({
     super.key,
   });
 
   @override
-  State<WorkSpaceDetailWidgetTree> createState() => _WorkSpaceDetailWidgetTreeState();
+  State<AccountTreeViewWidget> createState() => _AccountTreeViewWidgetState();
+}
+
+class _AccountTreeViewWidgetState extends State<AccountTreeViewWidget> {
+  @override
+  Widget build(BuildContext context) {
+    updateList();
+    return ListView.builder(
+      itemCount: widget.items.length,
+      itemBuilder: (context, index) {
+        return TreeView(item: widget.items[index]);
+      },
+    );
+  }
+
+  void updateList() {
+    final state = context
+        .watch<MainBloc>()
+        .state;
+    if (state is MainAccountReceived) {
+      setState(() {
+        widget.items = state.accounts;
+      });
+    }
+  }
+}
+
+class WorkSpaceDetailWidgetTree extends StatefulWidget {
+
+  List<AccountingAction> items = List.empty();
+
+  WorkSpaceDetailWidgetTree({
+    super.key,
+  });
+
+  @override
+  State<WorkSpaceDetailWidgetTree> createState() =>
+      _WorkSpaceDetailWidgetTreeState();
 }
 
 class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
@@ -237,15 +546,26 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
             },
           )),
     );
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(11)),
+        child: ListView.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (context, index) {
+            return WorkSpaceDetailMenu(item: widget.items[index], isRoot: true);
+          },
+        ));
   }
 
-  updateList(){
-   final state= context.watch<MainBloc>().state;
-   if(state is AccountingActionsReceived){
-     setState(() {
-       widget.items=state.actions;
-     });
-   }
+  updateList() {
+    final state = context
+        .watch<MainBloc>()
+        .state;
+    if (state is AccountingActionsReceived) {
+      setState(() {
+        widget.items = state.actions;
+      });
+    }
   }
 }
 

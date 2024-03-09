@@ -50,6 +50,8 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
                         size: widget.iconSize, color: Color(0xFFBD8AD0)),
                 const SizedBox(width: 5),
                 Text(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   widget.item.description,
                   textScaler: TextScaler.linear(
                       widget.widthScreen < 200 ? textScale : 1),

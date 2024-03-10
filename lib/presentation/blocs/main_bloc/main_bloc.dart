@@ -26,7 +26,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _accountingEvent(
       AccountingEvent event, Emitter<MainState> emit) async {
-    emit(MainLoadingOnView(isShow: true));
+    emit(MainLoadingOnView(isShow: false));
     GetActionsUseCase useCase = locator<GetActionsUseCase>();
     actions = await useCase();
     emit(MainLoadingOnView(isShow: false));
@@ -50,7 +50,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAccountList(
       MainAccountList event, Emitter<MainState> emit) async {
-    emit(MainLoadingOnView(isShow: true));
+    emit(MainLoadingOnView(isShow: false));
     GetAccountListUseCase useCase = locator<GetAccountListUseCase>();
     List<Account> accountList = await useCase();
     emit(MainLoadingOnView(isShow: false));

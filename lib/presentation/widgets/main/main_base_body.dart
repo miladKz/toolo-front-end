@@ -19,28 +19,18 @@ import 'dashboard_menu.dart';
 import 'expandable_menu/accounting_action_items.dart';
 import 'expandable_menu/expandable_menu.dart';
 import 'forms/edit_account_form.dart';
+import 'forms/edit_gorup_form.dart';
 
-class MainBaseBody extends StatefulWidget {
+class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
-  @override
-  State<MainBaseBody> createState() => _MainBaseBodyState();
-}
-
-class _MainBaseBodyState extends State<MainBaseBody> {
-
-  RialyTypeItem rialyTypeItem = RialyTypeItem.other;
   Workspace workSpaceMenu = Workspace();
 
-  @override
-  void initState() {
-    context.read<MainBloc>().add(AccountingEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
+    context.read<MainBloc>().add(AccountingEvent());
     double widthScree = MediaQuery.sizeOf(context).width;
-    double heightScree = MediaQuery.sizeOf(context).height;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -147,7 +137,7 @@ class _MainBaseBodyState extends State<MainBaseBody> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       AccountTreeViewWidget(),
-                                       //EditAccountForm()
+                                       EditAccountForm()
                                     ],
                                   ),
                                 ),
@@ -500,7 +490,6 @@ class _MainBaseBodyState extends State<MainBaseBody> {
   }
 }
 
-
 class AccountTreeViewWidget extends StatefulWidget {
   List<Account> items = List.empty();
 
@@ -575,11 +564,6 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
       });
     }
   }
-}
-
-enum RialyTypeItem {
-  debtor,
-  other,
 }
 
 

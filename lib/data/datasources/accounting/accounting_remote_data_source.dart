@@ -31,10 +31,9 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> getAccountList({required String token}) async {
     String apiAddress = "/api/acc/accounts/list";
-    String fullPath = baseUrl + apiAddress;
     try {
       Response<dynamic> response = await httpClient.get(
-        fullPath,
+        apiAddress,
         options: _getHeaders(token),
       );
       debugPrint(response.data);

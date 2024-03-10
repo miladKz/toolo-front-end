@@ -24,6 +24,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       );
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
+      print(e.toString());
       throw HttpException(e.toString());
     }
   }
@@ -39,6 +40,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       debugPrint(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
+      print(e);
       throw HttpException(e.toString());
     }
   }

@@ -5,6 +5,7 @@ class AccountingAction {
   final String code;
   final int categoryIndex;
   final String description;
+  final String endPoint;
   final bool hasChildren;
   final List<AccountingAction> children;
   final int levelIndex;
@@ -22,5 +23,6 @@ class AccountingAction {
       required this.children,
       required this.levelIndex,
       required this.orderIndex,
-      required this.parentCode});
+      required this.endPoint,
+      required this.parentCode,});
 }

@@ -26,7 +26,7 @@ class _TreeViewState extends State<TreeView> {
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),
       trailing: const SizedBox(),
-      title: Expanded(
+      title: Flexible(
           child: Container(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
         decoration: BoxDecoration(

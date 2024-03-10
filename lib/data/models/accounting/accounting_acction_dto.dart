@@ -14,6 +14,7 @@ class AccountingActionDto extends AccountingAction {
       required super.levelIndex,
       required super.orderIndex,
       required super.parentCode,
+      required super.endPoint,
       required super.children});
 
  factory AccountingActionDto.fromMap(Map<String, dynamic> map) {
@@ -28,6 +29,7 @@ class AccountingActionDto extends AccountingAction {
         children: _getChildren(map),
         levelIndex: map.findAsInt("LevelIndex"),
         orderIndex: map.findAsInt("OrderIndex"),
+        endPoint:  map.findAsString("EndPoint"),
         parentCode: map.findAsString("ParentCode"));
   }
 

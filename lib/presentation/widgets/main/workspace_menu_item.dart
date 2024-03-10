@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 
 class WorkspaceMenuItem extends StatefulWidget {
+  bool isSelected;
   final String title;
   final double? width;
   final double? height;
   final Function() onTap;
 
   WorkspaceMenuItem({
+    required this.isSelected,
     required this.title,
     this.width,
     this.height,
@@ -35,7 +37,7 @@ class _WorkspaceMenuItemState extends State<WorkspaceMenuItem> {
             maxHeight: widget.height ?? 50,
           ),
           decoration: BoxDecoration(
-            color: _isHovered ? Color(0xFFBD8AD0) : Color(0xFFFFFFFF),
+            color: setItemBackground(),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
@@ -43,7 +45,7 @@ class _WorkspaceMenuItemState extends State<WorkspaceMenuItem> {
             child: Text(
               widget.title,
               style: TextStyle(
-                color: _isHovered ? Color(0xFFFFFFFF) : Color(0xFF83838B),
+                color: setItemTextColor(),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -52,4 +54,11 @@ class _WorkspaceMenuItemState extends State<WorkspaceMenuItem> {
       ),
     );
   }
+
+  Color setItemTextColor() =>
+      _isHovered|| widget.isSelected? Color(0xFFFFFFFF) : Color(0xFF83838B);
+
+  Color setItemBackground() => widget.isSelected
+      ? ((_isHovered ? Color(0xFFE8AEFC) : Color(0xFFBD8AD0)))
+      : (_isHovered ? Color(0xFFE8AEFC) : Color(0xFFFFFFFF));
 }

@@ -58,5 +58,13 @@
  "send": "ارسال",
  "reset": "باتزنشانی",
  "print": "چاپ",
- "deactivate": "غیرفعال"
+ "active": "فعال",
+ "deactivate": "غیرفعال",
+ "editAccount": "ویرایش حساب",
+ "parentAccount": "سرشاخه",
+ "accountCode": "کد حساب",
+ "status": "وضعیت",
+ "description": "توضیحات",
+ "textWritten": "متن نوشته ...",
+ "riyaliType": "ماهیت ریالی حساب"
 }

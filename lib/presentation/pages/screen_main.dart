@@ -37,7 +37,7 @@ class _ScreenMainState extends State<ScreenMain> {
               builder: (context, state) {
                 return Container(
                     color: const Color(0xFFF9F9F9),
-                    child: const MainBaseBody());
+                    child:  MainBaseBody());
               },
             ),
           )),

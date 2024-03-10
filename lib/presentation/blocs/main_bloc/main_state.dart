@@ -16,6 +16,7 @@ class AccountingActionsReceived extends MainState {
   final List<AccountingAction> actions;
   AccountingActionsReceived(this.actions);
 }
+
 class MainAccountReceived extends MainState {
   final List<Account> accounts;
   MainAccountReceived(this.accounts);

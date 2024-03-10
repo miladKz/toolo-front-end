@@ -1,15 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 import '../../../../gen/assets.gen.dart';
 
 class WorkspaceDetailMenuItem extends StatefulWidget {
-  final String title;
+  final AccountingAction item;
   final double fontSize;
   final double textScale;
   final Function() onTap;
 
   const WorkspaceDetailMenuItem({
-    required this.title,
+    required this.item,
     required this.fontSize,
     required this.textScale,
     required this.onTap,
@@ -26,9 +30,9 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
-    return GestureDetector(
+    return InkWell(
       onTap: () {
-        print("test");
+        getTreeByEndpoint(widget.item.endPoint);
       },
       child: MouseRegion(
         onEnter: (event) {
@@ -56,7 +60,7 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
                 Text(
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  widget.title,
+                  widget.item.description,
                   textScaler: TextScaler.linear(
                       widthScreen < 200 ? widget.textScale : 1),
                   style: TextStyle(
@@ -72,5 +76,16 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
         ),
       ),
     );
+  }
+
+  void getTreeByEndpoint(String endPoint) {
+    switch(endPoint){
+      case "/api/acc/accounts":
+          context.read<MainBloc>().add(MainAccountList());
+          break;
+      case "":
+        print("endpoint is: empty");
+        break;
+    }
   }
 }

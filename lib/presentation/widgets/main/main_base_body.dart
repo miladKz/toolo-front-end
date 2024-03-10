@@ -5,6 +5,7 @@ import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
+import 'package:toolo_gostar/presentation/widgets/main/tree_view/tree_view.dart';
 import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/work_space_detai_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
@@ -17,19 +18,29 @@ import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
 import 'expandable_menu/accounting_action_items.dart';
 import 'expandable_menu/expandable_menu.dart';
-import 'tree_view/tree_view_item.dart';
+import 'forms/edit_account_form.dart';
 
-class MainBaseBody extends StatelessWidget {
-  const MainBaseBody({super.key});
+class MainBaseBody extends StatefulWidget {
+  MainBaseBody({super.key});
+
+  @override
+  State<MainBaseBody> createState() => _MainBaseBodyState();
+}
+
+class _MainBaseBodyState extends State<MainBaseBody> {
+
+  RialyTypeItem rialyTypeItem = RialyTypeItem.other;
+  Workspace workSpaceMenu = Workspace();
+
+  @override
+  void initState() {
+    context.read<MainBloc>().add(AccountingEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
-    double widthScree = MediaQuery
-        .sizeOf(context)
-        .width;
-    double heightScree = MediaQuery
-        .sizeOf(context)
-        .height;
+    double widthScree = MediaQuery.sizeOf(context).width;
+    double heightScree = MediaQuery.sizeOf(context).height;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -37,10 +48,7 @@ class MainBaseBody extends StatelessWidget {
         CollapsibleSidebar(
           maxWidth: (widthScree * 0.17),
           minWidth: 70,
-          isCollapsed: MediaQuery
-              .of(context)
-              .size
-              .width <= 950,
+          isCollapsed: MediaQuery.of(context).size.width <= 950,
           items: _items,
           body: Container(),
           collapseOnBodyTap: true,
@@ -68,18 +76,18 @@ class MainBaseBody extends StatelessWidget {
                                 .image(width: 70, height: 30),
                             Expanded(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: actionBarBadgedButton(),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: logoutButton(),
-                                    ),
-                                  ],
-                                ))
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: actionBarBadgedButton(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: logoutButton(),
+                                ),
+                              ],
+                            ))
                           ],
                         ),
                       ],
@@ -95,11 +103,13 @@ class MainBaseBody extends StatelessWidget {
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return Container(
-                            constraints: BoxConstraints(maxWidth: constraints.maxWidth,minWidth: constraints.minWidth),
+                            constraints: BoxConstraints(
+                                maxWidth: constraints.maxWidth,
+                                minWidth: constraints.minWidth),
                             decoration: BoxDecoration(
                                 color: const Color(0xFFF0F0F0),
                                 borderRadius: BorderRadius.circular(11)),
-                            child:WorkSpaceDetailWidgetTree(),
+                            child: WorkSpaceDetailWidgetTree(),
                           );
                         },
                       ),
@@ -131,7 +141,16 @@ class MainBaseBody extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                TreeView()
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AccountTreeViewWidget(),
+                                       //EditAccountForm()
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -198,7 +217,7 @@ class MainBaseBody extends StatelessWidget {
       CollapsibleItem(
         content: const DashboardMenu(),
         iconImage:
-        Assets.ico.icDashboardNotSelected.image(width: 20, height: 20),
+            Assets.ico.icDashboardNotSelected.image(width: 20, height: 20),
         //`iconImage` has priority over `icon` property
         isSelected: false,
       ),
@@ -209,9 +228,9 @@ class MainBaseBody extends StatelessWidget {
         isSelected: false,
       ),
       CollapsibleItem(
-        content: const Workspace(),
+        content: workSpaceMenu,
         iconImage:
-        Assets.ico.icCartableNotSelected.image(width: 20, height: 20),
+            Assets.ico.icCartableNotSelected.image(width: 20, height: 20),
         //`iconImage` has priority over `icon` property
         isSelected: false,
       )
@@ -479,8 +498,8 @@ class MainBaseBody extends StatelessWidget {
       ),
     ];
   }
-
 }
+
 
 class AccountTreeViewWidget extends StatefulWidget {
   List<Account> items = List.empty();
@@ -497,18 +516,20 @@ class _AccountTreeViewWidgetState extends State<AccountTreeViewWidget> {
   @override
   Widget build(BuildContext context) {
     updateList();
-    return ListView.builder(
-      itemCount: widget.items.length,
-      itemBuilder: (context, index) {
-        return TreeView(item: widget.items[index]);
-      },
+    return Expanded(
+      child: Container(
+        child: ListView.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (context, index) {
+            return TreeView(item: widget.items[index]);
+          },
+        ),
+      ),
     );
   }
 
   void updateList() {
-    final state = context
-        .watch<MainBloc>()
-        .state;
+    final state = context.watch<MainBloc>().state;
     if (state is MainAccountReceived) {
       setState(() {
         widget.items = state.accounts;
@@ -518,7 +539,6 @@ class _AccountTreeViewWidgetState extends State<AccountTreeViewWidget> {
 }
 
 class WorkSpaceDetailWidgetTree extends StatefulWidget {
-
   List<AccountingAction> items = List.empty();
 
   WorkSpaceDetailWidgetTree({
@@ -534,33 +554,21 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
   @override
   Widget build(BuildContext context) {
     updateList();
-    return SizedBox(
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(11)),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: widget.items.length,
-            itemBuilder: (context, index) {
-              return WorkSpaceDetailMenu(item:  widget.items[index], isRoot: true);
-            },
-          )),
-    );
     return Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(11)),
         child: ListView.builder(
-          itemCount: widget.items.length,
+          itemCount: 1,
           itemBuilder: (context, index) {
-            return WorkSpaceDetailMenu(item: widget.items[index], isRoot: true);
+            return widget.items.isNotEmpty
+                ? WorkSpaceDetailMenu(item: widget.items[0], isRoot: true)
+                : SizedBox();
           },
         ));
   }
 
   updateList() {
-    final state = context
-        .watch<MainBloc>()
-        .state;
+    final state = context.watch<MainBloc>().state;
     if (state is AccountingActionsReceived) {
       setState(() {
         widget.items = state.actions;
@@ -569,67 +577,9 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
   }
 }
 
-class TreeView extends StatefulWidget {
-
-  double iconSize;
-
-  TreeView(
-      {Key? key,
-        this.iconSize = 15})
-      : super(key: key);
-  @override
-  State<TreeView> createState() => _TreeViewState();
+enum RialyTypeItem {
+  debtor,
+  other,
 }
 
-class _TreeViewState extends State<TreeView> {
-  bool _isExpanded = false;
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      onExpansionChanged: (isExpanded) =>
-          setState(() => _isExpanded = isExpanded),
-      trailing: const SizedBox(),
-      title: Expanded(
-          child: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
-        decoration: BoxDecoration(
-            color: const Color(0xFFF0F0F0),
-            borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          children: [
-            _isExpanded
-                ? Icon(Icons.remove,
-                    size: widget.iconSize, color: Color(0xFF6C3483))
-                : Icon(Icons.add,
-                    size: widget.iconSize, color: Color(0xFFBD8AD0)),
-            const SizedBox(width: 5),
-            Text(
-              "10 - دارایی غیر تجاری",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF616161),
-                  fontWeight: FontWeight.bold),
-            )
-          ],),
-        )),
-      children: [
-        Container(
-          margin: EdgeInsets.only(right: 20, left: 55),
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(
-                  color: Color(0xFFDFE3E7),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Column(children: [
-              TreeViewItem(title: "زمین", fontSize: 18,textScale: 1,onTap: (){},),
-              TreeViewItem(title: "ساختمان", fontSize: 18,textScale: 1,onTap: (){},),
-              TreeViewItem(title: "تاسیسات", fontSize: 18,textScale: 1,onTap: (){},),
-            ], )
-        ),
-      ],
-    );
-  }
-}
+

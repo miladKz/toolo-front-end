@@ -29,7 +29,6 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //double mockupWidth = 247;
     widget.widthScreen = MediaQuery.sizeOf(context).width * 0.9;
     double textScale = widget.widthScreen ;
     return ExpansionTile(
@@ -100,7 +99,7 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
 
   Widget _buildItem(AccountingAction item, double textScale) {
     return WorkspaceDetailMenuItem(
-      title: item.description,
+      item: item,
       fontSize: widget.titleFontSize,
       textScale: textScale,
       onTap:() {},

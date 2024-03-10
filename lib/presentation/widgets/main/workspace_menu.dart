@@ -9,10 +9,11 @@ import '../../blocs/main_bloc/main_bloc.dart';
 import 'workspace_menu_item.dart';
 
 class Workspace extends StatefulWidget {
-  const Workspace({
+  WorkSpaceItems selectedItem;
+   Workspace({
+    this.selectedItem = WorkSpaceItems.accounting,
     super.key,
   });
-
   @override
   State<Workspace> createState() => _WorkspaceState();
 }
@@ -20,6 +21,7 @@ class Workspace extends StatefulWidget {
 class _WorkspaceState extends State<Workspace> {
   bool _isExpanded = false;
   final double borderRadius = 11;
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,40 +84,69 @@ class _WorkspaceState extends State<Workspace> {
                     Shortcuts(
                       shortcuts: <ShortcutActivator, Intent>{
                         LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                            const GetAccontingActionIntent(),
+                            const GetAccountingActionIntent(),
                       },
                       child: Actions(
                         actions: <Type, Action<Intent>>{
-                          GetAccontingActionIntent:
-                              CallbackAction<GetAccontingActionIntent>(
-                            onInvoke: (GetAccontingActionIntent intent) =>
-                                getAccontingAction(),
+                          GetAccountingActionIntent:
+                              CallbackAction<GetAccountingActionIntent>(
+                            onInvoke: (GetAccountingActionIntent intent) =>
+                                getItemActions(),
                           ),
                         },
                         child: Focus(
                           autofocus: true,
                           child: WorkspaceMenuItem(
+                            isSelected:
+                                widget.selectedItem == WorkSpaceItems.accounting,
                             title: localization.titleAccounting,
                             width: 100,
                             onTap: () {
-                              getAccontingAction();
+                              setSelectedItem(WorkSpaceItems.accounting);
                             },
                           ),
                         ),
                       ),
                     ),
                     WorkspaceMenuItem(
+                        isSelected:  widget.selectedItem  ==
+                            WorkSpaceItems.suppliersAndProcurement,
                         title: localization.suppliersAndProcurement,
-                        onTap: () {}),
+                        onTap: () {
+                          setSelectedItem(
+                              WorkSpaceItems.suppliersAndProcurement);
+
+                        }),
                     WorkspaceMenuItem(
-                        title: localization.customersAndSales, onTap: () {}),
-                    WorkspaceMenuItem(title: localization.tax, onTap: () {}),
+                        isSelected:
+                        widget.selectedItem  == WorkSpaceItems.customersAndSales,
+                        title: localization.customersAndSales,
+                        onTap: () {
+                          setSelectedItem(WorkSpaceItems.customersAndSales);
+
+                        }),
                     WorkspaceMenuItem(
+                        isSelected:  widget.selectedItem  == WorkSpaceItems.tax,
+                        title: localization.tax,
+                        onTap: () {
+                          setSelectedItem(WorkSpaceItems.tax);
+                        }),
+                    WorkspaceMenuItem(
+                        isSelected:  widget.selectedItem  ==
+                            WorkSpaceItems.inventoryAndAccounting,
                         title: localization.inventoryAndAccounting,
-                        onTap: () {}),
+                        onTap: () {
+                          setSelectedItem(
+                              WorkSpaceItems.inventoryAndAccounting);
+                        }),
                     WorkspaceMenuItem(
+                        isSelected:  widget.selectedItem  ==
+                            WorkSpaceItems.receivablesAndPayables,
                         title: localization.receivablesAndPayables,
-                        onTap: () {})
+                        onTap: () {
+                          setSelectedItem(
+                              WorkSpaceItems.receivablesAndPayables);
+                        })
                   ],
                 );
               },
@@ -126,11 +157,27 @@ class _WorkspaceState extends State<Workspace> {
     );
   }
 
-  getAccontingAction() {
-    locator.get<MainBloc>().add(AccountingEvent());
+  void setSelectedItem(WorkSpaceItems item) {
+    return setState(() {
+      widget.selectedItem  = item;
+      getItemActions();
+    });
+  }
+
+  getItemActions() {
+    locator.get<MainBloc>().add(FilterActionsEvent(widget.selectedItem));
   }
 }
 
-class GetAccontingActionIntent extends Intent {
-  const GetAccontingActionIntent();
+class GetAccountingActionIntent extends Intent {
+  const GetAccountingActionIntent();
+}
+
+enum WorkSpaceItems {
+  accounting,
+  suppliersAndProcurement,
+  customersAndSales,
+  tax,
+  inventoryAndAccounting,
+  receivablesAndPayables
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../main.dart';
-import 'form_button.dart';
-import 'form_item_title.dart';
-import 'form_text_field.dart';
+import 'form_elements/form_button.dart';
+import 'form_elements/form_item_title.dart';
+import 'form_elements/form_text_field.dart';
 
 class EditGroupForm extends StatefulWidget {
   const EditGroupForm({super.key});

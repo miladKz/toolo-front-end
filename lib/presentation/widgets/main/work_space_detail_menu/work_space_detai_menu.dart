@@ -3,7 +3,7 @@ import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/wo
 
 import '../../../../domain/entities/accounting/accounting_action.dart';
 
-class WorkSpaceDetailMenu extends StatefulWidget {
+class MainActionsTree extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
   bool isExpanded = false;
@@ -11,7 +11,7 @@ class WorkSpaceDetailMenu extends StatefulWidget {
   double iconSize;
   late double widthScreen;
 
-  WorkSpaceDetailMenu(
+  MainActionsTree(
       {Key? key,
       required this.item,
       required this.isRoot,
@@ -20,10 +20,10 @@ class WorkSpaceDetailMenu extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<WorkSpaceDetailMenu> createState() => _WorkSpaceDetailMenuState();
+  State<MainActionsTree> createState() => _MainActionsTreeState();
 }
 
-class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
+class _MainActionsTreeState extends State<MainActionsTree> {
   EdgeInsets groupMargin = const EdgeInsets.only(right: 15);
   bool _isExpanded = false;
 
@@ -87,7 +87,7 @@ class _WorkSpaceDetailMenuState extends State<WorkSpaceDetailMenu> {
       return item.hasChildren
           ? Container(
               margin: groupMargin,
-              child: WorkSpaceDetailMenu(
+              child: MainActionsTree(
                 item: item,
                 isRoot: false,
                 titleFontSize: widget.titleFontSize - 0.5,

@@ -25,9 +25,9 @@ class MainBaseBody extends StatelessWidget {
 
   Workspace workSpaceMenu = Workspace();
 
+
   @override
   Widget build(BuildContext context) {
-    context.read<MainBloc>().add(AccountingEvent());
     double widthScree = MediaQuery.sizeOf(context).width;
 
     return Row(
@@ -97,7 +97,7 @@ class MainBaseBody extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: const Color(0xFFF0F0F0),
                                 borderRadius: BorderRadius.circular(11)),
-                            child: WorkSpaceDetailWidgetTree(),
+                            child: MainActionsWidget(),
                           );
                         },
                       ),
@@ -134,7 +134,7 @@ class MainBaseBody extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      AccountTreeViewWidget(),
+                                      MainActionsDetailWidget(),
                                       EditAccountForm()
                                     ],
                                   ),
@@ -488,36 +488,45 @@ class MainBaseBody extends StatelessWidget {
   }
 }
 
-class AccountTreeViewWidget extends StatefulWidget {
+class MainActionsDetailWidget extends StatefulWidget {
   List<Account> items = List.empty();
 
-  AccountTreeViewWidget({
+  MainActionsDetailWidget({
     super.key,
   });
 
   @override
-  State<AccountTreeViewWidget> createState() => _AccountTreeViewWidgetState();
+  State<MainActionsDetailWidget> createState() =>
+      _MainActionsDetailWidgetState();
 }
 
-class _AccountTreeViewWidgetState extends State<AccountTreeViewWidget> {
+class _MainActionsDetailWidgetState extends State<MainActionsDetailWidget> {
   @override
   Widget build(BuildContext context) {
     updateList();
     return Expanded(
-      child: Container(
-        child: ListView.builder(
-          itemCount: widget.items.length,
-          itemBuilder: (context, index) {
-            return TreeView(item: widget.items[index]);
-          },
-        ),
-      ),
+      child: widget.items.isNotEmpty
+          ? ListView.builder(
+              itemCount: widget.items.length,
+              itemBuilder: (context, index) {
+                return MainActionsDetailTreeView(item: widget.items[index]);
+              },
+            )
+          : const Center(
+              child: Text(
+                'There is no data for this section',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
     );
   }
 
   void updateList() {
     final state = context.watch<MainBloc>().state;
-    if (state is MainAccountReceived) {
+    if (state is MainAccountSuccess) {
       setState(() {
         widget.items = state.accounts;
       });
@@ -525,19 +534,18 @@ class _AccountTreeViewWidgetState extends State<AccountTreeViewWidget> {
   }
 }
 
-class WorkSpaceDetailWidgetTree extends StatefulWidget {
+class MainActionsWidget extends StatefulWidget {
   List<AccountingAction> items = List.empty();
 
-  WorkSpaceDetailWidgetTree({
+  MainActionsWidget({
     super.key,
   });
 
   @override
-  State<WorkSpaceDetailWidgetTree> createState() =>
-      _WorkSpaceDetailWidgetTreeState();
+  State<MainActionsWidget> createState() => _MainActionsWidgetState();
 }
 
-class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
+class _MainActionsWidgetState extends State<MainActionsWidget> {
   @override
   Widget build(BuildContext context) {
     updateList();
@@ -548,7 +556,7 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
           itemCount: 1,
           itemBuilder: (context, index) {
             return widget.items.isNotEmpty
-                ? WorkSpaceDetailMenu(item: widget.items[0], isRoot: true)
+                ? MainActionsTree(item: widget.items[0], isRoot: true)
                 : SizedBox();
           },
         ));
@@ -556,10 +564,12 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
 
   updateList() {
     final state = context.watch<MainBloc>().state;
-    if (state is AccountingActionsReceived) {
+    if (state is AccountingActionsSuccess) {
       setState(() {
         widget.items = state.actions;
       });
     }
   }
 }
+
+

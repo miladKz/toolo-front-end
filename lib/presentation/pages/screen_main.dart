@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/main_base_body.dart';
 
@@ -15,6 +16,12 @@ class ScreenMain extends StatefulWidget {
 
 class _ScreenMainState extends State<ScreenMain> {
   @override
+  void initState() {
+    super.initState();
+    locator.get<MainBloc>().add(MainActionList());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Directionality(
@@ -28,11 +35,10 @@ class _ScreenMainState extends State<ScreenMain> {
             },
             child: BlocBuilder<MainBloc, MainState>(
               buildWhen: (previous, current) {
-                if (current is AccountingActionsReceived ||
-                    current is MainLoadingOnView) {
-                  return false;
+                if (current is MainInitial) {
+                  return true;
                 }
-                return true;
+                return false;
               },
               builder: (context, state) {
                 return Container(

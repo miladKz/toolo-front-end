@@ -6,7 +6,7 @@ const jsonContentType = 'application/json;charset=utf-8';
 const soapContentType = 'application/soap+xml;charset=utf-8';
 final httpClient = Dio(BaseOptions(
   headers: ConstantsNetworkConnection.httpRequestDefHeaders,
-  baseUrl: 'https://example.com',
+  baseUrl: 'http://46.249.101.180:8090',
   contentType: jsonContentType,
   connectTimeout: const Duration(seconds: 30),
   responseType: ResponseType.plain,

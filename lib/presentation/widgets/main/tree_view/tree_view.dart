@@ -1,34 +1,44 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
-import 'CustomExpansionTile.dart';
 import 'tree_view_item.dart';
 
-class TreeView extends StatefulWidget {
+class MainActionsDetailTreeView extends StatefulWidget {
   double iconSize;
   double fontSize;
   Account item;
+  EdgeInsets groupMargin = const EdgeInsets.only(right: 15);
 
-  TreeView(
-      {Key? key, this.iconSize = 15, required this.item, this.fontSize = 12})
+  MainActionsDetailTreeView(
+      {Key? key, this.iconSize = 15, required this.item, this.fontSize = 14})
       : super(key: key);
 
   @override
-  State<TreeView> createState() => _TreeViewState();
+  State<MainActionsDetailTreeView> createState() => _MainActionsDetailTreeViewState();
 }
 
-class _TreeViewState extends State<TreeView> {
+class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return CustomExpansionTile(
-      title: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
+    return ExpansionTile(
+      onExpansionChanged: (isExpanded) =>
+          setState(() => _isExpanded = isExpanded),
+      trailing: const SizedBox(),
+      title: Flexible(
+          child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
         decoration: BoxDecoration(
-            color: const Color(0xFFF0F0F0),
-            borderRadius: BorderRadius.circular(5)),
+            color:const Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(5)),
         child: Row(
           children: [
+            _isExpanded
+                ? Icon(Icons.remove,
+                    size: widget.iconSize, color: const Color(0xFF6C3483))
+                : Icon(Icons.add,
+                    size: widget.iconSize, color: const Color(0xFFBD8AD0)),
+            const SizedBox(width: 5),
             Text(
               widget.item.displayName,
               style: TextStyle(
@@ -38,11 +48,10 @@ class _TreeViewState extends State<TreeView> {
             )
           ],
         ),
-      ),
+      )),
       children: [
         Container(
-            margin: const EdgeInsets.only(right: 2),
-            padding: const EdgeInsets.only(right: 5),
+            margin: const EdgeInsets.only(right: 20, left: 55),
             decoration: const BoxDecoration(
               border: Border(
                 right: BorderSide(
@@ -52,9 +61,7 @@ class _TreeViewState extends State<TreeView> {
               ),
             ),
             child: Column(
-              children: widget.item.hasChildren
-                  ? _buildChildren(widget.item.children, 1)
-                  : [SizedBox()],
+              children: widget.item.hasChildren? _buildChildren(widget.item.children, 1):[SizedBox()],
             )),
       ],
     );
@@ -63,11 +70,12 @@ class _TreeViewState extends State<TreeView> {
   List<Widget> _buildChildren(List<Account> items, double textScale) {
     return items.map((item) {
       return item.hasChildren
-          ? TreeView(
-              item: item,
-              fontSize: widget.fontSize,
-              iconSize: widget.iconSize,
-            )
+          ? Container(
+              margin: widget.groupMargin,
+              child: MainActionsDetailTreeView(
+                item: item,
+                iconSize: widget.iconSize,
+              ))
           : _buildItem(item, textScale);
     }).toList();
   }

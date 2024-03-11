@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source.dart';
 import 'package:toolo_gostar/data/models/auth/auth_base_data_dto.dart';
@@ -24,8 +25,10 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
 
   @override
   String getToken() {
-    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
-    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTAxODM4NTN9.oUH03-i-qwIaVfHHt7J7sZLRLTguK5WGLKuHrghr6vY";
+   /* var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    debugPrint('getToken method data is: $object');
+    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;*/
   }
 
   @override

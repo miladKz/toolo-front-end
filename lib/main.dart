@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/fonts.gen.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
@@ -18,7 +19,7 @@ late AppLocalizations localization;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await initLocator();
   runApp(const MyApp());
 }
 
@@ -50,16 +51,16 @@ class _MyAppState extends State<MyApp> {
           : MyAppThemeConfig.dark().getTheme(_locale.languageCode),
       home: Builder(builder: (context) {
         themData = Theme.of(context);
-        init(context, themData);
+        localization = AppLocalizations.of(context)!;
         return screenMain();
       }),
     );
   }
+}
 
-  Future<void> init(BuildContext context, ThemeData themData) async {
-    localization = AppLocalizations.of(context)!;
-    await setupLocator();
-  }
+Future<void> initLocator() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  await setupLocator(sharedPreferences);
 }
 
 Widget screenAuth() {

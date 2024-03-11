@@ -33,7 +33,7 @@ final locator = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: true, // default
 )
-Future<void> setupLocator() async {
+Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.allowReassignment = true;
   locator.registerLazySingleton<AppLocalizations>(() => localization);
   locator.registerLazySingleton<ThemeData>(() => Theme.of(Get.context!));
@@ -78,7 +78,7 @@ Future<void> setupLocator() async {
       () => AccountingRemoteDataSource(httpClient: locator()));
 
   //! External
-  final sharedPreferences = await SharedPreferences.getInstance();
+
   locator.registerLazySingleton(() => sharedPreferences);
   locator.registerLazySingleton(() => httpClient);
 }

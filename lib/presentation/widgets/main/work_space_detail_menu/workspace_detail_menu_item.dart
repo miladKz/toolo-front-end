@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
@@ -81,10 +80,11 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
   void getTreeByEndpoint(String endPoint) {
     switch(endPoint){
       case "/api/acc/accounts":
-          context.read<MainBloc>().add(MainAccountList());
-          break;
+        locator.get<MainBloc>().add(MainAccountList());
+        break;
       case "":
-        print("endpoint is: empty");
+        locator.get<MainBloc>().add(MainAnotherList(endpoint: ""));
+        debugPrint("endpoint is: empty");
         break;
     }
   }

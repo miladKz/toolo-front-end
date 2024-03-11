@@ -3,15 +3,18 @@ part of 'main_bloc.dart';
 @immutable
 abstract class MainEvent {}
 
-class AccountingEvent extends MainEvent {
+class MainActionList extends MainEvent {}
 
+class MainAccountList extends MainEvent {}
+
+class MainAnotherList extends MainEvent {
+  final String endpoint;
+
+  MainAnotherList({required this.endpoint});
 }
 
-class MainAccountList extends MainEvent{
-
-}
-
-class FilterActionsEvent extends MainEvent{
+class FilterActionsEvent extends MainEvent {
   final WorkSpaceItems selectedItem;
+
   FilterActionsEvent(this.selectedItem);
 }

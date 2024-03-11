@@ -3,9 +3,9 @@ import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
 import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source_impl.dart';
 import 'package:toolo_gostar/data/models/fiscal_year/params/set_current_fiscal_year_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/fiscal/params/set_current_fiscal_year_param.dart';
+import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
 
 import '../../../domain/entities/fiscal/fiscal_year.dart';
-import '../../../domain/repositories/fiscal/fiscal_repository.dart';
 import '../../datasources/auth/remote_data_source.dart';
 import '../../models/fiscal_year/fiscal_year_dto.dart';
 
@@ -39,9 +39,9 @@ class FiscalRepositoryImpl extends FiscalRepository {
 
   @override
   Future<int> setCurrentFiscalYear(
-      SetCurrentFiscalYearParam activeYearId) async {
+      SetCurrentFiscalYearParam fiscalYear) async {
     SetCurrentFiscalYearParamDto param =
-        SetCurrentFiscalYearParamDto(id: activeYearId.id);
+        SetCurrentFiscalYearParamDto(activeYearId: fiscalYear.activeYearId,databaseId: fiscalYear.databaseId);
     try {
       String token = _getToken();
       ServerResponseDto serverResponse = await remoteDataSource

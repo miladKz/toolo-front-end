@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
@@ -10,9 +9,11 @@ import 'package:toolo_gostar/data/datasources/accounting/accounting_remote_data_
 import 'package:toolo_gostar/data/repositories/accounting/account_repository_impl.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
+import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
-import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
-import 'package:toolo_gostar/domain/usecases/auth/fiscal/set_current_fiscal_year_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/auth/login_usecase.dart';
+import 'package:toolo_gostar/domain/usecases/fiscal_year/get_fiscal_year_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/fiscal_year/set_current_fiscal_year_use_case.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
@@ -20,11 +21,9 @@ import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_blo
 import '../data/datasources/auth/auth_local_data_source_impl.dart';
 import '../data/datasources/auth/remote_data_source.dart';
 import '../data/repositories/auth/auth_repository_impl.dart';
-import '../data/repositories/auth/fiscal_repository.dart';
-import '../domain/repositories/fiscal/fiscal_repository.dart';
+import '../data/repositories/fiscal_year/fiscal_repository.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
-import '../domain/usecases/auth/auth/get_token_usecase.dart';
-import '../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
+import '../domain/usecases/auth/get_token_usecase.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
 
 final locator = GetIt.instance;

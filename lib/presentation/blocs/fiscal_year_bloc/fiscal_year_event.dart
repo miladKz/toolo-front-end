@@ -15,9 +15,11 @@ class FiscalYearGetData extends FiscalYearEvent {
 
 class FiscalYearSetData extends FiscalYearEvent {
   final int activeYearId;
+  final int databaseId;
 
-  const FiscalYearSetData({required this.activeYearId});
+  const FiscalYearSetData(
+      {required this.activeYearId, required this.databaseId});
 
   @override
-  List<Object?> get props => [activeYearId];
+  List<Object?> get props => [activeYearId, databaseId];
 }

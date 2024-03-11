@@ -5,13 +5,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/domain/entities/fiscal/params/set_current_fiscal_year_param.dart';
-import 'package:toolo_gostar/domain/usecases/auth/fiscal/set_current_fiscal_year_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/fiscal_year/get_fiscal_year_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/fiscal_year/set_current_fiscal_year_use_case.dart';
 
 import '../../../di/di.dart';
 import '../../../domain/entities/fiscal/fiscal_year.dart';
-import '../../../domain/usecases/auth/fiscal/get_fiscal_year_use_case.dart';
 
 part 'fiscal_year_event.dart';
+
 part 'fiscal_year_state.dart';
 
 class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
@@ -52,8 +53,8 @@ class FiscalYearBloc extends Bloc<FiscalYearEvent, FiscalYearState> {
       SetCurrentFiscalYearUseCase useCase =
           locator<SetCurrentFiscalYearUseCase>();
 
-      SetCurrentFiscalYearParam param =
-          SetCurrentFiscalYearParam(id: event.activeYearId);
+      SetCurrentFiscalYearParam param = SetCurrentFiscalYearParam(
+          activeYearId: event.activeYearId, databaseId: event.databaseId);
 
       int result = await useCase(param);
 

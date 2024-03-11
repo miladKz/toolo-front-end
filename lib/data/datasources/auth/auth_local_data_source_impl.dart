@@ -24,9 +24,8 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
 
   @override
   String getToken() {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTAxMDA1MjJ9.buqPb2ftXGVxrpJoi6Netaka0ajx0vTU0jZKoEsbwOs";
-   /* var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
-    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;*/
+    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;
   }
 
   @override

@@ -9,12 +9,11 @@ import 'package:toolo_gostar/data/common/network_connection/network_connection_s
 import 'package:toolo_gostar/data/enum/auth_error_state.dart';
 import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
 import 'package:toolo_gostar/domain/entities/auth/params/login_param.dart';
-import 'package:toolo_gostar/domain/usecases/auth/auth/login_usecase.dart';
+import 'package:toolo_gostar/domain/usecases/auth/login_usecase.dart';
 
 import '../../../di/di.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

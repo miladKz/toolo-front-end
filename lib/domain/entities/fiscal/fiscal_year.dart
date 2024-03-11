@@ -1,10 +1,14 @@
 class FiscalYear {
    final int id;
+  final int databaseID;
 
-  final String activeYear;
+  final String activeYearName;
 
   final String displayName;
 
   FiscalYear(
-      {required this.id, required this.displayName, required this.activeYear});
+      {required this.id,
+      required this.databaseID,
+      required this.displayName,
+      required this.activeYearName});
 }

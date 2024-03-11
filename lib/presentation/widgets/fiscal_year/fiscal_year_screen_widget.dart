@@ -110,7 +110,9 @@ Row successBox({required FiscalYearBloc bloc}) {
 
 setData({required FiscalYearBloc bloc, required String token}) {
   if (bloc.isInputDataValid) {
-    bloc.add(FiscalYearSetData(activeYearId: bloc.selectedValueFiscalYear!.id));
+    bloc.add(FiscalYearSetData(
+        activeYearId: bloc.selectedValueFiscalYear!.id,
+        databaseId: bloc.selectedValueFiscalYear!.databaseID));
   } else {
     showSnack(
         title: localization.titleFiscalYearError,
@@ -222,7 +224,7 @@ class _WorkGroupBox extends State<FiscalYearBox> {
                     child: Directionality(
                       textDirection: atrasDirection(context),
                       child: Text(
-                        "${item.displayName}-${item.activeYear}",
+                        "${item.displayName}-${item.activeYearName}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

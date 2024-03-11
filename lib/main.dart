@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         init(context, themData);
-        return screenMain();
+        return screenAuth();
       }),
     );
   }
@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-Widget authScreen() {
+Widget screenAuth() {
   return BlocProvider(
     create: (_) {
       return locator<AuthBloc>();

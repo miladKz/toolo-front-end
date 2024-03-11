@@ -1,5 +1,6 @@
 class SetCurrentFiscalYearParam {
-  int id;
+  final int activeYearId;
+ final int databaseId;
 
-  SetCurrentFiscalYearParam({required this.id});
+  SetCurrentFiscalYearParam({required this.activeYearId,required this.databaseId});
 }

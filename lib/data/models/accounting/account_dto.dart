@@ -54,7 +54,32 @@ class AccountDto extends Account {
       balanceSheetType: map.findAsInt("TaraznameType"),
     );
   }
-
+  Map<String, dynamic> toMap(){
+    return <String, dynamic>{
+      'ID': (id != 0) ? id : null,
+      'AccCode1': accCode1,
+      'AccCode2': accCode2,
+      'AccCode3': accCode3,
+      'AccCode4': accCode4,
+      'AccountLevel': accountLevel,
+      'Accountcd': accountcd,
+      'CanDel': canDel,
+      'Description': description,
+      'GroupCode': groupCode,
+      'HasPooli': hasPooli,
+      'HasTafzili': hasTafzili,
+      'HasTaseir': hasTaseir,
+      'IndexOrder1': indexOrder1,
+      'IndexOrder2': indexOrder2,
+      'IsActive': isActive,
+      'IsAmalyati': isAmalyati,
+      'Mahiat': type,
+      'MahiatRialy': mahiatRialy,
+      'DisplayName': displayName,
+      'TaraznameType': balanceSheetType,
+    }..removeWhere(
+            (dynamic key, dynamic value) => value == '' || value == null);
+  }
   static List<AccountDto> _getChildren(Map<String, dynamic> map){
     List<dynamic> childrenData = map.findAsDynamic("Items");
     List<AccountDto> children = [];

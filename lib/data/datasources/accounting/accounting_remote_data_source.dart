@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:toolo_gostar/data/common/mixin/http_response_validator.dart';
 import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
@@ -24,7 +25,22 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       );
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      print(e.toString());
+      logError(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> updateAccount({required String token,required AccountDto param}) async {
+    String apiAddress = "/api/acc/accounts";
+    try {
+      Response<dynamic> response = await httpClient.put(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      logError(e);
       throw HttpException(e.toString());
     }
   }
@@ -39,7 +55,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       debugPrint(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      print(e);
+      logError(e);
       throw HttpException(e.toString());
     }
   }
@@ -54,4 +70,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Map<String, dynamic> getData(Response response) {
   return  jsonDecode(response.data);
   }
+}
+
+void logError(DioException e) {
+  debugPrint(e.toString());
 }

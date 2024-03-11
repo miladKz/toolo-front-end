@@ -5,7 +5,7 @@ import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
-import 'package:toolo_gostar/presentation/widgets/main/tree_view/tree_view.dart';
+import 'package:toolo_gostar/presentation/widgets/main/tree_view/main_actions_detail_tree_view.dart';
 import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/work_space_detai_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 

@@ -7,4 +7,6 @@ abstract class IAccountingRepository {
 
   Future<List<Account>> getAccountList();
   Future<Account> updateAccount(Account account);
+
+  Future<String> deleteAccount(Account account);
 }

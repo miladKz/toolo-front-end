@@ -44,6 +44,20 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
+  Future<ServerResponseDto> deleteAccount({required String token,required AccountDto param}) async {
+    String apiAddress = "/api/acc/accounts";
+    try {
+      Response<dynamic> response = await httpClient.delete(
+        apiAddress,
+        queryParameters: param.idToMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      logError(e);
+      throw HttpException(e.toString());
+    }
+  }
 
   Future<ServerResponseDto> getAccountList({required String token}) async {
     String apiAddress = "/api/acc/accounts/list";

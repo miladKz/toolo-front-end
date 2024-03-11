@@ -107,4 +107,21 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         balanceSheetType: account.balanceSheetType,
         displayName: account.displayName);
   }
+
+  @override
+  Future<String> deleteAccount(Account account) async {
+    AccountDto accountDto = getAccountAsDto(account);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.deleteAccount(token: token, param: accountDto);
+      if (serverResponse.isSuccess) {
+        return serverResponse.message;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

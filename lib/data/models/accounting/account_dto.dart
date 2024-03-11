@@ -80,6 +80,13 @@ class AccountDto extends Account {
     }..removeWhere(
             (dynamic key, dynamic value) => value == '' || value == null);
   }
+
+  Map<String, dynamic> idToMap(){
+    return <String, dynamic>{
+      'ID': id,
+    };
+  }
+
   static List<AccountDto> _getChildren(Map<String, dynamic> map){
     List<dynamic> childrenData = map.findAsDynamic("Items");
     List<AccountDto> children = [];

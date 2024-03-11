@@ -18,3 +18,9 @@ class FilterActionsEvent extends MainEvent {
 
   FilterActionsEvent(this.selectedItem);
 }
+
+class OnClickOnAccount extends MainEvent {
+  final Account account;
+
+  OnClickOnAccount(this.account);
+}

@@ -71,7 +71,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                        const SizedBox(height: 5,),
                         FormTextField(
                             widgetWidth: widgetWidth,
-                            textHint: "دارایی غیر تجاری"),
+                            text: "دارایی غیر تجاری"),
                       ],
                     ),
                   ],
@@ -94,7 +94,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                         ),
                         FormTextField(
                           widgetWidth: widgetWidth,
-                          textHint: "0",
+                          text: "0",
                         ),
                       ],
                     ),
@@ -110,7 +110,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                         ),
                         FormTextField(
                           widgetWidth: widgetWidth,
-                          textHint: "0",
+                          text: "0",
                         )
                       ],
                     ),

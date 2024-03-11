@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+
+import '../../../../domain/entities/accounting/account.dart';
 
 class TreeViewItem extends StatefulWidget {
+  Account account;
   final String title;
   final double fontSize;
   final double textScale;
   final Function() onTap;
 
-  const TreeViewItem({
+   TreeViewItem({
+    required this.account,
     required this.title,
     required this.fontSize,
     required this.textScale,
@@ -26,9 +32,12 @@ class _TreeViewItemState extends State<TreeViewItem> {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
 
     EdgeInsets childMargin =
-        EdgeInsets.only(right: 10, left: 1, top: 2, bottom: 2);
+        const EdgeInsets.only(right: 10, left: 1, top: 2, bottom: 2);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+          context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+      },
+
       child: MouseRegion(
         onEnter: (event) {
           setState(() {

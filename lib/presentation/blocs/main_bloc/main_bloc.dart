@@ -23,6 +23,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainAccountList>(_mainAccountList);
     on<MainAnotherList>(_mainAnotherList);
     on<FilterActionsEvent>(_filterActionsHandler);
+    on<OnClickOnAccount>(_showDetailAccountInFormHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -107,5 +108,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnView(isShow: false));
       emit(MainAccountSuccess(List.empty()));
     }
+  }
+
+  FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event, Emitter<MainState> emit) {
+    emit(ShowAccountDetailInFormState(event.account));
   }
 }

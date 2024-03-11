@@ -74,6 +74,7 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
 
   Widget _buildItem(Account item, double textScale) {
     return TreeViewItem(
+      account: item,
       title: item.displayName,
       fontSize: widget.fontSize,
       textScale: textScale,

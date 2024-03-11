@@ -19,13 +19,11 @@ import 'dashboard_menu.dart';
 import 'expandable_menu/accounting_action_items.dart';
 import 'expandable_menu/expandable_menu.dart';
 import 'forms/edit_account_form.dart';
-import 'forms/edit_gorup_form.dart';
 
 class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
   Workspace workSpaceMenu = Workspace();
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +135,7 @@ class MainBaseBody extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       AccountTreeViewWidget(),
-                                       EditAccountForm()
+                                      EditAccountForm()
                                     ],
                                   ),
                                 ),
@@ -565,5 +563,3 @@ class _WorkSpaceDetailWidgetTreeState extends State<WorkSpaceDetailWidgetTree> {
     }
   }
 }
-
-

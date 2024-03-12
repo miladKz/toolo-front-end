@@ -7,14 +7,15 @@ import 'form_elements/form_button.dart';
 import 'form_elements/form_item_title.dart';
 import 'form_elements/form_text_field.dart';
 
-class EditGroupForm extends StatefulWidget {
-  EditGroupForm({super.key,required this.account});
+
+class ShowGroupForm extends StatefulWidget {
+  ShowGroupForm({super.key,required this.account});
   Account account;
   @override
-  State<EditGroupForm> createState() => _EditGroupFormState();
+  State<ShowGroupForm> createState() => _EditGroupFormState();
 }
 
-class _EditGroupFormState extends State<EditGroupForm> {
+class _EditGroupFormState extends State<ShowGroupForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
 
@@ -37,18 +38,6 @@ class _EditGroupFormState extends State<EditGroupForm> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                localization.editGroup,
-                style: const TextStyle(
-                    color: Color(0xFF5A5A5A),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
-              ),
-              const Divider(
-                color: Color(0xFFDEE2E6),
-                height: 25,
-                thickness: 2,
-              ),
               const SizedBox(
                 height: 8,
               ),
@@ -295,33 +284,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                     ],
                   );
                 }),
-                const SizedBox(
-                  height: 15,
-                )
               ],
-
-              LayoutBuilder(builder: (context, constrains) {
-                double itemWidth = (constrains.maxWidth / 2) - 10;
-
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FormButton(
-                      itemWidth: itemWidth,
-                      background:const Color(0xFF6C3483),
-                      textColor: Colors.white,
-                      title: localization.captionSuccess,
-                      onClick: () {},
-                    ),
-                    FormButton(
-                        itemWidth: itemWidth,
-                        background:const Color(0xFFD9BCE4),
-                        textColor: const Color(0xFF804D95),
-                        title: localization.captionCancel,
-                        onClick: () {}),
-                  ],
-                );
-              })
             ],
           ),
         ),

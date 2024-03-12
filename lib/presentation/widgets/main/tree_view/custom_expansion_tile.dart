@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class CustomExpansionTile extends StatefulWidget {
   final Widget title;
   final List<Widget> children;
+  Function() onTap;
 
-  const CustomExpansionTile({
+   CustomExpansionTile({
     Key? key,
+    required this.onTap,
     required this.title,
     required this.children,
   }) : super(key: key);
@@ -55,7 +57,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: _toggleExpansion,
+            onTap: () {
+              widget.onTap();
+              _toggleExpansion();
+            },
             child: Container(
               margin: const EdgeInsets.all(2),
               padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
-import 'CustomExpansionTile.dart';
+import '../../../blocs/main_bloc/main_bloc.dart';
+import 'custom_expansion_tile.dart';
 import 'tree_view_item.dart';
 
 class MainActionsDetailTreeView extends StatefulWidget {
@@ -22,6 +24,9 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   @override
   Widget build(BuildContext context) {
     return CustomExpansionTile(
+      onTap: () {
+        context.read<MainBloc>().add(OnClickOnAccount(widget.item));
+      },
       title: Container(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
         decoration: BoxDecoration(

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class FormTextField extends StatelessWidget {
   String text;
   String errorText;
+  bool enable;
   FormTextField({
     this.text = "",
     this.errorText = "",
     super.key,
     required this.widgetWidth,
+     this.enable = true,
   });
 
   final double widgetWidth;
@@ -25,6 +27,7 @@ class FormTextField extends StatelessWidget {
         height: 35,
         width: widgetWidth - 7,
         child: TextFormField(
+          enabled: enable,
           controller: controller,
           onChanged: (value) {},
           style: TextStyle(fontSize: 12, color: Color(0xFF989B9F)),

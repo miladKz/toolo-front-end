@@ -18,18 +18,17 @@ import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
 import 'expandable_menu/accounting_action_items.dart';
 import 'expandable_menu/expandable_menu.dart';
-import 'forms/edit_account_form.dart';
+import 'forms/show_account_form.dart';
+import 'forms/show_gorup_form.dart';
 
 class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
   Workspace workSpaceMenu = Workspace();
 
-
   @override
   Widget build(BuildContext context) {
     double widthScree = MediaQuery.sizeOf(context).width;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -135,7 +134,23 @@ class MainBaseBody extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       MainActionsDetailWidget(),
-                                      EditAccountForm()
+                                      BlocBuilder<MainBloc, MainState>(
+                                        builder: (context, state) {
+                                          if (state
+                                                  is ShowAccountDetailInFormState &&
+                                              state.account.accountLevel == 0) {
+                                            return ShowGroupForm(
+                                                account: state.account);
+                                          } else if (state
+                                              is ShowAccountDetailInFormState) {
+                                            return ShowAccountForm(
+                                              account: state.account,
+                                            );
+                                          } else {
+                                            return SizedBox();
+                                          }
+                                        },
+                                      )
                                     ],
                                   ),
                                 ),
@@ -527,9 +542,7 @@ class _MainActionsDetailWidgetState extends State<MainActionsDetailWidget> {
   void updateList() {
     final state = context.watch<MainBloc>().state;
     if (state is MainAccountSuccess) {
-      setState(() {
-        widget.items = state.accounts;
-      });
+      widget.items = state.accounts;
     }
   }
 }
@@ -565,11 +578,7 @@ class _MainActionsWidgetState extends State<MainActionsWidget> {
   updateList() {
     final state = context.watch<MainBloc>().state;
     if (state is AccountingActionsSuccess) {
-      setState(() {
-        widget.items = state.actions;
-      });
+      widget.items = state.actions;
     }
   }
 }
-
-

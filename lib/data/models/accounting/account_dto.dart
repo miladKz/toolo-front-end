@@ -2,7 +2,7 @@ import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 
 class AccountDto extends Account {
-  const AccountDto(
+   AccountDto(
       {required super.id,
       required super.accCode1,
       required super.accCode2,
@@ -46,8 +46,8 @@ class AccountDto extends Account {
       indexOrder2: map.findAsInt("IndexOrder2"),
       isActive: map.findAsBool("IsActive"),
       isAmalyati: map.findAsBool("IsAmalyati"),
-      children: _getChildren(map),
-      hasChildren: (map.findAsDynamic("Items") as List).isNotEmpty,
+      children:map['items'] != null ? _getChildren(map) : [],
+      hasChildren: map['items'] != null && (map.findAsDynamic("Items") as List).isNotEmpty,
       type: map.findAsInt("Mahiat"),
       mahiatRialy: map.findAsInt("MahiatRialy"),
       displayName: map.findAsString("DisplayName"),

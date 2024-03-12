@@ -3,16 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import '../edit_group_dialog.dart';
 import 'custom_expansion_tile.dart';
 import 'tree_view_item.dart';
 
 class MainActionsDetailTreeView extends StatefulWidget {
   double iconSize;
   double fontSize;
-  Account item;
+  Account account;
 
   MainActionsDetailTreeView(
-      {Key? key, this.iconSize = 15, required this.item, this.fontSize = 12})
+      {Key? key, this.iconSize = 15, required this.account, this.fontSize = 12})
       : super(key: key);
 
   @override
@@ -25,23 +26,34 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   Widget build(BuildContext context) {
     return CustomExpansionTile(
       onTap: () {
-        context.read<MainBloc>().add(OnClickOnAccount(widget.item));
+        context.read<MainBloc>().add(OnClickOnAccount(widget.account));
       },
-      title: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
-        decoration: BoxDecoration(
-            color: const Color(0xFFF0F0F0),
-            borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          children: [
-            Text(
-              widget.item.displayName,
-              style: TextStyle(
-                  fontSize: widget.fontSize,
-                  color: const Color(0xFF616161),
-                  fontWeight: FontWeight.bold),
-            )
-          ],
+      title: GestureDetector(
+        onDoubleTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return EditGroupDialog(
+                  account: widget.account); // Pass your account data here
+            },
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF0F0F0),
+              borderRadius: BorderRadius.circular(5)),
+          child: Row(
+            children: [
+              Text(
+                widget.account.displayName,
+                style: TextStyle(
+                    fontSize: widget.fontSize,
+                    color: const Color(0xFF616161),
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ),
       ),
       children: [
@@ -57,8 +69,8 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
               ),
             ),
             child: Column(
-              children: widget.item.hasChildren
-                  ? _buildChildren(widget.item.children, 1)
+              children: widget.account.hasChildren
+                  ? _buildChildren(widget.account.children, 1)
                   : [SizedBox()],
             )),
       ],
@@ -69,7 +81,7 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
     return items.map((item) {
       return item.hasChildren
           ? MainActionsDetailTreeView(
-              item: item,
+              account: item,
               fontSize: widget.fontSize,
               iconSize: widget.iconSize,
             )

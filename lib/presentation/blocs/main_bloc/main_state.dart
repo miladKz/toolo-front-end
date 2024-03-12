@@ -33,3 +33,8 @@ class ShowAccountDetailInFormState extends MainState{
   final Account account;
   ShowAccountDetailInFormState(this.account);
 }
+
+class SuccessUpdatedAccountState extends MainState{
+  final Account account;
+  SuccessUpdatedAccountState(this.account);
+}

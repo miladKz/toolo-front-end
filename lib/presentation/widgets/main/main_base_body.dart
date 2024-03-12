@@ -524,7 +524,7 @@ class _MainActionsDetailWidgetState extends State<MainActionsDetailWidget> {
           ? ListView.builder(
               itemCount: widget.items.length,
               itemBuilder: (context, index) {
-                return MainActionsDetailTreeView(item: widget.items[index]);
+                return MainActionsDetailTreeView(account: widget.items[index]);
               },
             )
           : const Center(

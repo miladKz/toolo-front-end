@@ -1,5 +1,4 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
-import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
@@ -69,7 +68,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse =
           await remoteDataSource.updateAccount(token: token, param: accountDto);
       if (serverResponse.isSuccess) {
-        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
         return AccountDto.fromMap(itemsAsMap);
       } else {
         throw Exception();

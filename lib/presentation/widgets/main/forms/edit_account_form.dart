@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
+import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
@@ -11,7 +13,8 @@ import 'form_elements/form_text_field.dart';
 
 class EditAccountForm extends StatefulWidget {
   Account account;
-   EditAccountForm({super.key, required this.account});
+
+  EditAccountForm({super.key, required this.account});
 
   @override
   State<EditAccountForm> createState() => _EditAccountFormState();
@@ -20,11 +23,17 @@ class EditAccountForm extends StatefulWidget {
 class _EditAccountFormState extends State<EditAccountForm> {
   TextEditingController descriptionTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController accountNameController = TextEditingController();
+  TextEditingController accountCodeController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
   RialType rialyTypeItem = RialType.noMatter;
+
   @override
   Widget build(BuildContext context) {
-      rialyTypeItem = RialType.fromValue(widget.account.mahiatRialy);
-      descriptionTextController.text = widget.account.description;
+    rialyTypeItem = RialType.fromValue(widget.account.mahiatRialy);
+    descriptionTextController.text = widget.account.description;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -74,12 +83,11 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             DropdownMenuItem(
                                 child: SizedBox(
                                     width: widgetWidth - 40,
-                                    child:  Text(getParentCode(),
+                                    child: Text(getParentCode(),
                                         style: const TextStyle(
                                             color: Color(0xFF5A5A5A),
                                             fontSize: 11,
-                                            fontWeight:
-                                            FontWeight.normal)))),
+                                            fontWeight: FontWeight.normal)))),
                           ],
                           dropdownColor: Colors.white,
                           focusColor: Colors.white,
@@ -92,6 +100,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                         width: 5,
                       ),
                       FormTextField(
+                          controller: accountNameController,
                           widgetWidth: widgetWidth,
                           text: widget.account.displayName),
                     ],
@@ -113,6 +122,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             height: 5,
                           ),
                           FormTextField(
+                              controller: accountCodeController,
                               widgetWidth: widgetWidth,
                               text: getAccountCode()),
                         ],
@@ -132,8 +142,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(
-                                    width: 1,
-                                    color: const Color(0xFFDDE1E5)),
+                                    width: 1, color: const Color(0xFFDDE1E5)),
                                 borderRadius: BorderRadius.circular(4)),
                             child: DropdownButton<String>(
                               value: getIsActiveCaption(),
@@ -162,7 +171,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                 Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
+                        border: Border.all(
+                            width: 1, color: const Color(0xFFDDE1E5)),
                         borderRadius: BorderRadius.circular(4)),
                     height: 80,
                     width: double.infinity,
@@ -172,7 +182,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                       minLines: null,
                       expands: true,
                       onChanged: (value) {},
-                      style:const TextStyle(fontSize: 12, color: Color(0xFF989B9F)),
+                      style: const TextStyle(
+                          fontSize: 12, color: Color(0xFF989B9F)),
                       validator: (value) {
                         if (value == "") {
                           return "error";
@@ -184,7 +195,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                               color: Color(0xFF989B9F),
                               fontSize: 12,
                               fontWeight: FontWeight.w400),
-                          contentPadding: const EdgeInsets.fromLTRB(10, -50, 10, 0)),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(10, -50, 10, 0)),
                     )),
                 const SizedBox(
                   height: 10,
@@ -202,8 +214,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             Radio(
                               value: RialType.debtRemaining,
                               groupValue: rialyTypeItem,
-                              onChanged: (value) => onChangeRadio(
-                                  RialType.debtRemaining),
+                              onChanged: (value) =>
+                                  onChangeRadio(RialType.debtRemaining),
                             ),
                             Text(
                               localization.debtRemaining,
@@ -224,8 +236,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             Radio(
                               value: RialType.creditRemaining,
                               groupValue: rialyTypeItem,
-                              onChanged: (value) => onChangeRadio(
-                                  RialType.creditRemaining),
+                              onChanged: (value) =>
+                                  onChangeRadio(RialType.creditRemaining),
                             ),
                             Text(
                               localization.creditRemaining,
@@ -253,8 +265,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             Radio(
                               value: RialType.cannotBeDebt,
                               groupValue: rialyTypeItem,
-                              onChanged: (value) => onChangeRadio(
-                                  RialType.cannotBeDebt),
+                              onChanged: (value) =>
+                                  onChangeRadio(RialType.cannotBeDebt),
                             ),
                             Text(
                               localization.cannotBeDebt,
@@ -275,8 +287,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             Radio(
                               value: RialType.cannotBeCredit,
                               groupValue: rialyTypeItem,
-                              onChanged: (value) => onChangeRadio(
-                                  RialType.cannotBeCredit),
+                              onChanged: (value) =>
+                                  onChangeRadio(RialType.cannotBeCredit),
                             ),
                             Text(
                               localization.cannotBeCredit,
@@ -297,8 +309,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                     Radio(
                       value: RialType.noMatter,
                       groupValue: rialyTypeItem,
-                      onChanged: (value) =>
-                          onChangeRadio(RialType.noMatter),
+                      onChanged: (value) => onChangeRadio(RialType.noMatter),
                     ),
                     Text(
                       localization.noMatter,
@@ -323,14 +334,33 @@ class _EditAccountFormState extends State<EditAccountForm> {
                         background: const Color(0xFF6C3483),
                         textColor: Colors.white,
                         title: localization.captionSuccess,
-                        onClick: () {},
+                        onClick: () {
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.validate()) {
+                            widget.account
+                                .updateDescription(descriptionController.text);
+                            widget.account
+                                .updateAccountcd(accountCodeController.text);
+                            widget.account
+                                .updateDisplayName(accountNameController.text);
+
+                            //widget.account.updateIsActive();
+                            widget.account.updateMahiatRialy(rialyTypeItem.value);
+
+                            locator
+                                .get<MainBloc>()
+                                .add(OnUpdateAccount(widget.account));
+                          }
+                        },
                       ),
                       FormButton(
                           itemWidth: itemWidth,
                           background: const Color(0xFFD9BCE4),
                           textColor: const Color(0xFF804D95),
                           title: localization.captionCancel,
-                          onClick: () {}),
+                          onClick: () {
+                            Navigator.of(context).pop();
+                          }),
                     ],
                   );
                 })
@@ -388,7 +418,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
   }
 
   getIsActiveCaption() {
-    return widget.account.isActive? localization.active: localization.deactivate;
+    return widget.account.isActive
+        ? localization.active
+        : localization.deactivate;
   }
 
   String getParentCode() {

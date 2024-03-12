@@ -33,11 +33,13 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Future<ServerResponseDto> updateAccount({required String token,required AccountDto param}) async {
     String apiAddress = "/api/acc/accounts";
     try {
+      print(param.toMap());
       Response<dynamic> response = await httpClient.put(
         apiAddress,
         data: param.toMap(),
         options: _getHeaders(token),
       );
+      print(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       logError(e);

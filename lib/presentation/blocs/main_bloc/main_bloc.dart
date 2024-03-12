@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
 
 import '../../../app_exception.dart';
 import '../../../di/di.dart';
@@ -24,6 +25,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainAnotherList>(_mainAnotherList);
     on<FilterActionsEvent>(_filterActionsHandler);
     on<OnClickOnAccount>(_showDetailAccountInFormHandler);
+    on<OnUpdateAccount>(_updateAccountHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -63,15 +65,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     GetAccountListUseCase useCase = locator<GetAccountListUseCase>();
     List<Account> accountList = await useCase();
     emit(MainLoadingOnView(isShow: false));
-    /*  if (state is ListSuccess) {
-      final successState = state as ChatMessageListSuccess;
-      emit(successState.copyWith(items: chatMessageItems));
-    } else {
-      emit(ChatMessageListSuccess(moveDownViewVisibility,
-          items: chatMessageItems,
-          lastSeenMessageId: lastSeenMessageId,
-          firstUnreadMessageId: firstUnreadMessageId));
-    }*/
     emit(MainAccountSuccess(accountList));
   }
 
@@ -112,5 +105,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event, Emitter<MainState> emit) {
     emit(ShowAccountDetailInFormState(event.account));
+  }
+
+  FutureOr<void> _updateAccountHandler(OnUpdateAccount event, Emitter<MainState> emit) async{
+    emit(MainLoadingOnView(isShow: true));
+    UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
+    Account account = await useCase(event.account);
+    emit(MainLoadingOnView(isShow: false));
+    emit(SuccessUpdatedAccountState(account));
   }
 }

@@ -24,3 +24,8 @@ class OnClickOnAccount extends MainEvent {
 
   OnClickOnAccount(this.account);
 }
+
+class OnUpdateAccount extends MainEvent {
+  final Account account;
+  OnUpdateAccount(this.account);
+}

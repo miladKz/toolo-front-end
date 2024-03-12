@@ -1,25 +1,32 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FormTextField extends StatelessWidget {
   String text;
   String errorText;
   bool enable;
-  FormTextField({
-    this.text = "",
-    this.errorText = "",
-    super.key,
-    required this.widgetWidth,
-     this.enable = true,
-  });
-
   final double widgetWidth;
-  TextEditingController controller = TextEditingController();
+  TextEditingController? controller;
+  TextInputType inputType;
+
+  FormTextField(
+      {required this.widgetWidth,
+      this.text = "",
+      this.errorText = "",
+      this.enable = true,
+      this.inputType = TextInputType.text,
+      this.controller,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.text = text;
+    controller?.text = text;
+    late TextInputFormatter inputFormatter;
+    if (inputType == TextInputType.number) {
+      inputFormatter = FilteringTextInputFormatter.digitsOnly;
+    } else {
+      inputFormatter = FilteringTextInputFormatter.singleLineFormatter;
+    }
     return Container(
         decoration: BoxDecoration(
             border: Border.all(width: 1, color: Color(0xFFDDE1E5)),
@@ -27,6 +34,8 @@ class FormTextField extends StatelessWidget {
         height: 35,
         width: widgetWidth - 7,
         child: TextFormField(
+          keyboardType: inputType,
+          inputFormatters: [inputFormatter],
           enabled: enable,
           controller: controller,
           onChanged: (value) {},

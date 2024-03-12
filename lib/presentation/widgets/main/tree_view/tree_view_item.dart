@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
+import '../edit_group_dialog.dart';
 
 class TreeViewItem extends StatefulWidget {
   Account account;
@@ -11,7 +13,7 @@ class TreeViewItem extends StatefulWidget {
   final double textScale;
   final Function() onTap;
 
-   TreeViewItem({
+  TreeViewItem({
     required this.account,
     required this.title,
     required this.fontSize,
@@ -35,9 +37,17 @@ class _TreeViewItemState extends State<TreeViewItem> {
         const EdgeInsets.only(right: 10, left: 1, top: 2, bottom: 2);
     return GestureDetector(
       onTap: () {
-          context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+        context.read<MainBloc>().add(OnClickOnAccount(widget.account));
       },
-
+      onDoubleTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return EditGroupDialog(
+                account: widget.account); // Pass your account data here
+          },
+        );
+      },
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
@@ -69,6 +79,46 @@ class _TreeViewItemState extends State<TreeViewItem> {
           ),
         ),
       ),
+    );
+  }
+
+  showQuestionDialog(
+      {required BuildContext context,
+      required String title,
+      required Widget content,
+      required Function(bool) callBack}) {
+    final themeData = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final buttonTextStyle = textTheme.bodyMedium;
+    return Get.defaultDialog(
+      title: title,
+      backgroundColor: Colors.white,
+      titleStyle:
+          textTheme.titleLarge!.copyWith(color: themeData.colorScheme.primary),
+      content: content,
+      actions: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: themeData.colorScheme.surface,
+                foregroundColor: themeData.colorScheme.onSurface,
+                textStyle: buttonTextStyle),
+            onPressed: () {
+              callBack(false);
+              Get.back();
+            },
+            child: Text('test')),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: themeData.colorScheme.primary,
+                foregroundColor: themeData.colorScheme.onPrimary,
+                textStyle: buttonTextStyle),
+            onPressed: () {
+              callBack(true);
+              Get.back();
+            },
+            child: Text('test1')),
+      ],
+      barrierDismissible: false,
     );
   }
 }

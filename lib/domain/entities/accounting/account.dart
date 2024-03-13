@@ -49,7 +49,7 @@ class Account {
       required this.balanceSheetType});
 
   void updateBalanceSheetType(int value) {
-    if (value > 0 && value < 3) balanceSheetType = value;
+    if (value >= -1 && value < 3) balanceSheetType = value;
   }
 
   void updateAccCode1(String newAccCode1) {

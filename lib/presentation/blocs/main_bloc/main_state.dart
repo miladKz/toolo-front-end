@@ -3,7 +3,9 @@ part of 'main_bloc.dart';
 @immutable
 abstract class MainState {}
 
-class MainInitial extends MainState {}
+class MainInitial extends MainState {
+
+}
 
 class MainLoadingOnView extends MainState {
   final bool isShow;
@@ -37,4 +39,9 @@ class ShowAccountDetailInFormState extends MainState{
 class SuccessUpdatedAccountState extends MainState{
   final Account account;
   SuccessUpdatedAccountState(this.account);
+}
+
+class LoadUserDataState extends MainState{
+  UserData userData;
+  LoadUserDataState(this.userData);
 }

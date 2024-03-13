@@ -21,14 +21,16 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
   TextEditingController descriptionTextController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  RialType rialyTypeItem = RialType.noMatter;
+  RialType accountType = RialType.noMatter;
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<MainBloc>().state;
     if (state is ShowAccountDetailInFormState) {
-      rialyTypeItem = RialType.fromValue(widget.account.mahiatRialy);
       descriptionTextController.text = widget.account.description;
+      if(widget.account.type >= 0){
+        accountType = RialType.fromValue(widget.account.type);
+      }
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -203,10 +205,9 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                               child: Row(
                                 children: [
                                   Radio(
-                                    value: RialType.debtRemaining,
-                                    groupValue: rialyTypeItem,
-                                    onChanged: (value) =>
-                                        onChangeRadio(RialType.debtRemaining),
+                                    value: RialType.debtRemaining.value,
+                                    groupValue: widget.account.type,
+                                    onChanged: (value) {},
                                   ),
                                   Text(
                                     localization.debtRemaining,
@@ -225,10 +226,9 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Radio(
-                                    value: RialType.creditRemaining,
-                                    groupValue: rialyTypeItem,
-                                    onChanged: (value) =>
-                                        onChangeRadio(RialType.creditRemaining),
+                                    value: RialType.creditRemaining.value,
+                                    groupValue: widget.account.type,
+                                    onChanged: (value) {},
                                   ),
                                   Text(
                                     localization.creditRemaining,
@@ -254,10 +254,11 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                               child: Row(
                                 children: [
                                   Radio(
-                                    value: RialType.cannotBeDebt,
-                                    groupValue: rialyTypeItem,
-                                    onChanged: (value) =>
-                                        onChangeRadio(RialType.cannotBeDebt),
+                                    value: RialType.cannotBeDebt.value,
+                                    groupValue: widget.account.type,
+                                    onChanged: (value) {
+
+                                    },
                                   ),
                                   Text(
                                     localization.cannotBeDebt,
@@ -276,10 +277,10 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Radio(
-                                    value: RialType.cannotBeCredit,
-                                    groupValue: rialyTypeItem,
-                                    onChanged: (value) =>
-                                        onChangeRadio(RialType.cannotBeCredit),
+                                    value: RialType.cannotBeCredit.value,
+                                    groupValue: widget.account.type,
+                                    onChanged: (value) {
+                                    },
                                   ),
                                   Text(
                                     localization.cannotBeCredit,
@@ -298,10 +299,11 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                       Row(
                         children: [
                           Radio(
-                            value: RialType.noMatter,
-                            groupValue: rialyTypeItem,
-                            onChanged: (value) =>
-                                onChangeRadio(RialType.noMatter),
+                            value: RialType.noMatter.value,
+                            groupValue: widget.account.type,
+                            onChanged: (value) {
+
+                            },
                           ),
                           Text(
                             localization.noMatter,
@@ -344,11 +346,6 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
     return menuItems;
   }
 
-  onChangeRadio(RialType value) {
-    setState(() {
-      rialyTypeItem = value;
-    });
-  }
 
   getAccountCode() {
     String accountCode = '';

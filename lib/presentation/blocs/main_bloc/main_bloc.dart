@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
@@ -11,6 +12,7 @@ import '../../../app_exception.dart';
 import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
+import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
@@ -26,6 +28,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<FilterActionsEvent>(_filterActionsHandler);
     on<OnClickOnAccount>(_showDetailAccountInFormHandler);
     on<OnUpdateAccount>(_updateAccountHandler);
+    on<LoadUserData>(_getUserData);
   }
 
   FutureOr<void> _mainActionList(
@@ -107,11 +110,17 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(ShowAccountDetailInFormState(event.account));
   }
 
-  FutureOr<void> _updateAccountHandler(OnUpdateAccount event, Emitter<MainState> emit) async{
+  FutureOr<void> _updateAccountHandler(OnUpdateAccount event, Emitter<MainState> emit) async {
     emit(MainLoadingOnView(isShow: true));
     UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
     Account account = await useCase(event.account);
     emit(MainLoadingOnView(isShow: false));
     emit(SuccessUpdatedAccountState(account));
+  }
+
+  FutureOr<void> _getUserData(LoadUserData event, Emitter<MainState> emit) {
+    GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
+    UserData userData =  useCase();
+    emit(LoadUserDataState(userData));
   }
 }

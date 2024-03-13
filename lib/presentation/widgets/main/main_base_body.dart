@@ -25,6 +25,7 @@ class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
   Workspace workSpaceMenu = Workspace();
+  MainActionsDetailWidget mainActionsDetailWidget = MainActionsDetailWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +134,11 @@ class MainBaseBody extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      MainActionsDetailWidget(),
+                                      mainActionsDetailWidget,
                                       BlocBuilder<MainBloc, MainState>(
+                                        buildWhen: (previous, current){
+                                          return current is ShowAccountDetailInFormState;
+                                        },
                                         builder: (context, state) {
                                           if (state
                                                   is ShowAccountDetailInFormState &&
@@ -146,9 +150,20 @@ class MainBaseBody extends StatelessWidget {
                                             return ShowAccountForm(
                                               account: state.account,
                                             );
-                                          } else {
-                                            return SizedBox();
                                           }
+
+                                          if (state
+                                          is SuccessUpdatedAccountState &&
+                                              state.account.accountLevel == 0) {
+                                            return ShowGroupForm(
+                                                account: state.account);
+                                          } else if (state
+                                          is SuccessUpdatedAccountState) {
+                                            return ShowAccountForm(
+                                              account: state.account,
+                                            );
+                                          }
+                                          return SizedBox();
                                         },
                                       )
                                     ],
@@ -199,7 +214,7 @@ class MainBaseBody extends StatelessWidget {
   List<CollapsibleItem> get _items {
     return [
       CollapsibleItem(
-        content: const Profile(),
+        content:  Profile(),
         iconImage: Assets.img.imgProfile.image(width: 52, height: 52),
         isSelected: true,
       ),

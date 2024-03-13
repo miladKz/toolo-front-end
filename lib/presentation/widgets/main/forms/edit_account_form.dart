@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
@@ -13,6 +11,7 @@ import 'form_elements/form_text_field.dart';
 
 class EditAccountForm extends StatefulWidget {
   Account account;
+  //Account tmpAaccount;
 
   EditAccountForm({super.key, required this.account});
 
@@ -28,11 +27,13 @@ class _EditAccountFormState extends State<EditAccountForm> {
   TextEditingController accountCodeController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  RialType rialyTypeItem = RialType.noMatter;
+  RialType accountType = RialType.noMatter;
 
   @override
   Widget build(BuildContext context) {
-    rialyTypeItem = RialType.fromValue(widget.account.mahiatRialy);
+    if (widget.account.type >= 0) {
+      accountType = RialType.fromValue(widget.account.type);
+    }
     descriptionTextController.text = widget.account.description;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +153,10 @@ class _EditAccountFormState extends State<EditAccountForm> {
                               underline: const SizedBox(),
                               padding: const EdgeInsets.all(4),
                               onChanged: (value) {
-                                value = value;
+                                setState(() {
+                                  widget.account.updateIsActive(
+                                      value == localization.active);
+                                });
                               },
                             ),
                           ),
@@ -212,10 +216,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
                         child: Row(
                           children: [
                             Radio(
-                              value: RialType.debtRemaining,
-                              groupValue: rialyTypeItem,
-                              onChanged: (value) =>
-                                  onChangeRadio(RialType.debtRemaining),
+                              value: RialType.debtRemaining.value,
+                              groupValue: widget.account.type,
+                              onChanged: (value) => onChangeRadio(value as int),
                             ),
                             Text(
                               localization.debtRemaining,
@@ -234,10 +237,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Radio(
-                              value: RialType.creditRemaining,
-                              groupValue: rialyTypeItem,
-                              onChanged: (value) =>
-                                  onChangeRadio(RialType.creditRemaining),
+                              value: RialType.creditRemaining.value,
+                              groupValue: widget.account.type,
+                              onChanged: (value) => onChangeRadio(value as int),
                             ),
                             Text(
                               localization.creditRemaining,
@@ -263,10 +265,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
                         child: Row(
                           children: [
                             Radio(
-                              value: RialType.cannotBeDebt,
-                              groupValue: rialyTypeItem,
-                              onChanged: (value) =>
-                                  onChangeRadio(RialType.cannotBeDebt),
+                              value: RialType.cannotBeDebt.value,
+                              groupValue: widget.account.type,
+                              onChanged: (value) => onChangeRadio(value as int),
                             ),
                             Text(
                               localization.cannotBeDebt,
@@ -285,10 +286,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Radio(
-                              value: RialType.cannotBeCredit,
-                              groupValue: rialyTypeItem,
-                              onChanged: (value) =>
-                                  onChangeRadio(RialType.cannotBeCredit),
+                              value: RialType.cannotBeCredit.value,
+                              groupValue: widget.account.type,
+                              onChanged: (value) => onChangeRadio(value as int),
                             ),
                             Text(
                               localization.cannotBeCredit,
@@ -307,9 +307,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
                 Row(
                   children: [
                     Radio(
-                      value: RialType.noMatter,
-                      groupValue: rialyTypeItem,
-                      onChanged: (value) => onChangeRadio(RialType.noMatter),
+                      value: RialType.noMatter.value,
+                      groupValue: widget.account.type,
+                      onChanged: (value) => onChangeRadio(value as int),
                     ),
                     Text(
                       localization.noMatter,
@@ -345,7 +345,6 @@ class _EditAccountFormState extends State<EditAccountForm> {
                                 .updateDisplayName(accountNameController.text);
 
                             //widget.account.updateIsActive();
-                            widget.account.updateMahiatRialy(rialyTypeItem.value);
 
                             locator
                                 .get<MainBloc>()
@@ -392,9 +391,9 @@ class _EditAccountFormState extends State<EditAccountForm> {
     return menuItems;
   }
 
-  onChangeRadio(RialType value) {
+  onChangeRadio(int value) {
     setState(() {
-      rialyTypeItem = value;
+      widget.account.updateType(value);
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source_impl.d
 import 'package:toolo_gostar/data/models/auth/auth_base_data_dto.dart';
 import 'package:toolo_gostar/data/models/auth/params/login_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 
 import '../../datasources/auth/remote_data_source.dart';
@@ -41,5 +42,10 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   String getToken() {
     return localDataSource.getToken();
+  }
+
+  @override
+  UserData getUserData() {
+    return localDataSource.getUserData();
   }
 }

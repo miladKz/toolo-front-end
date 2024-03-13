@@ -25,7 +25,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       );
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      logError(e);
+      log(e);
       throw HttpException(e.toString());
     }
   }
@@ -33,16 +33,16 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Future<ServerResponseDto> updateAccount({required String token,required AccountDto param}) async {
     String apiAddress = "/api/acc/accounts";
     try {
-      print(param.toMap());
+      log(param.toMap());
       Response<dynamic> response = await httpClient.put(
         apiAddress,
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      print(response.data);
+      log(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      logError(e);
+      log(e);
       throw HttpException(e.toString());
     }
   }
@@ -56,7 +56,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       );
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      logError(e);
+      log(e);
       throw HttpException(e.toString());
     }
   }
@@ -68,10 +68,10 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      debugPrint(response.data);
+      log(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      logError(e);
+      log(e);
       throw HttpException(e.toString());
     }
   }
@@ -88,6 +88,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 }
 
-void logError(DioException e) {
-  debugPrint(e.toString());
+void log(Object logable) {
+  debugPrint(logable.toString());
 }

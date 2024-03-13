@@ -29,3 +29,5 @@ class OnUpdateAccount extends MainEvent {
   final Account account;
   OnUpdateAccount(this.account);
 }
+class LoadUserData extends MainEvent {
+}

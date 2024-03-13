@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/data/datasources/auth/auth_local_data_source.dart';
 import 'package:toolo_gostar/data/models/auth/auth_base_data_dto.dart';
 import 'package:toolo_gostar/domain/entities/auth/auth_base_data.dart';
+import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 
 class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
   final SharedPreferences _sharedPreferences;
@@ -25,10 +26,16 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
 
   @override
   String getToken() {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTAyODk0ODN9.SN7NMwcLj8hxsXJGj8HK11wNZEV8BjkooRa1UrCOL7o";
-   /* var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTAzNDMzOTl9.BjinkEsrpT_MAdWY7kOY3-thQ41-mkSVHMp-rMlMjpM";
+    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
     debugPrint('getToken method data is: $object');
-    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;*/
+    return AuthBaseDataDto.fromMap(jsonDecode(object)).token;
+  }
+  @override
+  UserData getUserData() {
+     var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    debugPrint('getToken method data is: $object');
+    return AuthBaseDataDto.fromMap(jsonDecode(object)).userData;
   }
 
   @override

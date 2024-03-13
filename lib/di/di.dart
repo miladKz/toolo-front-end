@@ -11,6 +11,7 @@ import 'package:toolo_gostar/domain/repositories/accounting/account_repository.d
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/auth/login_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/fiscal_year/get_fiscal_year_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/fiscal_year/set_current_fiscal_year_use_case.dart';
@@ -47,6 +48,7 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
 
   //AuthUseCases
   locator.registerLazySingleton(() => LoginUseCase(locator()));
+  locator.registerLazySingleton(() => GetUserDataUseCase(locator()));
   locator.registerLazySingleton(() => GetTokenUseCase(locator()));
 
   //FiscalUseCases

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_balance_sheet_type.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_balance_sheet_status_type.dart';
+import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_liquidity_type.dart';
 
 import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
@@ -27,14 +29,27 @@ class _EditGroupFormState extends State<EditGroupForm> {
   TextEditingController orderIndexOneController = TextEditingController();
   TextEditingController orderIndexTwoController = TextEditingController();
 
-
+  @override
+  void initState() {
+    super.initState();
+    copyAccountToTempAccount();
+  }
 
   @override
   Widget build(BuildContext context) {
-    widget.tempAccount = widget.account.copy();
+
     descriptionController.text = widget.account.description;
-    BalanceSheetType balanceSheetType =
-        BalanceSheetType.fromValue(widget.account.balanceSheetType);
+    LiquidityType? liquidityType;
+    if (widget.account.mahiatRialy > -1) {
+      liquidityType = LiquidityType.fromValue(widget.account.mahiatRialy);
+    }
+
+    BalanceSheetStatusType balanceSheetStatusType;
+    if (widget.account.balanceSheetType > -1) {
+      balanceSheetStatusType =
+          BalanceSheetStatusType.fromValue(widget.account.balanceSheetType);
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -162,9 +177,15 @@ class _EditGroupFormState extends State<EditGroupForm> {
                       Row(
                         children: [
                           Radio(
-                            value: BalanceSheetType.balanceSheet,
-                            groupValue: balanceSheetType,
-                            onChanged: (value) {},
+                            value: LiquidityType.balanceSheet.value,
+                            groupValue: widget.account.mahiatRialy,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.account.updateMahiatRialy(value as int);
+                                widget.account.updateBalanceSheetType(
+                                    widget.tempAccount.balanceSheetType);
+                              });
+                            },
                           ),
                           Text(
                             localization.balanceSheet,
@@ -180,9 +201,14 @@ class _EditGroupFormState extends State<EditGroupForm> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Radio(
-                            value: BalanceSheetType.profitAndLoss,
-                            groupValue: balanceSheetType,
-                            onChanged: (value) {},
+                            value: LiquidityType.profitAndLoss.value,
+                            groupValue: widget.account.mahiatRialy,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.account.updateMahiatRialy(value as int);
+                                widget.account.updateBalanceSheetType(-1);
+                              });
+                            },
                           ),
                           Text(
                             localization.profitAndLoss,
@@ -198,9 +224,14 @@ class _EditGroupFormState extends State<EditGroupForm> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Radio(
-                            value: BalanceSheetType.disciplinary,
-                            groupValue: balanceSheetType,
-                            onChanged: (value) {},
+                            value: LiquidityType.disciplinary.value,
+                            groupValue: widget.account.mahiatRialy,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.account.updateMahiatRialy(value as int);
+                                widget.account.updateBalanceSheetType(-1);
+                              });
+                            },
                           ),
                           Text(
                             localization.disciplinary,
@@ -255,7 +286,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                 const SizedBox(
                   height: 15,
                 ),
-                if (balanceSheetType == BalanceSheetType.balanceSheet) ...[
+                if (liquidityType != null && liquidityType == LiquidityType.balanceSheet) ...[
                   FormItemTitle(title: localization.balanceSheetStatus),
                   LayoutBuilder(builder: (context, constrains) {
                     return Row(
@@ -264,9 +295,14 @@ class _EditGroupFormState extends State<EditGroupForm> {
                         Row(
                           children: [
                             Radio(
-                              value: BalanceSheetType.balanceSheet,
-                              groupValue: balanceSheetType,
-                              onChanged: (value) {},
+                              value: BalanceSheetStatusType.debt.value,
+                              groupValue: widget.account.balanceSheetType,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.account.updateBalanceSheetType(
+                                      BalanceSheetStatusType.debt.value);
+                                });
+                              },
                             ),
                             Text(
                               localization.debt,
@@ -282,9 +318,14 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Radio(
-                              value: BalanceSheetType.profitAndLoss,
-                              groupValue: balanceSheetType,
-                              onChanged: (value) {},
+                              value: BalanceSheetStatusType.asset.value,
+                              groupValue: widget.account.balanceSheetType,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.account
+                                      .updateBalanceSheetType(value as int);
+                                });
+                              },
                             ),
                             Text(
                               localization.asset,
@@ -300,9 +341,15 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Radio(
-                              value: BalanceSheetType.disciplinary,
-                              groupValue: balanceSheetType,
-                              onChanged: (value) {},
+                              value: BalanceSheetStatusType
+                                  .proprietaryRights.value,
+                              groupValue: widget.account.balanceSheetType,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.account
+                                      .updateBalanceSheetType(value as int);
+                                });
+                              },
                             ),
                             Text(
                               localization.proprietaryRights,
@@ -323,7 +370,6 @@ class _EditGroupFormState extends State<EditGroupForm> {
                 ],
                 LayoutBuilder(builder: (context, constrains) {
                   double itemWidth = (constrains.maxWidth / 2) - 10;
-
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -341,14 +387,13 @@ class _EditGroupFormState extends State<EditGroupForm> {
                                 .updateGroupCode(groupCodeController.text);
                             widget.account
                                 .updateDisplayName(groupNameController.text);
-                            widget.account.updateIndexOrder1(int.parse(orderIndexOneController.text));
-                             widget.account.updateIndexOrder1(int.parse(orderIndexTwoController.text));
+                            widget.account.updateIndexOrder1(
+                                int.parse(orderIndexOneController.text));
+                            widget.account.updateIndexOrder1(
+                                int.parse(orderIndexTwoController.text));
 
-                            locator
-                                .get<MainBloc>()
-                                .add(OnUpdateAccount(widget.account));
+                            locator.get<MainBloc>().add(OnUpdateAccount(widget.account));
                           }
-
                         },
                       ),
                       FormButton(
@@ -368,5 +413,9 @@ class _EditGroupFormState extends State<EditGroupForm> {
         )
       ],
     );
+  }
+
+  void copyAccountToTempAccount() {
+    widget.tempAccount = widget.account.copy();
   }
 }

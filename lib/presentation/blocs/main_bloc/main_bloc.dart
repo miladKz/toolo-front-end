@@ -12,6 +12,7 @@ import '../../../app_exception.dart';
 import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
+import '../../../domain/usecases/accounting/delete_account_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
@@ -20,6 +21,7 @@ part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
+  Account? selectedAccount;
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -29,6 +31,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnClickOnAccount>(_showDetailAccountInFormHandler);
     on<OnUpdateAccount>(_updateAccountHandler);
     on<LoadUserData>(_getUserData);
+    on<DeleteAccountEvent>(_deleteAccountHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -107,6 +110,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   }
 
   FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event, Emitter<MainState> emit) {
+    selectedAccount = event.account;
     emit(ShowAccountDetailInFormState(event.account));
   }
 
@@ -122,5 +126,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
     UserData userData =  useCase();
     emit(LoadUserDataState(userData));
+  }
+
+  FutureOr<void> _deleteAccountHandler(DeleteAccountEvent event, Emitter<MainState> emit) async {
+    emit(MainLoadingOnView(isShow: true));
+    DeleteAccountUseCase useCase = locator<DeleteAccountUseCase>();
+    String message = await useCase(event.account);
+    emit(MainLoadingOnView(isShow: false));
+    selectedAccount = null;
+    emit(DeletedAccountState(message));
   }
 }

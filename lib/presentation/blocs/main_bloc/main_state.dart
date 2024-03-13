@@ -45,3 +45,7 @@ class LoadUserDataState extends MainState{
   UserData userData;
   LoadUserDataState(this.userData);
 }
+class DeletedAccountState extends MainState{
+  String message;
+  DeletedAccountState(this.message);
+}

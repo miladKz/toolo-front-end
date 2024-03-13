@@ -30,7 +30,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-  Future<ServerResponseDto> updateAccount({required String token,required AccountDto param}) async {
+  Future<ServerResponseDto> updateAccount(
+      {required String token, required AccountDto param}) async {
     String apiAddress = "/api/acc/accounts";
     try {
       log(param.toMap());
@@ -46,12 +47,31 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
-  Future<ServerResponseDto> deleteAccount({required String token,required AccountDto param}) async {
+
+  Future<ServerResponseDto> createAccount(
+      {required String token, required AccountDto param}) async {
     String apiAddress = "/api/acc/accounts";
+    try {
+      log(param.toMap());
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> deleteAccount(
+      {required String token, required AccountDto param}) async {
+    String apiAddress = "/api/acc/accounts/${param.id}";
     try {
       Response<dynamic> response = await httpClient.delete(
         apiAddress,
-        queryParameters: param.idToMap(),
         options: _getHeaders(token),
       );
       return ServerResponseDto.fromMap(getData(response));
@@ -84,7 +104,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 
   Map<String, dynamic> getData(Response response) {
-  return  jsonDecode(response.data);
+    return jsonDecode(response.data);
   }
 }
 

@@ -205,6 +205,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                 const SizedBox(
                   height: 10,
                 ),
+              if (widget.account.accountLevel >0 && !widget.account.hasChildren) ...[
                 FormItemTitle(title: localization.riyaliType),
                 LayoutBuilder(builder: (context, constrains) {
                   double itemWidth = constrains.maxWidth / 2;
@@ -324,6 +325,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                 const SizedBox(
                   height: 10,
                 ),
+                ],
                 LayoutBuilder(builder: (context, constrains) {
                   double itemWidth = (constrains.maxWidth / 2) - 10;
                   return Row(

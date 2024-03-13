@@ -190,6 +190,7 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                 const SizedBox(
                   height: 10,
                 ),
+              if (widget.account.accountLevel >0 && !widget.account.hasChildren) ...[
                 FormItemTitle(title: localization.riyaliType),
                 IgnorePointer(
                   ignoring: true,
@@ -318,6 +319,8 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                     ],
                   ),
                 ),
+              ]
+
               ],
             ),
           ),

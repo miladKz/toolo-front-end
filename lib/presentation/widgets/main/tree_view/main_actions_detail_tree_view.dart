@@ -26,10 +26,11 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   Widget build(BuildContext context) {
     return CustomExpansionTile(
       onTap: () {
-        context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+        selectItem(context);
       },
       title: GestureDetector(
         onDoubleTap: () {
+          selectItem(context);
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -75,6 +76,10 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
             )),
       ],
     );
+  }
+
+  void selectItem(BuildContext context) {
+     context.read<MainBloc>().add(OnClickOnAccount(widget.account));
   }
 
   List<Widget> _buildChildren(List<Account> items, double textScale) {

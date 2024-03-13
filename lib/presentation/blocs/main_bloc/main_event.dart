@@ -31,3 +31,9 @@ class OnUpdateAccount extends MainEvent {
 }
 class LoadUserData extends MainEvent {
 }
+
+class DeleteAccountEvent extends MainEvent {
+  Account account;
+  DeleteAccountEvent(this.account);
+}
+

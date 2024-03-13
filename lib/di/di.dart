@@ -23,6 +23,8 @@ import '../data/datasources/auth/auth_local_data_source_impl.dart';
 import '../data/datasources/auth/remote_data_source.dart';
 import '../data/repositories/auth/auth_repository_impl.dart';
 import '../data/repositories/fiscal_year/fiscal_repository.dart';
+import '../domain/usecases/accounting/create_account_use_case.dart';
+import '../domain/usecases/accounting/delete_account_use_case.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/update_account_use_case.dart';
 import '../domain/usecases/auth/get_token_usecase.dart';
@@ -59,7 +61,8 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => GetActionsUseCase(locator()));
   locator.registerLazySingleton(() => GetAccountListUseCase(locator()));
   locator.registerLazySingleton(() => UpdateAccountUseCase(locator()));
-
+  locator.registerLazySingleton(() => CreateAccountUseCase(locator()));
+  locator.registerLazySingleton(() => DeleteAccountUseCase(locator()));
 
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(

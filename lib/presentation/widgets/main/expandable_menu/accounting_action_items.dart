@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/main.dart';
 
-List<Widget> accountingActionsItem(double maxWith) {
+import '../../../../di/di.dart';
+import '../../../blocs/main_bloc/main_bloc.dart';
+import '../edit_group_dialog.dart';
+
+List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
   double objectCount = 7 + 1;
   double objectWith = (maxWith / objectCount) - 5;
 
@@ -11,43 +16,95 @@ List<Widget> accountingActionsItem(double maxWith) {
         caption: localization.newAccount,
         color: const Color(0xFF198754),
         backgroundColor: const Color(0xFFD1E7DD),
-        icon: Icons.control_point_rounded),
+        icon: Icons.control_point_rounded,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              Account newAccount = Account.empty();
+              return EditGroupDialog(
+                  account: newAccount); // Pass your account data here
+            },
+          );
+        }),
+    object(
+        objectWith: objectWith,
+        caption: "گروه جدید",
+        color: const Color(0xFF198754),
+        backgroundColor: const Color(0xFFD1E7DD),
+        icon: Icons.control_point_rounded,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              Account newAccount = Account.empty();
+              newAccount.updateAccountLevel(0);
+              return EditGroupDialog(
+                  account: newAccount); // Pass your account data here
+            },
+          );
+        }),
     object(
         objectWith: objectWith,
         caption: '${localization.remove} ${localization.removeShortcut}',
         color: const Color(0xFF198754),
         backgroundColor: const Color(0xFFF8D7DA),
-        icon: Icons.delete_outline),
+        icon: Icons.delete_outline,
+        onTap: () {
+          MainBloc mainBloc = locator.get<MainBloc>();
+          if (mainBloc.selectedAccount != null) {
+            locator
+                .get<MainBloc>()
+                .add(DeleteAccountEvent(mainBloc.selectedAccount!));
+          }
+        }),
     object(
         objectWith: objectWith,
         caption: localization.edit,
         color: const Color(0xFF6610f2),
         backgroundColor: const Color(0xFFE9DCFF),
-        icon: Icons.mode_outlined),
+        icon: Icons.mode_outlined,
+        onTap: () {
+          MainBloc mainBloc = locator.get<MainBloc>();
+          if (mainBloc.selectedAccount != null) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return EditGroupDialog(
+                    account: mainBloc
+                        .selectedAccount!); // Pass your account data here
+              },
+            );
+          }
+        }),
     object(
         objectWith: objectWith,
         caption: localization.send,
         color: const Color(0xFFfd7e14),
         backgroundColor: const Color(0xFFFFE5D0),
-        icon: Icons.send_outlined),
+        icon: Icons.send_outlined,
+        onTap: () {}),
     object(
         objectWith: objectWith,
         caption: localization.reset,
         color: const Color(0xFF6c3483),
         backgroundColor: const Color(0xFFEFE0F5),
-        icon: Icons.rotate_90_degrees_cw_outlined),
+        icon: Icons.rotate_90_degrees_cw_outlined,
+        onTap: () {}),
     object(
         objectWith: objectWith,
         caption: localization.print,
         color: const Color(0xFFb02a37),
         backgroundColor: const Color(0xFFF7D6E6),
-        icon: Icons.print_outlined),
+        icon: Icons.print_outlined,
+        onTap: () {}),
     object(
         objectWith: objectWith,
         caption: localization.deactivate,
         color: const Color(0xFF6c757d),
         backgroundColor: const Color(0xFFDEE2E6),
-        icon: Icons.toggle_off_outlined),
+        icon: Icons.toggle_off_outlined,
+        onTap: () {}),
   ];
 }
 
@@ -56,6 +113,7 @@ Widget object(
     required String caption,
     required Color color,
     required Color backgroundColor,
+    required Function() onTap,
     required IconData icon}) {
   return Container(
     constraints: BoxConstraints(minWidth: objectWith),
@@ -64,7 +122,7 @@ Widget object(
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
-      onPressed: () {},
+      onPressed: onTap,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
         child: Row(

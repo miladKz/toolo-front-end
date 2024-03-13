@@ -123,4 +123,23 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
+
+
+  @override
+  Future<Account> createAccount(Account account) async {
+    AccountDto accountDto = getAccountAsDto(account);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+      await remoteDataSource.createAccount(token: token, param: accountDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return AccountDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

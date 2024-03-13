@@ -178,4 +178,28 @@ class Account {
         displayName: displayName,
         balanceSheetType: balanceSheetType);
   }
+  factory  Account.empty() {
+    return Account(
+        id: 0,
+        accCode1: '',
+        accCode2: '',
+        accCode3: '',
+        accCode4: '',
+        accountLevel: -1,
+        accountcd: '',
+        canDel: false,
+        description: '',
+        groupCode: '',
+        hasPooli: false,
+        hasTafzili: false,
+        hasTaseir: false,
+        indexOrder1: -1,
+        indexOrder2: -1,
+        isActive: false,
+        isAmalyati: false,
+        type: -1,
+        mahiatRialy: -1,
+        displayName: '',
+        balanceSheetType: -1);
+  }
 }

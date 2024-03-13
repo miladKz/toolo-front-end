@@ -37,9 +37,10 @@ class _TreeViewItemState extends State<TreeViewItem> {
         const EdgeInsets.only(right: 10, left: 1, top: 2, bottom: 2);
     return GestureDetector(
       onTap: () {
-        context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+        selectItem(context);
       },
       onDoubleTap: () {
+        selectItem(context);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -80,6 +81,10 @@ class _TreeViewItemState extends State<TreeViewItem> {
         ),
       ),
     );
+  }
+
+  void selectItem(BuildContext context) {
+    context.read<MainBloc>().add(OnClickOnAccount(widget.account));
   }
 
   showQuestionDialog(

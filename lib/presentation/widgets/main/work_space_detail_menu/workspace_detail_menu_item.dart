@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
@@ -49,12 +50,17 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Assets.ico.icPinSelected.image(
-                    width: 13,
-                    height: 13,
-                    color: _isHovered
-                        ? Color(0xFF6C3483)
-                        : Color(0xFFE7E7E7)),
+                GestureDetector(
+                  onTap: () {
+                    locator.get<MainBloc>().add(AddPinnedActionEvent(widget.item));
+                  },
+                  child: Assets.ico.icPinSelected.image(
+                      width: 13,
+                      height: 13,
+                      color: _isHovered
+                          ? Color(0xFF6C3483)
+                          : Color(0xFFE7E7E7)),
+                ),
                 const SizedBox(width: 5),
                 Text(
                   maxLines: 1,

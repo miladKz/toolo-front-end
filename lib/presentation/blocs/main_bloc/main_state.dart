@@ -49,3 +49,8 @@ class DeletedAccountState extends MainState{
   String message;
   DeletedAccountState(this.message);
 }
+
+class AddPinnedActionState extends MainState{
+  AccountingAction action;
+  AddPinnedActionState(this.action);
+}

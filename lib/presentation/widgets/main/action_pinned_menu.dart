@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
+import 'package:toolo_gostar/presentation/widgets/main/workspace_menu_item.dart';
 
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../gen/assets.gen.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
-import 'workspace_menu_item.dart';
 
-class PinnedWorkspace extends StatefulWidget {
+class ActionPinnedMenu extends StatefulWidget {
   WorkSpaceItems selectedItem;
-  PinnedWorkspace({
+
+  ActionPinnedMenu({
     this.selectedItem = WorkSpaceItems.accounting,
     super.key,
   });
+
   @override
-  State<PinnedWorkspace> createState() => _PinnedWorkspaceState();
+  State<ActionPinnedMenu> createState() => _ActionPinnedMenuState();
 }
 
-class _PinnedWorkspaceState extends State<PinnedWorkspace> {
+class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
   bool _isExpanded = false;
   final double borderRadius = 11;
   List<AccountingAction> children = List.empty(growable: true);
@@ -33,7 +33,7 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFF6F6F6),
+          color: _isExpanded ? Color(0xFFF6F6F6) : Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: ExpansionTile(
@@ -42,7 +42,7 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
           shape: const Border(),
           collapsedIconColor: const Color(0xFFBD8AD0),
           tilePadding:
-          const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 4),
+              const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 4),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -51,26 +51,22 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     _isExpanded
-                        ? Assets.ico.icCartableSelected
-                        .image(width: 20, height: 20)
-                        : Assets.ico.icCartableNotSelected
-                        .image(width: 20, height: 20),
+                        ?  Assets.ico.icPinSelected.image(width: 20, height: 20)
+                        :  Assets.ico.icPinNotSelected.image(width: 20, height: 20),
+
                     const SizedBox(
-                      width: 5,
+                      width: 4,
                     ),
                     Text(
                       localization.titlePinsMenu,
-                      style: TextStyle(
+                      style: const TextStyle(
+                          color: Color(0xFF7B7B84),
                           fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF7B7B84)),
-                    ),
+                          fontWeight: FontWeight.bold),
+                    )
                   ],
                 ),
               ),
-              SizedBox(
-                child: Assets.ico.icPinNotSelected.image(width: 15, height: 15),
-              )
             ],
           ),
           children: [
@@ -83,9 +79,16 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
             ),
             BlocBuilder<MainBloc, MainState>(
               builder: (context, state) {
-
                 return Column(
-                 // children: widget.children,
+                  children: children.map((action) {
+                    return WorkspaceMenuItem(
+                      isSelected: false,
+                      title: action.description,
+                      onTap: () {
+                        getTreeByEndpoint(action.endPoint);
+                      },
+                    );
+                  }).toList(),
                 );
               },
             ),
@@ -97,14 +100,15 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
 
   void updateList() {
     final state = context.watch<MainBloc>().state;
-    if (state is AddPinnedActionState) {
+    if (state is AddPinnedActionState && !children.contains(state.action)) {
       children.add(state.action);
       print(state.action.description);
     }
   }
+
   void setSelectedItem(WorkSpaceItems item) {
     return setState(() {
-      widget.selectedItem  = item;
+      widget.selectedItem = item;
       getItemActions();
     });
   }
@@ -112,9 +116,21 @@ class _PinnedWorkspaceState extends State<PinnedWorkspace> {
   getItemActions() {
     locator.get<MainBloc>().add(FilterActionsEvent(widget.selectedItem));
   }
+  void getTreeByEndpoint(String endPoint) {
+    switch(endPoint){
+      case "/api/acc/accounts":
+        locator.get<MainBloc>().add(MainAccountList());
+        break;
+      case "":
+        locator.get<MainBloc>().add(MainAnotherList(endpoint: ""));
+        debugPrint("endpoint is: empty");
+        break;
+    }
+  }
 }
 
 class GetAccountingActionIntent extends Intent {
   const GetAccountingActionIntent();
 }
+
 

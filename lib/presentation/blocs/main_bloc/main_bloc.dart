@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -17,6 +16,7 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
+
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
@@ -32,11 +32,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnUpdateAccount>(_updateAccountHandler);
     on<LoadUserData>(_getUserData);
     on<DeleteAccountEvent>(_deleteAccountHandler);
+    on<AddPinnedActionEvent>(_addPinnedActionHandler);
   }
 
   FutureOr<void> _mainActionList(
       MainActionList event, Emitter<MainState> emit) async {
-    try{
+    try {
       debugPrint('Atras method _mainActionList: ');
       emit(MainLoadingOnView(isShow: false));
       GetActionsUseCase useCase = locator<GetActionsUseCase>();
@@ -45,10 +46,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnView(isShow: false));
       final filteredItems = _filterActions(WorkSpaceItems.accounting);
       emit(AccountingActionsSuccess(filteredItems));
-    }catch(e){
+    } catch (e) {
       e.toString();
     }
-
   }
 
   FutureOr<void> _filterActionsHandler(
@@ -109,12 +109,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
   }
 
-  FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event, Emitter<MainState> emit) {
+  FutureOr<void> _showDetailAccountInFormHandler(
+      OnClickOnAccount event, Emitter<MainState> emit) {
     selectedAccount = event.account;
     emit(ShowAccountDetailInFormState(event.account));
   }
 
-  FutureOr<void> _updateAccountHandler(OnUpdateAccount event, Emitter<MainState> emit) async {
+  FutureOr<void> _updateAccountHandler(
+      OnUpdateAccount event, Emitter<MainState> emit) async {
     emit(MainLoadingOnView(isShow: true));
     UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
     Account account = await useCase(event.account);
@@ -124,16 +126,22 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _getUserData(LoadUserData event, Emitter<MainState> emit) {
     GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
-    UserData userData =  useCase();
+    UserData userData = useCase();
     emit(LoadUserDataState(userData));
   }
 
-  FutureOr<void> _deleteAccountHandler(DeleteAccountEvent event, Emitter<MainState> emit) async {
+  FutureOr<void> _deleteAccountHandler(
+      DeleteAccountEvent event, Emitter<MainState> emit) async {
     emit(MainLoadingOnView(isShow: true));
     DeleteAccountUseCase useCase = locator<DeleteAccountUseCase>();
     String message = await useCase(event.account);
     emit(MainLoadingOnView(isShow: false));
     selectedAccount = null;
     emit(DeletedAccountState(message));
+  }
+
+  FutureOr<void> _addPinnedActionHandler(
+      AddPinnedActionEvent event, Emitter<MainState> emit) {
+    emit(AddPinnedActionState(event.action));
   }
 }

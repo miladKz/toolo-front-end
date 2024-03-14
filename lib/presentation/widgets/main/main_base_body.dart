@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
+import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/tree_view/main_actions_detail_tree_view.dart';
@@ -25,6 +26,7 @@ class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
   Workspace workSpaceMenu = Workspace();
+  ActionPinnedMenu pinnedWorkSpaceMenu = ActionPinnedMenu();
   MainActionsDetailWidget mainActionsDetailWidget = MainActionsDetailWidget();
 
   @override
@@ -240,7 +242,7 @@ class MainBaseBody extends StatelessWidget {
         isSelected: false,
       ),
       CollapsibleItem(
-        content: const PinedMenu(),
+        content: pinnedWorkSpaceMenu,
         iconImage: Assets.ico.icPinNotSelected.image(width: 20, height: 20),
         //`iconImage` has priority over `icon` property
         isSelected: false,

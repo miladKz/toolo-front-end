@@ -37,3 +37,8 @@ class DeleteAccountEvent extends MainEvent {
   DeleteAccountEvent(this.account);
 }
 
+class AddPinnedActionEvent extends MainEvent {
+  AccountingAction action;
+  AddPinnedActionEvent(this.action);
+}
+

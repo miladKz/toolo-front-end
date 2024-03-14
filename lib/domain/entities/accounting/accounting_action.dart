@@ -11,6 +11,7 @@ class AccountingAction {
   final int levelIndex;
   final int orderIndex;
   final String parentCode;
+  final bool isPinned;
 
  const AccountingAction(
       {required this.id,
@@ -24,5 +25,6 @@ class AccountingAction {
       required this.levelIndex,
       required this.orderIndex,
       required this.endPoint,
-      required this.parentCode,});
+      required this.parentCode,
+       this.isPinned = false,});
 }

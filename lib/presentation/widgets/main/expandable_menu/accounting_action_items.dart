@@ -48,7 +48,7 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
     object(
         objectWith: objectWith,
         caption: '${localization.remove} ${localization.removeShortcut}',
-        color: const Color(0xFF198754),
+        color: const Color(0xFFDC3545),
         backgroundColor: const Color(0xFFF8D7DA),
         icon: Icons.delete_outline,
         onTap: () {

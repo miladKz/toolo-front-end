@@ -10,10 +10,9 @@ import '../../../gen/assets.gen.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
 
 class ActionPinnedMenu extends StatefulWidget {
-  WorkSpaceItems selectedItem;
+  AccountingAction? selectedItem;
 
   ActionPinnedMenu({
-    this.selectedItem = WorkSpaceItems.accounting,
     super.key,
   });
 
@@ -82,10 +81,10 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
                 return Column(
                   children: children.map((action) {
                     return WorkspaceMenuItem(
-                      isSelected: false,
+                      isSelected: widget.selectedItem == action,
                       title: action.description,
                       onTap: () {
-                        getTreeByEndpoint(action.endPoint);
+                        setSelectedItem(action);
                       },
                     );
                   }).toList(),
@@ -102,20 +101,16 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
     final state = context.watch<MainBloc>().state;
     if (state is AddPinnedActionState && !children.contains(state.action)) {
       children.add(state.action);
-      print(state.action.description);
     }
   }
 
-  void setSelectedItem(WorkSpaceItems item) {
+  void setSelectedItem(AccountingAction item) {
     return setState(() {
       widget.selectedItem = item;
-      getItemActions();
+      getTreeByEndpoint(item.endPoint);
     });
   }
 
-  getItemActions() {
-    locator.get<MainBloc>().add(FilterActionsEvent(widget.selectedItem));
-  }
   void getTreeByEndpoint(String endPoint) {
     switch(endPoint){
       case "/api/acc/accounts":

@@ -41,4 +41,8 @@ class AddPinnedActionEvent extends MainEvent {
   AccountingAction action;
   AddPinnedActionEvent(this.action);
 }
+class RemovePinnedActionEvent extends MainEvent {
+  AccountingAction action;
+  RemovePinnedActionEvent(this.action);
+}
 

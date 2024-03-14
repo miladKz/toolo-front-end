@@ -23,13 +23,13 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
             builder: (BuildContext context) {
               Account newAccount = Account.empty();
               return EditGroupDialog(
-                  account: newAccount); // Pass your account data here
+                  account: newAccount, isNew: true,); // Pass your account data here
             },
           );
         }),
     object(
         objectWith: objectWith,
-        caption: "گروه جدید",
+        caption:localization.newGroup,
         color: const Color(0xFF198754),
         backgroundColor: const Color(0xFFD1E7DD),
         icon: Icons.control_point_rounded,
@@ -40,7 +40,7 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
               Account newAccount = Account.empty();
               newAccount.updateAccountLevel(0);
               return EditGroupDialog(
-                  account: newAccount); // Pass your account data here
+                  account: newAccount, isNew: true,); // Pass your account data here
             },
           );
         }),

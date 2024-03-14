@@ -33,6 +33,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<LoadUserData>(_getUserData);
     on<DeleteAccountEvent>(_deleteAccountHandler);
     on<AddPinnedActionEvent>(_addPinnedActionHandler);
+    on<RemovePinnedActionEvent>(_removePinnedActionHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -143,5 +144,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _addPinnedActionHandler(
       AddPinnedActionEvent event, Emitter<MainState> emit) {
     emit(AddPinnedActionState(event.action));
+  }
+
+  FutureOr<void> _removePinnedActionHandler(
+      RemovePinnedActionEvent event, Emitter<MainState> emit) {
+    emit(RemovePinnedActionState(event.action));
   }
 }

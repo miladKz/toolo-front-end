@@ -11,9 +11,10 @@ import 'form_elements/form_text_field.dart';
 
 class EditAccountForm extends StatefulWidget {
   Account account;
+  bool isNew;
   //Account tmpAaccount;
 
-  EditAccountForm({super.key, required this.account});
+  EditAccountForm({super.key, required this.account, this.isNew = false});
 
   @override
   State<EditAccountForm> createState() => _EditAccountFormState();
@@ -51,7 +52,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  localization.editAccount,
+                  widget.isNew?localization.newAccount:localization.editAccount,
                   style: const TextStyle(
                       color: Color(0xFF5A5A5A),
                       fontSize: 14,

@@ -3,7 +3,7 @@ import 'package:atras_data_parser/atras_data_parser.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 
 class AccountingActionDto extends AccountingAction {
-  const AccountingActionDto(
+   AccountingActionDto(
       {required super.id,
       required super.actionCode,
       required super.actionName,

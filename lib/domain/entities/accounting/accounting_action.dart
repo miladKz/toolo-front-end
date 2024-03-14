@@ -11,9 +11,9 @@ class AccountingAction {
   final int levelIndex;
   final int orderIndex;
   final String parentCode;
-  final bool isPinned;
+  bool isPinned;
 
- const AccountingAction(
+  AccountingAction(
       {required this.id,
       required this.actionCode,
       required this.actionName,
@@ -27,4 +27,10 @@ class AccountingAction {
       required this.endPoint,
       required this.parentCode,
        this.isPinned = false,});
+
+  void updatePinned(bool pinned){
+    isPinned = pinned;
+  }
 }
+
+

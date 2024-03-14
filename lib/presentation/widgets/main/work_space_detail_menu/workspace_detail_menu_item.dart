@@ -52,12 +52,18 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    locator.get<MainBloc>().add(AddPinnedActionEvent(widget.item));
+                    widget.item.updatePinned(!widget.item.isPinned);
+                    if(widget.item.isPinned){
+                      locator.get<MainBloc>().add(AddPinnedActionEvent(widget.item));
+                    }else{
+                      locator.get<MainBloc>().add(RemovePinnedActionEvent(widget.item));
+                    }
+
                   },
                   child: Assets.ico.icPinSelected.image(
                       width: 13,
                       height: 13,
-                      color: _isHovered
+                      color: _isHovered || widget.item.isPinned
                           ? Color(0xFF6C3483)
                           : Color(0xFFE7E7E7)),
                 ),

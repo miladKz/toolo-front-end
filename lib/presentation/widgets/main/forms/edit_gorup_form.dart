@@ -12,10 +12,11 @@ import 'form_elements/form_item_title.dart';
 import 'form_elements/form_text_field.dart';
 
 class EditGroupForm extends StatefulWidget {
-  EditGroupForm({super.key, required this.account});
-
+  bool isNew;
   Account account;
   late Account tempAccount;
+
+  EditGroupForm({super.key, required this.account, this.isNew = false});
 
   @override
   State<EditGroupForm> createState() => _EditGroupFormState();
@@ -67,7 +68,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  localization.editGroup,
+                  widget.isNew?localization.newGroup:localization.editGroup,
                   style: const TextStyle(
                       color: Color(0xFF5A5A5A),
                       fontSize: 14,

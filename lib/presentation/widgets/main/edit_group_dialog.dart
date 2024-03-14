@@ -7,8 +7,9 @@ import 'forms/edit_gorup_form.dart';
 
 class EditGroupDialog extends StatelessWidget {
   final Account account;
+  bool isNew;
 
-  const EditGroupDialog({Key? key, required this.account}) : super(key: key);
+   EditGroupDialog({Key? key, required this.account, this.isNew = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class EditGroupDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero, // Remove padding around the dialog
       child: SingleChildScrollView(
-        child: account.accountLevel == 0 ? EditGroupForm(account: account): EditAccountForm(account: account),
+        child: account.accountLevel == 0 ? EditGroupForm(account: account, isNew: isNew,): EditAccountForm(account: account,isNew: isNew),
       ),
     );
   }

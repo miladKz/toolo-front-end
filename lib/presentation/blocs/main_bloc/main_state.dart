@@ -54,3 +54,7 @@ class AddPinnedActionState extends MainState{
   AccountingAction action;
   AddPinnedActionState(this.action);
 }
+class RemovePinnedActionState extends MainState{
+  AccountingAction action;
+  RemovePinnedActionState(this.action);
+}

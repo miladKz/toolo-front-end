@@ -94,8 +94,9 @@ class _WorkspaceState extends State<Workspace> {
                         actions: <Type, Action<Intent>>{
                           GetAccountingActionIntent:
                               CallbackAction<GetAccountingActionIntent>(
-                            onInvoke: (GetAccountingActionIntent intent) =>
-                                getItemActions(),
+                            onInvoke:(intent) {
+                             return setSelectedItem(WorkSpaceItems.accounting);
+                            },
                           ),
                         },
                         child: Focus(

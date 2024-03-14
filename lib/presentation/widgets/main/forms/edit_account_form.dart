@@ -20,7 +20,6 @@ class EditAccountForm extends StatefulWidget {
 }
 
 class _EditAccountFormState extends State<EditAccountForm> {
-  TextEditingController descriptionTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController accountNameController = TextEditingController();
@@ -34,7 +33,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
     if (widget.account.type >= 0) {
       accountType = RialType.fromValue(widget.account.type);
     }
-    descriptionTextController.text = widget.account.description;
+    descriptionController.text = widget.account.description;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -101,6 +100,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                         width: 5,
                       ),
                       FormTextField(
+                        enable: false,
                           controller: accountNameController,
                           widgetWidth: widgetWidth,
                           text: widget.account.displayName),
@@ -181,7 +181,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                     height: 80,
                     width: double.infinity,
                     child: TextFormField(
-                      controller: descriptionTextController,
+                      controller: descriptionController,
                       maxLines: null,
                       minLines: null,
                       expands: true,
@@ -345,8 +345,6 @@ class _EditAccountFormState extends State<EditAccountForm> {
                                 .updateAccountcd(accountCodeController.text);
                             widget.account
                                 .updateDisplayName(accountNameController.text);
-
-                            //widget.account.updateIsActive();
 
                             locator
                                 .get<MainBloc>()

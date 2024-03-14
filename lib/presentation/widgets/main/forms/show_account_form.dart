@@ -18,7 +18,7 @@ class ShowAccountForm extends StatefulWidget {
 }
 
 class _ShowAccountFormState extends State<ShowAccountForm> {
-  TextEditingController descriptionTextController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   RialType accountType = RialType.noMatter;
@@ -26,8 +26,8 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<MainBloc>().state;
+    descriptionController.text = widget.account.description;
     if (state is ShowAccountDetailInFormState) {
-      descriptionTextController.text = widget.account.description;
       if(widget.account.type >= 0){
         accountType = RialType.fromValue(widget.account.type);
       }
@@ -170,7 +170,7 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                     width: double.infinity,
                     child: TextFormField(
                       enabled: false,
-                      controller: descriptionTextController,
+                      controller: descriptionController,
                       maxLines: null,
                       minLines: null,
                       expands: true,

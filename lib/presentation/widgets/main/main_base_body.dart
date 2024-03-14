@@ -139,9 +139,11 @@ class MainBaseBody extends StatelessWidget {
                                       mainActionsDetailWidget,
                                       BlocBuilder<MainBloc, MainState>(
                                         buildWhen: (previous, current){
-                                          return current is ShowAccountDetailInFormState;
+                                          return current is ShowAccountDetailInFormState ||current is SuccessUpdatedAccountState;
                                         },
                                         builder: (context, state) {
+                                          print("stateeeeeeeeeeeeeeee");
+                                          print(state);
                                           if (state
                                                   is ShowAccountDetailInFormState &&
                                               state.account.accountLevel == 0) {

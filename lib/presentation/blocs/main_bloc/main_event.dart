@@ -33,16 +33,16 @@ class LoadUserData extends MainEvent {
 }
 
 class DeleteAccountEvent extends MainEvent {
-  Account account;
+ final Account account;
   DeleteAccountEvent(this.account);
 }
 
 class AddPinnedActionEvent extends MainEvent {
-  AccountingAction action;
+  final AccountingAction action;
   AddPinnedActionEvent(this.action);
 }
 class RemovePinnedActionEvent extends MainEvent {
-  AccountingAction action;
+  final AccountingAction action;
   RemovePinnedActionEvent(this.action);
 }
 

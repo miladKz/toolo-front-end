@@ -12,6 +12,11 @@ class MainLoadingOnView extends MainState {
 
   MainLoadingOnView({required this.isShow});
 }
+class MainLoadingOnButton extends MainState {
+  final bool isShow;
+
+  MainLoadingOnButton({required this.isShow});
+}
 
 class AccountingActionsSuccess extends MainState {
   final List<AccountingAction> actions;
@@ -31,30 +36,44 @@ class MainError extends MainState {
   MainError(this.appException);
 }
 
-class ShowAccountDetailInFormState extends MainState{
+class MainAccountDetailInFormVisibility extends MainState{
+  final Account? account;
+  final bool isShow;
+
+  MainAccountDetailInFormVisibility({this.account, required this.isShow});
+}
+
+class MainUpdatedAccountSuccess extends MainState{
   final Account account;
-  ShowAccountDetailInFormState(this.account);
+  MainUpdatedAccountSuccess(this.account);
+}
+class MainUpdatedAccountFailed extends MainState{
+  final String errorMessage;
+
+  MainUpdatedAccountFailed({required this.errorMessage});
 }
 
-class SuccessUpdatedAccountState extends MainState{
-  final Account account;
-  SuccessUpdatedAccountState(this.account);
+
+class MainLoadUserDataSuccess extends MainState{
+  final UserData userData;
+  MainLoadUserDataSuccess(this.userData);
+}
+class MainDeletedAccountSuccess extends MainState{
+  final String message;
+  MainDeletedAccountSuccess(this.message);
 }
 
-class LoadUserDataState extends MainState{
-  UserData userData;
-  LoadUserDataState(this.userData);
+class MainAddPinnedActionSuccess extends MainState{
+  final AccountingAction action;
+  MainAddPinnedActionSuccess(this.action);
 }
-class DeletedAccountState extends MainState{
-  String message;
-  DeletedAccountState(this.message);
+class MainRemovePinnedActionSuccess extends MainState{
+  final AccountingAction action;
+  MainRemovePinnedActionSuccess(this.action);
 }
+class MainActionToolbarVisibility extends MainState{
+  final bool isShow;
 
-class AddPinnedActionState extends MainState{
-  AccountingAction action;
-  AddPinnedActionState(this.action);
-}
-class RemovePinnedActionState extends MainState{
-  AccountingAction action;
-  RemovePinnedActionState(this.action);
+  MainActionToolbarVisibility({required this.isShow});
+
 }

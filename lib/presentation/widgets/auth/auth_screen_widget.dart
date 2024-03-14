@@ -273,7 +273,7 @@ class _UserNameBoxState extends State<UserNameBox> {
   }
 
   String? _getValue(UserNameValidatorsEnum? validator) {
-    final authBloc = context.read<AuthBloc>();
+    final authBloc = locator.get<AuthBloc>();
     authBloc.userNameInputValid = false;
     switch (validator) {
       case UserNameValidatorsEnum.canNotEmpty:
@@ -409,7 +409,7 @@ class _PasswordBoxState extends State<PasswordBox> {
   }
 
   String? _getValue(PasswordValidatorsEnum? validator) {
-    final authBloc = context.read<AuthBloc>();
+    final authBloc = locator.get<AuthBloc>();
     authBloc.passwordInputValid = false;
     switch (validator) {
       case PasswordValidatorsEnum.canNotEmpty:
@@ -503,7 +503,7 @@ class _UrlBoxState extends State<UrlBox> {
   }
 
   String? _getValue(UrlValidatorsEnum? validator) {
-    final authBloc = context.read<AuthBloc>();
+    final authBloc = locator.get<AuthBloc>();
     authBloc.urlInputValid = false;
     switch (validator) {
       case UrlValidatorsEnum.canNotEmpty:

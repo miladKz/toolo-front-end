@@ -3,6 +3,7 @@ import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -19,7 +20,7 @@ class _ProfileState extends State<Profile> {
   String displayName= '';
   @override
   void initState() {
-    context.read<MainBloc>().add(LoadUserData());
+    locator.get<MainBloc>().add(LoadUserData());
     super.initState();
   }
 
@@ -27,7 +28,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(
       builder: (context, state) {
-        if(state is LoadUserDataState){
+        if(state is MainLoadUserDataSuccess){
           userName = state.userData.userName;
           displayName = state.userData.displayName;
         }

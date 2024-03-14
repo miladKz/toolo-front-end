@@ -6,6 +6,7 @@ import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
+import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 
 import '../../../app_exception.dart';
 import '../../../di/di.dart';
@@ -16,7 +17,6 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
@@ -47,8 +47,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnView(isShow: false));
       final filteredItems = _filterActions(WorkSpaceItems.accounting);
       emit(AccountingActionsSuccess(filteredItems));
+   /*  await Future.delayed(Duration.zero).then((value) =>
+          emit(AccountingActionsSuccess(filteredItems)));
+      await Future.delayed(Duration.zero).then((value) =>
+          emit(MainAccountSuccess(List.empty())));
+      await  Future.delayed(Duration.zero).then((value) =>
+          MainAccountDetailInFormVisibility(isShow: false));
+      await  Future.delayed(Duration.zero).then((value) =>
+          MainActionToolbarVisibility(isShow: false));*/
     } catch (e) {
-      e.toString();
+    e.toString();
     }
   }
 
@@ -103,32 +111,40 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
     if (event.endpoint.isEmpty) {
-      emit(MainLoadingOnView(isShow: true));
-      await Future.delayed(const Duration(microseconds: 500));
-      emit(MainLoadingOnView(isShow: false));
       emit(MainAccountSuccess(List.empty()));
+      await Future.delayed(Duration.zero);
+      emit(MainAccountDetailInFormVisibility(isShow: false));
+      await Future.delayed(Duration.zero);
+      emit(MainActionToolbarVisibility(isShow: false));
     }
   }
 
-  FutureOr<void> _showDetailAccountInFormHandler(
-      OnClickOnAccount event, Emitter<MainState> emit) {
+  FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event,
+      Emitter<MainState> emit) async {
     selectedAccount = event.account;
-    emit(ShowAccountDetailInFormState(event.account));
+    emit(MainAccountDetailInFormVisibility(
+        account: event.account, isShow: true));
+    await Future.delayed(Duration.zero);
+    emit(MainActionToolbarVisibility(isShow: true));
   }
 
   FutureOr<void> _updateAccountHandler(
       OnUpdateAccount event, Emitter<MainState> emit) async {
-    emit(MainLoadingOnView(isShow: true));
-    UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
-    Account account = await useCase(event.account);
-    emit(MainLoadingOnView(isShow: false));
-    emit(SuccessUpdatedAccountState(account));
+    try {
+      emit(MainLoadingOnButton(isShow: true));
+      UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
+      Account account = await useCase(event.account);
+      emit(MainLoadingOnButton(isShow: false));
+      emit(MainUpdatedAccountSuccess(account));
+    } catch (e) {
+      emit(MainUpdatedAccountFailed(errorMessage: e.toString()));
+    }
   }
 
   FutureOr<void> _getUserData(LoadUserData event, Emitter<MainState> emit) {
     GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
     UserData userData = useCase();
-    emit(LoadUserDataState(userData));
+    emit(MainLoadUserDataSuccess(userData));
   }
 
   FutureOr<void> _deleteAccountHandler(
@@ -138,16 +154,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     String message = await useCase(event.account);
     emit(MainLoadingOnView(isShow: false));
     selectedAccount = null;
-    emit(DeletedAccountState(message));
+    emit(MainDeletedAccountSuccess(message));
   }
 
   FutureOr<void> _addPinnedActionHandler(
       AddPinnedActionEvent event, Emitter<MainState> emit) {
-    emit(AddPinnedActionState(event.action));
+    emit(MainAddPinnedActionSuccess(event.action));
   }
 
   FutureOr<void> _removePinnedActionHandler(
       RemovePinnedActionEvent event, Emitter<MainState> emit) {
-    emit(RemovePinnedActionState(event.action));
+    emit(MainRemovePinnedActionSuccess(event.action));
   }
 }

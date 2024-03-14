@@ -8,6 +8,11 @@ class UpdateAccountUseCase {
 
   @override
   Future<Account> call(Account account) async {
-    return _repository.updateAccount(account);
+    try{
+      return _repository.updateAccount(account);
+    }catch(e){
+      throw e.toString();
+    }
+
   }
 }

@@ -27,13 +27,13 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
   Widget build(BuildContext context) {
     final state = context.watch<MainBloc>().state;
     descriptionController.text = widget.account.description;
-    if (state is ShowAccountDetailInFormState) {
-      if(widget.account.type >= 0){
+    if (state is MainAccountDetailInFormVisibility) {
+      if (widget.account.type >= 0) {
         accountType = RialType.fromValue(widget.account.type);
       }
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           width: 400,
@@ -190,47 +190,48 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                 const SizedBox(
                   height: 10,
                 ),
-              if (widget.account.accountLevel >0 && !widget.account.hasChildren) ...[
-                FormItemTitle(title: localization.riyaliType),
-                IgnorePointer(
-                  ignoring: true,
-                  child: Column(
-                    children: [
-                      LayoutBuilder(builder: (context, constrains) {
-                        double itemWidth = constrains.maxWidth / 2;
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: itemWidth,
-                              child: Row(
-                                children: [
-                                  Radio(
-                                    value: RialType.debtRemaining.value,
-                                    groupValue: widget.account.type,
-                                    onChanged: (value) {},
-                                  ),
-                                  Text(
-                                    localization.debtRemaining,
-                                    style: const TextStyle(
-                                      color: Color(0xFF5A5A5A),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
+                if (widget.account.accountLevel > 0 &&
+                    !widget.account.hasChildren) ...[
+                  FormItemTitle(title: localization.riyaliType),
+                  IgnorePointer(
+                    ignoring: true,
+                    child: Column(
+                      children: [
+                        LayoutBuilder(builder: (context, constrains) {
+                          double itemWidth = constrains.maxWidth / 2;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: itemWidth,
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: RialType.debtRemaining.value,
+                                      groupValue: widget.account.type,
+                                      onChanged: null,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      localization.debtRemaining,
+                                      style: const TextStyle(
+                                        color: Color(0xFF5A5A5A),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: itemWidth,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Radio(
-                                    value: RialType.creditRemaining.value,
-                                    groupValue: widget.account.type,
-                                    onChanged: (value) {},
-                                  ),
+                              SizedBox(
+                                width: itemWidth,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Radio(
+                                      value: RialType.creditRemaining.value,
+                                      groupValue: widget.account.type,
+                                      onChanged: null,
+                                    ),
                                   Text(
                                     localization.creditRemaining,
                                     style: const TextStyle(
@@ -256,11 +257,9 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                                 children: [
                                   Radio(
                                     value: RialType.cannotBeDebt.value,
-                                    groupValue: widget.account.type,
-                                    onChanged: (value) {
-
-                                    },
-                                  ),
+                                      groupValue: widget.account.type,
+                                      onChanged: null,
+                                    ),
                                   Text(
                                     localization.cannotBeDebt,
                                     style: const TextStyle(
@@ -279,10 +278,9 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                                 children: [
                                   Radio(
                                     value: RialType.cannotBeCredit.value,
-                                    groupValue: widget.account.type,
-                                    onChanged: (value) {
-                                    },
-                                  ),
+                                      groupValue: widget.account.type,
+                                      onChanged: null,
+                                    ),
                                   Text(
                                     localization.cannotBeCredit,
                                     style: const TextStyle(
@@ -301,11 +299,9 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                         children: [
                           Radio(
                             value: RialType.noMatter.value,
-                            groupValue: widget.account.type,
-                            onChanged: (value) {
-
-                            },
-                          ),
+                              groupValue: widget.account.type,
+                              onChanged: null,
+                            ),
                           Text(
                             localization.noMatter,
                             style: const TextStyle(

@@ -103,9 +103,9 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
 
   void updateList() {
     final state = context.watch<MainBloc>().state;
-    if (state is AddPinnedActionState && !children.contains(state.action)) {
+    if (state is MainAddPinnedActionSuccess && !children.contains(state.action)) {
       children.add(state.action);
-    }else if(state is RemovePinnedActionState && children.contains(state.action)){
+    }else if(state is MainRemovePinnedActionSuccess && children.contains(state.action)){
       children.remove(state.action);
     }
   }

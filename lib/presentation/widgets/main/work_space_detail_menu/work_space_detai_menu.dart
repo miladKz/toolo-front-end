@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/workspace_detail_menu_item.dart';
 
 import '../../../../domain/entities/accounting/accounting_action.dart';

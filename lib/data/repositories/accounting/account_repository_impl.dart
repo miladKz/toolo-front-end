@@ -71,7 +71,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
         return AccountDto.fromMap(itemsAsMap);
       } else {
-        throw Exception();
+        throw serverResponse.message;
       }
     } catch (e) {
       rethrow;

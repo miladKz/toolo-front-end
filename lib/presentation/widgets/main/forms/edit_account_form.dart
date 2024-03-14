@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
 
 import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
@@ -12,9 +14,13 @@ import 'form_elements/form_text_field.dart';
 class EditAccountForm extends StatefulWidget {
   Account account;
   bool isNew;
+
   //Account tmpAaccount;
 
-  EditAccountForm({super.key, required this.account, this.isNew = false});
+  EditAccountForm(
+      {super.key,
+      required this.account,
+      this.isNew = false,});
 
   @override
   State<EditAccountForm> createState() => _EditAccountFormState();
@@ -84,7 +90,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                             DropdownMenuItem(
                                 child: SizedBox(
                                     width: widgetWidth - 40,
-                                    child: Text(getParentCode(),
+                                    child: Text(widget.account.accountcd,
                                         style: const TextStyle(
                                             color: Color(0xFF5A5A5A),
                                             fontSize: 11,
@@ -317,53 +323,22 @@ class _EditAccountFormState extends State<EditAccountForm> {
                       localization.noMatter,
                       style: const TextStyle(
                         color: Color(0xFF5A5A5A),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ],
-                LayoutBuilder(builder: (context, constrains) {
-                  double itemWidth = (constrains.maxWidth / 2) - 10;
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FormButton(
-                        itemWidth: itemWidth,
-                        background: const Color(0xFF6C3483),
-                        textColor: Colors.white,
-                        title: localization.captionSuccess,
-                        onClick: () {
-                          if (_formKey.currentState != null &&
-                              _formKey.currentState!.validate()) {
-                            widget.account
-                                .updateDescription(descriptionController.text);
-                            widget.account
-                                .updateAccountcd(accountCodeController.text);
-                            widget.account
-                                .updateDisplayName(accountNameController.text);
-
-                            locator
-                                .get<MainBloc>()
-                                .add(OnUpdateAccount(widget.account));
-                          }
-                        },
-                      ),
-                      FormButton(
-                          itemWidth: itemWidth,
-                          background: const Color(0xFFD9BCE4),
-                          textColor: const Color(0xFF804D95),
-                          title: localization.captionCancel,
-                          onClick: () {
-                            Navigator.of(context).pop();
-                          }),
                     ],
-                  );
-                })
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+                ActionsButtonWidget(
+                    formKey: _formKey,
+                    widget: widget,
+                    descriptionController: descriptionController,
+                    accountCodeController: accountCodeController,
+                    accountNameController: accountNameController, )
               ],
             ),
           ),
@@ -425,5 +400,86 @@ class _EditAccountFormState extends State<EditAccountForm> {
 
   String getParentCode() {
     return '';
+  }
+}
+
+class ActionsButtonWidget extends StatefulWidget {
+  ActionsButtonWidget({
+    super.key,
+    required GlobalKey<FormState> formKey,
+    required this.widget,
+    required this.descriptionController,
+    required this.accountCodeController,
+    required this.accountNameController,
+  }) : _formKey = formKey;
+
+  final GlobalKey<FormState> _formKey;
+  final EditAccountForm widget;
+  final TextEditingController descriptionController;
+  final TextEditingController accountCodeController;
+  final TextEditingController accountNameController;
+  bool isShowProgress = false;
+
+  @override
+  State<ActionsButtonWidget> createState() => _ActionsButtonWidgetState();
+}
+
+class _ActionsButtonWidgetState extends State<ActionsButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    checkSate();
+    return LayoutBuilder(builder: (context, constrains) {
+      double itemWidth = (constrains.maxWidth / 2) - 10;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          FormButton(
+            itemWidth: itemWidth,
+            background: const Color(0xFF6C3483),
+            textColor: Colors.white,
+            title: localization.captionSuccess,
+            onClick: () {
+              if (widget._formKey.currentState != null &&
+                  widget._formKey.currentState!.validate()) {
+                widget.widget.account
+                    .updateDescription(widget.descriptionController.text);
+                widget.widget.account
+                    .updateAccountcd(widget.accountCodeController.text);
+                widget.widget.account
+                    .updateDisplayName(widget.accountNameController.text);
+
+                locator
+                    .get<MainBloc>()
+                    .add(OnUpdateAccount(widget.widget.account));
+              }
+            },
+          ),
+          FormButton(
+              itemWidth: itemWidth,
+              background: const Color(0xFFD9BCE4),
+              textColor: const Color(0xFF804D95),
+              title: localization.captionCancel,
+              onClick: () {
+                Navigator.of(context).pop();
+              }),
+        ],
+      );
+    });
+  }
+
+  void checkSate() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainLoadingOnButton) {
+      setState(() {
+        widget.isShowProgress = state.isShow;
+      });
+    } else if (state is MainUpdatedAccountSuccess) {
+      Navigator.of(context).pop();
+    }else if (state is MainUpdatedAccountFailed) {
+      debugPrint( ' editGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) => showSnack(title: localization.errorTitle, message: state.errorMessage));
+
+    }
   }
 }

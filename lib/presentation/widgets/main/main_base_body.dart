@@ -1,8 +1,9 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/main/pined_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
@@ -122,11 +123,8 @@ class MainBaseBody extends StatelessWidget {
                                     child: LayoutBuilder(
                                       builder: (context, constraints) {
                                         final maxWith = constraints.maxWidth;
-                                        return CustomExpandableMenu(
-                                          maxSpaceWidth: maxWith,
-                                          height: 40,
-                                          items: accountingActionsItem(context,maxWith),
-                                        );
+                                        return ActionsToolbarsWidget(
+                                            maxWith: maxWith);
                                       },
                                     ),
                                   ),
@@ -138,36 +136,48 @@ class MainBaseBody extends StatelessWidget {
                                     children: [
                                       mainActionsDetailWidget,
                                       BlocBuilder<MainBloc, MainState>(
-                                        buildWhen: (previous, current){
-                                          return current is ShowAccountDetailInFormState ||current is SuccessUpdatedAccountState;
+                                        buildWhen: (previous, current) {
+                                          return current
+                                                  is MainAccountDetailInFormVisibility ||
+                                              current
+                                                  is MainUpdatedAccountSuccess;
                                         },
                                         builder: (context, state) {
-                                          print("stateeeeeeeeeeeeeeee");
-                                          print(state);
-                                          if (state
-                                                  is ShowAccountDetailInFormState &&
-                                              state.account.accountLevel == 0) {
-                                            return ShowGroupForm(
-                                                account: state.account);
-                                          } else if (state
-                                              is ShowAccountDetailInFormState) {
-                                            return ShowAccountForm(
-                                              account: state.account,
-                                            );
-                                          }
+                                          bool isDetailFormState = (state
+                                              is MainAccountDetailInFormVisibility);
+                                          if (isDetailFormState &&
+                                              !state.isShow) {
+                                            return const SizedBox()
+                                                .visible(false);
+                                          } else {
+                                            print(state);
+                                            if (isDetailFormState &&
+                                                state.account?.accountLevel ==
+                                                    0) {
+                                              return ShowGroupForm(
+                                                  account: state.account!);
+                                            } else if (state
+                                                is MainAccountDetailInFormVisibility) {
+                                              return ShowAccountForm(
+                                                account: state.account!,
+                                              );
+                                            }
 
-                                          if (state
-                                          is SuccessUpdatedAccountState &&
-                                              state.account.accountLevel == 0) {
-                                            return ShowGroupForm(
-                                                account: state.account);
-                                          } else if (state
-                                          is SuccessUpdatedAccountState) {
-                                            return ShowAccountForm(
-                                              account: state.account,
-                                            );
+                                            if (state
+                                                    is MainUpdatedAccountSuccess &&
+                                                state.account.accountLevel ==
+                                                    0) {
+                                              return ShowGroupForm(
+                                                  account: state.account);
+                                            } else if (state
+                                                is MainUpdatedAccountSuccess) {
+                                              return ShowAccountForm(
+                                                account: state.account,
+                                              );
+                                            }
+                                            return const SizedBox()
+                                                .visible(false);
                                           }
-                                          return SizedBox();
                                         },
                                       )
                                     ],
@@ -522,6 +532,45 @@ class MainBaseBody extends StatelessWidget {
   }
 }
 
+class ActionsToolbarsWidget extends StatefulWidget {
+  ActionsToolbarsWidget({
+    super.key,
+    required this.maxWith,
+  });
+
+  final double maxWith;
+  bool isActionShow = false;
+
+  @override
+  State<ActionsToolbarsWidget> createState() => _ActionsToolbarsWidgetState();
+}
+
+class _ActionsToolbarsWidgetState extends State<ActionsToolbarsWidget> {
+  @override
+  Widget build(BuildContext context) {
+    updateState();
+    return widget.isActionShow
+        ? CustomExpandableMenu(
+            maxSpaceWidth: widget.maxWith,
+            height: 40,
+            items: accountingActionsItem(context, widget.maxWith),
+          )
+        :  SizedBox(
+            width: widget.maxWith,
+            height: 40,
+          ).inVisible(boxWidth: widget.maxWith,boxHeight: 40,visibility: false);
+  }
+
+  void updateState() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainActionToolbarVisibility) {
+      setState(() {
+        widget.isActionShow = state.isShow;
+      });
+    }
+  }
+}
+
 class MainActionsDetailWidget extends StatefulWidget {
   List<Account> items = List.empty();
 
@@ -552,7 +601,7 @@ class _MainActionsDetailWidgetState extends State<MainActionsDetailWidget> {
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.black38,
-                    fontWeight: FontWeight.w900),
+                    fontWeight: FontWeight.w700),
               ),
             ),
     );

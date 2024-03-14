@@ -33,7 +33,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
           BalanceSheetStatusType.fromValue(widget.account.balanceSheetType);
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           width: 400,
@@ -64,6 +64,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             height: 5,
                           ),
                           FormTextField(
+                              enable: false,
                               widgetWidth: widgetWidth,
                               text: widget.account.groupCode),
                         ],
@@ -79,6 +80,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             height: 5,
                           ),
                           FormTextField(
+                              enable: false,
                               widgetWidth: widgetWidth,
                               text: widget.account.displayName),
                         ],
@@ -102,6 +104,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             height: 5,
                           ),
                           FormTextField(
+                            enable: false,
                             widgetWidth: widgetWidth,
                             text: widget.account.indexOrder1.toString(),
                           ),
@@ -118,6 +121,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             height: 5,
                           ),
                           FormTextField(
+                            enable: false,
                             widgetWidth: widgetWidth,
                             text: widget.account.indexOrder2.toString(),
                           )
@@ -142,7 +146,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                           Radio(
                             value: LiquidityType.balanceSheet.value,
                             groupValue: widget.account.mahiatRialy,
-                            onChanged: (value) {},
+                            onChanged: null,
                           ),
                           Text(
                             localization.balanceSheet,
@@ -160,7 +164,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                           Radio(
                             value: LiquidityType.profitAndLoss.value,
                             groupValue: widget.account.mahiatRialy,
-                            onChanged: (value) {},
+                            onChanged: null,
                           ),
                           Text(
                             localization.profitAndLoss,
@@ -178,7 +182,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                           Radio(
                             value: LiquidityType.disciplinary.value,
                             groupValue: widget.account.mahiatRialy,
-                            onChanged: (value) {},
+                            onChanged: null,
                           ),
                           Text(
                             localization.disciplinary,
@@ -215,11 +219,12 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                     height: 80,
                     width: double.infinity,
                     child: TextFormField(
+                      enabled: false,
                       controller: descriptionController,
                       maxLines: null,
                       minLines: null,
                       expands: true,
-                      onChanged: (value) {},
+                      onChanged: null,
                       style: const TextStyle(
                           fontSize: 12, color: Color(0xFF989B9F)),
                       validator: (value) {
@@ -250,9 +255,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             Radio(
                               value: BalanceSheetStatusType.debt.value,
                               groupValue: widget.account.balanceSheetType,
-                              onChanged: (value) {
-                                setState(() {});
-                              },
+                              onChanged: null,
                             ),
                             Text(
                               localization.debt,
@@ -270,7 +273,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                             Radio(
                               value: BalanceSheetStatusType.asset.value,
                               groupValue: widget.account.balanceSheetType,
-                              onChanged: (value) {},
+                              onChanged: null,
                             ),
                             Text(
                               localization.asset,
@@ -289,7 +292,7 @@ class _EditGroupFormState extends State<ShowGroupForm> {
                               value: BalanceSheetStatusType
                                   .proprietaryRights.value,
                               groupValue: widget.account.balanceSheetType,
-                              onChanged: (value) {},
+                              onChanged: null,
                             ),
                             Text(
                               localization.proprietaryRights,

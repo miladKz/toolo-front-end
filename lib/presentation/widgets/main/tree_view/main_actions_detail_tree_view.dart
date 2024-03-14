@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/di/di.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
@@ -26,16 +26,16 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   Widget build(BuildContext context) {
     return CustomExpansionTile(
       onTap: () {
-        selectItem(context);
+        selectItem();
       },
       title: GestureDetector(
         onDoubleTap: () {
-          selectItem(context);
+          selectItem();
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return EditGroupDialog(
-                  account: widget.account); // Pass your account data here
+                  account: widget.account,); // Pass your account data here
             },
           );
         },
@@ -72,14 +72,14 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
             child: Column(
               children: widget.account.hasChildren
                   ? _buildChildren(widget.account.children, 1)
-                  : [SizedBox()],
+                  : [const SizedBox()],
             )),
       ],
     );
   }
 
-  void selectItem(BuildContext context) {
-     context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+  void selectItem() {
+    locator.get<MainBloc>().add(OnClickOnAccount(widget.account));
   }
 
   List<Widget> _buildChildren(List<Account> items, double textScale) {

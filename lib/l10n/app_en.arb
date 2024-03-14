@@ -88,5 +88,8 @@
   "cannotBeDebt":"مانده نمیتواند بدهکار شود",
   "cannotBeCredit":"مانده نمیتواند بستانکار شود",
   "noMatter":"فرقی نمیکند",
-   "tangibleFixedAssets":"دارایی های ثابت مشهود"
+   "tangibleFixedAssets":"دارایی های ثابت مشهود",
+     "titleCancel":"لغو",
+     "titleSuccess":"تایید",
+     "msgQuestionDelete":"آیا از حذف این مورد اطمینان دارید؟"
 }

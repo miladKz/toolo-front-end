@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_balance_sheet_status_type.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_liquidity_type.dart';
 
@@ -16,7 +17,11 @@ class EditGroupForm extends StatefulWidget {
   Account account;
   late Account tempAccount;
 
-  EditGroupForm({super.key, required this.account, this.isNew = false});
+  EditGroupForm({
+    super.key,
+    required this.account,
+    this.isNew = false,
+  });
 
   @override
   State<EditGroupForm> createState() => _EditGroupFormState();
@@ -38,7 +43,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
 
   @override
   Widget build(BuildContext context) {
-
+    groupCodeController.text = widget.account.groupCode;
     descriptionController.text = widget.account.description;
     LiquidityType? liquidityType;
     if (widget.account.mahiatRialy > -1) {
@@ -369,45 +374,14 @@ class _EditGroupFormState extends State<EditGroupForm> {
                     height: 15,
                   )
                 ],
-                LayoutBuilder(builder: (context, constrains) {
-                  double itemWidth = (constrains.maxWidth / 2) - 10;
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FormButton(
-                        itemWidth: itemWidth,
-                        background: const Color(0xFF6C3483),
-                        textColor: Colors.white,
-                        title: localization.captionSuccess,
-                        onClick: () {
-                          if (_formKey.currentState != null &&
-                              _formKey.currentState!.validate()) {
-                            widget.account
-                                .updateDescription(descriptionController.text);
-                            widget.account
-                                .updateGroupCode(groupCodeController.text);
-                            widget.account
-                                .updateDisplayName(groupNameController.text);
-                            widget.account.updateIndexOrder1(
-                                int.parse(orderIndexOneController.text));
-                            widget.account.updateIndexOrder1(
-                                int.parse(orderIndexTwoController.text));
-
-                            locator.get<MainBloc>().add(OnUpdateAccount(widget.account));
-                          }
-                        },
-                      ),
-                      FormButton(
-                          itemWidth: itemWidth,
-                          background: const Color(0xFFD9BCE4),
-                          textColor: const Color(0xFF804D95),
-                          title: localization.captionCancel,
-                          onClick: () {
-                            Navigator.of(context).pop();
-                          }),
-                    ],
-                  );
-                })
+                ActionsButtonWidget(
+                    formKey: _formKey,
+                    widget: widget,
+                    descriptionController: descriptionController,
+                    groupCodeController: groupCodeController,
+                    groupNameController: groupNameController,
+                    orderIndexOneController: orderIndexOneController,
+                    orderIndexTwoController: orderIndexTwoController)
               ],
             ),
           ),
@@ -418,5 +392,104 @@ class _EditGroupFormState extends State<EditGroupForm> {
 
   void copyAccountToTempAccount() {
     widget.tempAccount = widget.account.copy();
+  }
+}
+
+class ActionsButtonWidget extends StatefulWidget {
+  ActionsButtonWidget({
+    super.key,
+    required GlobalKey<FormState> formKey,
+    required this.widget,
+    required this.descriptionController,
+    required this.groupCodeController,
+    required this.groupNameController,
+    required this.orderIndexOneController,
+    required this.orderIndexTwoController,
+  }) : _formKey = formKey;
+
+  final GlobalKey<FormState> _formKey;
+  final EditGroupForm widget;
+  final TextEditingController descriptionController;
+  final TextEditingController groupCodeController;
+  final TextEditingController groupNameController;
+  final TextEditingController orderIndexOneController;
+  final TextEditingController orderIndexTwoController;
+  bool isShowProgress = false;
+
+  @override
+  State<ActionsButtonWidget> createState() => _ActionsButtonWidgetState();
+}
+
+class _ActionsButtonWidgetState extends State<ActionsButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    checkSate();
+    return LayoutBuilder(builder: (context, constrains) {
+      double itemWidth = (constrains.maxWidth / 2) - 10;
+      return widget.isShowProgress
+          ? SizedBox(
+              width: itemWidth,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                ),
+              ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FormButton(
+                  itemWidth: itemWidth,
+                  background: const Color(0xFF6C3483),
+                  textColor: Colors.white,
+                  title: localization.captionSuccess,
+                  onClick: () {
+                    if (widget._formKey.currentState != null &&
+                        widget._formKey.currentState!.validate()) {
+                      widget.widget.account
+                          .updateDescription(widget.descriptionController.text);
+                      widget.widget.account
+                          .updateGroupCode(widget.groupCodeController.text);
+                      widget.widget.account
+                          .updateDisplayName(widget.groupNameController.text);
+                      widget.widget.account.updateIndexOrder1(
+                          int.parse(widget.orderIndexOneController.text));
+                      widget.widget.account.updateIndexOrder1(
+                          int.parse(widget.orderIndexTwoController.text));
+
+                      locator
+                          .get<MainBloc>()
+                          .add(OnUpdateAccount(widget.widget.account));
+                    }
+                  },
+                ),
+                FormButton(
+                    itemWidth: itemWidth,
+                    background: const Color(0xFFD9BCE4),
+                    textColor: const Color(0xFF804D95),
+                    title: localization.captionCancel,
+                    onClick: () {
+                      Navigator.of(context).pop();
+                    }),
+              ],
+            );
+    });
+  }
+
+  void checkSate() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainLoadingOnButton) {
+      setState(() {
+        widget.isShowProgress = state.isShow;
+      });
+    } else if (state is MainUpdatedAccountSuccess) {
+      Navigator.of(context).pop();
+    } else if (state is MainUpdatedAccountFailed) {
+      debugPrint(' editGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    }
   }
 }

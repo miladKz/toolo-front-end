@@ -33,7 +33,7 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
   }
   @override
   UserData getUserData() {
-     var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
+    var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
     debugPrint('getToken method data is: $object');
     return AuthBaseDataDto.fromMap(jsonDecode(object)).userData;
   }
@@ -53,8 +53,8 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
   @override
   Future<bool> persistLoginInfo(
       {required String userName,
-      required String cleanPassWord,
-      required String baseUrl}) async {
+        required String cleanPassWord,
+        required String baseUrl}) async {
     throw UnimplementedError();
   }
 

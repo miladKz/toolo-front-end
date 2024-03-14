@@ -40,10 +40,10 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log(response.data);
+      log('updateAccount msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      log(e);
+      log('updateAccount msg: $e}');
       throw HttpException(e.toString());
     }
   }

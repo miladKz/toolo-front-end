@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
@@ -84,7 +84,7 @@ class _TreeViewItemState extends State<TreeViewItem> {
   }
 
   void selectItem(BuildContext context) {
-    context.read<MainBloc>().add(OnClickOnAccount(widget.account));
+    locator.get<MainBloc>().add(OnClickOnAccount(widget.account));
   }
 
   showQuestionDialog(

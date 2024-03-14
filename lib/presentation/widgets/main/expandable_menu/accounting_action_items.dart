@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/question_dialog.dart';
 
 import '../../../../di/di.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
@@ -23,7 +24,7 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
             builder: (BuildContext context) {
               Account newAccount = Account.empty();
               return EditGroupDialog(
-                  account: newAccount, isNew: true,); // Pass your account data here
+                  account: newAccount, isNew: true); // Pass your account data here
             },
           );
         }),
@@ -40,7 +41,7 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
               Account newAccount = Account.empty();
               newAccount.updateAccountLevel(0);
               return EditGroupDialog(
-                  account: newAccount, isNew: true,); // Pass your account data here
+                  account: newAccount, isNew: true); // Pass your account data here
             },
           );
         }),
@@ -53,9 +54,18 @@ List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
         onTap: () {
           MainBloc mainBloc = locator.get<MainBloc>();
           if (mainBloc.selectedAccount != null) {
-            locator
-                .get<MainBloc>()
-                .add(DeleteAccountEvent(mainBloc.selectedAccount!));
+            showQuestionDialog(
+              context: context,
+              title: localization.remove,
+              msg: localization.msgQuestionDelete,
+              callBack: (isOk) {
+                if (isOk) {
+                  locator
+                      .get<MainBloc>()
+                      .add(DeleteAccountEvent(mainBloc.selectedAccount!));
+                }
+              },
+            );
           }
         }),
     object(

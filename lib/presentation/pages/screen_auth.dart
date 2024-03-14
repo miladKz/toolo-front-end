@@ -53,7 +53,7 @@ class _ScreenAuthState extends State<ScreenAuth> {
             return true;
           },
           builder: (context, state) {
-            final authBloc = context.read<AuthBloc>();
+            final authBloc = locator.get<AuthBloc>();
 
             return Directionality(
                 textDirection: TextDirection.ltr,

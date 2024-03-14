@@ -17,7 +17,7 @@ class MainActionsTree extends StatefulWidget {
       {Key? key,
       required this.item,
       required this.isRoot,
-      this.titleFontSize = 12,
+      this.titleFontSize = 11,
       this.iconSize = 15})
       : super(key: key);
 

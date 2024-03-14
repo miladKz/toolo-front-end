@@ -6,7 +6,6 @@ import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
-import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 
 import '../../../app_exception.dart';
 import '../../../di/di.dart';
@@ -65,6 +64,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     if (actions.isNotEmpty) {
       final filteredItems = _filterActions(event.selectedItem);
       emit(AccountingActionsSuccess(filteredItems));
+      resetAccountList();
     }
   }
 
@@ -111,10 +111,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
     if (event.endpoint.isEmpty) {
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(MainAccountSuccess(List.empty()));
-      await Future.delayed(Duration.zero);
+      await Future.delayed(const Duration(milliseconds: 20));
       emit(MainAccountDetailInFormVisibility(isShow: false));
-      await Future.delayed(Duration.zero);
+      await Future.delayed(const Duration(milliseconds: 20));
       emit(MainActionToolbarVisibility(isShow: false));
     }
   }
@@ -136,6 +137,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       Account account = await useCase(event.account);
       emit(MainLoadingOnButton(isShow: false));
       emit(MainUpdatedAccountSuccess(account));
+      reGetAccounts();
     } catch (e) {
       emit(MainUpdatedAccountFailed(errorMessage: e.toString()));
     }
@@ -155,6 +157,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(MainLoadingOnView(isShow: false));
     selectedAccount = null;
     emit(MainDeletedAccountSuccess(message));
+    reGetAccounts();
   }
 
   FutureOr<void> _addPinnedActionHandler(
@@ -165,5 +168,15 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _removePinnedActionHandler(
       RemovePinnedActionEvent event, Emitter<MainState> emit) {
     emit(MainRemovePinnedActionSuccess(event.action));
+  }
+
+  void reGetAccounts() async{
+   await Future.delayed(const Duration(milliseconds: 200));
+    add(MainAccountList());
+  }
+
+  void resetAccountList() async{
+    await Future.delayed(const Duration(milliseconds: 200));
+    add(MainAnotherList(endpoint: ""));
   }
 }

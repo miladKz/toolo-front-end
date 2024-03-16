@@ -6,6 +6,7 @@ import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import '../../common/forms/form_elements/multiline_text_input.dart';
 import 'form_elements/enum__rialy_type.dart';
 import 'form_elements/form_button.dart';
 import 'form_elements/form_item_title.dart';
@@ -179,36 +180,7 @@ class _EditAccountFormState extends State<EditAccountForm> {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 1, color: const Color(0xFFDDE1E5)),
-                        borderRadius: BorderRadius.circular(4)),
-                    height: 80,
-                    width: double.infinity,
-                    child: TextFormField(
-                      controller: descriptionController,
-                      maxLines: null,
-                      minLines: null,
-                      expands: true,
-                      onChanged: (value) {},
-                      style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF989B9F)),
-                      validator: (value) {
-                        if (value == "") {
-                          return "error";
-                        }
-                      },
-                      decoration: InputDecoration(
-                          hintText: localization.textWritten,
-                          hintStyle: const TextStyle(
-                              color: Color(0xFF989B9F),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(10, -50, 10, 0)),
-                    )),
+                MultilineTextInput(enable: true, controller: descriptionController,),
                 const SizedBox(
                   height: 10,
                 ),

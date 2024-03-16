@@ -12,6 +12,7 @@ import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
+import 'package:toolo_gostar/presentation/pages/test_screen.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
 part 'presentation/theme/my_theme.dart';
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return screenMain();
+        return TestScreen();
       }),
     );
   }

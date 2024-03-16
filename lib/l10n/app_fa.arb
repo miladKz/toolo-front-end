@@ -89,5 +89,10 @@
   "tangibleFixedAssets":"دارایی های ثابت مشهود",
   "titleCancel":"لغو",
   "titleSuccess":"تایید",
+  "code":"کد",
+  "detailedCode":"کد تفضیل",
+  "name":"نام",
+  "type":"نوع",
+  "automaticSelection":"انتخاب خودکار",
   "msgQuestionDelete":"آیا از حذف این مورد اطمینان دارید؟"
 }

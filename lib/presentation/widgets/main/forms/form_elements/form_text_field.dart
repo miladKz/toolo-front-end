@@ -23,7 +23,7 @@ class FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller?.text = textHint;
+    //controller?.text = textHint;
     late TextInputFormatter inputFormatter;
     if (inputType == TextInputType.number) {
       inputFormatter = FilteringTextInputFormatter.digitsOnly;

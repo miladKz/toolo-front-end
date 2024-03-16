@@ -109,8 +109,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                       FormTextField(
                         enable: false,
                           controller: accountNameController,
-                          widgetWidth: widgetWidth,
-                          text: widget.account.displayName),
+                          widgetWidth: widgetWidth - 7,
+                          textHint: widget.account.displayName),
                     ],
                   );
                 }),
@@ -131,8 +131,8 @@ class _EditAccountFormState extends State<EditAccountForm> {
                           ),
                           FormTextField(
                               controller: accountCodeController,
-                              widgetWidth: widgetWidth,
-                              text: getAccountCode()),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: getAccountCode()),
                         ],
                       ),
                       const SizedBox(

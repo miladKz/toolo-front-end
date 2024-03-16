@@ -102,8 +102,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                               inputType: TextInputType.number,
                               controller: groupCodeController,
-                              widgetWidth: widgetWidth,
-                              text: widget.account.groupCode),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: widget.account.groupCode),
                         ],
                       ),
                       const SizedBox(
@@ -118,8 +118,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           ),
                           FormTextField(
                               controller: groupNameController,
-                              widgetWidth: widgetWidth,
-                              text: widget.account.displayName),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: widget.account.displayName),
                         ],
                       ),
                     ],
@@ -143,8 +143,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                             inputType: TextInputType.number,
                             controller: orderIndexOneController,
-                            widgetWidth: widgetWidth,
-                            text: widget.account.indexOrder1.toString(),
+                            widgetWidth: widgetWidth - 7,
+                            textHint: widget.account.indexOrder1.toString(),
                           ),
                         ],
                       ),
@@ -161,8 +161,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                             inputType: TextInputType.number,
                             controller: orderIndexTwoController,
-                            widgetWidth: widgetWidth,
-                            text: widget.account.indexOrder2.toString(),
+                            widgetWidth: widgetWidth -7 ,
+                            textHint: widget.account.indexOrder2.toString(),
                           )
                         ],
                       ),

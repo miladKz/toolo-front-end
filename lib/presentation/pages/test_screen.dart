@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/accounting/account.dart';
-import '../widgets/common/forms/DetailedAccountForm.dart';
+import '../widgets/common/forms/floating_detail_form.dart';
 import '../widgets/common/forms/form_elements/main_form.dart';
 
 class TestScreen extends StatelessWidget {

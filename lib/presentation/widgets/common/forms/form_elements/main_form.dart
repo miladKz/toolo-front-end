@@ -36,12 +36,24 @@ class MainForm extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        color: Color(0xFF5A5A5A),
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                            color: Color(0xFF5A5A5A),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const Icon(
+                          Icons.close,
+                          size: 20,
+                        ),
+                      )
+                    ],
                   ),
                   const Divider(
                     color: Color(0xFFDEE2E6),

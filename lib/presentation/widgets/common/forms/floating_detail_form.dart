@@ -8,7 +8,7 @@ import 'form_elements/drop_down_input.dart';
 import 'form_elements/multiline_text_input.dart';
 
 class FloatingDetailForm extends StatelessWidget {
-   FloatingDetailForm({
+   const FloatingDetailForm({
     super.key,
     required this.formWidth,
      this.isActive = true,

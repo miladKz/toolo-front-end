@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/presentation/widgets/common/forms/counterparty_form.dart';
 
 import '../../domain/entities/accounting/account.dart';
 import '../widgets/common/forms/floating_detail_form.dart';
@@ -21,11 +22,11 @@ class TestScreen extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     Account newAccount = Account.empty();
-                    double formWidth = 400;
+                    double formWidth = 700;
                     return MainForm(
-                      title: "تفضیل شناور",
+                      title: "ویرایش طرف حساب ها",
                       width: formWidth,
-                      body: FloatingDetailForm(
+                      body: CounterpartyForm(
                           formWidth: formWidth,
                           formKey: _formKey),
                     ); // Pass your account data here

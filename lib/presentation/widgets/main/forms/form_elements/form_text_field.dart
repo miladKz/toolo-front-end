@@ -5,14 +5,14 @@ class FormTextField extends StatelessWidget {
   String textHint;
   String errorText;
   bool enable;
-  final double widgetWidth;
+  final double? widgetWidth;
   final double widgetHeight;
   TextEditingController? controller;
   TextInputType inputType;
 
   FormTextField(
       {
-         this.widgetWidth = double.infinity,
+         this.widgetWidth,
          this.widgetHeight = 35,
       this.textHint = "",
       this.errorText = "",

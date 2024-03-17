@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../main/forms/form_elements/form_item_title.dart';
-
 
 class DropDownInput extends StatefulWidget {
   double width;
@@ -10,8 +8,16 @@ class DropDownInput extends StatefulWidget {
   Function()? onChange;
   bool enable;
   String value;
+  Icon? icon;
 
-  DropDownInput({required this.width, super.key, this.onChange, required this.value, required this.items, this.enable = true});
+  DropDownInput(
+      {required this.width,
+      super.key,
+      this.onChange,
+      required this.value,
+      required this.items,
+      this.enable = true,
+      this.icon});
 
   @override
   State<DropDownInput> createState() => _DropDownInputState();
@@ -29,6 +35,7 @@ class _DropDownInputState extends State<DropDownInput> {
             border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
             borderRadius: BorderRadius.circular(4)),
         child: DropdownButton<String>(
+          icon:widget.icon,
           value: widget.value,
           items: getDropdownItems(widget.items, widget.width),
           dropdownColor: Colors.white,
@@ -45,7 +52,9 @@ class _DropDownInputState extends State<DropDownInput> {
       ),
     );
   }
-  List<DropdownMenuItem<String>> getDropdownItems(List<String> items, double widthItem) {
+
+  List<DropdownMenuItem<String>> getDropdownItems(
+      List<String> items, double widthItem) {
     List<DropdownMenuItem<String>> menuItems = [];
     for (String item in items) {
       menuItems.add(
@@ -63,7 +72,5 @@ class _DropDownInputState extends State<DropDownInput> {
     return menuItems;
   }
 
-  getValue() {
-
-  }
+  getValue() {}
 }

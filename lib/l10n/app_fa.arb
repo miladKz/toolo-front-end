@@ -130,5 +130,7 @@
   "address": "آدرس",
   "details": "جزئیات",
   "groups": "گروه بندی ها",
-  "salesGroup": "گروه فروش"
+  "salesGroup": "گروه فروش",
+  "otherDetails": "سایر مشخصات",
+  "addresses": "نشانی ها"
 }

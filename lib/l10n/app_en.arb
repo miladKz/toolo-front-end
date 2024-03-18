@@ -58,7 +58,7 @@
  "removeShortcut": "(ctrl+t)",
  "edit": "ویرایش",
  "send": "ارسال",
- "reset": "باتزنشانی",
+ "reset": "باز نشانی",
  "print": "چاپ",
  "active": "فعال",
  "deactivate": "غیر فعال",
@@ -132,5 +132,7 @@
  "address": "آدرس",
  "details": "جزئیات",
  "groups": "گروه بندی ها",
- "salesGroup": "گروه فروش"
+ "salesGroup": "گروه فروش",
+ "otherDetails": "سایر مشخصات",
+ "addresses": "نشانی ها"
 }

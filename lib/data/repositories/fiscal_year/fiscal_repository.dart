@@ -22,7 +22,7 @@ class FiscalRepositoryImpl extends FiscalRepository {
       ServerResponseDto serverResponse =
           await remoteDataSource.getFiscalYearData(token: token);
       if (serverResponse.isSuccess) {
-        List<FiscalYear> fiscalYearList = [];
+        List<FiscalYear> fiscalYearList = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         fiscalYearList = List<FiscalYear>.from(itemsAsMap.map((data) {

@@ -47,7 +47,7 @@ class _ExpandableMenuState extends State<ExpandableMenu>
   late double _listItemSize;
 
   /// This private property declare items in widgets.
-  List<Widget> _listWidget = <Widget>[];
+  List<Widget> _listWidget = List.empty(growable: true);
 
   /// This private property declare expand status of widget.
   /// If [_isExpanded] equals true it's meaning widget is expanded and
@@ -82,7 +82,7 @@ class _ExpandableMenuState extends State<ExpandableMenu>
         setState(() {
           _containerProgress = _containerAnimation.value;
           if (!_isExpanded && _containerProgress == 0.0) {
-            _listWidget = [];
+            _listWidget = List.empty(growable: true);
           }
         });
       });

@@ -1,34 +1,32 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
-import 'package:toolo_gostar/presentation/widgets/main/tree_view/main_actions_detail_tree_view.dart';
-import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/work_space_detai_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
-import '../../../domain/entities/accounting/account.dart';
-import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../blocs/main_bloc/main_bloc.dart';
+import 'account_tree_view/account_tree_view_builder.dart';
+import 'actions_tree_view/action_tree_view_builder.dart';
+import 'account_toolbar.dart';
 import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
-import 'expandable_menu/accounting_action_items.dart';
-import 'expandable_menu/expandable_menu.dart';
 import 'forms/show_account_form.dart';
 import 'forms/show_gorup_form.dart';
+import 'logut_button.dart';
 
 class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
 
   Workspace workSpaceMenu = Workspace();
   ActionPinnedMenu pinnedWorkSpaceMenu = ActionPinnedMenu();
-  MainActionsDetailWidget mainActionsDetailWidget = MainActionsDetailWidget();
+  AccountTreeViewBuilder mainActionsDetailWidget = AccountTreeViewBuilder();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,6 @@ class MainBaseBody extends StatelessWidget {
           minWidth: 70,
           isCollapsed: MediaQuery.of(context).size.width <= 950,
           items: _items,
-          body: Container(),
           collapseOnBodyTap: true,
           onTitleTap: () {},
         ),
@@ -62,11 +59,11 @@ class MainBaseBody extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Assets.img.icnTooloPadideh
                                 .image(width: 70, height: 30),
-                            Expanded(
-                                child: Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Padding(
@@ -75,10 +72,10 @@ class MainBaseBody extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(4),
-                                  child: logoutButton(),
+                                  child: LogoutButton(),
                                 ),
                               ],
-                            ))
+                            )
                           ],
                         ),
                       ],
@@ -100,7 +97,7 @@ class MainBaseBody extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: const Color(0xFFF0F0F0),
                                 borderRadius: BorderRadius.circular(11)),
-                            child: MainActionsWidget(),
+                            child: ActionsTreeViewBuilder(),
                           );
                         },
                       ),
@@ -109,84 +106,26 @@ class MainBaseBody extends StatelessWidget {
                       width: 2,
                     ),
                     Flexible(
-                        flex: 8,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 4, right: 8),
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6),
-                                    child: LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        final maxWith = constraints.maxWidth;
-                                        return ActionsToolbarsWidget(
-                                            maxWith: maxWith);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      mainActionsDetailWidget,
-                                      BlocBuilder<MainBloc, MainState>(
-                                        buildWhen: (previous, current) {
-                                          return current
-                                                  is MainAccountDetailInFormVisibility ||
-                                              current
-                                                  is MainUpdatedAccountSuccess;
-                                        },
-                                        builder: (context, state) {
-                                          bool isDetailFormState = (state
-                                              is MainAccountDetailInFormVisibility);
-                                          if (isDetailFormState &&
-                                              !state.isShow) {
-                                            return const SizedBox()
-                                                .visible(false);
-                                          } else {
-                                            print(state);
-                                            if (isDetailFormState &&
-                                                state.account?.accountLevel ==
-                                                    0) {
-                                              return ShowGroupForm(
-                                                  account: state.account!);
-                                            } else if (state
-                                                is MainAccountDetailInFormVisibility) {
-                                              return ShowAccountForm(
-                                                account: state.account!,
-                                              );
-                                            }
-
-                                            if (state
-                                                    is MainUpdatedAccountSuccess &&
-                                                state.account.accountLevel ==
-                                                    0) {
-                                              return ShowGroupForm(
-                                                  account: state.account);
-                                            } else if (state
-                                                is MainUpdatedAccountSuccess) {
-                                              return ShowAccountForm(
-                                                account: state.account,
-                                              );
-                                            }
-                                            return const SizedBox()
-                                                .visible(false);
-                                          }
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
+                      flex: 8,
+                      child: Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          children: [
+                            _buildAccountToolbar(),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  mainActionsDetailWidget,
+                                  showAccountInfoInForm(),
+                                ],
+                              ),
                             ),
-                          ),
-                        ))
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 )),
               ],
@@ -197,19 +136,36 @@ class MainBaseBody extends StatelessWidget {
     );
   }
 
-  Widget logoutButton() {
-    return SizedBox(
-      height: 30,
-      width: 30,
-      child: IconButton(
-        onPressed: () {},
-        icon: Assets.ico.icExit.image(width: 12, height: 12),
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Color(0xFF6C3483), width: 1),
-              borderRadius: BorderRadius.circular(5)),
-        ),
-      ),
+  BlocBuilder<MainBloc, MainState> showAccountInfoInForm() {
+    return BlocBuilder<MainBloc, MainState>(
+      buildWhen: (previous, current) {
+        return current is MainAccountDetailInFormVisibility ||
+            current is MainUpdatedAccountSuccess;
+      },
+      builder: (context, state) {
+        bool isDetailFormState = (state is MainAccountDetailInFormVisibility);
+        if (isDetailFormState && !state.isShow) {
+          return const SizedBox().visible(false);
+        } else {
+          if (isDetailFormState && state.account?.accountLevel == 0) {
+            return ShowGroupForm(account: state.account!);
+          } else if (state is MainAccountDetailInFormVisibility) {
+            return ShowAccountForm(
+              account: state.account!,
+            );
+          }
+
+          if (state is MainUpdatedAccountSuccess &&
+              state.account.accountLevel == 0) {
+            return ShowGroupForm(account: state.account);
+          } else if (state is MainUpdatedAccountSuccess) {
+            return ShowAccountForm(
+              account: state.account,
+            );
+          }
+          return const SizedBox().visible(false);
+        }
+      },
     );
   }
 
@@ -228,7 +184,7 @@ class MainBaseBody extends StatelessWidget {
   List<CollapsibleItem> get _items {
     return [
       CollapsibleItem(
-        content:  Profile(),
+        content: const Profile(),
         iconImage: Assets.img.imgProfile.image(width: 52, height: 52),
         isSelected: true,
       ),
@@ -268,385 +224,18 @@ class MainBaseBody extends StatelessWidget {
       )
     ];
   }
-
-  List<Widget> _expandableItems(double widthScree) {
-    double textSize = widthScree * 0.008;
-    const double marginIconAndText = 6;
-    double buttonWidth = widthScree * 0.079;
-    double iconSize = widthScree * 0.014;
-
-    return [
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFd1e7dd),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          ),
-          onPressed: () {},
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.control_point_rounded,
-                  color: Color(0xFF198754),
-                  size: iconSize,
-                ),
-                const SizedBox(
-                  width: marginIconAndText,
-                ),
-                Text(
-                  localization.newAccount,
-                  style: TextStyle(
-                      color: Color(0xFF198754),
-                      fontWeight: FontWeight.bold,
-                      fontSize: textSize),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xfff8d7da),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.delete_outline,
-                  color: Color(0xffdc3545),
-                  size: iconSize,
-                ),
-                const SizedBox(
-                  width: marginIconAndText,
-                ),
-                Text(
-                  localization.remove + localization.removeShortcut,
-                  style: TextStyle(
-                      color: Color(0xffdc3545),
-                      fontWeight: FontWeight.bold,
-                      fontSize: textSize),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xffe9dcff),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.mode_outlined,
-                    color: Color(0xFF6610f2),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.edit,
-                    style: const TextStyle(
-                        color: Color(0xFF6610f2),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFffe5d0),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.send_outlined,
-                    color: Color(0xFFfd7e14),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.send,
-                    style: TextStyle(
-                        color: Color(0xFFfd7e14),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFefe0f5),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.rotate_90_degrees_cw_outlined,
-                    color: Color(0xFF6c3483),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.reset,
-                    style: TextStyle(
-                        color: Color(0xFF6c3483),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFf7d6e6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.print_outlined,
-                    color: Color(0xFFb02a37),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.print,
-                    style: const TextStyle(
-                      color: Color(0xFFb02a37),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFdee2e6),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.toggle_off_outlined,
-                    color: Color(0xFF6c757d),
-                    size: iconSize,
-                  ),
-                  const SizedBox(
-                    width: marginIconAndText,
-                  ),
-                  Text(
-                    localization.deactivate,
-                    style: TextStyle(
-                        color: Color(0xFF6c757d),
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ];
-  }
-}
-
-class ActionsToolbarsWidget extends StatefulWidget {
-  ActionsToolbarsWidget({
-    super.key,
-    required this.maxWith,
-  });
-
-  final double maxWith;
-  bool isActionShow = false;
-
-  @override
-  State<ActionsToolbarsWidget> createState() => _ActionsToolbarsWidgetState();
-}
-
-class _ActionsToolbarsWidgetState extends State<ActionsToolbarsWidget> {
-  @override
-  Widget build(BuildContext context) {
-    updateState();
-    return widget.isActionShow
-        ? CustomExpandableMenu(
-            maxSpaceWidth: widget.maxWith,
-            height: 40,
-            items: accountingActionsItem(context, widget.maxWith),
-          )
-        :  SizedBox(
-            width: widget.maxWith,
-            height: 40,
-          ).inVisible(boxWidth: widget.maxWith,boxHeight: 40,visibility: false);
-  }
-
-  void updateState() {
-    final state = context.watch<MainBloc>().state;
-    if (state is MainActionToolbarVisibility) {
-      setState(() {
-        widget.isActionShow = state.isShow;
-      });
-    }
-  }
-}
-
-class MainActionsDetailWidget extends StatefulWidget {
-  List<Account> items = List.empty();
-
-  MainActionsDetailWidget({
-    super.key,
-  });
-
-  @override
-  State<MainActionsDetailWidget> createState() =>
-      _MainActionsDetailWidgetState();
-}
-
-class _MainActionsDetailWidgetState extends State<MainActionsDetailWidget> {
-  @override
-  Widget build(BuildContext context) {
-    updateList();
-    return Expanded(
-      child: widget.items.isNotEmpty
-          ? ListView.builder(
-              itemCount: widget.items.length,
-              itemBuilder: (context, index) {
-                return MainActionsDetailTreeView(account: widget.items[index]);
-              },
-            )
-          : const Center(
-              child: Text(
-                'There is no data for this section',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-    );
-  }
-
-  void updateList() {
-    final state = context.watch<MainBloc>().state;
-    if (state is MainAccountSuccess) {
-      widget.items = state.accounts;
-    }
-  }
-}
-
-class MainActionsWidget extends StatefulWidget {
-  List<AccountingAction> items = List.empty();
-
-  MainActionsWidget({
-    super.key,
-  });
-
-  @override
-  State<MainActionsWidget> createState() => _MainActionsWidgetState();
-}
-
-class _MainActionsWidgetState extends State<MainActionsWidget> {
-  @override
-  Widget build(BuildContext context) {
-    updateList();
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(11)),
-        child: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (context, index) {
-            return widget.items.isNotEmpty
-                ? MainActionsTree(item: widget.items[0], isRoot: true)
-                : SizedBox();
+  Widget _buildAccountToolbar() {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Padding(
+        padding: const EdgeInsets.all(6),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth;
+            return AccountToolbar(maxWidth: maxWidth);
           },
-        ));
-  }
-
-  updateList() {
-    final state = context.watch<MainBloc>().state;
-    if (state is AccountingActionsSuccess) {
-      widget.items = state.actions;
-    }
+        ),
+      ),
+    );
   }
 }

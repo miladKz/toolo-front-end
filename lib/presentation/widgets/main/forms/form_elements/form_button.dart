@@ -41,7 +41,7 @@ class _FormButtonState extends State<FormButton> {
               style: TextStyle(
                   color: widget.textColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12),
+                  fontSize: 14),
             ),
           ),
         ),

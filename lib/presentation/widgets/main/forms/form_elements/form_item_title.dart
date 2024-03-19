@@ -3,9 +3,14 @@ import 'package:flutter/cupertino.dart';
 class FormItemTitle extends StatelessWidget {
   String title;
   double fontSize;
+  Color textColor;
+  FontWeight fontWeight;
+
   FormItemTitle({
     required this.title,
-     this.fontSize = 12,
+    this.fontSize = 12,
+    this.textColor = const Color(0xFF5A5A5A),
+    this.fontWeight = FontWeight.w600,
     super.key,
   });
 
@@ -14,9 +19,7 @@ class FormItemTitle extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(
-          color: const Color(0xFF5A5A5A),
-          fontSize: fontSize,
-          fontWeight: FontWeight.w600),
+          color: textColor, fontSize: fontSize, fontWeight: fontWeight),
     );
   }
 }

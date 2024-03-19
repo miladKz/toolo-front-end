@@ -90,8 +90,8 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                       ),
                       FormTextField(
                           enable: false,
-                          widgetWidth: widgetWidth,
-                          text: widget.account.displayName),
+                          widgetWidth: widgetWidth - 7,
+                          textHint: widget.account.displayName),
                     ],
                   );
                 }),
@@ -112,8 +112,8 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
                           ),
                           FormTextField(
                               enable: false,
-                              widgetWidth: widgetWidth,
-                              text: getAccountCode()),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: getAccountCode()),
                         ],
                       ),
                       const SizedBox(

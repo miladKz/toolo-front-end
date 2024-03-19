@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu_item.dart';
 
 import '../../../domain/entities/accounting/accounting_action.dart';
@@ -36,7 +35,7 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
               ? null
               : Border.all(
               color: const Color(0xFF929292).withOpacity(0.25), width: 1),
-          color: _isExpanded ? Color(0xFFF6F6F6) : Colors.white,
+          color: _isExpanded ? const Color(0xFFF6F6F6) : Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: ExpansionTile(
@@ -73,7 +72,7 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
             ],
           ),
           children: [
-            Padding(
+           const Padding(
               padding: EdgeInsets.only(bottom: 5, right: 15, left: 15),
               child: Divider(
                 height: 2,

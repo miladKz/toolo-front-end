@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FormTextField extends StatelessWidget {
-  String text;
+  String textHint;
   String errorText;
   bool enable;
-  final double widgetWidth;
+  final double? widgetWidth;
+  final double widgetHeight;
   TextEditingController? controller;
   TextInputType inputType;
 
   FormTextField(
-      {required this.widgetWidth,
-      this.text = "",
+      {
+         this.widgetWidth,
+         this.widgetHeight = 35,
+      this.textHint = "",
       this.errorText = "",
       this.enable = true,
       this.inputType = TextInputType.text,
@@ -20,7 +23,7 @@ class FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller?.text = text;
+    //controller?.text = textHint;
     late TextInputFormatter inputFormatter;
     if (inputType == TextInputType.number) {
       inputFormatter = FilteringTextInputFormatter.digitsOnly;
@@ -31,8 +34,8 @@ class FormTextField extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(width: 1, color: Color(0xFFDDE1E5)),
             borderRadius: BorderRadius.circular(4)),
-        height: 35,
-        width: widgetWidth - 7,
+        height: widgetHeight,
+        width: widgetWidth,
         child: TextFormField(
           keyboardType: inputType,
           inputFormatters: [inputFormatter],
@@ -46,7 +49,7 @@ class FormTextField extends StatelessWidget {
             }
           },
           decoration: InputDecoration(
-              hintText: text,
+              hintText: textHint,
               hintStyle: TextStyle(
                   color: Color(0xFF989B9F),
                   fontSize: 12,

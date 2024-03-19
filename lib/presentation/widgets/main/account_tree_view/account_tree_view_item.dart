@@ -6,14 +6,14 @@ import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../edit_group_dialog.dart';
 
-class TreeViewItem extends StatefulWidget {
-  Account account;
+class AccountTreeViewItem extends StatefulWidget {
+  final Account account;
   final String title;
   final double fontSize;
   final double textScale;
   final Function() onTap;
 
-  TreeViewItem({
+  const AccountTreeViewItem({
     required this.account,
     required this.title,
     required this.fontSize,
@@ -23,10 +23,10 @@ class TreeViewItem extends StatefulWidget {
   });
 
   @override
-  State<TreeViewItem> createState() => _TreeViewItemState();
+  State<AccountTreeViewItem> createState() => _AccountTreeViewItemState();
 }
 
-class _TreeViewItemState extends State<TreeViewItem> {
+class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
   bool _isHovered = false;
 
   @override
@@ -59,7 +59,7 @@ class _TreeViewItemState extends State<TreeViewItem> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: _isHovered ? Color(0xFFEFE0F5) : Colors.white),
+              color: _isHovered ?const Color(0xFFEFE0F5) : Colors.white),
           width: double.maxFinite,
           margin: childMargin,
           constraints: const BoxConstraints(maxHeight: 30),
@@ -111,7 +111,7 @@ class _TreeViewItemState extends State<TreeViewItem> {
               callBack(false);
               Get.back();
             },
-            child: Text('test')),
+            child:const Text('')),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: themeData.colorScheme.primary,
@@ -121,7 +121,7 @@ class _TreeViewItemState extends State<TreeViewItem> {
               callBack(true);
               Get.back();
             },
-            child: Text('test1')),
+            child:const Text('')),
       ],
       barrierDismissible: false,
     );

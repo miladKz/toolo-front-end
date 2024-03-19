@@ -8,6 +8,7 @@ import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import '../../common/forms/form_elements/multiline_text_input.dart';
 import 'form_elements/form_button.dart';
 import 'form_elements/form_item_title.dart';
 import 'form_elements/form_text_field.dart';
@@ -102,8 +103,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                               inputType: TextInputType.number,
                               controller: groupCodeController,
-                              widgetWidth: widgetWidth,
-                              text: widget.account.groupCode),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: widget.account.groupCode),
                         ],
                       ),
                       const SizedBox(
@@ -118,8 +119,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           ),
                           FormTextField(
                               controller: groupNameController,
-                              widgetWidth: widgetWidth,
-                              text: widget.account.displayName),
+                              widgetWidth: widgetWidth - 7,
+                              textHint: widget.account.displayName),
                         ],
                       ),
                     ],
@@ -143,8 +144,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                             inputType: TextInputType.number,
                             controller: orderIndexOneController,
-                            widgetWidth: widgetWidth,
-                            text: widget.account.indexOrder1.toString(),
+                            widgetWidth: widgetWidth - 7,
+                            textHint: widget.account.indexOrder1.toString(),
                           ),
                         ],
                       ),
@@ -161,8 +162,8 @@ class _EditGroupFormState extends State<EditGroupForm> {
                           FormTextField(
                             inputType: TextInputType.number,
                             controller: orderIndexTwoController,
-                            widgetWidth: widgetWidth,
-                            text: widget.account.indexOrder2.toString(),
+                            widgetWidth: widgetWidth -7 ,
+                            textHint: widget.account.indexOrder2.toString(),
                           )
                         ],
                       ),
@@ -259,36 +260,7 @@ class _EditGroupFormState extends State<EditGroupForm> {
                 const SizedBox(
                   height: 5,
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 1, color: const Color(0xFFDDE1E5)),
-                        borderRadius: BorderRadius.circular(4)),
-                    height: 80,
-                    width: double.infinity,
-                    child: TextFormField(
-                      controller: descriptionController,
-                      maxLines: null,
-                      minLines: null,
-                      expands: true,
-                      onChanged: (value) {},
-                      style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF989B9F)),
-                      validator: (value) {
-                        if (value == "") {
-                          return "error";
-                        }
-                      },
-                      decoration: InputDecoration(
-                          hintText: localization.textWritten,
-                          hintStyle: const TextStyle(
-                              color: Color(0xFF989B9F),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(10, -50, 10, 0)),
-                    )),
+                MultilineTextInput(enable: true, controller: descriptionController,),
                 const SizedBox(
                   height: 15,
                 ),

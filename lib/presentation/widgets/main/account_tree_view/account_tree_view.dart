@@ -5,22 +5,22 @@ import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../edit_group_dialog.dart';
 import 'custom_expansion_tile.dart';
-import 'tree_view_item.dart';
+import 'account_tree_view_item.dart';
 
-class MainActionsDetailTreeView extends StatefulWidget {
+class AccountTreeView extends StatefulWidget {
   double iconSize;
   double fontSize;
   Account account;
 
-  MainActionsDetailTreeView(
+  AccountTreeView(
       {Key? key, this.iconSize = 15, required this.account, this.fontSize = 12})
       : super(key: key);
 
   @override
-  State<MainActionsDetailTreeView> createState() => _MainActionsDetailTreeViewState();
+  State<AccountTreeView> createState() => _AccountTreeViewState();
 }
 
-class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
+class _AccountTreeViewState extends State<AccountTreeView> {
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   List<Widget> _buildChildren(List<Account> items, double textScale) {
     return items.map((item) {
       return item.hasChildren
-          ? MainActionsDetailTreeView(
+          ? AccountTreeView(
               account: item,
               fontSize: widget.fontSize,
               iconSize: widget.iconSize,
@@ -95,7 +95,7 @@ class _MainActionsDetailTreeViewState extends State<MainActionsDetailTreeView> {
   }
 
   Widget _buildItem(Account item, double textScale) {
-    return TreeViewItem(
+    return AccountTreeViewItem(
       account: item,
       title: item.displayName,
       fontSize: widget.fontSize,

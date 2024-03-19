@@ -6,13 +6,13 @@ import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 import '../../../../gen/assets.gen.dart';
 
-class WorkspaceDetailMenuItem extends StatefulWidget {
+class ActionsTreeViewItem extends StatefulWidget {
   final AccountingAction item;
   final double fontSize;
   final double textScale;
   final Function() onTap;
 
-  const WorkspaceDetailMenuItem({
+  const ActionsTreeViewItem({
     required this.item,
     required this.fontSize,
     required this.textScale,
@@ -21,10 +21,10 @@ class WorkspaceDetailMenuItem extends StatefulWidget {
   });
 
   @override
-  State<WorkspaceDetailMenuItem> createState() => _WorkspaceDetailMenuItemState();
+  State<ActionsTreeViewItem> createState() => _ActionsTreeViewItemState();
 }
 
-class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
+class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
   bool _isHovered = false;
   EdgeInsets childMargin = const EdgeInsets.only(right: 20);
   @override
@@ -64,8 +64,8 @@ class _WorkspaceDetailMenuItemState extends State<WorkspaceDetailMenuItem> {
                       width: 13,
                       height: 13,
                       color: _isHovered || widget.item.isPinned
-                          ? Color(0xFF6C3483)
-                          : Color(0xFFE7E7E7)),
+                          ?const Color(0xFF6C3483)
+                          :const Color(0xFFE7E7E7)),
                 ),
                 const SizedBox(width: 5),
                 Text(

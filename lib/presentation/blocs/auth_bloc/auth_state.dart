@@ -49,5 +49,8 @@ class AuthFailed extends AuthState {
 }
 
 class AuthVisibleUrlBox extends AuthState {
-  const AuthVisibleUrlBox(super.isRemember);
+
+   const AuthVisibleUrlBox(super.isRemember);
+  @override
+  List<Object> get props => [isRemember, Random().nextInt(10000)];
 }

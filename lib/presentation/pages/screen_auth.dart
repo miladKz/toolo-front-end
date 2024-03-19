@@ -25,7 +25,7 @@ class _ScreenAuthState extends State<ScreenAuth> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoadingOnView) {
-            isDisable = true;
+            isDisable = state.isShow;
             progressDialog(isShow: state.isShow);
           } else {
             progressDialog(isShow: false);

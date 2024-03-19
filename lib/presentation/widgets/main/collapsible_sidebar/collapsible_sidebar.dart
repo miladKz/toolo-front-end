@@ -10,7 +10,6 @@ class CollapsibleSidebar extends StatefulWidget {
   const CollapsibleSidebar({
     Key? key,
     required this.items,
-    required this.body,
     this.titleStyle,
     this.titleBack = false,
     this.titleBackIcon = Icons.arrow_back,
@@ -41,7 +40,6 @@ class CollapsibleSidebar extends StatefulWidget {
   final MouseCursor onHoverPointer;
   final TextStyle? titleStyle, textStyle, toggleTitleStyle;
   final IconData titleBackIcon;
-  final Widget body;
   final bool showToggleButton,
       fitItemsToBottom,
       isCollapsed,
@@ -231,16 +229,6 @@ class _CollapsibleSidebarState extends State<CollapsibleSidebar>
                 ? Alignment.topLeft
                 : Alignment.topRight,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: widget.minWidth *
-                          (widget.customContentPaddingLeft < 0 ? 1.1 : 1) +
-                      (widget.customContentPaddingLeft >= 0
-                          ? widget.customContentPaddingLeft
-                          : 0),
-                ),
-                child: widget.body,
-              ),
               sidebar,
             ],
           )
@@ -249,37 +237,7 @@ class _CollapsibleSidebarState extends State<CollapsibleSidebar>
                 ? Alignment.topLeft
                 : Alignment.topRight,
             children: [
-              widget.collapseOnBodyTap
-                  ? GestureDetector(
-                      onTap: () {
-                        _isCollapsed = true;
-                        _animateTo(widget.minWidth);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: widget.minWidth *
-                                  (widget.customContentPaddingLeft < 0
-                                      ? 1.1
-                                      : 1) +
-                              (widget.customContentPaddingLeft >= 0
-                                  ? widget.customContentPaddingLeft
-                                  : 0),
-                        ),
-                        child: widget.body,
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(
-                        left: widget.minWidth *
-                                (widget.customContentPaddingLeft < 0
-                                    ? 1.1
-                                    : 1) +
-                            (widget.customContentPaddingLeft >= 0
-                                ? widget.customContentPaddingLeft
-                                : 0),
-                      ),
-                      child: widget.body,
-                    ),
+
               sidebar,
             ],
           );

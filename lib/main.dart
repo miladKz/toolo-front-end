@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return TestScreen();
+        return screenMain();
       }),
     );
   }

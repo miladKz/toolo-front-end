@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
-import 'package:toolo_gostar/presentation/widgets/main/work_space_detail_menu/workspace_detail_menu_item.dart';
 
 import '../../../../domain/entities/accounting/accounting_action.dart';
+import 'actions_tree_view_item.dart';
 
-class MainActionsTree extends StatefulWidget {
+class ActionsTreeView extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
   bool isExpanded = false;
@@ -13,7 +11,7 @@ class MainActionsTree extends StatefulWidget {
   double iconSize;
   late double widthScreen;
 
-  MainActionsTree(
+  ActionsTreeView(
       {Key? key,
       required this.item,
       required this.isRoot,
@@ -22,10 +20,10 @@ class MainActionsTree extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<MainActionsTree> createState() => _MainActionsTreeState();
+  State<ActionsTreeView> createState() => _ActionsTreeViewState();
 }
 
-class _MainActionsTreeState extends State<MainActionsTree> {
+class _ActionsTreeViewState extends State<ActionsTreeView> {
   EdgeInsets groupMargin = const EdgeInsets.only(right: 15);
   bool _isExpanded = false;
 
@@ -36,7 +34,7 @@ class _MainActionsTreeState extends State<MainActionsTree> {
     return ExpansionTile(
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),
-      trailing: SizedBox(),
+      trailing: const SizedBox(),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -46,9 +44,9 @@ class _MainActionsTreeState extends State<MainActionsTree> {
               children: [
                 _isExpanded
                     ? Icon(Icons.remove,
-                        size: widget.iconSize, color: Color(0xFF6C3483))
+                        size: widget.iconSize, color: const Color(0xFF6C3483))
                     : Icon(Icons.add,
-                        size: widget.iconSize, color: Color(0xFFBD8AD0)),
+                        size: widget.iconSize, color: const Color(0xFFBD8AD0)),
                 const SizedBox(width: 5),
                 Text(
                   maxLines: 1,
@@ -59,7 +57,7 @@ class _MainActionsTreeState extends State<MainActionsTree> {
                   style: TextStyle(
                     fontSize: widget.titleFontSize,
                     fontWeight: FontWeight.bold,
-                    color: _isExpanded ? Color(0xFF6C3483) : Color(0xFF7B7B84),
+                    color: _isExpanded ?const  Color(0xFF6C3483) :const Color(0xFF7B7B84),
                   ),
                 ),
               ],
@@ -89,7 +87,7 @@ class _MainActionsTreeState extends State<MainActionsTree> {
       return item.hasChildren
           ? Container(
               margin: groupMargin,
-              child: MainActionsTree(
+              child: ActionsTreeView(
                 item: item,
                 isRoot: false,
                 titleFontSize: widget.titleFontSize - 0.5,
@@ -100,7 +98,7 @@ class _MainActionsTreeState extends State<MainActionsTree> {
   }
 
   Widget _buildItem(AccountingAction item, double textScale) {
-    return WorkspaceDetailMenuItem(
+    return ActionsTreeViewItem(
       item: item,
       fontSize: widget.titleFontSize,
       textScale: textScale,

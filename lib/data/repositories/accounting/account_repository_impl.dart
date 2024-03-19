@@ -22,7 +22,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse =
           await remoteDataSource.getAccountList(token: token);
       if (serverResponse.isSuccess) {
-        List<AccountDto> accountList = [];
+        List<AccountDto> accountList = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         accountList = List<AccountDto>.from(itemsAsMap.map((data) {
@@ -44,7 +44,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse =
           await remoteDataSource.getActionList(token: token);
       if (serverResponse.isSuccess) {
-        List<AccountingAction> accountingActionList = [];
+        List<AccountingAction> accountingActionList = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         accountingActionList =

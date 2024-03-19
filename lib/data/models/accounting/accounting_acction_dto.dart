@@ -35,7 +35,7 @@ class AccountingActionDto extends AccountingAction {
 
  static List<AccountingAction> _getChildren(Map<String, dynamic> map){
     List<dynamic> childrenData = map.findAsDynamic("Items");
-    List<AccountingActionDto> children = [];
+    List<AccountingActionDto> children = List.empty(growable: true);
     for (var childMap in childrenData) {
       children.add(AccountingActionDto.fromMap(childMap));
     }

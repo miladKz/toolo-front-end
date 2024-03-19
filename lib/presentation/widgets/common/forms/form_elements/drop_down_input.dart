@@ -55,7 +55,7 @@ class _DropDownInputState extends State<DropDownInput> {
 
   List<DropdownMenuItem<String>> getDropdownItems(
       List<String> items, double widthItem) {
-    List<DropdownMenuItem<String>> menuItems = [];
+    List<DropdownMenuItem<String>> menuItems = List.empty(growable: true);
     for (String item in items) {
       menuItems.add(
         DropdownMenuItem(

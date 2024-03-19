@@ -19,7 +19,7 @@ part 'main_event.dart';
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  List<AccountingAction> actions = [];
+  List<AccountingAction> actions = List.empty(growable: true);
   Account? selectedAccount;
 
   MainBloc() : super(MainInitial()) {

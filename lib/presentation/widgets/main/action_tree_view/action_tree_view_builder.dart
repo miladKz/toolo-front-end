@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/accounting/accounting_action.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
-import 'actions_tree_view.dart';
+import 'action_tree_view.dart';
 
 class ActionsTreeViewBuilder extends StatefulWidget {
   List<AccountingAction> items = List.empty();
@@ -27,16 +27,17 @@ class _ActionsTreeViewBuilderState extends State<ActionsTreeViewBuilder> {
           itemCount: 1,
           itemBuilder: (context, index) {
             return widget.items.isNotEmpty
-                ? ActionsTreeView(item: widget.items[0], isRoot: true)
+                ? ActionTreeView(item: widget.items[0], isRoot: true)
                 : const SizedBox();
           },
         ));
   }
 
   updateList() {
-    final state = context.watch<MainBloc>().state;
-    if (state is AccountingActionsSuccess) {
-      widget.items = state.actions;
+    final bloc = context.watch<MainBloc>();
+
+     if (bloc.filteredActions.isNotEmpty) {
+      widget.items = bloc.filteredActions;
     }
   }
 }

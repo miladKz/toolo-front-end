@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/accounting/accounting_action.dart';
-import 'actions_tree_view_item.dart';
+import 'action_tree_view_item.dart';
 
-class ActionsTreeView extends StatefulWidget {
+class ActionTreeView extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
   bool isExpanded = false;
@@ -11,7 +11,7 @@ class ActionsTreeView extends StatefulWidget {
   double iconSize;
   late double widthScreen;
 
-  ActionsTreeView(
+  ActionTreeView(
       {Key? key,
       required this.item,
       required this.isRoot,
@@ -20,10 +20,10 @@ class ActionsTreeView extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ActionsTreeView> createState() => _ActionsTreeViewState();
+  State<ActionTreeView> createState() => _ActionTreeViewState();
 }
 
-class _ActionsTreeViewState extends State<ActionsTreeView> {
+class _ActionTreeViewState extends State<ActionTreeView> {
   EdgeInsets groupMargin = const EdgeInsets.only(right: 15);
   bool _isExpanded = false;
 
@@ -87,7 +87,7 @@ class _ActionsTreeViewState extends State<ActionsTreeView> {
       return item.hasChildren
           ? Container(
               margin: groupMargin,
-              child: ActionsTreeView(
+              child: ActionTreeView(
                 item: item,
                 isRoot: false,
                 titleFontSize: widget.titleFontSize - 0.5,

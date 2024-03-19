@@ -7,8 +7,8 @@ import 'package:toolo_gostar/atras_direction.dart';
 
 import 'expandable_icon.dart';
 
-/// This class is main class of [CustomExpandableMenu] widget.
-class CustomExpandableMenu extends StatefulWidget {
+/// This class is main class of [ExpandableMenu] widget.
+class ExpandableMenu extends StatefulWidget {
   /// This property declare height of widget.
   final double height;
   final double maxSpaceWidth;
@@ -24,7 +24,7 @@ class CustomExpandableMenu extends StatefulWidget {
   /// and if it's be null default value is [Colors.white.withOpacity(.4)]
   final Color? itemContainerColor;
 
-  const CustomExpandableMenu({
+  const ExpandableMenu({
     Key? key,
     this.height = 40,
     required this.maxSpaceWidth,
@@ -34,10 +34,10 @@ class CustomExpandableMenu extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomExpandableMenu> createState() => _CustomExpandableMenuState();
+  State<ExpandableMenu> createState() => _ExpandableMenuState();
 }
 
-class _CustomExpandableMenuState extends State<CustomExpandableMenu>
+class _ExpandableMenuState extends State<ExpandableMenu>
     with TickerProviderStateMixin {
   /// This private property declare for measure expanded state of widget.
   final _spacerKey = GlobalKey();

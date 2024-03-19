@@ -1,5 +1,4 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
@@ -10,9 +9,9 @@ import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
 import '../../blocs/main_bloc/main_bloc.dart';
+import 'account_toolbar/account_toolbar.dart';
 import 'account_tree_view/account_tree_view_builder.dart';
-import 'actions_tree_view/action_tree_view_builder.dart';
-import 'account_toolbar.dart';
+import 'action_tree_view/action_tree_view_builder.dart';
 import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
@@ -115,7 +114,8 @@ class MainBaseBody extends StatelessWidget {
                             _buildAccountToolbar(),
                             Expanded(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   mainActionsDetailWidget,
                                   showAccountInfoInForm(),
@@ -224,6 +224,7 @@ class MainBaseBody extends StatelessWidget {
       )
     ];
   }
+
   Widget _buildAccountToolbar() {
     return Directionality(
       textDirection: TextDirection.ltr,

@@ -16,10 +16,12 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
+
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
+  List<AccountingAction> filteredActions = [];
   Account? selectedAccount;
 
   MainBloc() : super(MainInitial()) {
@@ -44,26 +46,18 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       debugPrint('Atras method _mainActionList useCase: $useCase');
       actions = await useCase();
       emit(MainLoadingOnView(isShow: false));
-      final filteredItems = _filterActions(WorkSpaceItems.accounting);
-      emit(AccountingActionsSuccess(filteredItems));
-   /*  await Future.delayed(Duration.zero).then((value) =>
-          emit(AccountingActionsSuccess(filteredItems)));
-      await Future.delayed(Duration.zero).then((value) =>
-          emit(MainAccountSuccess(List.empty())));
-      await  Future.delayed(Duration.zero).then((value) =>
-          MainAccountDetailInFormVisibility(isShow: false));
-      await  Future.delayed(Duration.zero).then((value) =>
-          MainActionToolbarVisibility(isShow: false));*/
+      filteredActions = _filterActions(WorkSpaceItems.accounting);
+      emit(AccountingActionsSuccess(filteredActions));
     } catch (e) {
-    e.toString();
+      e.toString();
     }
   }
 
   FutureOr<void> _filterActionsHandler(
       FilterActionsEvent event, Emitter<MainState> emit) async {
     if (actions.isNotEmpty) {
-      final filteredItems = _filterActions(event.selectedItem);
-      emit(AccountingActionsSuccess(filteredItems));
+      filteredActions = _filterActions(event.selectedItem);
+      emit(AccountingActionsSuccess(filteredActions));
       resetAccountList();
     }
   }
@@ -120,8 +114,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
   }
 
-  FutureOr<void> _showDetailAccountInFormHandler(OnClickOnAccount event,
-      Emitter<MainState> emit) async {
+  FutureOr<void> _showDetailAccountInFormHandler(
+      OnClickOnAccount event, Emitter<MainState> emit) async {
     selectedAccount = event.account;
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
@@ -170,12 +164,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(MainRemovePinnedActionSuccess(event.action));
   }
 
-  void reGetAccounts() async{
-   await Future.delayed(const Duration(milliseconds: 200));
+  void reGetAccounts() async {
+    await Future.delayed(const Duration(milliseconds: 200));
     add(MainAccountList());
   }
 
-  void resetAccountList() async{
+  void resetAccountList() async {
     await Future.delayed(const Duration(milliseconds: 200));
     add(MainAnotherList(endpoint: ""));
   }

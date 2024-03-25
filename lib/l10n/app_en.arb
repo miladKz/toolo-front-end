@@ -136,5 +136,7 @@
  "addresses": "نشانی ها",
    "titleDetailedCode":"کد تفضیل",
    "titleFloatingDetailGroup": "گروه تفضیل شناور",
-   "titleFloatingDetail": "تفضیل شناور"
+  "titleFloatingDetail": "تفضیل شناور",
+  "titleNew": "جدید",
+  "titleShow": "نمایش"
 }

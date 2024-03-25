@@ -5,6 +5,8 @@ import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/actions_toolbar.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/account_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
@@ -111,7 +113,7 @@ class MainBaseBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Column(
                           children: [
-                            _buildAccountToolbar(),
+                            buildToolbar(toolBarEnum: ToolBarEnum.accountMainToolbar),
                             Expanded(
                               child: Row(
                                 mainAxisAlignment:
@@ -225,18 +227,5 @@ class MainBaseBody extends StatelessWidget {
     ];
   }
 
-  Widget _buildAccountToolbar() {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth;
-            return ActionsToolbar(maxWidth: maxWidth);
-          },
-        ),
-      ),
-    );
-  }
+
 }

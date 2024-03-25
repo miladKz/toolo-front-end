@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
-import 'form_elements/enum__rialy_type.dart';
+import 'form_elements/enum_rialy_type.dart';
 import 'form_elements/form_item_title.dart';
 import 'form_elements/form_text_field.dart';
 

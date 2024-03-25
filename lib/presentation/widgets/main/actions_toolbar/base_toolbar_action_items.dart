@@ -7,7 +7,7 @@ import '../../../../di/di.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../edit_group_dialog.dart';
 
-List<Widget> accountingActionsItem(BuildContext context, double maxWith) {
+List<Widget> baseToolbarActionsItem(BuildContext context, double maxWith) {
   double objectCount = 7 + 1;
   double objectWith = (maxWith / objectCount) - 5;
 

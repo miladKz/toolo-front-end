@@ -64,7 +64,7 @@ class FloatingDetailForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                FormItemTitle(title: localization.detailedCode),
+                FormItemTitle(title: localization.titleDetailedCode),
                 titleInputSpacing,
                 DropDownInput(
                   enable: isActive,

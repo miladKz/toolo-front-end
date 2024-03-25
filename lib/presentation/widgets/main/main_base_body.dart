@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/actions_toolbar.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
 import '../../blocs/main_bloc/main_bloc.dart';
-import 'account_toolbar/account_toolbar.dart';
 import 'account_tree_view/account_tree_view_builder.dart';
 import 'action_tree_view/action_tree_view_builder.dart';
 import 'badge_button.dart';
@@ -17,8 +17,8 @@ import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
 import 'forms/show_account_form.dart';
-import 'forms/show_gorup_form.dart';
-import 'logut_button.dart';
+import 'forms/show_group_form.dart';
+import 'logout_button.dart';
 
 class MainBaseBody extends StatelessWidget {
   MainBaseBody({super.key});
@@ -233,7 +233,7 @@ class MainBaseBody extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
-            return AccountToolbar(maxWidth: maxWidth);
+            return ActionsToolbar(maxWidth: maxWidth);
           },
         ),
       ),

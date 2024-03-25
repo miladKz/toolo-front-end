@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/main_bloc/main_bloc.dart';
-import 'accounting_action_items.dart';
+import 'base_toolbar_action_items.dart';
 import 'expandable_menu.dart';
 
-class AccountToolbar extends StatefulWidget {
-  AccountToolbar({
+class ActionsToolbar extends StatefulWidget {
+  ActionsToolbar({
     super.key,
     required this.maxWidth,
   });
@@ -16,10 +16,10 @@ class AccountToolbar extends StatefulWidget {
   bool isActionShow = false;
 
   @override
-  State<AccountToolbar> createState() => _AccountToolbarState();
+  State<ActionsToolbar> createState() => _ActionsToolbarState();
 }
 
-class _AccountToolbarState extends State<AccountToolbar> {
+class _ActionsToolbarState extends State<ActionsToolbar> {
   @override
   Widget build(BuildContext context) {
     updateState();
@@ -27,7 +27,7 @@ class _AccountToolbarState extends State<AccountToolbar> {
         ? ExpandableMenu(
             maxSpaceWidth: widget.maxWidth,
             height: 40,
-            items: accountingActionsItem(context, widget.maxWidth),
+            items: baseToolbarActionsItem(context, widget.maxWidth),
           )
         : SizedBox(
             width: widget.maxWidth,

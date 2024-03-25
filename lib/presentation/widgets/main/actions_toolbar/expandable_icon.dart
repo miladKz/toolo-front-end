@@ -123,10 +123,10 @@ class _ExpandableIconState extends State<ExpandableIcon>
       quarterTurns: Directionality.of(context) == TextDirection.rtl ? 2 : 0,
       child: Center(
         child: Material(
-          color: Color(0xFFefe0f5),
-          child: Padding(padding: EdgeInsets.all(5),
+          color: const Color(0xFFefe0f5),
+          child: Padding(padding: const EdgeInsets.all(5),
             child: InkWell(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
               onTap: () {
                 if (!_isAnimating) {
                   if (_hamburgerAnimationController.isCompleted) {

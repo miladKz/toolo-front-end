@@ -90,7 +90,6 @@
   "titleCancel":"لغو",
   "titleSuccess":"تایید",
   "code":"کد",
-  "detailedCode":"کد تفضیل",
   "name":"نام",
   "type":"نوع",
   "automaticSelection":"انتخاب خودکار",
@@ -132,5 +131,8 @@
   "groups": "گروه بندی ها",
   "salesGroup": "گروه فروش",
   "otherDetails": "سایر مشخصات",
-  "addresses": "نشانی ها"
+  "addresses": "نشانی ها",
+  "titleDetailedCode":"کد تفضیل",
+  "titleFloatingDetailGroup": "گروه تفضیل شناور",
+  "titleFloatingDetail": "تفضیل شناور"
 }

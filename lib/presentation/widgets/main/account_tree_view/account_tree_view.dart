@@ -4,7 +4,7 @@ import 'package:toolo_gostar/di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../edit_group_dialog.dart';
-import 'custom_expansion_tile.dart';
+import '../../common/widget_tree/custom_expansion_tile.dart';
 import 'account_tree_view_item.dart';
 
 class AccountTreeView extends StatefulWidget {

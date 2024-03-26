@@ -38,7 +38,7 @@ class ExpandableMenu extends StatefulWidget {
 }
 
 class _ExpandableMenuState extends State<ExpandableMenu>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   /// This private property declare for measure expanded state of widget.
   final _spacerKey = GlobalKey();
 
@@ -54,11 +54,15 @@ class _ExpandableMenuState extends State<ExpandableMenu>
   /// if [_isExpanded] equals false it's meaning widget is not expanded.
   bool _isExpanded = false;
 
+  /// This private property declare main container animation controller
+  late final AnimationController _containerAnimationController =
+      AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+
   /// This private property declare main container animation
   late Animation<double> _containerAnimation;
-
-  /// This private property declare main container animation controller
-  late AnimationController _containerAnimationController;
 
   /// This private property declare main container animation progress value.
   double _containerProgress = 0.0;
@@ -68,14 +72,10 @@ class _ExpandableMenuState extends State<ExpandableMenu>
 
   @override
   void initState() {
-    _containerAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
 
     final Animation<double> containerCurve = CurvedAnimation(
       parent: _containerAnimationController,
-      curve: Curves.fastLinearToSlowEaseIn,
+      curve: Curves.easeInOutSine,
     );
     _containerAnimation = Tween(begin: 0.0, end: 1.0).animate(containerCurve)
       ..addListener(() {
@@ -131,7 +131,7 @@ class _ExpandableMenuState extends State<ExpandableMenu>
                 },
               ),
               SizedBox(
-                width: _containerProgress < 0.9 ? 0 : maxListWidth,
+                width: _containerProgress * maxListWidth,
                 height: widget.height,
                 child: Directionality(
                   textDirection: atrasDirection(context),

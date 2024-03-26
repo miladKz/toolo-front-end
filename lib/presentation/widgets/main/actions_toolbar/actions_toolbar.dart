@@ -9,7 +9,7 @@ import '../../../blocs/main_bloc/main_bloc.dart';
 import 'account_toolbar_action_items.dart';
 import 'expandable_menu.dart';
 
-Widget buildToolbar({required ToolBarEnum toolBarEnum}) {
+Widget MyCustomToolbar({required ToolBarEnum toolBarEnum}) {
   return Directionality(
     textDirection: TextDirection.ltr,
     child: Padding(
@@ -64,7 +64,7 @@ class ActionsToolbar extends StatefulWidget {
   });
 
   final double maxWidth;
-  bool isActionShow = false;
+  bool isActionShow = true;
 
   @override
   State<ActionsToolbar> createState() => _ActionsToolbarState();

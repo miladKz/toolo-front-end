@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomExpansionTile extends StatefulWidget {
@@ -20,22 +19,21 @@ class CustomExpansionTile extends StatefulWidget {
 class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 500),
+  );
+  late final Animation<double> _animation =
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOutSine);
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -44,9 +42,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
       _isExpanded = !_isExpanded;
     });
     if (_isExpanded) {
-      _controller.forward();
+      _animationController.forward();
     } else {
-      _controller.reverse();
+      _animationController.reverse();
     }
   }
 
@@ -71,10 +69,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
               child: Row(
                 children: [
                   _isExpanded
-                      ? Icon(Icons.remove,
-                      size: 12, color: const Color(0xFF6C3483))
-                      : Icon(Icons.add,
-                      size: 12, color: const Color(0xFFBD8AD0)),
+                      ? const Icon(Icons.remove,
+                      size: 12, color: Color(0xFF6C3483))
+                      : const Icon(Icons.add,
+                      size: 12, color: Color(0xFFBD8AD0)),
                   const SizedBox(width: 5),
                   widget.title,
                 ],
@@ -82,17 +80,15 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
             ),
           ),
           AnimatedOpacity(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             opacity: _isExpanded ? 1.0 : 0.0,
             child: SizeTransition(
               axisAlignment: 1.0,
               sizeFactor: _animation,
-              child: Container(
-                child: Column(
-                  children: widget.children
-                      .map((child) => child)
-                      .toList(),
-                ),
+              child: Column(
+                children: widget.children
+                    .map((child) => child)
+                    .toList(),
               ),
             ),
           ),

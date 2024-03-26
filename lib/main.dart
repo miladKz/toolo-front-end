@@ -54,10 +54,11 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return TestScreen();
+        return testScreen();
       }),
     );
   }
+
 }
 
 Future<void> initLocator() async {
@@ -71,6 +72,14 @@ Widget screenAuth() {
       return locator<AuthBloc>();
     },
     child: const ScreenAuth(),
+  );
+}
+Widget testScreen() {
+  return BlocProvider(
+    create: (_) {
+      return locator<MainBloc>();
+    },
+    child:  TestScreen(),
   );
 }
 

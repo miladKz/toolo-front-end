@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
@@ -85,45 +84,5 @@ class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
 
   void selectItem(BuildContext context) {
     locator.get<MainBloc>().add(OnClickOnAccount(widget.account));
-  }
-
-  showQuestionDialog(
-      {required BuildContext context,
-      required String title,
-      required Widget content,
-      required Function(bool) callBack}) {
-    final themeData = Theme.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final buttonTextStyle = textTheme.bodyMedium;
-    return Get.defaultDialog(
-      title: title,
-      backgroundColor: Colors.white,
-      titleStyle:
-          textTheme.titleLarge!.copyWith(color: themeData.colorScheme.primary),
-      content: content,
-      actions: [
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: themeData.colorScheme.surface,
-                foregroundColor: themeData.colorScheme.onSurface,
-                textStyle: buttonTextStyle),
-            onPressed: () {
-              callBack(false);
-              Get.back();
-            },
-            child:const Text('')),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: themeData.colorScheme.primary,
-                foregroundColor: themeData.colorScheme.onPrimary,
-                textStyle: buttonTextStyle),
-            onPressed: () {
-              callBack(true);
-              Get.back();
-            },
-            child:const Text('')),
-      ],
-      barrierDismissible: false,
-    );
   }
 }

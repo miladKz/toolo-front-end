@@ -8,7 +8,7 @@ import '../../../blocs/main_bloc/main_bloc.dart';
 
 List<Widget> groupRelationshipMainToolbarActionsItem(
     {required BuildContext context, required double maxWidth}) {
-  double objectCount = 7 + 1;
+  double objectCount = 5 + 1;
   double objectWith = (maxWidth / objectCount) - 5;
 
   return [
@@ -50,9 +50,6 @@ List<Widget> groupRelationshipMainToolbarActionsItem(
       objectWith,
       onTap: () {},
     ),
-    disableActionItem(
-      objectWith,
-      onTap: () {},
-    ),
+
   ];
 }

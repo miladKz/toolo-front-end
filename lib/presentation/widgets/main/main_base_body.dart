@@ -113,7 +113,7 @@ class MainBaseBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Column(
                           children: [
-                            buildToolbar(toolBarEnum: ToolBarEnum.accountMainToolbar),
+                            MyCustomToolbar(toolBarEnum: ToolBarEnum.accountMainToolbar),
                             Expanded(
                               child: Row(
                                 mainAxisAlignment:

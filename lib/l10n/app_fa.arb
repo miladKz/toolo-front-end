@@ -136,5 +136,20 @@
   "titleFloatingDetailGroup": "گروه تفضیل شناور",
   "titleFloatingDetail": "تفضیل شناور",
   "titleNew": "جدید",
-  "titleShow": "نمایش"
+  "titleShow": "نمایش",
+  "titleGroupRelationshipAndLastLevelAccountCode": "مدیریت ارتباط حساب ها و آخرین سطح حساب",
+  "titleLastLevelAccountCode": "کد حساب سطح آخر",
+  "titleDetailGroup": "گروه تفصیل",
+  "titleShowPlace": "محل نمایش",
+  "hintShow": "نمایش:",
+  "titleCustomers": "مشتریان",
+  "titleSupplier": "تامین کننده",
+  "titlePersonnel": "کارکنان",
+  "titleIntermediary": "واسطه",
+  "titleInvestor": "سرمایه پذیر",
+  "titlePartners": "شرکا",
+  "titleRecipientsFacility": "تسهیلات گیرندگان",
+  "titleFacilitators": "تسهیلات دهندگان",
+  "titleRelatedPersons": "اشخاص وابسته",
+  "titleOther": "سایر"
 }

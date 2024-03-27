@@ -5,6 +5,7 @@ import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/actions_toolbar.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
+import 'package:toolo_gostar/presentation/widgets/main/detailed_account_and_group_relationship_management/modals/group_relationship_management_modal.dart';
 
 import '../../domain/entities/accounting/account.dart';
 import '../widgets/common/forms/floating_detail_form.dart';
@@ -32,13 +33,12 @@ class TestScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        Account newAccount = Account.empty();
-                        double formWidth = 700;
+                        double formWidth = 800;
                         return MainForm(
-                          title: localization.titleFloatingDetail,
+                          title: localization.titleGroupRelationshipAndLastLevelAccountCode,
                           width: formWidth,
-                          body: FloatingDetailForm(
-                              formWidth: formWidth, formKey: _formKey),
+                          body: ModalGroupRelationshipManagement(
+                              formWidth: formWidth, formKey: _formKey,isActive: true,detailGroups: List.empty(),),
                         ); // Pass your account data here
                       },
                     );

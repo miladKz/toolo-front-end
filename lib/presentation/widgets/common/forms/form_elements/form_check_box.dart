@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 import '../../../main/forms/form_elements/form_item_title.dart';
@@ -27,19 +25,28 @@ class _FormCheckBoxState extends State<FormCheckBox> {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: !widget.enable,
-      child: Container(
+      child: SizedBox(
         height: 35,
         child: Row(children: [
-          Checkbox(value: widget.value, onChanged: (value) {
-            if(widget.onChange != null){
-              setState(() {
-                widget.onChange!();
-              });
-            }
-
-            },),
-          SizedBox(width: 5,),
-          FormItemTitle(title: widget.title,)
+          Checkbox(value: widget.value,
+            fillColor:MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const Color(0xff479F76);
+              }
+              return null;
+            }),
+            onChanged: (value) {
+                setState(() {
+                  widget.value = !widget.value;
+                  if (widget.onChange != null) {
+                    widget.onChange!();
+                  }
+                });
+              },),
+            const SizedBox(
+              width: 5,
+            ),
+            FormItemTitle(title: widget.title,)
         ],),
       ),
     );

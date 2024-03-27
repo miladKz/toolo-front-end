@@ -5,7 +5,7 @@ import '../../../main/forms/form_elements/form_item_title.dart';
 class DropDownInput extends StatefulWidget {
   double width;
   List<String> items;
-  Function()? onChange;
+  Function(String)? onChange;
   bool enable;
   String value;
   Icon? icon;
@@ -45,7 +45,7 @@ class _DropDownInputState extends State<DropDownInput> {
           onChanged: (value) {
             setState(() {
               widget.value = value!;
-              if (widget.onChange != null) widget.onChange!();
+              if (widget.onChange != null) widget.onChange!(value);
             });
           },
         ),

@@ -153,6 +153,27 @@
   "titleRecipientsFacility": "تسهیلات گیرندگان",
   "titleFacilitators": "تسهیلات دهندگان",
   "titleRelatedPersons": "اشخاص وابسته",
-  "titleOther": "سایر"
+  "titleOther": "سایر",
+  "titleAccountType": "نوع حساب",
+  "titleItemCurrentAccount": "جاری",
+  "titleItemLoanAccount": "قرض الحسنه",
+  "titleItemShortTermAccount": "کوتاه مدت",
+  "titleItemLongTermAccount": "بلند مدت",
+  "titleCurrencyType": "نوع ارز",
+  "titleItemCurrencyRial": "ریال",
+  "titleItemCurrencyUSDollar": "دلار آمریکا",
+  "titleItemCurrencyEuro": "یورو",
+  "titleItemCurrencyPound": "پوند",
+  "titleItemCurrencyTurkishLira": "لیر ترکیه",
+  "titleItemCurrencyAED": "درهم امارات",
+  "titleItemCurrencySwedishKrona": "کرون سوئد",
+  "titleBankName": "نام بانک",
+  "titleBankBranchName": "نام شعبه",
+  "titleBankBranchCode": "کد شعبه",
+  "titleAccountNumber": "شماره حساب",
+  "titleAccessibility": "دسترسی",
+  "titleAccountOwner": "صاحب حساب",
+  "titleCardNumber": "شماره کارت",
+  "titleShebaNumber": "شماره شبا"
 
 }

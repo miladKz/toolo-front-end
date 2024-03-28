@@ -9,7 +9,9 @@ class FormTextField extends StatelessWidget {
   final double widgetHeight;
   TextEditingController? controller;
   TextInputType inputType;
-
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final int maxLines;
   FormTextField(
       {
          this.widgetWidth,
@@ -19,7 +21,9 @@ class FormTextField extends StatelessWidget {
       this.enable = true,
       this.inputType = TextInputType.text,
       this.controller,
-      super.key});
+      super.key,
+      this.prefixIcon,
+      this.suffixIcon,  this.maxLines=1,});
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +36,18 @@ class FormTextField extends StatelessWidget {
     }
     return Container(
         decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Color(0xFFDDE1E5)),
+            border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
             borderRadius: BorderRadius.circular(4)),
         height: widgetHeight,
         width: widgetWidth,
         child: TextFormField(
           keyboardType: inputType,
+          maxLines: maxLines,
           inputFormatters: [inputFormatter],
           enabled: enable,
           controller: controller,
           onChanged: (value) {},
-          style: TextStyle(fontSize: 12, color: Color(0xFF989B9F)),
+          style: const TextStyle(fontSize: 12, color: Color(0xFF989B9F)),
           validator: (value) {
             if (value == "") {
               return errorText;
@@ -50,11 +55,13 @@ class FormTextField extends StatelessWidget {
           },
           decoration: InputDecoration(
               hintText: textHint,
-              hintStyle: TextStyle(
+              suffixIcon: suffixIcon,
+              prefixIcon: prefixIcon,
+              hintStyle: const TextStyle(
                   color: Color(0xFF989B9F),
                   fontSize: 12,
                   fontWeight: FontWeight.w400),
-              contentPadding: EdgeInsets.fromLTRB(5, 12, 12, 5)),
+              contentPadding: const EdgeInsets.fromLTRB(5, 12, 12, 5)),
         ));
   }
 }

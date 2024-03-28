@@ -5,6 +5,7 @@ import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
 import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/drop_down_generic.dart';
 import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/drop_down_input.dart';
 import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/form_check_box.dart';
+import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
 import '../../forms/form_elements/form_button.dart';
@@ -22,12 +23,7 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
   final double formWidth;
   final GlobalKey<FormState> _formKey;
   final List<DetailGroup> detailGroups;
-  final Widget verticalGapDivider = const SizedBox(
-    height: 10,
-  );
-  final Widget titleInputSpacing = const SizedBox(
-    height: 5,
-  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +41,7 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FormButton(
-              itemWidth: (formWidth / 2) - 25,
-              background: const Color(0xFF6C3483),
-              textColor: Colors.white,
-              title: localization.captionSuccess,
-              onClick: () {
-                if (_formKey.currentState != null &&
-                    _formKey.currentState!.validate()) {}
-              },
-            ),
-            FormButton(
-                itemWidth: (formWidth / 2) - 25,
-                background: const Color(0xFFD9BCE4),
-                textColor: const Color(0xFF6C3483),
-                title: localization.captionCancel,
-                onClick: () {
-                  Navigator.of(context).pop();
-                }),
-          ],
-        )
+        ActionButtons(formWidth: formWidth, formKey: _formKey)
       ],
     );
   }
@@ -184,5 +158,43 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
       widgets.add(FormCheckBox(value: true, title: title));
     }
     return widgets;
+  }
+}
+
+class ActionButtons extends StatelessWidget {
+  const ActionButtons({
+    super.key,
+    required this.formWidth,
+    required GlobalKey<FormState> formKey,
+  }) : _formKey = formKey;
+
+  final double formWidth;
+  final GlobalKey<FormState> _formKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FormButton(
+          itemWidth: (formWidth / 2) - 25,
+          background: const Color(0xFF6C3483),
+          textColor: Colors.white,
+          title: localization.captionSuccess,
+          onClick: () {
+            if (_formKey.currentState != null &&
+                _formKey.currentState!.validate()) {}
+          },
+        ),
+        FormButton(
+            itemWidth: (formWidth / 2) - 25,
+            background: const Color(0xFFD9BCE4),
+            textColor: const Color(0xFF6C3483),
+            title: localization.captionCancel,
+            onClick: () {
+              Navigator.of(context).pop();
+            }),
+      ],
+    );
   }
 }

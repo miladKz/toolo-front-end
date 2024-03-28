@@ -38,13 +38,13 @@ class _GenericDropDownState<T extends IDropDownItem>
     return IgnorePointer(
       ignoring: !widget.isEnable,
       child: Container(
-        height: 30,
+        height: 35,
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
             borderRadius: BorderRadius.circular(4)),
         child: DropdownButton<T>(
-          padding: const EdgeInsets.only(right: 3,top: 2,left: 3),
+          padding: const EdgeInsets.only(right: 4,top: 4,left: 4,bottom: 2),
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
           iconSize: 16,
           elevation: 2,
@@ -57,7 +57,7 @@ class _GenericDropDownState<T extends IDropDownItem>
                   value: item,
                   child: Center(
                     child: SizedBox(
-                      width: widget.itemWidth*0.98,
+                      width: widget.itemWidth*0.9,
                       child: FormItemTitle(
                         title: item.name,
                       ),

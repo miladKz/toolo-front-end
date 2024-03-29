@@ -25,7 +25,7 @@ class AccountDto extends Account {
       required super.mahiatRialy,
       required super.balanceSheetType,
       required super.displayName,
-      super.hasChildren});
+        required super.hasChildren});
 
   factory AccountDto.fromMap(Map<String, dynamic> map) {
     return AccountDto(

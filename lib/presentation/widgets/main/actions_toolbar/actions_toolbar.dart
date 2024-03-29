@@ -64,7 +64,7 @@ class ActionsToolbar extends StatefulWidget {
   });
 
   final double maxWidth;
-  bool isActionShow = true;
+  bool isActionShow = false;
 
   @override
   State<ActionsToolbar> createState() => _ActionsToolbarState();

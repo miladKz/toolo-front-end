@@ -1,5 +1,6 @@
-class Account {
-  int id;
+import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
+
+class Account extends IDataTreeModel {
   String accCode1;
   String accCode2;
   String accCode3;
@@ -16,15 +17,12 @@ class Account {
   int indexOrder2;
   bool isActive;
   bool isAmalyati;
-  List<Account> children;
-  bool hasChildren;
   int type;
   int mahiatRialy;
   int balanceSheetType;
-  String displayName;
 
   Account(
-      {required this.id,
+      {
       required this.accCode1,
       required this.accCode2,
       required this.accCode3,
@@ -41,12 +39,14 @@ class Account {
       required this.indexOrder2,
       required this.isActive,
       required this.isAmalyati,
-      this.children = const [],
-      this.hasChildren = false,
       required this.type,
       required this.mahiatRialy,
-      required this.displayName,
-      required this.balanceSheetType});
+      required this.balanceSheetType,
+       required super.id,
+       required super.children,
+       required super.hasChildren,
+       required super.displayName,
+      });
 
   void updateBalanceSheetType(int value) {
     if (value >= -1 && value < 3) balanceSheetType = value;
@@ -150,7 +150,7 @@ class Account {
 
   void updateDisplayName(String newDisplayName) {
     if (newDisplayName.trim().isNotEmpty) {
-      displayName = newDisplayName;
+      super.displayName = newDisplayName;
     }
   }
 
@@ -176,7 +176,7 @@ class Account {
         type: type,
         mahiatRialy: mahiatRialy,
         displayName: displayName,
-        balanceSheetType: balanceSheetType);
+        balanceSheetType: balanceSheetType, children: [], hasChildren: false);
   }
   factory  Account.empty() {
     return Account(
@@ -200,6 +200,6 @@ class Account {
         type: -1,
         mahiatRialy: -1,
         displayName: '',
-        balanceSheetType: -1);
+        balanceSheetType: -1, children: [], hasChildren: false);
   }
 }

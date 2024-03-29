@@ -104,7 +104,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         type: account.type,
         mahiatRialy: account.mahiatRialy,
         balanceSheetType: account.balanceSheetType,
-        displayName: account.displayName);
+        displayName: account.displayName, hasChildren: account.hasChildren);
   }
 
   @override

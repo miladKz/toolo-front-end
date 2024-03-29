@@ -23,7 +23,7 @@ List<Widget> groupRelationshipMainToolbarActionsItem(
       context,
       onTap: () {
         MainBloc mainBloc = locator.get<MainBloc>();
-        if (mainBloc.selectedAccount != null) {
+        if (mainBloc.selectedDataTreeItem != null) {
           showQuestionDialog(
             context: context,
             title: localization.remove,

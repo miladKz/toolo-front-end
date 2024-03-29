@@ -6,6 +6,7 @@ import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
+import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
 import '../../../app_exception.dart';
 import '../../../di/di.dart';
@@ -16,13 +17,12 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
   List<AccountingAction> filteredActions = [];
-  Account? selectedAccount;
+  IDataTreeModel? selectedDataTreeItem;
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -116,7 +116,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _showDetailAccountInFormHandler(
       OnClickOnAccount event, Emitter<MainState> emit) async {
-    selectedAccount = event.account;
+    selectedDataTreeItem = event.account;
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
     await Future.delayed(Duration.zero);
@@ -149,7 +149,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     DeleteAccountUseCase useCase = locator<DeleteAccountUseCase>();
     String message = await useCase(event.account);
     emit(MainLoadingOnView(isShow: false));
-    selectedAccount = null;
+    selectedDataTreeItem = null;
     emit(MainDeletedAccountSuccess(message));
     reGetAccounts();
   }
@@ -172,5 +172,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   void resetAccountList() async {
     await Future.delayed(const Duration(milliseconds: 200));
     add(MainAnotherList(endpoint: ""));
+  }
+
+  T? getSelectedDataTreeItem<T>() {
+    if (selectedDataTreeItem.runtimeType is T) {
+      return (selectedDataTreeItem as T);
+    }
+    return null;
   }
 }

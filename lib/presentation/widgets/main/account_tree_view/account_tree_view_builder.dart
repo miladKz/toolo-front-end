@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/presentation/widgets/main/edit_group_dialog.dart';
+import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/generic_tree_view.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
-import 'account_tree_view.dart';
 
 class AccountTreeViewBuilder extends StatefulWidget {
-  List<Account> items = List.empty();
+  final List<Account> items = List.empty(growable: true);
 
   AccountTreeViewBuilder({
     super.key,
@@ -26,8 +28,24 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
           ? ListView.builder(
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
-          return AccountTreeView(account: widget.items[index]);
-        },
+                return GenericTreeView(
+                  model: widget.items[index],
+                  onCallBack: ({required isOnDouble, required item}) {
+                    Account account = item as Account;
+                    selectItem(account);
+                    if (isOnDouble) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return EditGroupDialog(
+                            account: account,
+                          ); // Pass your account data here
+                        },
+                      );
+                    }
+                  },
+                );
+              },
       )
           : const Center(
         child: Text(
@@ -44,7 +62,12 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
   void updateList() {
     final state = context.watch<MainBloc>().state;
     if (state is MainAccountSuccess) {
-      widget.items = state.accounts;
+      widget.items.clear();
+      widget.items.addAll(state.accounts);
     }
   }
+}
+
+void selectItem(Account account) {
+  locator.get<MainBloc>().add(OnClickOnAccount(account));
 }

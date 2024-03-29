@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
-import '../../../../domain/entities/accounting/account.dart';
-import '../edit_group_dialog.dart';
-
-class AccountTreeViewItem extends StatefulWidget {
-  final Account account;
-  final String title;
+class GenericTreeViewItem<T extends IDataTreeModel> extends StatefulWidget {
+  final double iconSize;
   final double fontSize;
+  final IDataTreeModel model;
   final double textScale;
-  final Function() onTap;
+  final Function({required IDataTreeModel item, required bool isOnDouble})
+      onCallBack;
 
-  const AccountTreeViewItem({
-    required this.account,
-    required this.title,
-    required this.fontSize,
-    required this.textScale,
-    required this.onTap,
-    super.key,
-  });
+  const GenericTreeViewItem(
+      {super.key,
+      required this.iconSize,
+      required this.fontSize,
+      required this.model,
+      required this.textScale,
+      required this.onCallBack});
 
   @override
-  State<AccountTreeViewItem> createState() => _AccountTreeViewItemState();
+  State<GenericTreeViewItem<T>> createState() =>
+      _GenericTreeViewItemItemState<T>();
 }
 
-class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
+class _GenericTreeViewItemItemState<T extends IDataTreeModel>
+    extends State<GenericTreeViewItem<T>> {
   bool _isHovered = false;
 
   @override
@@ -36,17 +34,10 @@ class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
         const EdgeInsets.only(right: 10, left: 1, top: 2, bottom: 2);
     return GestureDetector(
       onTap: () {
-        selectItem(context);
+        widget.onCallBack(isOnDouble: false, item: widget.model);
       },
       onDoubleTap: () {
-        selectItem(context);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return EditGroupDialog(
-                account: widget.account); // Pass your account data here
-          },
-        );
+        widget.onCallBack(isOnDouble: false, item: widget.model);
       },
       child: MouseRegion(
         onEnter: (event) {
@@ -58,7 +49,7 @@ class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: _isHovered ?const Color(0xFFEFE0F5) : Colors.white),
+              color: _isHovered ? const Color(0xFFEFE0F5) : Colors.white),
           width: double.maxFinite,
           margin: childMargin,
           constraints: const BoxConstraints(maxHeight: 30),
@@ -66,7 +57,7 @@ class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
             padding:
                 const EdgeInsets.only(right: 1, left: 10, bottom: 4, top: 4),
             child: Text(
-              widget.title,
+              widget.model.displayName,
               textScaler:
                   TextScaler.linear(widthScreen < 200 ? widget.textScale : 1),
               style: TextStyle(
@@ -80,9 +71,5 @@ class _AccountTreeViewItemState extends State<AccountTreeViewItem> {
         ),
       ),
     );
-  }
-
-  void selectItem(BuildContext context) {
-    locator.get<MainBloc>().add(OnClickOnAccount(widget.account));
   }
 }

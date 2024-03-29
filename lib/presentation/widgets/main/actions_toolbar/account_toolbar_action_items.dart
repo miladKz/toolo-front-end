@@ -56,16 +56,17 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
       context,
       onTap: () {
         MainBloc mainBloc = locator.get<MainBloc>();
-        if (mainBloc.selectedAccount != null) {
+        if (mainBloc.selectedDataTreeItem != null) {
           showQuestionDialog(
             context: context,
             title: localization.remove,
             msg: localization.msgQuestionDelete,
             callBack: (isOk) {
               if (isOk) {
-                locator
-                    .get<MainBloc>()
-                    .add(DeleteAccountEvent(mainBloc.selectedAccount!));
+                Account? account = mainBloc.getSelectedDataTreeItem<Account>();
+                if (account != null) {
+                  locator.get<MainBloc>().add(DeleteAccountEvent(account));
+                }
               }
             },
           );
@@ -74,13 +75,12 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
     ),
     editActionItem(objectWith, context, onTap: () {
       MainBloc mainBloc = locator.get<MainBloc>();
-      if (mainBloc.selectedAccount != null) {
+      Account? account = mainBloc.getSelectedDataTreeItem<Account>();
+      if (account != null) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return EditGroupDialog(
-                account:
-                    mainBloc.selectedAccount!); // Pass your account data here
+            return EditGroupDialog(account: account);
           },
         );
       }

@@ -18,11 +18,13 @@ import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
 part 'main_state.dart';
-
+List<Account> accountItems = List.empty(growable: true);
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
   List<AccountingAction> filteredActions = [];
   IDataTreeModel? selectedDataTreeItem;
+
+
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -75,6 +77,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     List<Account> accountList = await useCase();
     emit(MainLoadingOnView(isShow: false));
     emit(MainAccountSuccess(accountList));
+    accountItems = accountList;
   }
 
   String getFilteredKey(WorkSpaceItems selectedItem) {

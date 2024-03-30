@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: vazir
   static const String vazir = 'vazir';
+
+  /// Font family: vm
+  static const String vm = 'vm';
 }

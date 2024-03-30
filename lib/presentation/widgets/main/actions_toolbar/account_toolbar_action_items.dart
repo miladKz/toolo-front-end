@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/generate_report/generate_report.dart';
 import 'package:toolo_gostar/presentation/question_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/base_toolbar_action_items.dart';
 
@@ -94,9 +95,23 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
       onTap: () {},
     ),
     printActionItem(
-      objectWith,
-      onTap: () {},
-    ),
+      objectWith, onTap: () async {
+
+      GenerateReport(
+              title: 'گزارش نرم افزار طلوع گستر',
+              items: accountItems,
+              )
+          .asPdf();
+    }
+        /* MainBloc mainBloc = locator.get<MainBloc>();
+        Account? account = mainBloc.getSelectedDataTreeItem<AccountDto>();
+        if (account != null) {
+          List<Account> items = [account];
+          GenerateReport(title: 'generate report with mahdi', items: accountItems)
+              .asPdf();
+        }
+      },*/
+        ),
     disableActionItem(
       objectWith,
       onTap: () {},

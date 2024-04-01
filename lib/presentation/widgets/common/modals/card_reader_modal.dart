@@ -9,8 +9,8 @@ import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 
-class NewCardReaderModal extends StatefulWidget {
-  const NewCardReaderModal({
+class CardReaderModal extends StatefulWidget {
+  const CardReaderModal({
     super.key,
     required this.formWidth,
     this.isActive = true,
@@ -21,10 +21,10 @@ class NewCardReaderModal extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
 
   @override
-  State<NewCardReaderModal> createState() => _NewCardReaderModalState();
+  State<CardReaderModal> createState() => _CardReaderModalState();
 }
 
-class _NewCardReaderModalState extends State<NewCardReaderModal> {
+class _CardReaderModalState extends State<CardReaderModal> {
   final TextEditingController codeController = TextEditingController(text: '');
 
   final TextEditingController nameController = TextEditingController(text: '');
@@ -164,7 +164,6 @@ class _NewCardReaderModalState extends State<NewCardReaderModal> {
   Widget relatedBankDropBox({required double width}) {
     List<DropDownItem> items = [
       DropDownItem(name: ''),
-      DropDownItem(name: 'asd'),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,8 +227,8 @@ class _NewCardReaderModalState extends State<NewCardReaderModal> {
           controller: controller,
           enable: true,
           widgetWidth: width,
-          widgetHeight: 70,
-          maxLines: 3,
+          widgetHeight: 90,
+          maxLines: 4,
         ),
       ],
     );

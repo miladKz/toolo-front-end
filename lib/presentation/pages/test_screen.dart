@@ -7,6 +7,7 @@ import '../factories/table_view_model_factory.dart';
 import '../view_models/table_view_model.dart';
 import '../widgets/common/modals/modal_elements/main_form.dart';
 import '../widgets/common/modals/new_card_reader_modal.dart';
+import '../widgets/common/modals/revolving_fund_modal.dart';
 import '../widgets/main/actions_toolbar/actions_toolbar.dart';
 import '../widgets/main/actions_toolbar/toolbar_enum.dart';
 
@@ -47,13 +48,12 @@ class TestScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        //double formWidth = MediaQuery.of(context).size.width;
                         double formWidth = 400;
                         return MainForm(
                           title: localization
-                              .titleGroupRelationshipAndLastLevelAccountCode,
+                              .newRevolvingFund,
                           width: formWidth,
-                          body: NewCardReaderModal(
+                          body: RevolvingFundModal(
                             formWidth: formWidth,
                             formKey: _formKey,
                             isActive: true,

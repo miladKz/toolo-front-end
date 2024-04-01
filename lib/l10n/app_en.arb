@@ -180,5 +180,8 @@
  "titleShebaNumber": "شماره شبا",
  "enter": "وارد کنید...",
  "terminalNumber": "شماره ترمینال",
- "relatedBank": "بانک مرتبط"
+ "relatedBank": "بانک مرتبط",
+ "newRevolvingFund": "ایجاد تنخواه گردان جدید",
+ "revolvingFundType": "نوع تنخواه گردان",
+ "revolvingFundLimit": "سقف تنخواه"
 }

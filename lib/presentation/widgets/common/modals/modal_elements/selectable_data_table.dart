@@ -39,9 +39,11 @@ class _SelectableDataTableState extends State<SelectableDataTable> {
         },
       );
     }).toList();
+    double tableHeight =
+        ((widget.viewModel.data.length + 1) * tableRowHeight).clamp(0.0, 330.0);
 
     return SizedBox(
-      height: ((widget.viewModel.data.length + 1) * tableRowHeight),
+      height: tableHeight,
       child: DataTable2(
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(5)),

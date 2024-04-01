@@ -9,7 +9,7 @@ import '../../main.dart';
 import '../factories/table_view_model_factory.dart';
 import '../view_models/table_view_model.dart';
 import '../widgets/common/modals/modal_elements/main_form.dart';
-import '../widgets/common/modals/selective_modal.dart';
+import '../widgets/common/modals/data_selectionm_modal.dart';
 import '../widgets/main/actions_toolbar/actions_toolbar.dart';
 import '../widgets/main/actions_toolbar/toolbar_enum.dart';
 

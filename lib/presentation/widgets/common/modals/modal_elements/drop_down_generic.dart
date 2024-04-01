@@ -45,7 +45,7 @@ class _GenericDropDownState<T extends IDropDownItem>
             borderRadius: BorderRadius.circular(4)),
         child: DropdownButton<T>(
           padding: const EdgeInsets.only(right: 4,top: 4,left: 4,bottom: 2),
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          icon: const Icon(Icons.arrow_drop_down_outlined, size: 25,),
           iconSize: 16,
           elevation: 2,
           isDense: true,
@@ -57,7 +57,7 @@ class _GenericDropDownState<T extends IDropDownItem>
                   value: item,
                   child: Center(
                     child: SizedBox(
-                      width: widget.itemWidth*0.9,
+                      width: (widget.itemWidth*0.9) - 10,
                       child: FormItemTitle(
                         title: item.name,
                       ),

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
-import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/drop_down_generic.dart';
-import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/drop_down_input.dart';
-import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/form_check_box.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
-import '../../forms/form_elements/form_button.dart';
+import '../../../common/modals/modal_elements/drop_down_generic.dart';
+import '../../../common/modals/modal_elements/form_check_box.dart';
+import '../../../common/modals/modal_elements/modal_action_buttons.dart';
 import '../../forms/form_elements/form_item_title.dart';
 
 class ModalGroupRelationshipManagement extends StatelessWidget {
@@ -23,7 +22,6 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
   final double formWidth;
   final GlobalKey<FormState> _formKey;
   final List<DetailGroup> detailGroups;
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,11 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        ActionButtons(formWidth: formWidth, formKey: _formKey)
+        ModalActionButtons(
+          formWidth: formWidth,
+          formKey: _formKey,
+          onConfirm: () {},
+        )
       ],
     );
   }
@@ -59,7 +61,7 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         titleInputSpacing,
         GenericDropDown<IDropDownItem>(
           isEnable: isActive,
-          itemWidth: (formWidth *0.9),
+          itemWidth: (formWidth * 0.9),
           value: items[0],
           items: items,
           onChanged: (value) {},
@@ -82,7 +84,7 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         titleInputSpacing,
         GenericDropDown<DetailGroup>(
           isEnable: isActive,
-          itemWidth: (formWidth *0.9),
+          itemWidth: (formWidth * 0.9),
           value: detailGroup[0],
           items: detailGroup,
           onChanged: (value) {},
@@ -104,7 +106,7 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         titleInputSpacing,
         GenericDropDown<IDropDownItem>(
           isEnable: isActive,
-          itemWidth: (formWidth *0.9) ,
+          itemWidth: (formWidth * 0.9),
           value: items[0],
           items: items,
           onChanged: (value) {},
@@ -126,9 +128,9 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
       localization.titleRelatedPersons,
       localization.titleOther,
     ];
-    double maxWidth=formWidth*0.8;
-    double itemWidth=maxWidth/3;
-    double itemHeight=40;
+    double maxWidth = formWidth * 0.8;
+    double itemWidth = maxWidth / 3;
+    double itemHeight = 40;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -136,12 +138,12 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
         FormItemTitle(title: localization.hintShow),
         titleInputSpacing,
         SizedBox(
-          width: formWidth*0.8,
+          width: formWidth * 0.8,
           child: GridView.count(
             primary: false,
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            childAspectRatio:(itemWidth / itemHeight),
+            childAspectRatio: (itemWidth / itemHeight),
             mainAxisSpacing: 5,
             crossAxisSpacing: 5,
             crossAxisCount: 3,
@@ -158,43 +160,5 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
       widgets.add(FormCheckBox(value: true, title: title));
     }
     return widgets;
-  }
-}
-
-class ActionButtons extends StatelessWidget {
-  const ActionButtons({
-    super.key,
-    required this.formWidth,
-    required GlobalKey<FormState> formKey,
-  }) : _formKey = formKey;
-
-  final double formWidth;
-  final GlobalKey<FormState> _formKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        FormButton(
-          itemWidth: (formWidth / 2) - 25,
-          background: const Color(0xFF6C3483),
-          textColor: Colors.white,
-          title: localization.captionSuccess,
-          onClick: () {
-            if (_formKey.currentState != null &&
-                _formKey.currentState!.validate()) {}
-          },
-        ),
-        FormButton(
-            itemWidth: (formWidth / 2) - 25,
-            background: const Color(0xFFD9BCE4),
-            textColor: const Color(0xFF6C3483),
-            title: localization.captionCancel,
-            onClick: () {
-              Navigator.of(context).pop();
-            }),
-      ],
-    );
   }
 }

@@ -26,6 +26,7 @@
   "titlePort": "پورت فعال",
   "searchHintWorkGroup": "جستجو شرکت...",
   "searchHintFiscalYear": "جستجو سال مالی...",
+  "searchIn": "جستجو در",
   "titleSelectWorkGroup": "انتخاب شرکت",
   "titleSelectFiscalYear": "انتخاب سال مالی",
   "titleFiscalYear": "سال مالی",
@@ -58,6 +59,7 @@
  "removeShortcut": "(ctrl+t)",
  "edit": "ویرایش",
  "send": "ارسال",
+ "sender": "ارسال کننده",
  "reset": "باتزنشانی",
  "print": "چاپ",
  "active": "فعال",
@@ -67,6 +69,7 @@
  "accountCode": "کد حساب",
  "status": "وضعیت",
  "description": "توضیحات",
+ "explanation": "شرح",
  "textWritten": "متن نوشته ...",
  "riyaliType": "ماهیت ریالی حساب",
  "editGroup": "ویرایش گروه",
@@ -123,6 +126,7 @@
   "chequeCredit":  "اعتبار چک",
   "accountAddressInfo":  "اطلاعات آدرس طرف حساب",
   "city":  "شهر",
+  "province":  "استان",
   "phone":  "تلفن",
   "postalCode":  "کد پستی",
   "fax":  "فکس",
@@ -172,5 +176,6 @@
   "titleAccessibility": "دسترسی",
   "titleAccountOwner": "صاحب حساب",
   "titleCardNumber": "شماره کارت",
-  "titleShebaNumber": "شماره شبا"
+  "titleShebaNumber": "شماره شبا",
+  "enter": "وارد کنید..."
 }

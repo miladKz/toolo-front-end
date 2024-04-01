@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/multiline_text_input.dart';
 
 import '../../../../main.dart';
 import '../../main/forms/form_elements/form_button.dart';
 import '../../main/forms/form_elements/form_item_title.dart';
 import '../../main/forms/form_elements/form_text_field.dart';
-import 'form_elements/drop_down_input.dart';
-import 'form_elements/form_check_box.dart';
-import 'form_elements/tab_button.dart';
+import 'modal_elements/drop_down_input.dart';
+import 'modal_elements/form_check_box.dart';
+import 'modal_elements/multiline_text_input.dart';
+import 'modal_elements/tab_button.dart';
 
 class CounterpartyForm extends StatelessWidget {
   const CounterpartyForm({

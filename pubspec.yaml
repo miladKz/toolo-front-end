@@ -44,6 +44,7 @@ dependencies:
     path: D:/src/flutter/Flutter_Atras_Package_DataParser
   intl: ^0.18.1
   dropdown_button2: ^2.3.9
+  data_table_2: ^2.5.12
 
 dev_dependencies:
   flutter_test:

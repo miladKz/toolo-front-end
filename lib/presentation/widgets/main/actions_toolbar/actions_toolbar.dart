@@ -9,7 +9,7 @@ import '../../../blocs/main_bloc/main_bloc.dart';
 import 'account_toolbar_action_items.dart';
 import 'expandable_menu.dart';
 
-Widget MyCustomToolbar({required ToolBarEnum toolBarEnum}) {
+Widget myCustomToolbar({required ToolBarEnum toolBarEnum}) {
   return Directionality(
     textDirection: TextDirection.ltr,
     child: Padding(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/fonts.gen.dart';
@@ -54,11 +53,10 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return screenMain();
+        return testScreen();
       }),
     );
   }
-
 }
 
 Future<void> initLocator() async {
@@ -74,12 +72,13 @@ Widget screenAuth() {
     child: const ScreenAuth(),
   );
 }
+
 Widget testScreen() {
   return BlocProvider(
     create: (_) {
       return locator<MainBloc>();
     },
-    child:  TestScreen(),
+    child: TestScreen(),
   );
 }
 
@@ -94,9 +93,5 @@ Widget screenMain() {
 
 bool get isDialogOpen {
   bool? isDialogOpen = Get.isDialogOpen;
-  if (isDialogOpen == null || !isDialogOpen) {
-    return false;
-  } else {
-    return true;
-  }
+  return !(isDialogOpen == null || !isDialogOpen);
 }

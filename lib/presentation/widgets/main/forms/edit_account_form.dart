@@ -6,7 +6,7 @@ import '../../../../di/di.dart';
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
-import '../../common/forms/form_elements/multiline_text_input.dart';
+import '../../common/modals/modal_elements/multiline_text_input.dart';
 import 'form_elements/enum_rialy_type.dart';
 import 'form_elements/form_button.dart';
 import 'form_elements/form_item_title.dart';

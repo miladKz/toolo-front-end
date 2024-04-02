@@ -4,8 +4,9 @@ import '../../../../main.dart';
 import '../../main/forms/form_elements/form_button.dart';
 import '../../main/forms/form_elements/form_item_title.dart';
 import '../../main/forms/form_elements/form_text_field.dart';
-import 'form_elements/drop_down_input.dart';
-import 'form_elements/multiline_text_input.dart';
+import 'modal_elements/drop_down_input.dart';
+import 'modal_elements/multiline_text_input.dart';
+
 
 class FloatingDetailForm extends StatelessWidget {
    const FloatingDetailForm({

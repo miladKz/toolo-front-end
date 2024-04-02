@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
-import 'package:toolo_gostar/presentation/widgets/common/forms/form_elements/drop_down_generic.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/form_text_field.dart';
 
 import '../../../../../main.dart';
-import '../../forms/form_elements/form_button.dart';
+import '../../../common/modals/modal_elements/drop_down_generic.dart';
+import '../../../common/modals/modal_elements/modal_action_buttons.dart';
 import '../../forms/form_elements/form_item_title.dart';
 
 class GenerateNewBank extends StatelessWidget {
@@ -60,7 +60,11 @@ class GenerateNewBank extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        ActionButtons(formWidth: formWidth, formKey: _formKey)
+        ModalActionButtons(
+          formWidth: formWidth,
+          formKey: _formKey,
+          onConfirm: () {},
+        )
       ],
     );
   }
@@ -98,7 +102,7 @@ class GenerateNewBank extends StatelessWidget {
   }
 
   Widget row3({required double rowWidth}) {
-    double itemWidth = (rowWidth/2)-12.5;
+    double itemWidth = (rowWidth / 2) - 12.5;
     return SizedBox(
       width: rowWidth,
       child: Row(
@@ -250,7 +254,7 @@ class GenerateNewBank extends StatelessWidget {
         FormTextField(
           controller: controller,
           enable: true,
-          widgetWidth: width ,
+          widgetWidth: width,
         ),
       ],
     );
@@ -271,7 +275,7 @@ class GenerateNewBank extends StatelessWidget {
         titleInputSpacing,
         GenericDropDown<IDropDownItem>(
           isEnable: isActive,
-          itemWidth: width+15,
+          itemWidth: width + 15,
           value: items[0],
           items: items,
           onChanged: (value) {},
@@ -291,7 +295,7 @@ class GenerateNewBank extends StatelessWidget {
         FormTextField(
           controller: controller,
           enable: true,
-          widgetWidth: width ,
+          widgetWidth: width,
         ),
       ],
     );
@@ -335,43 +339,5 @@ class GenerateNewBank extends StatelessWidget {
 }
 
 double getItemWidth({int itemsCount = 2, required maxWidth}) {
-  return (((maxWidth) / itemsCount)-25);
-}
-
-class ActionButtons extends StatelessWidget {
-  const ActionButtons({
-    super.key,
-    required this.formWidth,
-    required GlobalKey<FormState> formKey,
-  }) : _formKey = formKey;
-
-  final double formWidth;
-  final GlobalKey<FormState> _formKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        FormButton(
-          itemWidth: (formWidth / 2) - 25,
-          background: const Color(0xFF6C3483),
-          textColor: Colors.white,
-          title: localization.captionSuccess,
-          onClick: () {
-            if (_formKey.currentState != null &&
-                _formKey.currentState!.validate()) {}
-          },
-        ),
-        FormButton(
-            itemWidth: (formWidth / 2) - 25,
-            background: const Color(0xFFD9BCE4),
-            textColor: const Color(0xFF6C3483),
-            title: localization.captionCancel,
-            onClick: () {
-              Navigator.of(context).pop();
-            }),
-      ],
-    );
-  }
+  return (((maxWidth) / itemsCount) - 25);
 }

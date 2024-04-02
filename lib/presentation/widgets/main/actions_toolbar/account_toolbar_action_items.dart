@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
+import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
+import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/generate_report/generate_report.dart';
 import 'package:toolo_gostar/presentation/question_dialog.dart';
@@ -96,11 +98,13 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
     ),
     printActionItem(
       objectWith, onTap: () async {
-
+      GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
+      UserData userData = useCase();
       GenerateReport(
-              title: 'گزارش نرم افزار طلوع گستر',
-              items: accountItems,
-              )
+        title: 'گزارش',
+        items: accountItems,
+        userFullName: userData.displayName,
+      )
           .asPdf();
     }
         /* MainBloc mainBloc = locator.get<MainBloc>();

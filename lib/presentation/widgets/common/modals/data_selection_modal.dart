@@ -36,7 +36,7 @@ class DataSelectionModal extends StatelessWidget {
         verticalGapDivider,
         row2(rowWidth: formWidth),
         verticalGapDivider,
-        row3(rowWidth: formWidth),
+        SelectableDataTable(viewModel: viewModel),
         const SizedBox(
           height: 20,
         ),
@@ -63,14 +63,6 @@ class DataSelectionModal extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [searchInBox(), horizontalGapDivider, senderBox()],
-      ),
-    );
-  }
-
-  Widget row3({required double rowWidth}) {
-    return SizedBox(
-      child: SelectableDataTable(
-        viewModel: viewModel,
       ),
     );
   }

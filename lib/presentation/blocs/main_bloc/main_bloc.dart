@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -72,10 +73,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAccountList(
       MainAccountList event, Emitter<MainState> emit) async {
+    emit(ApiChange(apiEnum: ApiEnum.unknown));
     emit(MainLoadingOnView(isShow: true));
     GetAccountListUseCase useCase = locator<GetAccountListUseCase>();
     List<Account> accountList = await useCase();
+    emit(ApiChange(apiEnum: ApiEnum.accountList));
+    await Future.delayed(const Duration(milliseconds: 100));
     emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 20));
     emit(MainAccountSuccess(accountList));
     accountItems = accountList;
   }
@@ -107,19 +112,27 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
-    if (event.endpoint.isEmpty) {
+/*    if (event.endpoint.isEmpty) {
       await Future.delayed(const Duration(milliseconds: 50));
       emit(MainAccountSuccess(List.empty()));
       await Future.delayed(const Duration(milliseconds: 20));
       emit(MainAccountDetailInFormVisibility(isShow: false));
       await Future.delayed(const Duration(milliseconds: 20));
       emit(MainActionToolbarVisibility(isShow: false));
-    }
+    }*/
+    emit(MainLoadingOnView(isShow: true));
+    emit(ApiChange(apiEnum: ApiEnum.unknown));
+    await Future.delayed(const Duration(milliseconds: 100));
+    emit(ApiChange(apiEnum: event.apiEnum));
+    await Future.delayed(const Duration(milliseconds: 100));
+    emit(MainLoadingOnView(isShow: false));
   }
 
   FutureOr<void> _showDetailAccountInFormHandler(
       OnClickOnAccount event, Emitter<MainState> emit) async {
     selectedDataTreeItem = event.account;
+    debugPrint(
+        '_AccountWidgetState buil currnetWidget=_showDetailAccountInFormHandler');
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
     await Future.delayed(Duration.zero);
@@ -174,7 +187,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   void resetAccountList() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    add(MainAnotherList(endpoint: ""));
+    add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.unknown));
   }
 
   T? getSelectedDataTreeItem<T>() {

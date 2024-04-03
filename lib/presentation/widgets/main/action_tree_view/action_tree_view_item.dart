@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
@@ -12,7 +12,7 @@ class ActionsTreeViewItem extends StatefulWidget {
   final double textScale;
   final Function() onTap;
 
-  const ActionsTreeViewItem({
+  ActionsTreeViewItem({
     required this.item,
     required this.fontSize,
     required this.textScale,
@@ -20,6 +20,7 @@ class ActionsTreeViewItem extends StatefulWidget {
     super.key,
   });
 
+  AccountingAction? selectedItem;
   @override
   State<ActionsTreeViewItem> createState() => _ActionsTreeViewItemState();
 }
@@ -32,7 +33,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
     return InkWell(
       onTap: () {
-        getTreeByEndpoint(widget.item.endPoint);
+        setSelectedItem(widget.item);
       },
       child: MouseRegion(
         onEnter: (event) {
@@ -89,15 +90,45 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
     );
   }
 
-  void getTreeByEndpoint(String endPoint) {
-    switch(endPoint){
-      case "/api/acc/accounts":
-        locator.get<MainBloc>().add(MainAccountList());
-        break;
-      case "":
-        locator.get<MainBloc>().add(MainAnotherList(endpoint: ""));
-        debugPrint("endpoint is: empty");
-        break;
-    }
+  void setSelectedItem(AccountingAction item) {
+    return setState(() {
+      widget.selectedItem = item;
+      item.endPoint.isEmpty
+          ? callApiByEndpoint(item.description)
+          : callApiByEndpoint(item.endPoint);
+    });
+  }
+}
+
+void callApiByEndpoint(String endPoint) {
+  debugPrint('callApiByEndpoint endPoint=$endPoint');
+  if (endPoint.contains('/api/acc/accounts')) {
+    locator.get<MainBloc>().add(MainAccountList());
+  } else if (endPoint.contains('شناور')) {
+    locator.get<MainBloc>().add(MainAnotherList(
+        endpoint: "", apiEnum: ApiEnum.managementFloatingDetails));
+  } else if (endPoint.contains('ارتباط حساب')) {
+    locator.get<MainBloc>().add(MainAnotherList(
+        endpoint: "", apiEnum: ApiEnum.managementRelationShipAccount));
+  } else if (endPoint.contains('اشخاص')) {
+    locator
+        .get<MainBloc>()
+        .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementPeople));
+  } else if (endPoint.contains('بانک')) {
+    locator.get<MainBloc>().add(
+        MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementBankBranch));
+  } else if (endPoint.contains('تنخواه')) {
+    locator.get<MainBloc>().add(MainAnotherList(
+        endpoint: "", apiEnum: ApiEnum.managementRevolvingFund));
+  } else if (endPoint.contains('کارت')) {
+    locator.get<MainBloc>().add(
+        MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementCardReader));
+  }else if (endPoint.contains('اسناد حسابداری')) {
+    locator.get<MainBloc>().add(
+        MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+  } else {
+    locator
+        .get<MainBloc>()
+        .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.unknown));
   }
 }

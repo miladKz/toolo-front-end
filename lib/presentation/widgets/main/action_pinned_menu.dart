@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_item.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu_item.dart';
 
 import '../../../domain/entities/accounting/accounting_action.dart';
@@ -112,21 +114,11 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
   void setSelectedItem(AccountingAction item) {
     return setState(() {
       widget.selectedItem = item;
-      getTreeByEndpoint(item.endPoint);
+      item.endPoint.isEmpty?callApiByEndpoint(item.actionName): callApiByEndpoint(item.endPoint);
     });
   }
 
-  void getTreeByEndpoint(String endPoint) {
-    switch(endPoint){
-      case "/api/acc/accounts":
-        locator.get<MainBloc>().add(MainAccountList());
-        break;
-      case "":
-        locator.get<MainBloc>().add(MainAnotherList(endpoint: ""));
-        debugPrint("endpoint is: empty");
-        break;
-    }
-  }
+
 }
 
 class GetAccountingActionIntent extends Intent {

@@ -1,8 +1,8 @@
-import '../../domain/entities/common/abstracts/table_row_data.dart';
+import '../../domain/entities/common/abstracts/table_row_data_abs.dart';
 
-class TableViewModel {
+class DataTableViewModel {
   List<String> labels;
-  List<TableRowData> data;
+  List<ITableRowData> data;
 
-  TableViewModel({required this.labels, required this.data});
+  DataTableViewModel({required this.labels, required this.data});
 }

@@ -1,16 +1,17 @@
-import 'abstracts/table_row_data.dart';
+import 'abstracts/table_row_data_abs.dart';
 
-class City extends TableRowData {
+class City extends ITableRowData {
   City({
-    required this.id,
+    required super.id,
+    required this.code,
     required this.name,
     required this.province,
   });
 
-  int id;
+  int code;
   String province;
   String name;
 
   @override
-  List<Object?> get props => [id, name, province];
+  List<Object?> get props => [code, name, province];
 }

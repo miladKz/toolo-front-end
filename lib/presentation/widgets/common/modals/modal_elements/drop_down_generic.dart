@@ -1,6 +1,6 @@
 // we enforce here each T should be extends DropAble
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/form_item_title.dart';
 
 class GenericDropDown<T extends IDropDownItem> extends StatefulWidget {

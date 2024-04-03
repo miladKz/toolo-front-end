@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/base_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 
-import '../../../../di/di.dart';
-import '../../../blocs/main_bloc/main_bloc.dart';
+import '../../../../../di/di.dart';
+import '../../../../blocs/main_bloc/main_bloc.dart';
 
-List<Widget> groupRelationshipModalToolbarActionsItem(
+List<Widget> baseDataTableToolbarActionItems(
     {required BuildContext context, required double maxWidth}) {
   double objectCount = 6 + 1;
   double objectWith = (maxWidth / objectCount) - 5;

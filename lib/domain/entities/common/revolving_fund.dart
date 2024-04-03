@@ -1,7 +1,7 @@
-import 'abstracts/table_row_data.dart';
+import 'abstracts/table_row_data_abs.dart';
 
-class RevolvingFund extends TableRowData {
-  RevolvingFund({required this.description});
+class RevolvingFund extends ITableRowData {
+  RevolvingFund({required super.id,required this.description});
 
   String description;
 

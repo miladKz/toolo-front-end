@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
 
 import '../../../../main.dart';
 import '../../main/forms/form_elements/form_button.dart';
@@ -39,44 +41,7 @@ class FloatingDetailForm extends StatelessWidget {
           textHint: localization.automaticSelection,
         ),
         verticalGapDivider,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FormItemTitle(
-                  title: localization.status,
-                ),
-                titleInputSpacing,
-                DropDownInput(
-                  enable: isActive,
-                  width: (formWidth / 2) - 60,
-                  value: localization.active,
-                  items: [localization.active, localization.deactivate],
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FormItemTitle(title: localization.titleDetailedCode),
-                titleInputSpacing,
-                DropDownInput(
-                  enable: isActive,
-                  width: (formWidth / 2) - 60,
-                  value: 'نیمه ها',
-                  items: ['نیمه ها'],
-                )
-              ],
-            )
-          ],
-        ),
+        row2(maxWidth: formWidth),
         verticalGapDivider,
         FormItemTitle(title: localization.name),
         titleInputSpacing,
@@ -122,6 +87,66 @@ class FloatingDetailForm extends StatelessWidget {
                 }),
           ],
         )
+      ],
+    );
+  }
+
+  Row row2({required double maxWidth}) {
+    final double itemWidth = (maxWidth / 2) - 60;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FormItemTitle(
+              title: localization.status,
+            ),
+            titleInputSpacing,
+            DropDownInput(
+              enable: isActive,
+              width: itemWidth,
+              value: localization.active,
+              items: [localization.active, localization.deactivate],
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FormItemTitle(title: localization.type),
+            titleInputSpacing,
+            typeDropDown(itemWidth)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget typeDropDown(double formWidth) {
+    List<DetailGroup> detailGroup = List.empty(growable: true);
+    detailGroup.add(DetailGroup(id: 1, name: "اشخاص"));
+    detailGroup.add(DetailGroup(id: 2, name: "بانک ها"));
+    detailGroup.add(DetailGroup(id: 3, name: "صندوق ها"));
+    detailGroup.add(DetailGroup(id: 3, name: "سایر"));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.titleDetailGroup),
+        titleInputSpacing,
+        GenericDropDown<DetailGroup>(
+          isEnable: isActive,
+          itemWidth: (formWidth),
+          value: detailGroup[0],
+          items: detailGroup,
+          onChanged: (value) {},
+        ),
       ],
     );
   }

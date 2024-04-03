@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/widgets/main/edit_group_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/generic_tree_view.dart';
+import 'package:toolo_gostar/presentation/widgets/main/main_base_body.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
@@ -24,39 +25,30 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
   Widget build(BuildContext context) {
     updateList();
     return Expanded(
-      child: widget.items.isNotEmpty
-          ? ListView.builder(
-        itemCount: widget.items.length,
-        itemBuilder: (context, index) {
-                return GenericTreeView(
-                  model: widget.items[index],
-                  onCallBack: ({required isOnDouble, required item}) {
-                    Account account = item as Account;
-                    selectItem(account);
-                    if (isOnDouble) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return EditGroupDialog(
-                            account: account,
-                          ); // Pass your account data here
-                        },
-                      );
-                    }
-                  },
-                );
-              },
-      )
-          : const Center(
-        child: Text(
-          'There is no data for this section',
-          style: TextStyle(
-              fontSize: 18,
-              color: Colors.black38,
-              fontWeight: FontWeight.w700),
-        ),
-      ),
-    );
+        child: widget.items.isNotEmpty
+            ? ListView.builder(
+                itemCount: widget.items.length,
+                itemBuilder: (context, index) {
+                  return GenericTreeView(
+                    model: widget.items[index],
+                    onCallBack: ({required isOnDouble, required item}) {
+                      Account account = item as Account;
+                      selectItem(account);
+                      if (isOnDouble) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return EditGroupDialog(
+                              account: account,
+                            ); // Pass your account data here
+                          },
+                        );
+                      }
+                    },
+                  );
+                },
+              )
+            : emptyData());
   }
 
   void updateList() {
@@ -67,7 +59,6 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
     }
   }
 }
-
 void selectItem(Account account) {
   locator.get<MainBloc>().add(OnClickOnAccount(account));
 }

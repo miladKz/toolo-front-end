@@ -21,7 +21,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   bool _isExpanded = false;
   late final AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 300),
   );
   late final Animation<double> _animation =
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOutSine);

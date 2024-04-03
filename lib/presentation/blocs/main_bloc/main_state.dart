@@ -76,4 +76,9 @@ class MainActionToolbarVisibility extends MainState{
 
   MainActionToolbarVisibility({required this.isShow});
 
+}class ApiChange extends MainState{
+  final ApiEnum apiEnum;
+
+  ApiChange({required this.apiEnum});
+
 }

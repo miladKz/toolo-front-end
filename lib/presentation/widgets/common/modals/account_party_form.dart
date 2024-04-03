@@ -9,8 +9,8 @@ import 'modal_elements/form_check_box.dart';
 import 'modal_elements/multiline_text_input.dart';
 import 'modal_elements/tab_button.dart';
 
-class CounterpartyForm extends StatelessWidget {
-  const CounterpartyForm({
+class AccountPartyForm extends StatelessWidget {
+  const AccountPartyForm({
     super.key,
     required this.formWidth,
     this.isActive = true,

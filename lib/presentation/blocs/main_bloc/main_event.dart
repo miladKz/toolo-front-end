@@ -9,8 +9,9 @@ class MainAccountList extends MainEvent {}
 
 class MainAnotherList extends MainEvent {
   final String endpoint;
+  final ApiEnum apiEnum;
 
-  MainAnotherList({required this.endpoint});
+  MainAnotherList( {required this.endpoint,required this.apiEnum});
 }
 
 class FilterActionsEvent extends MainEvent {

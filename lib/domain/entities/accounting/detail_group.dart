@@ -1,4 +1,4 @@
-import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 
 class DetailGroup extends IDropDownItem{
   final int id;

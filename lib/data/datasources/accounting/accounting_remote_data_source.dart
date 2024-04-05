@@ -96,6 +96,22 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+  Future<ServerResponseDto> getDetailAccountList(
+      {required String token}) async {
+    String apiAddress = "/api/acc/tafzili/list";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
   Options _getHeaders(String token) {
     return Options(headers: {
       "Authorization": "Bearer $token",

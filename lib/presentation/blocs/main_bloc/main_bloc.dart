@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
+import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -14,6 +15,7 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
+import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
@@ -25,6 +27,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> filteredActions = [];
   IDataTreeModel? selectedDataTreeItem;
 
+  List<DetailGroup> detailAccountGroup = [];
 
 
   MainBloc() : super(MainInitial()) {
@@ -120,6 +123,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       await Future.delayed(const Duration(milliseconds: 20));
       emit(MainActionToolbarVisibility(isShow: false));
     }*/
+
+    if(event.apiEnum == ApiEnum.managementRelationShipAccount) {
+      print("XXXXXXXXXXXXXX");
+      GetDetailAccountGroupListUseCase useCase = locator<GetDetailAccountGroupListUseCase>();
+      detailAccountGroup = await useCase();
+      print(detailAccountGroup[0].children[0].toString());
+      print("XXXXXXXXXXXXXX");
+    }
     emit(MainLoadingOnView(isShow: true));
     emit(ApiChange(apiEnum: ApiEnum.unknown));
     await Future.delayed(const Duration(milliseconds: 100));

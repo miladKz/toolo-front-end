@@ -252,6 +252,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementRelationShipAccount:
         {
+          final bloc = context.watch<MainBloc>();
           return Column(
             children: [
               myCustomToolbar(
@@ -260,7 +261,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
               ),
               Expanded(
                 child: FakeTreeView(
-                    items: FakeData.getRelationShipAccountManagement),
+                    items: bloc.detailAccountGroup),
               ),
             ],
           );

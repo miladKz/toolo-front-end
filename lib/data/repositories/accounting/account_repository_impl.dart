@@ -8,6 +8,7 @@ import '../../common/models/server_response_dto.dart';
 import '../../datasources/accounting/accounting_remote_data_source.dart';
 import '../../datasources/auth/auth_local_data_source_impl.dart';
 import '../../models/accounting/account_dto.dart';
+import '../../models/accounting/detail_group_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -44,7 +45,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse =
           await remoteDataSource.getActionList(token: token);
       if (serverResponse.isSuccess) {
-        List<AccountingAction> accountingActionList = List.empty(growable: true);
+        List<AccountingAction> accountingActionList =
+            List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         accountingActionList =
@@ -104,7 +106,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         type: account.type,
         mahiatRialy: account.mahiatRialy,
         balanceSheetType: account.balanceSheetType,
-        displayName: account.displayName, hasChildren: account.hasChildren);
+        displayName: account.displayName,
+        hasChildren: account.hasChildren);
   }
 
   @override
@@ -124,17 +127,40 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
-
   @override
   Future<Account> createAccount(Account account) async {
     AccountDto accountDto = getAccountAsDto(account);
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-      await remoteDataSource.createAccount(token: token, param: accountDto);
+          await remoteDataSource.createAccount(token: token, param: accountDto);
       if (serverResponse.isSuccess) {
         final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
         return AccountDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<DetailGroupDto>> getDetailAccountGroupList() async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.getDetailAccountList(token: token);
+      if (serverResponse.isSuccess) {
+        List<DetailGroupDto> detailAccountGroupList =
+            List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        detailAccountGroupList =
+            List<DetailGroupDto>.from(itemsAsMap.map((data) {
+          return DetailGroupDto.fromMap(data);
+        }));
+        return detailAccountGroupList;
       } else {
         throw Exception();
       }

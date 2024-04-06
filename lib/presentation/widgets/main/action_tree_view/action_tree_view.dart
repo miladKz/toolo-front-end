@@ -10,7 +10,7 @@ class ActionTreeView extends StatefulWidget {
   double titleFontSize;
   double iconSize;
   double width;
-
+   AccountingAction? selectedItem;
   ActionTreeView(
       {Key? key,
       required this.item,
@@ -86,27 +86,33 @@ class _ActionTreeViewState extends State<ActionTreeView> {
 
   List<Widget> _buildChildren(List<AccountingAction> items, double textScale) {
     return items.map((item) {
-      print("SSSSSSSSSSSSSSSSSSSSS " + widget.titleFontSize.toString());
       return item.hasChildren
-          ? Container(
-              margin: groupMargin,
-              child: ActionTreeView(
-                width: widget.width,
-                item: item,
-                isRoot: false,
-                titleFontSize: widget.titleFontSize - 0.5,
-                iconSize: widget.iconSize,
-              ))
+          ? _buildSubTreeView(item)
           : _buildItem(item, textScale);
     }).toList();
+  }
+
+  Container _buildSubTreeView(AccountingAction item) {
+    return Container(
+            margin: groupMargin,
+            child: ActionTreeView(
+              width: widget.width,
+              item: item,
+              isRoot: false,
+              titleFontSize: widget.titleFontSize - 0.5,
+              iconSize: widget.iconSize,
+            ));
   }
 
   Widget _buildItem(AccountingAction item, double textScale) {
     return ActionsTreeViewItem(
       item: item,
+      isSelected: widget.selectedItem == item,
       fontSize: widget.titleFontSize,
       textScale: textScale,
-      onTap: () {},
+      onTap: () {
+        widget.selectedItem = item;
+      },
     );
   }
 }

@@ -11,8 +11,10 @@ class ActionsTreeViewItem extends StatefulWidget {
   final double fontSize;
   final double textScale;
   final Function() onTap;
+  final bool isSelected;
 
   ActionsTreeViewItem({
+    required this.isSelected,
     required this.item,
     required this.fontSize,
     required this.textScale,
@@ -20,7 +22,6 @@ class ActionsTreeViewItem extends StatefulWidget {
     super.key,
   });
 
-  AccountingAction? selectedItem;
 
   @override
   State<ActionsTreeViewItem> createState() => _ActionsTreeViewItemState();
@@ -35,7 +36,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
     return InkWell(
       onTap: () {
-        setSelectedItem(widget.item);
+        onItemSelect(widget.item);
       },
       child: MouseRegion(
         onEnter: (event) {
@@ -69,7 +70,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
                   child: Assets.ico.icPinSelected.image(
                       width: 13,
                       height: 13,
-                      color: _isHovered || widget.item.isPinned
+                      color: _isHovered || widget.item.isPinned || widget.isSelected
                           ? const Color(0xFF6C3483)
                           : const Color(0xFFE7E7E7)),
                 ),
@@ -81,11 +82,11 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
                   textScaler: TextScaler.linear(
                       widthScreen < 200 ? widget.textScale : 1),
                   style: TextStyle(
-                      color: _isHovered
+                      color: _isHovered || widget.isSelected
                           ? const Color(0xFF6C3483)
                           : const Color(0xFF7B7B84),
-                      fontWeight: FontWeight.normal,
-                      fontSize: widget.fontSize - 2),
+                      fontWeight: FontWeight.bold,
+                      fontSize: widget.fontSize - 1),
                 ),
               ],
             ),
@@ -95,9 +96,10 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
     );
   }
 
-  void setSelectedItem(AccountingAction item) {
+  void onItemSelect(AccountingAction item) {
+
     return setState(() {
-      widget.selectedItem = item;
+      widget.onTap();
       item.endPoint.isEmpty
           ? callApiByEndpoint(item.description)
           : callApiByEndpoint(item.endPoint);

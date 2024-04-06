@@ -125,11 +125,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }*/
 
     if(event.apiEnum == ApiEnum.managementRelationShipAccount) {
-      print("XXXXXXXXXXXXXX");
       GetDetailAccountGroupListUseCase useCase = locator<GetDetailAccountGroupListUseCase>();
       detailAccountGroup = await useCase();
       print(detailAccountGroup[0].children[0].toString());
-      print("XXXXXXXXXXXXXX");
     }
     emit(MainLoadingOnView(isShow: true));
     emit(ApiChange(apiEnum: ApiEnum.unknown));

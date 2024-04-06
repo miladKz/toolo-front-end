@@ -9,13 +9,14 @@ class ActionTreeView extends StatefulWidget {
   bool isExpanded = false;
   double titleFontSize;
   double iconSize;
-  late double widthScreen;
+  double width;
 
   ActionTreeView(
       {Key? key,
       required this.item,
       required this.isRoot,
-      this.titleFontSize = 11,
+      required this.width,
+      this.titleFontSize = 13,
       this.iconSize = 15})
       : super(key: key);
 
@@ -29,8 +30,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.widthScreen = MediaQuery.sizeOf(context).width * 0.9;
-    double textScale = widget.widthScreen ;
+    double textScale = widget.width * 0.004;
     return ExpansionTile(
       onExpansionChanged: (isExpanded) =>
           setState(() => _isExpanded = isExpanded),
@@ -52,12 +52,14 @@ class _ActionTreeViewState extends State<ActionTreeView> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   widget.item.description,
-                  textScaler: TextScaler.linear(
-                      widget.widthScreen < 200 ? textScale : 1),
+                  textScaler:
+                      TextScaler.linear(widget.width < 300 ? textScale : 1),
                   style: TextStyle(
                     fontSize: widget.titleFontSize,
                     fontWeight: FontWeight.bold,
-                    color: _isExpanded ?const  Color(0xFF6C3483) :const Color(0xFF7B7B84),
+                    color: _isExpanded
+                        ? const Color(0xFF6C3483)
+                        : const Color(0xFF7B7B84),
                   ),
                 ),
               ],
@@ -69,7 +71,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
           ? widget.isRoot
               ? [
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 1),
                     child: Divider(
                       height: 2,
                       color: Color(0xFFEFEFF4),
@@ -84,10 +86,12 @@ class _ActionTreeViewState extends State<ActionTreeView> {
 
   List<Widget> _buildChildren(List<AccountingAction> items, double textScale) {
     return items.map((item) {
+      print("SSSSSSSSSSSSSSSSSSSSS " + widget.titleFontSize.toString());
       return item.hasChildren
           ? Container(
               margin: groupMargin,
               child: ActionTreeView(
+                width: widget.width,
                 item: item,
                 isRoot: false,
                 titleFontSize: widget.titleFontSize - 0.5,
@@ -102,7 +106,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
       item: item,
       fontSize: widget.titleFontSize,
       textScale: textScale,
-      onTap:() {},
+      onTap: () {},
     );
   }
 }

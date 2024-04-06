@@ -1,4 +1,3 @@
-import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
@@ -39,12 +38,12 @@ class MainBaseBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         rightColumn(widthScree, context),
-        leftMainColumn(),
+        leftMainColumn(widthScree),
       ],
     );
   }
 
-  Flexible leftMainColumn() {
+  Flexible leftMainColumn(double widthScreen) {
     return Flexible(
       flex: 8,
       child: Padding(
@@ -56,7 +55,7 @@ class MainBaseBody extends StatelessWidget {
                 child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                actionTreeView(),
+                actionTreeView(widthScreen),
                 const SizedBox(
                   width: 2,
                 ),
@@ -80,21 +79,14 @@ class MainBaseBody extends StatelessWidget {
     );
   }
 
-  Flexible actionTreeView() {
-    return Flexible(
-      flex: 2,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-            constraints: BoxConstraints(
-                maxWidth: constraints.maxWidth, minWidth: constraints.minWidth),
-            decoration: BoxDecoration(
-                color: const Color(0xFFF0F0F0),
-                borderRadius: BorderRadius.circular(11)),
-            child: ActionsTreeViewBuilder(),
-          );
-        },
-      ),
+  Widget actionTreeView(widthScreen) {
+    double width = (widthScreen * 0.2).clamp(230, 280.0);
+    return Container(
+      width: width,
+      decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F0),
+          borderRadius: BorderRadius.circular(11)),
+      child: ActionsTreeViewBuilder(width: width),
     );
   }
 
@@ -188,8 +180,6 @@ class MainBaseBody extends StatelessWidget {
       )
     ];
   }
-
-
 }
 
 class LeftSectionView extends StatefulWidget {
@@ -260,8 +250,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 isActionShow: true,
               ),
               Expanded(
-                child: FakeTreeView(
-                    items: bloc.detailAccountGroup),
+                child: FakeTreeView(items: bloc.detailAccountGroup),
               ),
             ],
           );
@@ -337,7 +326,8 @@ class _LeftSectionViewState extends State<LeftSectionView> {
               ),
             ],
           );
-        }  case ApiEnum.accountDocument:
+        }
+      case ApiEnum.accountDocument:
         {
           return Column(
             children: [
@@ -381,25 +371,21 @@ AccountTreeViewBuilder accountTreeView = AccountTreeViewBuilder();
 class AccountWidget extends StatelessWidget {
   AccountWidget({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-
-
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          accountTreeView,
-          AccountDetailView()
-        ],
+        children: [accountTreeView, AccountDetailView()],
       ),
     );
   }
 }
 
 class AccountDetailView extends StatefulWidget {
-  AccountDetailView({super.key,});
+  AccountDetailView({
+    super.key,
+  });
 
   Widget currnetWidget = Container();
 
@@ -415,6 +401,7 @@ class _AccountDetailViewState extends State<AccountDetailView> {
     checkState();
     return widget.currnetWidget;
   }
+
   void checkState() {
     final state = context.watch<MainBloc>().state;
     if (state is MainAccountDetailInFormVisibility) {
@@ -429,7 +416,6 @@ class _AccountDetailViewState extends State<AccountDetailView> {
           }
         });
       }
-
     } else if (state is MainUpdatedAccountSuccess) {
       setState(() {
         if (state.account.accountLevel == 0) {

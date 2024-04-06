@@ -7,8 +7,10 @@ import 'action_tree_view.dart';
 
 class ActionsTreeViewBuilder extends StatefulWidget {
   List<AccountingAction> items = List.empty();
+  double width;
 
   ActionsTreeViewBuilder({
+    required this.width,
     super.key,
   });
 
@@ -27,7 +29,11 @@ class _ActionsTreeViewBuilderState extends State<ActionsTreeViewBuilder> {
           itemCount: 1,
           itemBuilder: (context, index) {
             return widget.items.isNotEmpty
-                ? ActionTreeView(item: widget.items[0], isRoot: true)
+                ? ActionTreeView(
+                    item: widget.items[0],
+                    isRoot: true,
+                    width: widget.width,
+                  )
                 : const SizedBox();
           },
         ));
@@ -36,7 +42,7 @@ class _ActionsTreeViewBuilderState extends State<ActionsTreeViewBuilder> {
   updateList() {
     final bloc = context.watch<MainBloc>();
 
-     if (bloc.filteredActions.isNotEmpty) {
+    if (bloc.filteredActions.isNotEmpty) {
       widget.items = bloc.filteredActions;
     }
   }

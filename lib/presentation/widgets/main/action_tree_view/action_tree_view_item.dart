@@ -21,6 +21,7 @@ class ActionsTreeViewItem extends StatefulWidget {
   });
 
   AccountingAction? selectedItem;
+
   @override
   State<ActionsTreeViewItem> createState() => _ActionsTreeViewItemState();
 }
@@ -28,6 +29,7 @@ class ActionsTreeViewItem extends StatefulWidget {
 class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
   bool _isHovered = false;
   EdgeInsets childMargin = const EdgeInsets.only(right: 20);
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.sizeOf(context).width * 0.2;
@@ -40,7 +42,6 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
           setState(() {
             _isHovered = true;
           });
-
         },
         onExit: (event) => setState(() => _isHovered = false),
         child: Container(
@@ -50,23 +51,27 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 GestureDetector(
                   onTap: () {
                     widget.item.updatePinned(!widget.item.isPinned);
-                    if(widget.item.isPinned){
-                      locator.get<MainBloc>().add(AddPinnedActionEvent(widget.item));
-                    }else{
-                      locator.get<MainBloc>().add(RemovePinnedActionEvent(widget.item));
+                    if (widget.item.isPinned) {
+                      locator
+                          .get<MainBloc>()
+                          .add(AddPinnedActionEvent(widget.item));
+                    } else {
+                      locator
+                          .get<MainBloc>()
+                          .add(RemovePinnedActionEvent(widget.item));
                     }
-
                   },
                   child: Assets.ico.icPinSelected.image(
                       width: 13,
                       height: 13,
                       color: _isHovered || widget.item.isPinned
-                          ?const Color(0xFF6C3483)
-                          :const Color(0xFFE7E7E7)),
+                          ? const Color(0xFF6C3483)
+                          : const Color(0xFFE7E7E7)),
                 ),
                 const SizedBox(width: 5),
                 Text(
@@ -123,9 +128,10 @@ void callApiByEndpoint(String endPoint) {
   } else if (endPoint.contains('کارت')) {
     locator.get<MainBloc>().add(
         MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementCardReader));
-  }else if (endPoint.contains('اسناد حسابداری')) {
-    locator.get<MainBloc>().add(
-        MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+  } else if (endPoint.contains('اسناد حسابداری')) {
+    locator
+        .get<MainBloc>()
+        .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
   } else {
     locator
         .get<MainBloc>()

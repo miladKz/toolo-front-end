@@ -14,9 +14,6 @@ class DetailGroupDto extends DetailGroup {
   });
 
   factory DetailGroupDto.fromMap(Map<String, dynamic> map) {
-    print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-    print(map.toString());
-    print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
     return DetailGroupDto(
         id: map.findAsInt('ID'),
         name: map.findAsString("Name"),

@@ -122,8 +122,23 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Map<String, dynamic> getData(Response response) {
     return jsonDecode(response.data);
   }
-}
 
-void log(Object logable) {
-  debugPrint(logable.toString());
+  Future<ServerResponseDto> getCustomerList({required String token,required int kind}) async {
+    String apiAddress = "/api/acc/moshtarian/list?kind=$kind";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  void log(Object logable) {
+    debugPrint(logable.toString());
+  }
 }

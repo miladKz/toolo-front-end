@@ -4,46 +4,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/entities/accounting/accounting_action.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import 'action_tree_view.dart';
+int actionsSubTitleSelected = -1;
+List<int> actionsTitlesSelected = List.empty(growable:  true);
 
-class ActionsTreeViewBuilder extends StatefulWidget {
-  List<AccountingAction> items = List.empty();
+class ActionsTreeViewBuilder extends StatelessWidget {
   double width;
 
   ActionsTreeViewBuilder({
     required this.width,
     super.key,
-  });
+  }){
+    actionsSubTitleSelected = -1;
+  }
 
-  @override
-  State<ActionsTreeViewBuilder> createState() => _ActionsTreeViewBuilderState();
-}
+  List<AccountingAction> items = List.empty();
 
-class _ActionsTreeViewBuilderState extends State<ActionsTreeViewBuilder> {
   @override
   Widget build(BuildContext context) {
-    updateList();
+    updateList(context);
     return Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(11)),
         child: ListView.builder(
           itemCount: 1,
           itemBuilder: (context, index) {
-            return widget.items.isNotEmpty
+            return items.isNotEmpty
                 ? ActionTreeView(
-                    item: widget.items[0],
+                    item: items[0],
                     isRoot: true,
-                    width: widget.width,
+                    width: width,
                   )
                 : const SizedBox();
           },
         ));
   }
 
-  updateList() {
+  updateList(BuildContext context) {
     final bloc = context.watch<MainBloc>();
-
     if (bloc.filteredActions.isNotEmpty) {
-      widget.items = bloc.filteredActions;
+      items = bloc.filteredActions;
     }
   }
 }

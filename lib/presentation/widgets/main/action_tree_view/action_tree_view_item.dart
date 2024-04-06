@@ -3,6 +3,8 @@ import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/constants/color_constants.dart';
+import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_builder.dart';
 
 import '../../../../gen/assets.gen.dart';
 
@@ -11,9 +13,9 @@ class ActionsTreeViewItem extends StatefulWidget {
   final double fontSize;
   final double textScale;
   final Function() onTap;
-  final bool isSelected;
+ final bool isSelected;
 
-  ActionsTreeViewItem({
+  const ActionsTreeViewItem({
     required this.isSelected,
     required this.item,
     required this.fontSize,
@@ -54,7 +56,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     widget.item.updatePinned(!widget.item.isPinned);
                     if (widget.item.isPinned) {
@@ -70,7 +72,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
                   child: Assets.ico.icPinSelected.image(
                       width: 13,
                       height: 13,
-                      color: _isHovered || widget.item.isPinned || widget.isSelected
+                      color: widget.item.isPinned
                           ? const Color(0xFF6C3483)
                           : const Color(0xFFE7E7E7)),
                 ),
@@ -82,9 +84,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
                   textScaler: TextScaler.linear(
                       widthScreen < 200 ? widget.textScale : 1),
                   style: TextStyle(
-                      color: _isHovered || widget.isSelected
-                          ? const Color(0xFF6C3483)
-                          : const Color(0xFF7B7B84),
+                      color: getSubTitleColor(),
                       fontWeight: FontWeight.bold,
                       fontSize: widget.fontSize - 1),
                 ),
@@ -97,13 +97,24 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
   }
 
   void onItemSelect(AccountingAction item) {
-
-    return setState(() {
+    setState(() {
       widget.onTap();
+      actionsSubTitleSelected == widget.item.id;
+
       item.endPoint.isEmpty
           ? callApiByEndpoint(item.description)
           : callApiByEndpoint(item.endPoint);
     });
+  }
+
+  Color getSubTitleColor() {
+    if (_isHovered) {
+      return ColorConstants.colorActionTreeHover;
+    } else if (widget.isSelected) {
+      return ColorConstants.colorActionSelected;
+    } else {
+      return ColorConstants.colorActionUnSelected;
+    }
   }
 }
 

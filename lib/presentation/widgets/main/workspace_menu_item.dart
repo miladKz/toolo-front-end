@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:toolo_gostar/presentation/constants/color_constants.dart';
 
 class WorkspaceMenuItem extends StatefulWidget {
   bool isSelected;
@@ -41,7 +42,7 @@ class _WorkspaceMenuItemState extends State<WorkspaceMenuItem> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Text(
               widget.title,
               style: TextStyle(
@@ -54,11 +55,13 @@ class _WorkspaceMenuItemState extends State<WorkspaceMenuItem> {
       ),
     );
   }
+  Color setItemTextColor() {
+    return _isHovered|| widget.isSelected? const Color(0xFFFFFFFF) : const Color(0xFF83838B);
+  }
 
-  Color setItemTextColor() =>
-      _isHovered|| widget.isSelected? Color(0xFFFFFFFF) : Color(0xFF83838B);
-
-  Color setItemBackground() => widget.isSelected
-      ? ((_isHovered ? Color(0xFFE8AEFC) : Color(0xFFBD8AD0)))
-      : (_isHovered ? Color(0xFFE8AEFC) : Color(0xFFFFFFFF));
+  Color setItemBackground() {
+    return widget.isSelected
+      ? ((_isHovered ? const Color(0xFFE8AEFC) : const Color(0xFFBD8AD0)))
+      : (_isHovered ? const Color(0xFFE8AEFC) : const Color(0xFFFFFFFF));
+  }
 }

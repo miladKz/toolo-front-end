@@ -376,21 +376,22 @@ class _LeftSectionViewState extends State<LeftSectionView> {
 }
 
 AccountTreeViewBuilder accountTreeView = AccountTreeViewBuilder();
+AccountDetailView accountDetailView = AccountDetailView();
 
 class AccountWidget extends StatelessWidget {
   AccountWidget({super.key});
 
-
   @override
   Widget build(BuildContext context) {
 
-
+    debugPrint(
+        '_AccountWidgetState buil AccountWidget');
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           accountTreeView,
-          AccountDetailView()
+          accountDetailView
         ],
       ),
     );
@@ -399,9 +400,7 @@ class AccountWidget extends StatelessWidget {
 
 class AccountDetailView extends StatefulWidget {
   AccountDetailView({super.key,});
-
-  Widget currnetWidget = Container();
-
+  Widget currentWidget = Container();
   @override
   State<AccountDetailView> createState() => _AccountDetailViewState();
 }
@@ -410,19 +409,19 @@ class _AccountDetailViewState extends State<AccountDetailView> {
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        '_AccountWidgetState buil currnetWidget=${widget.currnetWidget}');
+        '_AccountWidgetState buil currnetWidget=${widget.currentWidget}');
     checkState();
-    return widget.currnetWidget;
+    return widget.currentWidget;
   }
   void checkState() {
     final state = context.watch<MainBloc>().state;
     if (state is MainAccountDetailInFormVisibility) {
-      if (!state.isShow) {
+      if (state.isShow) {
         setState(() {
           if (state.account?.accountLevel == 0) {
-            widget.currnetWidget = ShowGroupForm(account: state.account!);
+            widget.currentWidget = ShowGroupForm(account: state.account!);
           } else {
-            widget.currnetWidget = ShowAccountForm(
+            widget.currentWidget = ShowAccountForm(
               account: state.account!,
             );
           }
@@ -432,9 +431,9 @@ class _AccountDetailViewState extends State<AccountDetailView> {
     } else if (state is MainUpdatedAccountSuccess) {
       setState(() {
         if (state.account.accountLevel == 0) {
-          widget.currnetWidget = ShowGroupForm(account: state.account);
+          widget.currentWidget = ShowGroupForm(account: state.account);
         } else {
-          widget.currnetWidget = ShowAccountForm(
+          widget.currentWidget = ShowAccountForm(
             account: state.account,
           );
         }

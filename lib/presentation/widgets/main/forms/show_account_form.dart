@@ -26,6 +26,8 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
   @override
   Widget build(BuildContext context) {
     descriptionController.text = widget.account.description;
+    debugPrint(
+        '_AccountWidgetState buil ShowAccountForm=${accountType}');
    updateState();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

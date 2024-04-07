@@ -57,7 +57,7 @@ class MainBaseBody extends StatelessWidget {
               children: [
                 actionTreeView(widthScreen),
                 const SizedBox(
-                  width: 2,
+                  width:8,
                 ),
                 LeftSectionView(),
               ],

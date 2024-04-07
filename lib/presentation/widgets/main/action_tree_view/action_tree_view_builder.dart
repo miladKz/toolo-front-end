@@ -26,6 +26,7 @@ class ActionsTreeViewBuilder extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(11)),
         child: ListView.builder(
+          shrinkWrap: true,
           itemCount: 1,
           itemBuilder: (context, index) {
             return items.isNotEmpty

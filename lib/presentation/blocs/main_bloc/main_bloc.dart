@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
@@ -140,11 +142,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _showDetailAccountInFormHandler(
       OnClickOnAccount event, Emitter<MainState> emit) async {
     selectedDataTreeItem = event.account;
-    debugPrint(
-        '_AccountWidgetState buil currnetWidget=_showDetailAccountInFormHandler');
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
-    await Future.delayed(Duration.zero);
+    await Future.delayed(Duration(milliseconds: 20));
     emit(MainActionToolbarVisibility(isShow: true));
   }
 

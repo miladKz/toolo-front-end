@@ -101,7 +101,7 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
       GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
       UserData userData = useCase();
       GenerateReport(
-        title: 'گزارش',
+        title: 'گزارش حسابداری',
         items: accountItems,
         userFullName: userData.displayName,
       )

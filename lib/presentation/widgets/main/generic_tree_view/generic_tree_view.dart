@@ -29,6 +29,7 @@ class _GenericTreeViewState<T extends IDataTreeModel>
   Widget build(BuildContext context) {
     return CustomExpansionTile(
       onTap: () {
+
         widget.onCallBack(item: widget.model, isOnDouble: false);
       },
       title: GestureDetector(

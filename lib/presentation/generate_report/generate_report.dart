@@ -15,7 +15,7 @@ class GenerateReport {
   late final ByteData fontData;
 
   late pdfLib.Font normalFont;
-
+  late final pdfLib.Document pdf;
   GenerateReport({
     required this.userFullName,
     required this.title,
@@ -36,10 +36,9 @@ class GenerateReport {
 
     final theme = pdfLib.ThemeData(
         defaultTextStyle: pdfLib.TextStyle(font: normalFont, fontSize: 14));
-    final pdfLib.Document pdf = pdfLib.Document(title: title, theme: theme);
+    pdf = pdfLib.Document(title: title, theme: theme);
     pdf.addPage(
       pdfLib.MultiPage(
-        maxPages: 10,
         pageFormat: PdfPageFormat.a4,
         textDirection: pdfLib.TextDirection.rtl,
         header: (context) {
@@ -72,6 +71,7 @@ class GenerateReport {
           ]);
         },
         footer: (context) {
+          debugPrint('pdf {context.pageNumber}= ${context.pageNumber}');
           return pdfLib.Row(
               mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
               children: [
@@ -103,8 +103,8 @@ class GenerateReport {
                         style: const pdfLib.TextStyle(fontSize: 16),
                       )),
                   pdfLib.SizedBox(height: 20),
-                  getChildren(items: items),
-                ])
+                ]),
+            ..._buildChildren(items: items),
           ];
         },
       ),
@@ -119,24 +119,21 @@ class GenerateReport {
       ..click();
   }
 
-  pdfLib.Widget getChildren({required List<IDataTreeModel> items}) {
-    return pdfLib.Column(
-        crossAxisAlignment: pdfLib.CrossAxisAlignment.start,
-        mainAxisAlignment: pdfLib.MainAxisAlignment.start,
-        children: _buildChildren(items: items));
-  }
-
   List<pdfLib.Widget> _buildChildren({
     required List<IDataTreeModel> items,
   }) {
-    return items.map((item) {
-      return item.hasChildren
-          ? pdfLib.Column(
-              crossAxisAlignment: pdfLib.CrossAxisAlignment.start,
-              mainAxisAlignment: pdfLib.MainAxisAlignment.start,
-              children: [getTitle(item), getChildren(items: item.children)])
-          : _buildItem(item: item);
-    }).toList();
+    final children = <pdfLib.Widget>[];
+
+    for (final item in items) {
+      if (item.hasChildren) {
+        children.add(getTitle(item));
+        children.addAll(_buildChildren(items: item.children));
+      } else {
+        children.add(_buildItem(item: item));
+      }
+    }
+
+    return children;
   }
 
   getTitle(item) {

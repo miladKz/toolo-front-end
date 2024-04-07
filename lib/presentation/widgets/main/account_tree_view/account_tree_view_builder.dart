@@ -33,6 +33,7 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
                     model: widget.items[index],
                     onCallBack: ({required isOnDouble, required item}) {
                       Account account = item as Account;
+                      debugPrint('select account ${account.description}');
                       selectItem(account);
                       if (isOnDouble) {
                         showDialog(

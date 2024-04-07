@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
@@ -180,6 +181,8 @@ class MainBaseBody extends StatelessWidget {
       )
     ];
   }
+
+
 }
 
 class LeftSectionView extends StatefulWidget {
@@ -242,7 +245,6 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementRelationShipAccount:
         {
-          final bloc = context.watch<MainBloc>();
           return Column(
             children: [
               myCustomToolbar(
@@ -250,7 +252,8 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 isActionShow: true,
               ),
               Expanded(
-                child: FakeTreeView(items: bloc.detailAccountGroup),
+                child: FakeTreeView(
+                    items: FakeData.getRelationShipAccountManagement),
               ),
             ],
           );
@@ -326,8 +329,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
               ),
             ],
           );
-        }
-      case ApiEnum.accountDocument:
+        }  case ApiEnum.accountDocument:
         {
           return Column(
             children: [
@@ -367,28 +369,31 @@ class _LeftSectionViewState extends State<LeftSectionView> {
 }
 
 AccountTreeViewBuilder accountTreeView = AccountTreeViewBuilder();
+AccountDetailView accountDetailView = AccountDetailView();
 
 class AccountWidget extends StatelessWidget {
   AccountWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint(
+        '_AccountWidgetState buil AccountWidget');
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [accountTreeView, AccountDetailView()],
+        children: [
+          accountTreeView,
+          accountDetailView
+        ],
       ),
     );
   }
 }
 
 class AccountDetailView extends StatefulWidget {
-  AccountDetailView({
-    super.key,
-  });
-
-  Widget currnetWidget = Container();
-
+  AccountDetailView({super.key,});
+  Widget currentWidget = Container();
   @override
   State<AccountDetailView> createState() => _AccountDetailViewState();
 }
@@ -397,31 +402,32 @@ class _AccountDetailViewState extends State<AccountDetailView> {
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        '_AccountWidgetState buil currnetWidget=${widget.currnetWidget}');
+        '_AccountWidgetState buil currnetWidget=${widget.currentWidget}');
     checkState();
-    return widget.currnetWidget;
+    return widget.currentWidget;
   }
 
   void checkState() {
     final state = context.watch<MainBloc>().state;
     if (state is MainAccountDetailInFormVisibility) {
-      if (!state.isShow) {
+      if (state.isShow) {
         setState(() {
           if (state.account?.accountLevel == 0) {
-            widget.currnetWidget = ShowGroupForm(account: state.account!);
+            widget.currentWidget = ShowGroupForm(account: state.account!);
           } else {
-            widget.currnetWidget = ShowAccountForm(
+            widget.currentWidget = ShowAccountForm(
               account: state.account!,
             );
           }
         });
       }
+
     } else if (state is MainUpdatedAccountSuccess) {
       setState(() {
         if (state.account.accountLevel == 0) {
-          widget.currnetWidget = ShowGroupForm(account: state.account);
+          widget.currentWidget = ShowGroupForm(account: state.account);
         } else {
-          widget.currnetWidget = ShowAccountForm(
+          widget.currentWidget = ShowAccountForm(
             account: state.account,
           );
         }

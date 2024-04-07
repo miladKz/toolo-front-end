@@ -8,7 +8,7 @@ import 'action_tree_view_item.dart';
 class ActionTreeView extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
-  bool isExpanded = false;
+  bool isExpanded;
   double titleFontSize;
   double iconSize;
   double width;
@@ -19,7 +19,8 @@ class ActionTreeView extends StatefulWidget {
       required this.isRoot,
       required this.width,
       this.titleFontSize = 13,
-      this.iconSize = 15})
+      this.iconSize = 15,
+      this.isExpanded = false})
       : super(key: key);
   @override
   State<ActionTreeView> createState() => _ActionTreeViewState();
@@ -35,6 +36,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
     double textScale = widget.width * 0.004;
 
     return ExpansionTile(
+      initiallyExpanded: widget.isExpanded,
       onExpansionChanged: (isExpanded) =>
           setState(() => widget.isExpanded = isExpanded),
       trailing: const SizedBox(),

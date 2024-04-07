@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/entities/accounting/accounting_action.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import 'action_tree_view.dart';
+
 int actionsSubTitleSelected = -1;
-List<int> actionsTitlesSelected = List.empty(growable:  true);
+List<int> actionsTitlesSelected = List.empty(growable: true);
 
 class ActionsTreeViewBuilder extends StatelessWidget {
   double width;
@@ -13,7 +14,7 @@ class ActionsTreeViewBuilder extends StatelessWidget {
   ActionsTreeViewBuilder({
     required this.width,
     super.key,
-  }){
+  }) {
     actionsSubTitleSelected = -1;
   }
 
@@ -34,6 +35,7 @@ class ActionsTreeViewBuilder extends StatelessWidget {
                     item: items[0],
                     isRoot: true,
                     width: width,
+                    isExpanded: true,
                   )
                 : const SizedBox();
           },

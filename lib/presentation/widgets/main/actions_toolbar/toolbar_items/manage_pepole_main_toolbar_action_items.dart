@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/account_party_form.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/main_form.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 
 List<Widget> managePeopleMainToolbarActionItems(

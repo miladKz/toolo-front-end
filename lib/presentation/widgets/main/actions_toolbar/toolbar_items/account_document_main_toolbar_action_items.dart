@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/main_form.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/new_document.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/revolving_fund_modal.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/main_form.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/detailed_account_and_group_relationship_management/modals/group_relationship_management_modal.dart';
 

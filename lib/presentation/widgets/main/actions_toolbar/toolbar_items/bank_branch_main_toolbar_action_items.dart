@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/main_form.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/manage_bank/modals/generate_new_bank_modal.dart';
 

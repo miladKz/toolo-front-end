@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
-class MainForm extends StatelessWidget {
+class CustomDialog extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String title;
   double width;
   Widget body;
 
-  MainForm(
+  CustomDialog(
       {super.key,
       required this.title,
       required this.width,
@@ -68,5 +68,6 @@ class MainForm extends StatelessWidget {
         ),
       ),
     );
+
   }
 }

@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
@@ -5,21 +6,25 @@ import '../../../../../main.dart';
 import '../../../view_models/table_view_model.dart';
 import '../../main/actions_toolbar/actions_toolbar.dart';
 import '../../main/actions_toolbar/toolbar_enum.dart';
+import 'modal_elements/custom_data_table.dart';
 import 'modal_elements/modal_action_buttons.dart';
 import 'modal_elements/modal_input_wrapper.dart';
-import 'modal_elements/selectable_data_table.dart';
 
-class DataSelectionModal extends StatelessWidget {
-  DataSelectionModal({
+class CustomViewWithDataTable extends StatelessWidget {
+  CustomViewWithDataTable({
     super.key,
     required this.formWidth,
     required this.viewModel,
     this.isActive = true,
     required GlobalKey<FormState> formKey,
+    this.toolBarEnum,
+    this.isShowActionButtons = true,
   }) : _formKey = formKey;
+  final bool isShowActionButtons;
   final bool isActive;
   final double formWidth;
-  TableViewModel viewModel;
+  DataTableViewModel viewModel;
+  final ToolBarEnum? toolBarEnum;
   final GlobalKey<FormState> _formKey;
   final TextEditingController searchInController =
       TextEditingController(text: '');
@@ -32,11 +37,13 @@ class DataSelectionModal extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        row1(rowWidth: formWidth),
+        toolBarEnum != null
+            ? row1(rowWidth: formWidth, toolBarEnum: toolBarEnum!)
+            : const SizedBox().visible(false),
         verticalGapDivider,
         row2(rowWidth: formWidth),
         verticalGapDivider,
-        row3(rowWidth: formWidth),
+        CustomDataTable(viewModel: viewModel),
         const SizedBox(
           height: 20,
         ),
@@ -44,16 +51,15 @@ class DataSelectionModal extends StatelessWidget {
           formWidth: formWidth,
           formKey: _formKey,
           onConfirm: () {},
-        )
+        ).visible(isShowActionButtons)
       ],
     );
   }
 
-  Widget row1({required double rowWidth}) {
+  Widget row1({required double rowWidth, required ToolBarEnum toolBarEnum}) {
     return SizedBox(
       width: rowWidth,
-      child: myCustomToolbar(
-          toolBarEnum: ToolBarEnum.groupRelationshipManagementMainToolbar),
+      child: myCustomToolbar(toolBarEnum: toolBarEnum, isActionShow: true),
     );
   }
 
@@ -63,14 +69,6 @@ class DataSelectionModal extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [searchInBox(), horizontalGapDivider, senderBox()],
-      ),
-    );
-  }
-
-  Widget row3({required double rowWidth}) {
-    return SizedBox(
-      child: SelectableDataTable(
-        viewModel: viewModel,
       ),
     );
   }

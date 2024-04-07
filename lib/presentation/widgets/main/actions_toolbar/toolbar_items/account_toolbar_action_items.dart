@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
+import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
+import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/generate_report/generate_report.dart';
 import 'package:toolo_gostar/presentation/question_dialog.dart';
-import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/base_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 
-import '../../../../di/di.dart';
-import '../../../blocs/main_bloc/main_bloc.dart';
-import '../edit_group_dialog.dart';
+import '../../../../../di/di.dart';
+import '../../../../blocs/main_bloc/main_bloc.dart';
+import '../../edit_group_dialog.dart';
 
 
 
@@ -94,9 +97,25 @@ List<Widget> accountToolbarActionsItem({required BuildContext context,required d
       onTap: () {},
     ),
     printActionItem(
-      objectWith,
-      onTap: () {},
-    ),
+      objectWith, onTap: () async {
+      GetUserDataUseCase useCase = locator<GetUserDataUseCase>();
+      UserData userData = useCase();
+      GenerateReport(
+        title: 'گزارش حسابداری',
+        items: accountItems,
+        userFullName: userData.displayName,
+      )
+          .asPdf();
+    }
+        /* MainBloc mainBloc = locator.get<MainBloc>();
+        Account? account = mainBloc.getSelectedDataTreeItem<AccountDto>();
+        if (account != null) {
+          List<Account> items = [account];
+          GenerateReport(title: 'generate report with mahdi', items: accountItems)
+              .asPdf();
+        }
+      },*/
+        ),
     disableActionItem(
       objectWith,
       onTap: () {},

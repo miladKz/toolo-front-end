@@ -1,6 +1,6 @@
 // we enforce here each T should be extends DropAble
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item_abs.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/form_item_title.dart';
 
 class GenericDropDown<T extends IDropDownItem> extends StatefulWidget {
@@ -8,10 +8,13 @@ class GenericDropDown<T extends IDropDownItem> extends StatefulWidget {
     super.key,
     required this.items,
     required this.onChanged,
-    required this.value,
+    this.value,
     required this.itemWidth,
     required this.isEnable,
+    this.hint = ''
   });
+
+  final String hint;
 
   final List<T> items;
 
@@ -46,11 +49,14 @@ class _GenericDropDownState<T extends IDropDownItem>
         child: DropdownButton<T>(
           padding: const EdgeInsets.only(right: 4,top: 4,left: 4,bottom: 2),
           icon: const Icon(Icons.arrow_drop_down_outlined, size: 25,),
+          hint:  Text(widget.hint),
           iconSize: 16,
+          value: widget.value,
           elevation: 2,
+          style: const TextStyle(color: Color(0xFF7E7E7F), fontSize: 20),
           isDense: true,
           underline: const SizedBox(),
-          value: widget.value,
+
           items: widget.items
               .map(
                 (item) => DropdownMenuItem<T>(

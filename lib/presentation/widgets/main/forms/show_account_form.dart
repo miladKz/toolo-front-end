@@ -25,13 +25,10 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<MainBloc>().state;
     descriptionController.text = widget.account.description;
-    if (state is MainAccountDetailInFormVisibility) {
-      if (widget.account.type >= 0) {
-        accountType = RialType.fromValue(widget.account.type);
-      }
-    }
+    debugPrint(
+        '_AccountWidgetState buil ShowAccountForm=${accountType}');
+   updateState();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -373,5 +370,16 @@ class _ShowAccountFormState extends State<ShowAccountForm> {
 
   String getParentCode() {
     return '';
+  }
+
+  void updateState() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainAccountDetailInFormVisibility) {
+      if (widget.account.type >= 0) {
+        setState(() {
+          accountType = RialType.fromValue(widget.account.type);
+        });
+      }
+    }
   }
 }

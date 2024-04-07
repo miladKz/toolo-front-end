@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/data/enum/api_enum.dart';
+import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -13,16 +17,20 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
+import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
 part 'main_state.dart';
-
+List<Account> accountItems = List.empty(growable: true);
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
   List<AccountingAction> filteredActions = [];
   IDataTreeModel? selectedDataTreeItem;
+
+  List<DetailGroup> detailAccountGroup = [];
+
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -70,11 +78,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAccountList(
       MainAccountList event, Emitter<MainState> emit) async {
+    emit(ApiChange(apiEnum: ApiEnum.unknown));
     emit(MainLoadingOnView(isShow: true));
     GetAccountListUseCase useCase = locator<GetAccountListUseCase>();
     List<Account> accountList = await useCase();
+    emit(ApiChange(apiEnum: ApiEnum.accountList));
+    await Future.delayed(const Duration(milliseconds: 100));
     emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 20));
     emit(MainAccountSuccess(accountList));
+    accountItems = accountList;
   }
 
   String getFilteredKey(WorkSpaceItems selectedItem) {
@@ -104,14 +117,26 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
-    if (event.endpoint.isEmpty) {
+/*    if (event.endpoint.isEmpty) {
       await Future.delayed(const Duration(milliseconds: 50));
       emit(MainAccountSuccess(List.empty()));
       await Future.delayed(const Duration(milliseconds: 20));
       emit(MainAccountDetailInFormVisibility(isShow: false));
       await Future.delayed(const Duration(milliseconds: 20));
       emit(MainActionToolbarVisibility(isShow: false));
+    }*/
+
+    if(event.apiEnum == ApiEnum.managementRelationShipAccount) {
+      GetDetailAccountGroupListUseCase useCase = locator<GetDetailAccountGroupListUseCase>();
+      detailAccountGroup = await useCase();
+      print(detailAccountGroup[0].children[0].toString());
     }
+    emit(MainLoadingOnView(isShow: true));
+    emit(ApiChange(apiEnum: ApiEnum.unknown));
+    await Future.delayed(const Duration(milliseconds: 100));
+    emit(ApiChange(apiEnum: event.apiEnum));
+    await Future.delayed(const Duration(milliseconds: 100));
+    emit(MainLoadingOnView(isShow: false));
   }
 
   FutureOr<void> _showDetailAccountInFormHandler(
@@ -119,7 +144,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     selectedDataTreeItem = event.account;
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
-    await Future.delayed(Duration.zero);
+    await Future.delayed(Duration(milliseconds: 20));
     emit(MainActionToolbarVisibility(isShow: true));
   }
 
@@ -171,7 +196,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   void resetAccountList() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    add(MainAnotherList(endpoint: ""));
+    add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.unknown));
   }
 
   T? getSelectedDataTreeItem<T>() {

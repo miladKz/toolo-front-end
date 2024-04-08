@@ -11,5 +11,5 @@ class BankModel extends ITableRowData {
   final String name;
 
   @override
-  List<Object?> get props => [code,name];
+  List<Object?> get props => [code, name];
 }

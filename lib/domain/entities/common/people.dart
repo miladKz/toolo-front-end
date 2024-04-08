@@ -1,7 +1,7 @@
 import 'counterparty.dart';
 
-class RevolvingFund extends Counterparty {
-  RevolvingFund({required Counterparty counterparty})
+class People extends Counterparty {
+  People({required Counterparty counterparty})
       : super(
           id: counterparty.id,
           code: counterparty.code,
@@ -51,6 +51,5 @@ class RevolvingFund extends Counterparty {
         );
 
   @override
-  List<Object?> get props =>
-      [code, name, type, description, passportNumber, passportNumber];
+  List<Object?> get props => [id, name, firstName, nationalCode];
 }

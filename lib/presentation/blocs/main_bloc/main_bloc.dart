@@ -9,6 +9,10 @@ import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_bank_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_card_reader_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
 import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
@@ -16,6 +20,7 @@ import '../../../app_exception.dart';
 import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
+import '../../../domain/entities/common/counterparty.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
 import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
@@ -30,6 +35,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   IDataTreeModel? selectedDataTreeItem;
 
   List<DetailGroup> detailAccountGroup = [];
+
+  List<Counterparty> counterpartyList = [];
 
 
   MainBloc() : super(MainInitial()) {
@@ -117,21 +124,23 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
-/*    if (event.endpoint.isEmpty) {
-      await Future.delayed(const Duration(milliseconds: 50));
-      emit(MainAccountSuccess(List.empty()));
-      await Future.delayed(const Duration(milliseconds: 20));
-      emit(MainAccountDetailInFormVisibility(isShow: false));
-      await Future.delayed(const Duration(milliseconds: 20));
-      emit(MainActionToolbarVisibility(isShow: false));
-    }*/
-
+    emit(MainLoadingOnView(isShow: true));
     if(event.apiEnum == ApiEnum.managementRelationShipAccount) {
       GetDetailAccountGroupListUseCase useCase = locator<GetDetailAccountGroupListUseCase>();
       detailAccountGroup = await useCase();
-      print(detailAccountGroup[0].children[0].toString());
+    }else if(event.apiEnum == ApiEnum.managementPeople){
+      GetPeopleListUseCase useCase = locator<GetPeopleListUseCase>();
+      counterpartyList = await useCase();
+    }else if(event.apiEnum == ApiEnum.managementBankBranch){
+      GetBankListUseCase useCase = locator<GetBankListUseCase>();
+      counterpartyList = await useCase();
+    }else if(event.apiEnum == ApiEnum.managementCardReader){
+      GetCardReaderListUseCase useCase = locator<GetCardReaderListUseCase>();
+      counterpartyList = await useCase();
+    }else if(event.apiEnum == ApiEnum.managementRevolvingFund){
+      GetRevolvingFundListUseCase useCase = locator<GetRevolvingFundListUseCase>();
+      counterpartyList = await useCase();
     }
-    emit(MainLoadingOnView(isShow: true));
     emit(ApiChange(apiEnum: ApiEnum.unknown));
     await Future.delayed(const Duration(milliseconds: 100));
     emit(ApiChange(apiEnum: event.apiEnum));

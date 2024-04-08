@@ -16,6 +16,8 @@ import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu.dart';
 
 import '../../blocs/main_bloc/main_bloc.dart';
+import '../../factories/table_view_model_factory.dart';
+import '../../view_models/table_view_model.dart';
 import 'action_tree_view/action_tree_view_builder.dart';
 import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
@@ -216,6 +218,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
 
   Widget getChild({required double maxWidth, required ApiEnum apiEnum}) {
     final formKey = GlobalKey<FormState>();
+    MainBloc mainBloc = context.watch<MainBloc>();
     switch (apiEnum) {
       case ApiEnum.accountList:
         {
@@ -238,7 +241,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                   toolBarEnum:
                       ToolBarEnum.floatingDetailManagementModalToolbar),
               Expanded(
-                child: FakeTreeView(items: FakeData.getFloatingDetailList),
+                child: FloatingDetailTreeView(items: FakeData.getFloatingDetailList),
               ),
             ],
           );
@@ -252,7 +255,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 isActionShow: true,
               ),
               Expanded(
-                child: FakeTreeView(
+                child: FloatingDetailTreeView(
                     items: FakeData.getRelationShipAccountManagement),
               ),
             ],
@@ -260,6 +263,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementPeople:
         {
+          DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromPersonList(mainBloc.counterpartyList);
           return Column(
             children: [
               myCustomToolbar(
@@ -270,7 +274,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
-                    viewModel: FakeData.getManagePeopleData(),
+                    viewModel: dataTableViewModel,
                     formKey: formKey),
               ),
             ],
@@ -278,6 +282,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementBankBranch:
         {
+          DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromBankList(mainBloc.counterpartyList);
           return Column(
             children: [
               myCustomToolbar(
@@ -288,7 +293,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
-                    viewModel: FakeData.getBankListData(),
+                    viewModel: dataTableViewModel,
                     formKey: formKey),
               ),
             ],
@@ -296,6 +301,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementRevolvingFund:
         {
+          DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromRevolvingFund(mainBloc.counterpartyList);
           return Column(
             children: [
               myCustomToolbar(
@@ -306,7 +312,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
-                    viewModel: FakeData.getRevolvingFundData(),
+                    viewModel: dataTableViewModel,
                     formKey: formKey),
               ),
             ],
@@ -314,6 +320,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementCardReader:
         {
+          DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromCardReaderList(mainBloc.counterpartyList);
           return Column(
             children: [
               myCustomToolbar(
@@ -324,7 +331,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
-                    viewModel: FakeData.getCarsReaderData(),
+                    viewModel: dataTableViewModel,
                     formKey: formKey),
               ),
             ],

@@ -1,6 +1,6 @@
-import '../../../presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
+import 'abstracts/table_row_data_abs.dart';
 
-class Customer extends IDataTreeModel {
+class Counterparty extends ITableRowData {
   String address;
   int bankAccType;
   String bankCardNumber;
@@ -39,18 +39,15 @@ class Customer extends IDataTreeModel {
   String passportNumber;
   int prefixId;
   String jobTitle;
-  String ShebaNumber;
+  String shebaNumber;
   String registrationNumber;
   String nationality;
   int detailId;
   String tel;
   int type;
 
-  Customer(
-      {required super.displayName,
-      required super.id,
-      required super.hasChildren,
-      required super.children,
+  Counterparty(
+      {required super.id,
       required this.address,
       required this.bankAccType,
       required this.bankCardNumber,
@@ -89,7 +86,7 @@ class Customer extends IDataTreeModel {
       required this.passportNumber,
       required this.prefixId,
       required this.jobTitle,
-      required this.ShebaNumber,
+      required this.shebaNumber,
       required this.registrationNumber,
       required this.nationality,
       required this.detailId,

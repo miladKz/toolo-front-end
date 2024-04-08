@@ -22,11 +22,11 @@ class TestScreen extends StatelessWidget {
     DataTableViewModel viewModel =
     DataTableViewModelFactory.createTableViewModelFromCities([city, city2]);
 
-    RevolvingFund tankhah = RevolvingFund(description: "تنخواه دستگاه مرکزی", id: 1);
-    RevolvingFund tankhah2 = RevolvingFund(description: "تنخواه کارخانه", id: 2);
+    /*RevolvingFund tankhah = RevolvingFund(description: "تنخواه دستگاه مرکزی", id: 1);
+    RevolvingFund tankhah2 = RevolvingFund(description: "تنخواه کارخانه", id: 2);*/
     DataTableViewModel viewModel2 =
     DataTableViewModelFactory.createTableViewModelFromRevolvingFund(
-            [tankhah2, tankhah]);
+            [/*tankhah2, tankhah*/]);
 
     return Material(
       child: Scaffold(

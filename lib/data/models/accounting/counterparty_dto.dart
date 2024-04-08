@@ -1,13 +1,11 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 
-import '../../../domain/entities/customers_and_sales/customer.dart';
+import '../../../domain/entities/common/counterparty.dart';
 
-class CustomerDto extends Customer {
-  CustomerDto(
-      {required super.displayName,
+class CounterpartyDto extends Counterparty {
+  CounterpartyDto(
+      {
       required super.id,
-      required super.hasChildren,
-      required super.children,
       required super.address,
       required super.bankAccType,
       required super.bankCardNumber,
@@ -46,19 +44,16 @@ class CustomerDto extends Customer {
       required super.passportNumber,
       required super.prefixId,
       required super.jobTitle,
-      required super.ShebaNumber,
+      required super.shebaNumber,
       required super.registrationNumber,
       required super.nationality,
       required super.detailId,
       required super.tel,
       required super.type});
 
-  factory CustomerDto.fromMap(Map<String, dynamic> map) {
-    return CustomerDto(
-      displayName: map.findAsString('Name'),
+  factory CounterpartyDto.fromMap(Map<String, dynamic> map) {
+    return CounterpartyDto(
       id: map.findAsInt('ID'),
-      hasChildren: false,
-      children: [],
       address: map.findAsString('Address'),
       bankAccType: map.findAsInt('BankAccType'),
       bankCardNumber: map.findAsString('BankCardNumber'),
@@ -97,7 +92,7 @@ class CustomerDto extends Customer {
       passportNumber: map.findAsString('PassportNumber'),
       prefixId: map.findAsInt('PrefixID'),
       jobTitle: map.findAsString('Semat'),
-      ShebaNumber: map.findAsString('ShabaNumber'),
+      shebaNumber: map.findAsString('ShabaNumber'),
       registrationNumber: map.findAsString('ShomareSabt'),
       nationality: map.findAsString('Tabeyat'),
       detailId: map.findAsInt('TafziliID'),
@@ -147,7 +142,7 @@ class CustomerDto extends Customer {
       'PassportNumber': passportNumber,
       'PrefixID': prefixId,
       'Semat': jobTitle,
-      'ShabaNumber': ShebaNumber,
+      'ShabaNumber': shebaNumber,
       'ShomareSabt': registrationNumber,
       'Tabeyat': nationality,
       'TafziliID': detailId,

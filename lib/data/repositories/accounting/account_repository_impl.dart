@@ -1,7 +1,9 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 
 import '../../common/models/server_response_dto.dart';
@@ -9,6 +11,7 @@ import '../../datasources/accounting/accounting_remote_data_source.dart';
 import '../../datasources/auth/auth_local_data_source_impl.dart';
 import '../../models/accounting/account_dto.dart';
 import '../../models/accounting/detail_group_dto.dart';
+import '../../models/accounting/counterparty_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -161,6 +164,29 @@ class AccountingRepositoryImpl implements IAccountingRepository {
           return DetailGroupDto.fromMap(data);
         }));
         return detailAccountGroupList;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  @override
+  Future<List<Counterparty>> getCounterPartyList(CounterPartyKinds kind) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+      await remoteDataSource.getCounterPartyList(token: token,kind: kind);
+      if (serverResponse.isSuccess) {
+        List<CounterpartyDto> customerList = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        customerList = List<CounterpartyDto>.from(itemsAsMap.map((data) {
+          return CounterpartyDto.fromMap(data);
+        }));
+        return customerList;
       } else {
         throw Exception();
       }

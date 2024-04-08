@@ -69,7 +69,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
           )),
           columnSpacing: 12,
           horizontalMargin: 12,
-          minWidth: 1500,
+          minWidth: 500,
           columns: columns,
           rows: rows),
     );

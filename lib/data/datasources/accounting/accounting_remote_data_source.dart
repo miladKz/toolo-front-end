@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:toolo_gostar/data/common/mixin/http_response_validator.dart';
 import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
+import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
@@ -123,8 +124,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     return jsonDecode(response.data);
   }
 
-  Future<ServerResponseDto> getCustomerList({required String token,required int kind}) async {
-    String apiAddress = "/api/acc/moshtarian/list?kind=$kind";
+  Future<ServerResponseDto> getCounterPartyList({required String token,required CounterPartyKinds kind}) async {
+    String apiAddress = "/api/acc/moshtarian/list?kind=${kind.value}";
     try {
       Response<dynamic> response = await httpClient.get(
         apiAddress,
@@ -139,6 +140,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 
   void log(Object logable) {
-    debugPrint(logable.toString());
+    //debugPrint(logable.toString());
   }
 }

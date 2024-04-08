@@ -15,7 +15,21 @@ class AccountingDocumentMain extends ITableRowData {
   String issuerSystem;
   String note;
 
-  AccountingDocumentMain({required super.id, required this.reference, required this.daily, required this.monthly, required this.document, required this.dateDocument, required this.status, required this.total, required this.detailDocument, required this.separationType, required this.documentType, required this.ceilingNumber, required this.issuerSystem, required this.note});
+  AccountingDocumentMain(
+      {required super.id,
+      required this.reference,
+      required this.daily,
+      required this.monthly,
+      required this.document,
+      required this.dateDocument,
+      required this.status,
+      required this.total,
+      required this.detailDocument,
+      required this.separationType,
+      required this.documentType,
+      required this.ceilingNumber,
+      required this.issuerSystem,
+      required this.note});
 
   @override
   List<Object?> get props => [

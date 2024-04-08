@@ -15,5 +15,5 @@ class ManagePeople extends ITableRowData {
   int nationalID;
 
   @override
-  List<Object?> get props => [code, nickname, name,nationalID];
+  List<Object?> get props => [code, nickname, name, nationalID];
 }

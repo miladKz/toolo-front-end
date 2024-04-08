@@ -1,6 +1,6 @@
 import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/accounting_document.dart';
-import 'package:toolo_gostar/domain/entities/common/bank_list.dart';
+import 'package:toolo_gostar/domain/entities/common/bank.dart';
 import 'package:toolo_gostar/domain/entities/common/manage_people.dart';
 import 'package:toolo_gostar/domain/entities/common/revolving_fund_main.dart';
 import 'package:toolo_gostar/main.dart';
@@ -137,22 +137,22 @@ class FakeData {
       localization.titleBankBranchName,
       localization.titleCurrencyType
     ];
-    BankList row1 = BankList(
+   /* Bank row1 = Bank(
         id: 1,
         bankName: 'بانک صادرات ایران جاری',
         branchCode: 805,
         branchName: ' بانک صادرات ایران',
         currencyType: 'ریال');
-    BankList row2 = BankList(
+    Bank row2 = Bank(
         id: 2,
         bankName: 'بانک پاسارگاد کوتاه مدت',
         branchCode: 222,
         branchName: 'بانک پاسارگاد',
-        currencyType: 'ریال');
+        currencyType: 'ریال');*/
 
     list = [
-      row1,
-      row2,
+      /*row1,
+      row2,*/
     ];
     return DataTableViewModel(labels: labels, data: list);
   }

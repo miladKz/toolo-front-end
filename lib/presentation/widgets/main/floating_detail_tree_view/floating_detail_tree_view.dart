@@ -6,19 +6,19 @@ import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_
 
 import '../../../blocs/main_bloc/main_bloc.dart';
 
-class FakeTreeView extends StatefulWidget {
+class FloatingDetailTreeView extends StatefulWidget {
   final List<IDataTreeModel> items ;
 
-  FakeTreeView({
+  FloatingDetailTreeView({
     super.key, required this.items,
   });
 
   @override
-  State<FakeTreeView> createState() =>
+  State<FloatingDetailTreeView> createState() =>
       _FakeTreeViewBuilderState();
 }
 
-class _FakeTreeViewBuilderState extends State<FakeTreeView> {
+class _FakeTreeViewBuilderState extends State<FloatingDetailTreeView> {
   @override
   Widget build(BuildContext context) {
     return Expanded(

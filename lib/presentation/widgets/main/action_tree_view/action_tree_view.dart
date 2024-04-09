@@ -8,7 +8,7 @@ import 'action_tree_view_item.dart';
 class ActionTreeView extends StatefulWidget {
   final AccountingAction item;
   final bool isRoot;
-  bool isExpanded;
+
   double titleFontSize;
   double iconSize;
   double width;
@@ -19,8 +19,7 @@ class ActionTreeView extends StatefulWidget {
       required this.isRoot,
       required this.width,
       this.titleFontSize = 13,
-      this.iconSize = 15,
-      this.isExpanded = false})
+      this.iconSize = 15})
       : super(key: key);
   @override
   State<ActionTreeView> createState() => _ActionTreeViewState();
@@ -28,7 +27,7 @@ class ActionTreeView extends StatefulWidget {
 
 class _ActionTreeViewState extends State<ActionTreeView> {
   EdgeInsets groupMargin = const EdgeInsets.only(right: 15);
-
+  bool _isExpanded = false;
   bool _isHovered = false;
 
   @override
@@ -36,9 +35,8 @@ class _ActionTreeViewState extends State<ActionTreeView> {
     double textScale = widget.width * 0.004;
 
     return ExpansionTile(
-      initiallyExpanded: widget.isExpanded,
       onExpansionChanged: (isExpanded) =>
-          setState(() => widget.isExpanded = isExpanded),
+          setState(() => _isExpanded = isExpanded),
       trailing: const SizedBox(),
       title: MouseRegion(
           onEnter: (event) {
@@ -51,7 +49,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
           },
           onExit: (event) => setState(() => _isHovered = false),
           onHover: (event) => setState(() => _isHovered = true),
-          child: getTitle(textScale)),
+          child: getTitle(textScale,_isExpanded)),
       children: widget.item.hasChildren
           ? widget.isRoot
               ? [
@@ -69,7 +67,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
     );
   }
 
-  Row getTitle(double textScale) {
+  Row getTitle(double textScale, bool isExpanded) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -77,7 +75,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              widget.isExpanded
+              isExpanded
                   ? Icon(Icons.remove,
                       size: widget.iconSize, color: const Color(0xFF6C3483))
                   : Icon(Icons.add,
@@ -139,7 +137,7 @@ class _ActionTreeViewState extends State<ActionTreeView> {
   Color getTitleColor({required bool isSelected}) {
     if (_isHovered) {
       return ColorConstants.colorActionTreeHover;
-    } else if (widget.isExpanded) {
+    } else if (_isExpanded) {
       return ColorConstants.colorActionSelected;
     } else if (isSelected) {
       return ColorConstants.colorActionSelected;

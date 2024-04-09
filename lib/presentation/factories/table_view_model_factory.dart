@@ -91,7 +91,7 @@ class DataTableViewModelFactory {
       revolvingFundList.add(RevolvingFund(counterparty: counterparty));
     }
 
-    return DataTableViewModel(labels: labels, data: counterpartyList);
+    return DataTableViewModel(labels: labels, data: revolvingFundList);
   }
 
   static DataTableViewModel createTableViewModelFromCashBoxList(

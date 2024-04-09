@@ -35,11 +35,11 @@ class ActionsTreeViewBuilder extends StatelessWidget {
                     item: items[0],
                     isRoot: true,
                     width: width,
-                    isExpanded: true,
                   )
                 : const SizedBox();
           },
-        ));
+        )
+        );
   }
 
   updateList(BuildContext context) {

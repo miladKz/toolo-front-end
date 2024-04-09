@@ -117,5 +117,5 @@ class MainActionToolbarVisibility extends MainState{
   ApiChange({required this.apiEnum});
 
   @override
-  List<Object?> get props => [apiEnum];
+  List<Object?> get props => [apiEnum, Random().nextInt(10000)];
 }

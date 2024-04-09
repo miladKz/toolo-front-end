@@ -142,7 +142,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       counterpartyList = await useCase();
     }
     emit(ApiChange(apiEnum: ApiEnum.unknown));
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ApiChange(apiEnum: event.apiEnum));
     await Future.delayed(const Duration(milliseconds: 100));
     emit(MainLoadingOnView(isShow: false));
@@ -153,7 +153,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     selectedDataTreeItem = event.account;
     emit(MainAccountDetailInFormVisibility(
         account: event.account, isShow: true));
-    await Future.delayed(Duration(milliseconds: 20));
+    await Future.delayed(const Duration(milliseconds: 20));
     emit(MainActionToolbarVisibility(isShow: true));
   }
 

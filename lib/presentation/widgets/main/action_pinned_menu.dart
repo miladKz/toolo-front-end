@@ -114,7 +114,7 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
   void setSelectedItem(AccountingAction item) {
     return setState(() {
       widget.selectedItem = item;
-      item.endPoint.isEmpty?callApiByEndpoint(item.actionName): callApiByEndpoint(item.endPoint);
+      item.endPoint.isEmpty?callApiByEndpoint(item.description): callApiByEndpoint(item.endPoint);
     });
   }
 

@@ -34,36 +34,16 @@ class FloatingDetailForm extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.code),
-        titleInputSpacing,
-        FormTextField(
-          enable: isActive,
-          textHint: localization.automaticSelection,
-        ),
+        column1(width: formWidth),
         verticalGapDivider,
         row2(maxWidth: formWidth),
         verticalGapDivider,
-        FormItemTitle(title: localization.name),
-        titleInputSpacing,
-        FormTextField(
-          enable: isActive
-        ),
+        column2(width: formWidth),
         verticalGapDivider,
-        FormItemTitle(title: localization.description),
-        titleInputSpacing,
-        MultilineTextInput(enable: isActive),
+        column3(width: formWidth),
         verticalGapDivider,
-        FormItemTitle(
-          title: localization.type,
-        ),
-        titleInputSpacing,
-        DropDownInput(
-          enable: isActive,
-          width: formWidth - 74,
-          value: localization.active,
-          items: [localization.active, localization.deactivate],
-        ),
-       const SizedBox(height: 20,),
+        column4(width: formWidth),
+        const SizedBox(height: 20,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -92,7 +72,7 @@ class FloatingDetailForm extends StatelessWidget {
   }
 
   Row row2({required double maxWidth}) {
-    final double itemWidth = (maxWidth / 2) - 60;
+    final double itemWidth = (maxWidth / 2) - 40;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -115,15 +95,7 @@ class FloatingDetailForm extends StatelessWidget {
         const SizedBox(
           width: 5,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            FormItemTitle(title: localization.type),
-            titleInputSpacing,
-            typeDropDown(itemWidth)
-          ],
-        )
+        typeDropDown(itemWidth)
       ],
     );
   }
@@ -146,6 +118,70 @@ class FloatingDetailForm extends StatelessWidget {
           value: detailGroup[0],
           items: detailGroup,
           onChanged: (value) {},
+        ),
+      ],
+    );
+  }
+
+  Widget column1({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.code),
+        titleInputSpacing,
+        FormTextField(
+          enable: isActive,
+          textHint: localization.automaticSelection,
+        ),
+      ],
+    );
+  }
+
+  Widget column2({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.name),
+        titleInputSpacing,
+        FormTextField(enable: isActive),
+      ],
+    );
+  }
+
+  Widget column3({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+
+            FormItemTitle(title: localization.description),
+            const Icon(Icons.add,color: Color(0xFFBD8AD0),),
+          ],
+        ),
+        titleInputSpacing,
+        MultilineTextInput(enable: isActive),
+      ],
+    );
+  }
+
+  Widget column4({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(
+          title: localization.type,
+        ),
+        titleInputSpacing,
+        DropDownInput(
+          enable: isActive,
+          width: formWidth - 74,
+          value: localization.active,
+          items: [localization.active, localization.deactivate],
         ),
       ],
     );

@@ -10,8 +10,8 @@ import '../../common/models/server_response_dto.dart';
 import '../../datasources/accounting/accounting_remote_data_source.dart';
 import '../../datasources/auth/auth_local_data_source_impl.dart';
 import '../../models/accounting/account_dto.dart';
-import '../../models/accounting/detail_group_dto.dart';
 import '../../models/accounting/counterparty_dto.dart';
+import '../../models/accounting/detail_group_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -172,13 +172,12 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
-
   @override
-  Future<List<Counterparty>> getCounterPartyList(CounterPartyKinds kind) async {
+  Future<List<Counterparty>> getCounterpartyList(CounterPartyKinds kind) async {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-      await remoteDataSource.getCounterPartyList(token: token,kind: kind);
+          await remoteDataSource.getCounterPartyList(token: token, kind: kind);
       if (serverResponse.isSuccess) {
         List<CounterpartyDto> customerList = List.empty(growable: true);
 
@@ -193,5 +192,107 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<Counterparty> createCounterparty(Counterparty counterparty) async {
+    CounterpartyDto counterpartyDto = getCounterpartyAsDto(counterparty);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .createCounterParty(token: token, param: counterpartyDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return CounterpartyDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Counterparty> updateCounterparty(Counterparty counterparty) async {
+    CounterpartyDto counterpartyDto = getCounterpartyAsDto(counterparty);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .updateCounterpartyList(token: token, param: counterpartyDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return CounterpartyDto.fromMap(itemsAsMap);
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> deleteCounterparty(Counterparty counterparty) async {
+    CounterpartyDto counterpartyDto = getCounterpartyAsDto(counterparty);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .deleteCounterparty(token: token, param: counterpartyDto);
+      if (serverResponse.isSuccess) {
+        return serverResponse.message;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  CounterpartyDto getCounterpartyAsDto(Counterparty counterparty) {
+    return CounterpartyDto(
+        id: counterparty.id,
+        code: counterparty.code,
+        kind: counterparty.kind,
+        address: counterparty.address,
+        bankAccType: counterparty.bankAccType,
+        bankCardNumber: counterparty.bankCardNumber,
+        exchangeType: counterparty.exchangeType,
+        cityId: counterparty.cityId,
+        nationalCode: counterparty.nationalCode,
+        postalCode: counterparty.postalCode,
+        companyName: counterparty.companyName,
+        sharePercentage: counterparty.sharePercentage,
+        foundationDate: counterparty.foundationDate,
+        description: counterparty.description,
+        creditCheck: counterparty.creditCheck,
+        creditRial: counterparty.creditRial,
+        fax: counterparty.fax,
+        firstName: counterparty.firstName,
+        groupValueId: counterparty.groupValueId,
+        responsibleBoard: counterparty.responsibleBoard,
+        isActive: counterparty.isActive,
+        isBlackList: counterparty.isBlackList,
+        isBoardMember: counterparty.isBoardMember,
+        isStaff: counterparty.isStaff,
+        isCustomer: counterparty.isCustomer,
+        isInvestee: counterparty.isInvestee,
+        isOther: counterparty.isOther,
+        isPartner: counterparty.isPartner,
+        isSupply: counterparty.isSupply,
+        isFacilitator: counterparty.isFacilitator,
+        isReceiverFacility: counterparty.isReceiverFacility,
+        isDependent: counterparty.isDependent,
+        isIntermediary: counterparty.isIntermediary,
+        lastName: counterparty.lastName,
+        name: counterparty.name,
+        parentId: counterparty.parentId,
+        passportNumber: counterparty.passportNumber,
+        prefixId: counterparty.prefixId,
+        jobTitle: counterparty.jobTitle,
+        shebaNumber: counterparty.shebaNumber,
+        registrationNumber: counterparty.registrationNumber,
+        nationality: counterparty.nationality,
+        detailId: counterparty.detailId,
+        tel: counterparty.tel,
+        type: counterparty.type);
   }
 }

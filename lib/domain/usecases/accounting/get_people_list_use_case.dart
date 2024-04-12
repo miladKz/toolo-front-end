@@ -10,6 +10,6 @@ class GetPeopleListUseCase {
 
   @override
   Future<List<Counterparty>> call() async {
-    return _repository.getCounterPartyList(CounterPartyKinds.people);
+    return _repository.getCounterpartyList(CounterPartyKinds.people);
   }
 }

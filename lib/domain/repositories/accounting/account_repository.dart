@@ -18,5 +18,11 @@ abstract class IAccountingRepository {
 
   Future<List<DetailGroupDto>> getDetailAccountGroupList();
 
-  Future<List<Counterparty>> getCounterPartyList(CounterPartyKinds kind);
+  Future<List<Counterparty>> getCounterpartyList(CounterPartyKinds kind);
+
+  Future<Counterparty> createCounterparty(Counterparty counterparty);
+
+  Future<Counterparty> updateCounterparty(Counterparty counterparty);
+
+  Future<String> deleteCounterparty(Counterparty counterparty);
 }

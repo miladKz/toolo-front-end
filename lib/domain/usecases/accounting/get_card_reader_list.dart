@@ -10,6 +10,6 @@ class GetCardReaderListUseCase {
 
   @override
   Future<List<Counterparty>> call() async {
-    return _repository.getCounterPartyList(CounterPartyKinds.cardReader);
+    return _repository.getCounterpartyList(CounterPartyKinds.cardReader);
   }
 }

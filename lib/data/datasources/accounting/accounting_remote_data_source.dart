@@ -7,6 +7,7 @@ import 'package:toolo_gostar/data/common/mixin/http_response_validator.dart';
 import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
@@ -124,7 +125,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     return jsonDecode(response.data);
   }
 
-  Future<ServerResponseDto> getCounterPartyList({required String token,required CounterPartyKinds kind}) async {
+  Future<ServerResponseDto> getCounterPartyList(
+      {required String token, required CounterPartyKinds kind}) async {
     String apiAddress = "/api/acc/moshtarian/list?kind=${kind.value}";
     try {
       Response<dynamic> response = await httpClient.get(
@@ -139,7 +141,58 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+  Future<ServerResponseDto> createCounterParty(
+      {required String token, required CounterpartyDto param}) async {
+    String apiAddress = "/api/acc/moshtarian";
+    try {
+      log(param.toMap());
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> updateCounterpartyList(
+      {required String token, required CounterpartyDto param}) async {
+    String apiAddress = "/api/acc/moshtarian";
+    try {
+      log(param.toMap());
+      Response<dynamic> response = await httpClient.put(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log('updateAccount msg: ${response.data}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log('updateAccount msg: $e}');
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> deleteCounterparty(
+      {required String token, required CounterpartyDto param}) async {
+    String apiAddress = "/api/acc/moshtarian/${param.id}";
+    try {
+      Response<dynamic> response = await httpClient.delete(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
   void log(Object logable) {
-    //debugPrint(logable.toString());
+    debugPrint(logable.toString());
   }
 }

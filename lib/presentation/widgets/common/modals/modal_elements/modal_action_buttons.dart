@@ -27,10 +27,10 @@ class ModalActionButtons extends StatelessWidget {
           textColor: Colors.white,
           title: localization.captionSuccess,
           onClick: () {
-            if (_formKey.currentState != null &&
-                _formKey.currentState!.validate()) {
+           // if (_formKey.currentState != null &&
+               // _formKey.currentState!.validate()) {
               _onConfirm();
-            }
+            //}
           },
         ),
         FormButton(

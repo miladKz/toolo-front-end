@@ -11,7 +11,7 @@ class MainAnotherList extends MainEvent {
   final String endpoint;
   final ApiEnum apiEnum;
 
-  MainAnotherList( {required this.endpoint,required this.apiEnum});
+  MainAnotherList({required this.endpoint, required this.apiEnum});
 }
 
 class FilterActionsEvent extends MainEvent {
@@ -28,22 +28,50 @@ class OnClickOnAccount extends MainEvent {
 
 class OnUpdateAccount extends MainEvent {
   final Account account;
+
   OnUpdateAccount(this.account);
 }
-class LoadUserData extends MainEvent {
-}
+
+class LoadUserData extends MainEvent {}
 
 class DeleteAccountEvent extends MainEvent {
- final Account account;
+  final Account account;
+
   DeleteAccountEvent(this.account);
 }
 
 class AddPinnedActionEvent extends MainEvent {
   final AccountingAction action;
+
   AddPinnedActionEvent(this.action);
 }
+
 class RemovePinnedActionEvent extends MainEvent {
   final AccountingAction action;
+
   RemovePinnedActionEvent(this.action);
 }
 
+class OnClickOnTableRowData extends MainEvent {
+  final ITableRowData? tableRowData;
+
+  OnClickOnTableRowData(this.tableRowData);
+}
+
+class OnCreateCounterparty extends MainEvent {
+  final Counterparty counterparty;
+
+  OnCreateCounterparty(this.counterparty);
+}
+
+class OnUpdateCounterparty extends MainEvent {
+  final Counterparty counterparty;
+
+  OnUpdateCounterparty(this.counterparty);
+}
+
+class OnDeleteCounterparty extends MainEvent {
+  final Counterparty counterparty;
+
+  OnDeleteCounterparty(this.counterparty);
+}

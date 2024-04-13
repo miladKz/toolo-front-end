@@ -10,6 +10,6 @@ class GetCashBoxListUseCase {
 
   @override
   Future<List<Counterparty>> call() async {
-    return _repository.getCounterPartyList(CounterPartyKinds.cashBox);
+    return _repository.getCounterpartyList(CounterPartyKinds.cashBox);
   }
 }

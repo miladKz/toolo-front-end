@@ -10,6 +10,7 @@ import 'package:toolo_gostar/data/repositories/accounting/account_repository_imp
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/create_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_cash_box_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
@@ -28,11 +29,13 @@ import '../data/repositories/auth/auth_repository_impl.dart';
 import '../data/repositories/fiscal_year/fiscal_repository.dart';
 import '../domain/usecases/accounting/create_account_use_case.dart';
 import '../domain/usecases/accounting/delete_account_use_case.dart';
+import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/get_bank_list.dart';
 import '../domain/usecases/accounting/get_card_reader_list.dart';
 import '../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../domain/usecases/accounting/update_account_use_case.dart';
+import '../domain/usecases/accounting/update_counter_party_use_case.dart';
 import '../domain/usecases/auth/get_token_usecase.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
 
@@ -65,10 +68,15 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
 
   //AccountingUseCases
   locator.registerLazySingleton(() => GetActionsUseCase(locator()));
+
   locator.registerLazySingleton(() => GetAccountListUseCase(locator()));
-  locator.registerLazySingleton(() => UpdateAccountUseCase(locator()));
   locator.registerLazySingleton(() => CreateAccountUseCase(locator()));
+  locator.registerLazySingleton(() => UpdateAccountUseCase(locator()));
   locator.registerLazySingleton(() => DeleteAccountUseCase(locator()));
+
+  locator.registerLazySingleton(() => CreateCounterpartyUseCase(locator()));
+  locator.registerLazySingleton(() => UpdateCounterpartyUseCase(locator()));
+  locator.registerLazySingleton(() => DeleteCounterpartyUseCase(locator()));
 
   locator
       .registerLazySingleton(() => GetDetailAccountGroupListUseCase(locator()));

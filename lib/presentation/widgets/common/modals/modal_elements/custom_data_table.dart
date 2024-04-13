@@ -1,7 +1,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../di/di.dart';
 import '../../../../../domain/entities/common/abstracts/table_row_data_abs.dart';
+import '../../../../blocs/main_bloc/main_bloc.dart';
 import '../../../../view_models/table_view_model.dart';
 
 class CustomDataTable extends StatefulWidget {
@@ -43,6 +45,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
         onSelectChanged: (value) {
           setState(() {
             selectedItem = dataItem;
+            selectItem(dataItem);
           });
         },
       );
@@ -88,5 +91,10 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   int compareString(bool isAscending, String value1, String value2) {
     return isAscending ? value1.compareTo(value2) : value2.compareTo(value1);
+  }
+  void selectItem(ITableRowData data) {
+    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    print(data.runtimeType);
+    locator.get<MainBloc>().add(OnClickOnTableRowData(data));
   }
 }

@@ -10,6 +10,6 @@ class GetBankListUseCase {
 
   @override
   Future<List<Counterparty>> call() async {
-    return _repository.getCounterPartyList(CounterPartyKinds.bank);
+    return _repository.getCounterpartyList(CounterPartyKinds.bank);
   }
 }

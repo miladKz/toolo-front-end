@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/delete_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_bank_list.dart';
@@ -14,21 +15,27 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_card_reader_list.dar
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/update_counter_party_use_case.dart';
 import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
 import '../../../app_exception.dart';
 import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
+import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../domain/entities/common/counterparty.dart';
+import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
 import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
+
 part 'main_state.dart';
+
 List<Account> accountItems = List.empty(growable: true);
+
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
   List<AccountingAction> filteredActions = [];
@@ -38,6 +45,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   List<Counterparty> counterpartyList = [];
 
+  ITableRowData? selectedCounterparty;
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -45,11 +53,15 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainAnotherList>(_mainAnotherList);
     on<FilterActionsEvent>(_filterActionsHandler);
     on<OnClickOnAccount>(_showDetailAccountInFormHandler);
+    on<OnClickOnTableRowData>(_setSelectedTableRowItem);
     on<OnUpdateAccount>(_updateAccountHandler);
     on<LoadUserData>(_getUserData);
     on<DeleteAccountEvent>(_deleteAccountHandler);
     on<AddPinnedActionEvent>(_addPinnedActionHandler);
     on<RemovePinnedActionEvent>(_removePinnedActionHandler);
+    on<OnCreateCounterparty>(_createCounterpartyHandler);
+    on<OnUpdateCounterparty>(_updateCounterpartyHandler);
+    on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -125,20 +137,22 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
     emit(MainLoadingOnView(isShow: true));
-    if(event.apiEnum == ApiEnum.managementRelationShipAccount) {
-      GetDetailAccountGroupListUseCase useCase = locator<GetDetailAccountGroupListUseCase>();
+    if (event.apiEnum == ApiEnum.managementRelationShipAccount) {
+      GetDetailAccountGroupListUseCase useCase =
+          locator<GetDetailAccountGroupListUseCase>();
       detailAccountGroup = await useCase();
-    }else if(event.apiEnum == ApiEnum.managementPeople){
+    } else if (event.apiEnum == ApiEnum.managementPeople) {
       GetPeopleListUseCase useCase = locator<GetPeopleListUseCase>();
       counterpartyList = await useCase();
-    }else if(event.apiEnum == ApiEnum.managementBankBranch){
+    } else if (event.apiEnum == ApiEnum.managementBankBranch) {
       GetBankListUseCase useCase = locator<GetBankListUseCase>();
       counterpartyList = await useCase();
-    }else if(event.apiEnum == ApiEnum.managementCardReader){
+    } else if (event.apiEnum == ApiEnum.managementCardReader) {
       GetCardReaderListUseCase useCase = locator<GetCardReaderListUseCase>();
       counterpartyList = await useCase();
-    }else if(event.apiEnum == ApiEnum.managementRevolvingFund){
-      GetRevolvingFundListUseCase useCase = locator<GetRevolvingFundListUseCase>();
+    } else if (event.apiEnum == ApiEnum.managementRevolvingFund) {
+      GetRevolvingFundListUseCase useCase =
+          locator<GetRevolvingFundListUseCase>();
       counterpartyList = await useCase();
     }
     emit(ApiChange(apiEnum: ApiEnum.unknown));
@@ -213,5 +227,55 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       return (selectedDataTreeItem as T);
     }
     return null;
+  }
+
+  T? getSelectedCounterparty<T>() {
+    try {
+      return (selectedCounterparty as T);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  FutureOr<void> _setSelectedTableRowItem(
+      OnClickOnTableRowData event, Emitter<MainState> emit) {
+    selectedCounterparty = event.tableRowData;
+  }
+
+  FutureOr<void> _createCounterpartyHandler(
+      OnCreateCounterparty event, Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnButton(isShow: true));
+      CreateCounterpartyUseCase useCase = locator<CreateCounterpartyUseCase>();
+      Counterparty counterparty = await useCase(event.counterparty);
+      emit(MainLoadingOnButton(isShow: false));
+      emit(SuccessCreateCounterparty(counterparty));
+    } catch (e) {
+      emit(FailedUpdateCounterparty(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _updateCounterpartyHandler(
+      OnUpdateCounterparty event, Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnButton(isShow: true));
+      UpdateCounterpartyUseCase useCase = locator<UpdateCounterpartyUseCase>();
+      Counterparty counterparty = await useCase(event.counterparty);
+      emit(MainLoadingOnButton(isShow: false));
+      emit(SuccessUpdateCounterparty(counterparty));
+    } catch (e) {
+      emit(FailedUpdateCounterparty(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _deleteCounterpartyHandler(
+      OnDeleteCounterparty event, Emitter<MainState> emit) async {
+    emit(MainLoadingOnView(isShow: true));
+    DeleteCounterpartyUseCase useCase = locator<DeleteCounterpartyUseCase>();
+    String message = await useCase(event.counterparty);
+    emit(MainLoadingOnView(isShow: false));
+    selectedCounterparty = null;
+    emit(SuccessDeletedCounterparty(message));
+    reGetAccounts();
   }
 }

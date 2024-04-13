@@ -10,6 +10,6 @@ class GetRevolvingFundListUseCase {
 
   @override
   Future<List<Counterparty>> call() async {
-    return _repository.getCounterPartyList(CounterPartyKinds.revolvingFund);
+    return _repository.getCounterpartyList(CounterPartyKinds.revolvingFund);
   }
 }

@@ -16,6 +16,7 @@ class MainLoadingOnView extends MainState {
 
   List<Object?> get props => [];
 }
+
 class MainLoadingOnButton extends MainState {
   final bool isShow;
 
@@ -48,7 +49,7 @@ class MainError extends MainState {
   List<Object?> get props => [];
 }
 
-class MainAccountDetailInFormVisibility extends MainState{
+class MainAccountDetailInFormVisibility extends MainState {
   final Account? account;
   final bool isShow;
 
@@ -58,14 +59,16 @@ class MainAccountDetailInFormVisibility extends MainState{
   List<Object> get props => [isShow, Random().nextInt(10000)];
 }
 
-class MainUpdatedAccountSuccess extends MainState{
+class MainUpdatedAccountSuccess extends MainState {
   final Account account;
+
   MainUpdatedAccountSuccess(this.account);
 
   @override
   List<Object?> get props => [account];
 }
-class MainUpdatedAccountFailed extends MainState{
+
+class MainUpdatedAccountFailed extends MainState {
   final String errorMessage;
 
   MainUpdatedAccountFailed({required this.errorMessage});
@@ -74,48 +77,110 @@ class MainUpdatedAccountFailed extends MainState{
   List<Object?> get props => [];
 }
 
-
-class MainLoadUserDataSuccess extends MainState{
+class MainLoadUserDataSuccess extends MainState {
   final UserData userData;
+
   MainLoadUserDataSuccess(this.userData);
 
   @override
   List<Object?> get props => [userData];
 }
-class MainDeletedAccountSuccess extends MainState{
+
+class MainDeletedAccountSuccess extends MainState {
   final String message;
+
   MainDeletedAccountSuccess(this.message);
 
   @override
   List<Object?> get props => [];
 }
 
-class MainAddPinnedActionSuccess extends MainState{
+class MainAddPinnedActionSuccess extends MainState {
   final AccountingAction action;
+
   MainAddPinnedActionSuccess(this.action);
 
   @override
   List<Object?> get props => [action];
 }
-class MainRemovePinnedActionSuccess extends MainState{
+
+class MainRemovePinnedActionSuccess extends MainState {
   final AccountingAction action;
+
   MainRemovePinnedActionSuccess(this.action);
 
   @override
   List<Object?> get props => [action];
 }
-class MainActionToolbarVisibility extends MainState{
+
+class MainActionToolbarVisibility extends MainState {
   final bool isShow;
 
   MainActionToolbarVisibility({required this.isShow});
 
   @override
   List<Object?> get props => [isShow, Random().nextInt(10000)];
-}class ApiChange extends MainState{
+}
+
+class ApiChange extends MainState {
   final ApiEnum apiEnum;
 
   ApiChange({required this.apiEnum});
 
   @override
   List<Object?> get props => [apiEnum, Random().nextInt(10000)];
+}
+
+class SuccessCreateCounterparty extends MainState {
+  final Counterparty counterparty;
+
+  SuccessCreateCounterparty(this.counterparty);
+
+  @override
+  List<Object?> get props => [counterparty];
+}
+
+class FailedCreateCounterparty extends MainState {
+  final String errorMessage;
+
+  FailedCreateCounterparty({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessUpdateCounterparty extends MainState {
+  final Counterparty counterparty;
+
+  SuccessUpdateCounterparty(this.counterparty);
+
+  @override
+  List<Object?> get props => [counterparty];
+}
+
+class FailedUpdateCounterparty extends MainState {
+  final String errorMessage;
+
+  FailedUpdateCounterparty({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessDeletedCounterparty extends MainState {
+  final String message;
+
+  SuccessDeletedCounterparty(this.message);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FailedDeleteCounterparty extends MainState {
+  final String errorMessage;
+
+  FailedDeleteCounterparty({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
 }

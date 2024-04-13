@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
+import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
 import '../../domain/entities/common/city.dart';
 import '../../domain/entities/common/revolving_fund.dart';
@@ -53,7 +55,7 @@ class TestScreen extends StatelessWidget {
                           title: localization
                               .titleGroupRelationshipAndLastLevelAccountCode,
                           width: formWidth,
-                          body: CardReaderModal(
+                          body: CardReaderModal(cardReader: CardReader(counterparty:Counterparty.empty()),
                             formWidth: formWidth,
                             formKey: _formKey,
                             isActive: true,

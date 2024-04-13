@@ -149,6 +149,6 @@ class CounterpartyDto extends Counterparty {
       'Tel': tel,
       'Types': type,
     }..removeWhere(
-        (dynamic key, dynamic value) => value == '' || value == null);
+        (dynamic key, dynamic value) => value == '' || value == null || value == -1);
   }
 }

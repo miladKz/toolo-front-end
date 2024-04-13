@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
-import '../../../../domain/entities/common/drop_down_item.dart';
+import '../../../../di/di.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
+import '../../../../domain/entities/common/drop_down_item.dart';
+import '../../../blocs/main_bloc/main_bloc.dart';
 import '../../main/forms/form_elements/form_item_title.dart';
 import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 
 class CardReaderModal extends StatefulWidget {
-  const CardReaderModal({
-    super.key,
-    required this.formWidth,
-    this.isActive = true,
-    required GlobalKey<FormState> formKey,
-  }) : _formKey = formKey;
+  CardReaderModal(
+      {super.key,
+      required this.formWidth,
+      this.isActive = true,
+      required GlobalKey<FormState> formKey,
+      required this.cardReader})
+      : _formKey = formKey;
+
   final bool isActive;
   final double formWidth;
   final GlobalKey<FormState> _formKey;
+  final CardReader cardReader;
+  CardReader? tempCardReader;
 
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
@@ -41,6 +48,13 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUpdate = (widget.cardReader.id != -1);
+    codeController.text = isUpdate ? widget.cardReader.code.toString() : '';
+    nameController.text = isUpdate ? widget.cardReader.name.toString() : '';
+    terminalNumberController.text =
+        isUpdate ? widget.cardReader.detailId.toString() : '';
+    descriptionController.text = isUpdate ? widget.cardReader.description : '';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +63,8 @@ class _CardReaderModalState extends State<CardReaderModal> {
         verticalGapDivider,
         nameBox(width: widget.formWidth, controller: nameController),
         verticalGapDivider,
-        terminalNumberBox(width: widget.formWidth, controller: nameController),
+        terminalNumberBox(
+            width: widget.formWidth, controller: terminalNumberController),
         verticalGapDivider,
         relatedBankDropBoxInstance,
         verticalGapDivider,
@@ -65,7 +80,45 @@ class _CardReaderModalState extends State<CardReaderModal> {
         ModalActionButtons(
           formWidth: widget.formWidth,
           formKey: widget._formKey,
-          onConfirm: () {},
+          onConfirm: () {
+            //   if (widget._formKey.currentState != null &&
+            //     widget._formKey.currentState!.validate()) {
+            int code;
+            try {
+              code = int.parse(codeController.text);
+            } on FormatException {
+              code = 0;
+            }
+            widget.cardReader.updateCode(code);
+            widget.cardReader.updateName(nameController.text);
+
+            int terminalCode;
+            try {
+              terminalCode = int.parse(terminalNumberController.text);
+            } on FormatException {
+              terminalCode = 0;
+            }
+
+            int bankId;
+            try {
+              bankId = int.parse(terminalNumberController.text);
+            } on FormatException {
+              bankId = 0;
+            }
+            widget.cardReader.updateDetailCode(terminalCode);
+            //todo:  widget.cardReader.updateBankId();
+            widget.cardReader.updateDescription(descriptionController.text);
+            if (isUpdate) {
+              locator
+                  .get<MainBloc>()
+                  .add(OnUpdateCounterparty(widget.cardReader));
+            } else {
+              locator
+                  .get<MainBloc>()
+                  .add(OnCreateCounterparty(widget.cardReader));
+            }
+            //  }
+          },
         )
       ],
     );
@@ -119,9 +172,15 @@ class _CardReaderModalState extends State<CardReaderModal> {
         GenericDropDown<IDropDownItem>(
           isEnable: widget.isActive,
           itemWidth: width - 5,
-          value: items[0],
+          value: widget.cardReader.isActive ? items[0] : items[1],
+          //isNew ? items[0] : widget.cardReader.isActive,
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              widget.cardReader
+                  .updateIsActive(value!.name == localization.active);
+            }
+          },
         ),
       ],
     );
@@ -153,6 +212,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
         FormItemTitle(title: localization.terminalNumber),
         titleInputSpacing,
         FormTextField(
+          inputType: TextInputType.number,
           controller: controller,
           enable: true,
           widgetWidth: width,
@@ -236,5 +296,9 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   double getItemWidth({int itemsCount = 2, required maxWidth}) {
     return (((maxWidth) / itemsCount) - 25);
+  }
+
+  void copyCounterpartyToTempCounterparty() {
+    widget.tempCardReader = widget.cardReader.copy();
   }
 }

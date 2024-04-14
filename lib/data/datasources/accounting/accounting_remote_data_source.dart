@@ -159,7 +159,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-  Future<ServerResponseDto> updateCounterpartyList(
+  Future<ServerResponseDto> updateCounterparty(
       {required String token, required CounterpartyDto param}) async {
     String apiAddress = "/api/acc/moshtarian";
     try {
@@ -169,10 +169,10 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log('updateAccount msg: ${response.data}');
+      log('updateCounterparty msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
-      log('updateAccount msg: $e}');
+      log('updateCounterparty msg: $e}');
       throw HttpException(e.toString());
     }
   }

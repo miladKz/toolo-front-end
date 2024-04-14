@@ -51,7 +51,7 @@ List<Widget> cardReaderMainToolbarActionItems(
     editActionItem(objectWith, context, onTap: () {
       MainBloc mainBloc = locator.get<MainBloc>();
       CardReader? cardReader = mainBloc.getSelectedCounterparty<CardReader>();
-      if (cardReader != null) {
+      if (cardReader != null ) {
         showDialog(
             context: context,
             builder: (BuildContext context) {

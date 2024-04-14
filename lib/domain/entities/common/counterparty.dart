@@ -46,51 +46,52 @@ class Counterparty extends ITableRowData {
   String tel;
   int type;
 
-  Counterparty({required super.id,
-    required this.address,
-    required this.bankAccType,
-    required this.bankCardNumber,
-    required this.exchangeType,
-    required this.cityId,
-    required this.code,
-    required this.nationalCode,
-    required this.postalCode,
-    required this.companyName,
-    required this.sharePercentage,
-    required this.foundationDate,
-    required this.description,
-    required this.creditCheck,
-    required this.creditRial,
-    required this.fax,
-    required this.firstName,
-    required this.groupValueId,
-    required this.responsibleBoard,
-    required this.isActive,
-    required this.isBlackList,
-    required this.isBoardMember,
-    required this.isStaff,
-    required this.isCustomer,
-    required this.isInvestee,
-    required this.isOther,
-    required this.isPartner,
-    required this.isSupply,
-    required this.isFacilitator,
-    required this.isReceiverFacility,
-    required this.isDependent,
-    required this.isIntermediary,
-    required this.kind,
-    required this.lastName,
-    required this.name,
-    required this.parentId,
-    required this.passportNumber,
-    required this.prefixId,
-    required this.jobTitle,
-    required this.shebaNumber,
-    required this.registrationNumber,
-    required this.nationality,
-    required this.detailId,
-    required this.tel,
-    required this.type});
+  Counterparty(
+      {required super.id,
+      required this.address,
+      required this.bankAccType,
+      required this.bankCardNumber,
+      required this.exchangeType,
+      required this.cityId,
+      required this.code,
+      required this.nationalCode,
+      required this.postalCode,
+      required this.companyName,
+      required this.sharePercentage,
+      required this.foundationDate,
+      required this.description,
+      required this.creditCheck,
+      required this.creditRial,
+      required this.fax,
+      required this.firstName,
+      required this.groupValueId,
+      required this.responsibleBoard,
+      required this.isActive,
+      required this.isBlackList,
+      required this.isBoardMember,
+      required this.isStaff,
+      required this.isCustomer,
+      required this.isInvestee,
+      required this.isOther,
+      required this.isPartner,
+      required this.isSupply,
+      required this.isFacilitator,
+      required this.isReceiverFacility,
+      required this.isDependent,
+      required this.isIntermediary,
+      required this.kind,
+      required this.lastName,
+      required this.name,
+      required this.parentId,
+      required this.passportNumber,
+      required this.prefixId,
+      required this.jobTitle,
+      required this.shebaNumber,
+      required this.registrationNumber,
+      required this.nationality,
+      required this.detailId,
+      required this.tel,
+      required this.type});
 
   factory Counterparty.empty() {
     return Counterparty(
@@ -142,6 +143,57 @@ class Counterparty extends ITableRowData {
     );
   }
 
+  Counterparty copy() {
+    return Counterparty(
+      id: id,
+      code: code,
+      kind: kind,
+      address: address,
+      bankAccType: bankAccType,
+      bankCardNumber: bankCardNumber,
+      exchangeType: exchangeType,
+      cityId: cityId,
+      nationalCode: nationalCode,
+      postalCode: postalCode,
+      companyName: companyName,
+      sharePercentage: sharePercentage,
+      foundationDate: foundationDate,
+      description: description,
+      creditCheck: creditCheck,
+      creditRial: creditRial,
+      fax: fax,
+      firstName: firstName,
+      groupValueId: groupValueId,
+      responsibleBoard: responsibleBoard,
+      isActive: isActive,
+      isBlackList: isBlackList,
+      isBoardMember: isBoardMember,
+      isStaff: isStaff,
+      isCustomer: isCustomer,
+      isInvestee: isInvestee,
+      isOther: isOther,
+      isPartner: isPartner,
+      isSupply: isSupply,
+      isFacilitator: isFacilitator,
+      isReceiverFacility: isReceiverFacility,
+      isDependent: isDependent,
+      isIntermediary: isIntermediary,
+      lastName: lastName,
+      name: name,
+      parentId: parentId,
+      passportNumber: passportNumber,
+      prefixId: prefixId,
+      jobTitle: jobTitle,
+      shebaNumber: shebaNumber,
+      registrationNumber: registrationNumber,
+      nationality: nationality,
+      detailId: detailId,
+      tel: tel,
+      type: type,
+    );
+  }
+
+
   void updateCode(int newCode) {
     if (newCode != 0) {
       code = newCode;
@@ -151,6 +203,48 @@ class Counterparty extends ITableRowData {
   void updateName(String newName) {
     if (newName.isNotEmpty) {
       name = newName;
+    }
+  }
+
+  void updateBranchName(String newBranchName) {
+    if (newBranchName.isNotEmpty) {
+      name = newBranchName;
+    }
+  }
+
+  void updateAccountNumber(String newAccountNumber) {
+    if (newAccountNumber.isNotEmpty) {
+      nationalCode = newAccountNumber;
+    }
+  }
+
+  void updateAccountOwnerName(String newAccountOwnerName) {
+    if (newAccountOwnerName.isNotEmpty) {
+      firstName = newAccountOwnerName;
+    }
+  }
+
+  void updateCurrencyType(String newCurrencyType) {
+    if (newCurrencyType.isNotEmpty) {
+      nationalCode = newCurrencyType;
+    }
+  }
+
+  void updateBranchCode(String newBranchCode) {
+    if (newBranchCode.isNotEmpty) {
+      bankCardNumber = newBranchCode;
+    }
+  }
+
+  void updateCardNumber(String newCardNumber) {
+    if (newCardNumber.isNotEmpty) {
+      bankCardNumber = newCardNumber;
+    }
+  }
+
+  void updateShebaNumber(String newShebaNumber) {
+    if (newShebaNumber.isNotEmpty) {
+      bankCardNumber = newShebaNumber;
     }
   }
 

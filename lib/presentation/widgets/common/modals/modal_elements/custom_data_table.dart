@@ -93,8 +93,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
     return isAscending ? value1.compareTo(value2) : value2.compareTo(value1);
   }
   void selectItem(ITableRowData data) {
-    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-    print(data.runtimeType);
     locator.get<MainBloc>().add(OnClickOnTableRowData(data));
   }
 }

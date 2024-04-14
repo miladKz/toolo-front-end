@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
+import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/form_text_field.dart';
 
+import '../../../../../di/di.dart';
+import '../../../../../domain/entities/common/bank.dart';
 import '../../../../../main.dart';
+import '../../../../blocs/main_bloc/main_bloc.dart';
 import '../../../common/modals/modal_elements/drop_down_generic.dart';
 import '../../../common/modals/modal_elements/modal_action_buttons.dart';
 import '../../forms/form_elements/form_item_title.dart';
@@ -15,10 +18,15 @@ class GenerateNewBank extends StatelessWidget {
     required this.formWidth,
     this.isActive = true,
     required GlobalKey<FormState> formKey,
+    required this.bank,
   }) : _formKey = formKey;
+
   final bool isActive;
   final double formWidth;
   final GlobalKey<FormState> _formKey;
+  final Bank bank;
+  Bank? tempBank;
+
   final TextEditingController bankNameController =
       TextEditingController(text: '');
   final TextEditingController branchNameController =
@@ -38,6 +46,19 @@ class GenerateNewBank extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isUpdate = (bank.id != -1);
+    copyBankToTempBank();
+    if (isUpdate) {
+      bankNameController.text = bank.name;
+      branchNameController.text = bank.firstName;
+      branchCodeController.text = bank.code.toString();
+      accountNumberController.text = bank.bankCardNumber;
+      accountOwnerController.text = bank.lastName;
+      cardNumberController.text = bank.bankCardNumber;
+      shebaNumberController.text = bank.shebaNumber;
+      descriptionController.text = bank.description;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +84,31 @@ class GenerateNewBank extends StatelessWidget {
         ModalActionButtons(
           formWidth: formWidth,
           formKey: _formKey,
-          onConfirm: () {},
+          onConfirm: () {
+            bank.updateName(bankNameController.text);
+            bank.updateBranchName(branchNameController.text);
+            int code;
+            try {
+              code = int.parse(branchCodeController.text);
+            } on FormatException {
+              code = 0;
+            }
+            bank.updateCode(code);
+            bank.updateAccountNumber(accountNumberController.text);
+            bank.updateAccountOwnerName(accountOwnerController.text);
+            bank.updateCardNumber(cardNumberController.text);
+            bank.updateShebaNumber(shebaNumberController.text);
+            bank.updateDescription(descriptionController.text);
+            if (isUpdate) {
+              locator
+                  .get<MainBloc>()
+                  .add(OnUpdateCounterparty(bank));
+            } else {
+              locator
+                  .get<MainBloc>()
+                  .add(OnCreateCounterparty(bank));
+            }
+          },
         )
       ],
     );
@@ -204,6 +249,16 @@ class GenerateNewBank extends StatelessWidget {
       DropDownItem(name: localization.titleItemCurrencyTurkishLira),
       DropDownItem(name: localization.titleItemCurrencySwedishKrona),
     ];
+
+    int selectedIndex = items.indexWhere((item) {
+      //todo: put correct field in below code
+      return item.name.toLowerCase().contains(bank.type.toString());
+    });
+
+    if (selectedIndex == -1) {
+      selectedIndex = 0; // Set a default index
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -213,9 +268,12 @@ class GenerateNewBank extends StatelessWidget {
         GenericDropDown<IDropDownItem>(
           isEnable: isActive,
           itemWidth: width,
-          value: items[0],
+          value: items[selectedIndex],
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            //todo: put correct field in below code
+            if (value != null) bank.updateCurrencyType(value.name);
+          },
         ),
       ],
     );
@@ -235,9 +293,13 @@ class GenerateNewBank extends StatelessWidget {
         GenericDropDown<IDropDownItem>(
           isEnable: isActive,
           itemWidth: width,
-          value: items[0],
+          value: bank.isActive ? items[0] : items[1],
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              bank.updateIsActive(value.name == localization.active);
+            }
+          },
         ),
       ],
     );
@@ -335,6 +397,10 @@ class GenerateNewBank extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void copyBankToTempBank() {
+    tempBank = Bank(counterparty: bank.copy());
   }
 }
 

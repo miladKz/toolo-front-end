@@ -4,8 +4,7 @@ import '../../../domain/entities/common/counterparty.dart';
 
 class CounterpartyDto extends Counterparty {
   CounterpartyDto(
-      {
-      required super.id,
+      {required super.id,
       required super.address,
       required super.bankAccType,
       required super.bankCardNumber,
@@ -114,7 +113,7 @@ class CounterpartyDto extends Counterparty {
       'CodePosti': postalCode,
       'CompanyName': companyName,
       'DarsadSaham': sharePercentage,
-      'DateTasis': foundationDate.toString(),
+      'DateTasis': formatDateTime(foundationDate),
       'Descriptions': description,
       'EtebarCheck': creditCheck,
       'EtebarRial': creditRial,
@@ -148,7 +147,16 @@ class CounterpartyDto extends Counterparty {
       'TafziliID': detailId,
       'Tel': tel,
       'Types': type,
-    }..removeWhere(
-        (dynamic key, dynamic value) => value == '' || value == null || value == -1);
+    }..removeWhere((dynamic key, dynamic value) =>
+        value == '' || value == null || (value == -1 && key != 'PrefixID'));
+  }
+
+  String formatDateTime(DateTime dateTime) {
+    // Formatting the date and time components
+    //String formattedDate = dateTime.toIso8601String();
+    String formattedDate =
+        '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+    // Returning the formatted date string
+    return formattedDate;
   }
 }

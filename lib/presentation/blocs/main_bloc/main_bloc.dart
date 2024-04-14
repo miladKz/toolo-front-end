@@ -276,6 +276,5 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(MainLoadingOnView(isShow: false));
     selectedCounterparty = null;
     emit(SuccessDeletedCounterparty(message));
-    reGetAccounts();
   }
 }

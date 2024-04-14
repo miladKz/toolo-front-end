@@ -8,6 +8,7 @@ import 'package:toolo_gostar/presentation/widgets/main/manage_bank/modals/genera
 import '../../../../../di/di.dart';
 import '../../../../../domain/entities/common/bank.dart';
 import '../../../../blocs/main_bloc/main_bloc.dart';
+import '../../../../question_dialog.dart';
 
 List<Widget> managementBankBranchMainToolbarActionItems(
     {required BuildContext context, required double maxWidth}) {
@@ -36,7 +37,22 @@ List<Widget> managementBankBranchMainToolbarActionItems(
     removeActionItem(
       objectWith,
       context,
-      onTap: () {},
+      onTap: () {
+        MainBloc mainBloc = locator.get<MainBloc>();
+        Bank? bank = mainBloc.getSelectedCounterparty<Bank>();
+        if (bank != null) {
+          showQuestionDialog(
+            context: context,
+            title: localization.remove,
+            msg: localization.msgQuestionDelete,
+            callBack: (isOk) {
+              if (isOk) {
+                locator.get<MainBloc>().add(OnDeleteCounterparty(bank));
+              }
+            },
+          );
+        }
+      },
     ),
     editActionItem(objectWith, context, onTap: () {
       MainBloc mainBloc = locator.get<MainBloc>();

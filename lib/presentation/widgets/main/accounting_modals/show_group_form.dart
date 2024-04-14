@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/enum_liquidity_type.dart';
+import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/form_elements/enum_liquidity_type.dart';
 
 import '../../../../domain/entities/accounting/account.dart';
 import '../../../../main.dart';
 import 'form_elements/enum_balance_sheet_status_type.dart';
-import 'form_elements/form_item_title.dart';
-import 'form_elements/form_text_field.dart';
+import '../../common/modals/modal_elements/form_item_title.dart';
+import '../../common/modals/modal_elements/form_text_field.dart';
 
 class ShowGroupForm extends StatefulWidget {
   ShowGroupForm({super.key, required this.account});

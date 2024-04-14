@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_button.dart';
 
 import '../../../../../main.dart';
-import '../../../main/forms/form_elements/form_button.dart';
 
 class ModalActionButtons extends StatelessWidget {
   const ModalActionButtons({

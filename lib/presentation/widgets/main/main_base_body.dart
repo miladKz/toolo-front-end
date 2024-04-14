@@ -7,6 +7,8 @@ import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/fake_data/fake_data.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/custom_view_with_data_table.dart';
 import 'package:toolo_gostar/presentation/widgets/main/account_tree_view/account_tree_view_builder.dart';
+import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/show_account_form.dart';
+import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/show_group_form.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/actions_toolbar.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
@@ -23,8 +25,6 @@ import 'badge_button.dart';
 import 'collapsible_sidebar/collapsible_item.dart';
 import 'collapsible_sidebar/collapsible_sidebar.dart';
 import 'dashboard_menu.dart';
-import 'forms/show_account_form.dart';
-import 'forms/show_group_form.dart';
 import 'logout_button.dart';
 
 class MainBaseBody extends StatelessWidget {

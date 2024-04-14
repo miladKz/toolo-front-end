@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
-import '../../main/forms/form_elements/form_item_title.dart';
-import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 
@@ -14,11 +16,13 @@ class NewDocumentModal extends StatefulWidget {
     super.key,
     required this.formWidth,
     this.isActive = true,
+    this.iconColor = const Color(0xFF9E79AC),
     required GlobalKey<FormState> formKey,
   }) : _formKey = formKey;
   final bool isActive;
   final double formWidth;
   final GlobalKey<FormState> _formKey;
+  final Color iconColor;
 
   @override
   State<NewDocumentModal> createState() => _NewDocumentModalState();
@@ -149,17 +153,24 @@ class _NewDocumentModalState extends State<NewDocumentModal> {
       children: [
         FormItemTitle(title: localization.titleDocumentDate),
         titleInputSpacing,
-        FormTextField(
-          textHint: '1403/01/16',
-          controller: controller,
-          suffixIcon: IconButton(
-              icon: const Icon(
-                Icons.date_range_rounded,
-                size: 20,
-              ),
-              onPressed: () {}),
-          enable: false,
-          widgetWidth: width,
+        InkWell(
+          onTap: () async {
+            String? selectDate = await JalaliDatePicker.getDate();
+            controller.value = TextEditingValue(text: selectDate!);
+          },
+          child: FormTextField(
+            textHint: '1403/01/18',
+            controller: controller,
+            suffixIcon: IconButton(
+                icon: Icon(
+                  Icons.calendar_month,
+                  color: widget.iconColor,
+                  size: 20,
+                ),
+                onPressed: () {}),
+            enable: false,
+            widgetWidth: width,
+          ),
         ),
       ],
     );
@@ -173,17 +184,24 @@ class _NewDocumentModalState extends State<NewDocumentModal> {
       children: [
         FormItemTitle(title: localization.titleSubDate),
         titleInputSpacing,
-        FormTextField(
-          textHint: '1403/01/16',
-          controller: controller,
-          suffixIcon: IconButton(
-              icon: const Icon(
-                Icons.date_range_rounded,
-                size: 20,
-              ),
-              onPressed: () {}),
-          enable: false,
-          widgetWidth: width,
+        InkWell(
+          onTap: () async{
+            String? selectDate = await JalaliDatePicker.getDate();
+            controller.value = TextEditingValue(text: selectDate!);
+          },
+          child: FormTextField(
+            textHint: '1403/01/16',
+            controller: controller,
+            suffixIcon: IconButton(
+                icon:  Icon(
+                  Icons.calendar_month,
+                  color:  widget.iconColor,
+                  size: 20,
+                ),
+                onPressed: () {}),
+            enable: false,
+            widgetWidth: width,
+          ),
         ),
       ],
     );
@@ -296,4 +314,6 @@ class _NewDocumentModalState extends State<NewDocumentModal> {
   double getItemWidth({int itemsCount = 2, required maxWidth}) {
     return (((maxWidth) / itemsCount) - 25);
   }
+
+
 }

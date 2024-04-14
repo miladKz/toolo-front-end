@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
@@ -7,8 +9,6 @@ import '../../../../di/di.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
-import '../../main/forms/form_elements/form_item_title.dart';
-import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 

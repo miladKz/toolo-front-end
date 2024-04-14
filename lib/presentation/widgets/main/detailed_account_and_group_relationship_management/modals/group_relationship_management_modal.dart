@@ -3,12 +3,12 @@ import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 
 import '../../../../../main.dart';
 import '../../../common/modals/modal_elements/drop_down_generic.dart';
 import '../../../common/modals/modal_elements/form_check_box.dart';
 import '../../../common/modals/modal_elements/modal_action_buttons.dart';
-import '../../forms/form_elements/form_item_title.dart';
 
 class ModalGroupRelationshipManagement extends StatelessWidget {
   const ModalGroupRelationshipManagement({

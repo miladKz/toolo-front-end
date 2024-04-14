@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_button.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 
 import '../../../../main.dart';
-import '../../main/forms/form_elements/form_button.dart';
-import '../../main/forms/form_elements/form_item_title.dart';
-import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_input.dart';
 import 'modal_elements/form_check_box.dart';
 import 'modal_elements/multiline_text_input.dart';
 import 'modal_elements/tab_button.dart';
 
 class AccountPartyForm extends StatelessWidget {
-  const AccountPartyForm({
+  TextEditingController controllerFoundationDate =
+      TextEditingController(text: '');
+
+  AccountPartyForm({
     super.key,
     required this.formWidth,
     this.isActive = true,
@@ -136,25 +140,9 @@ class AccountPartyForm extends StatelessWidget {
                       textHint: '003', widgetWidth: (formWidth / 4) - 15)
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FormItemTitle(title: localization.foundationDate),
-                  titleInputSpacing,
-                  DropDownInput(
-                    enable: isActive,
-                    width: (formWidth / 4) - 50,
-                    icon: Icon(
-                      Icons.calendar_month,
-                      color: iconColor,
-                      size: 20,
-                    ),
-                    value: '',
-                    items: List.empty(growable: true),
-                  ),
-                ],
-              ),
+              foundationDateBox(
+                  width: (formWidth / 4) - 50,
+                  controller: controllerFoundationDate),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -507,6 +495,37 @@ class AccountPartyForm extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget foundationDateBox(
+      {required double width, required TextEditingController controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.foundationDate),
+        titleInputSpacing,
+        InkWell(
+          onTap: () async {
+            String? selectDate = await JalaliDatePicker.getDate();
+            controller.value = TextEditingValue(text: selectDate!);
+          },
+          child: FormTextField(
+            textHint: '1403/01/16',
+            controller: controller,
+            suffixIcon: IconButton(
+                icon: Icon(
+                  Icons.calendar_month,
+                  color: iconColor,
+                  size: 20,
+                ),
+                onPressed: () {}),
+            enable: false,
+            widgetWidth: width,
+          ),
+        ),
+      ],
     );
   }
 }

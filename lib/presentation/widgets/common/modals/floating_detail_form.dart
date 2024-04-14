@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_button.dart';
 
 import '../../../../main.dart';
-import '../../main/forms/form_elements/form_button.dart';
-import '../../main/forms/form_elements/form_item_title.dart';
-import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_input.dart';
 import 'modal_elements/multiline_text_input.dart';
 

@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 
-import '../../../main/forms/form_elements/form_item_title.dart';
 
 class ModalInputWrapper extends StatelessWidget {
   final String title;

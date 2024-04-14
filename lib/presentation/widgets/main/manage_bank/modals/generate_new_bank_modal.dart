@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
-import 'package:toolo_gostar/presentation/widgets/main/forms/form_elements/form_text_field.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 
 import '../../../../../di/di.dart';
 import '../../../../../domain/entities/common/bank.dart';
@@ -10,7 +11,6 @@ import '../../../../../main.dart';
 import '../../../../blocs/main_bloc/main_bloc.dart';
 import '../../../common/modals/modal_elements/drop_down_generic.dart';
 import '../../../common/modals/modal_elements/modal_action_buttons.dart';
-import '../../forms/form_elements/form_item_title.dart';
 
 class GenerateNewBank extends StatelessWidget {
   GenerateNewBank({

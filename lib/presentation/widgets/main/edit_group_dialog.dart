@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
-import 'package:toolo_gostar/presentation/widgets/main/forms/edit_account_form.dart';
+import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/edit_account_form.dart';
+import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/edit_gorup_form.dart';
 
 import '../../../domain/entities/accounting/account.dart';
-import 'forms/edit_gorup_form.dart';
 
 class EditGroupDialog extends StatelessWidget {
   final Account account;

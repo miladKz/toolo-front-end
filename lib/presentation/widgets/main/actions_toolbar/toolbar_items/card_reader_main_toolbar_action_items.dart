@@ -7,6 +7,7 @@ import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_i
 import '../../../../../di/di.dart';
 import '../../../../../domain/entities/common/card_reader.dart';
 import '../../../../blocs/main_bloc/main_bloc.dart';
+import '../../../../question_dialog.dart';
 import '../../../common/modals/card_reader_modal.dart';
 
 List<Widget> cardReaderMainToolbarActionItems(
@@ -46,7 +47,22 @@ List<Widget> cardReaderMainToolbarActionItems(
     removeActionItem(
       objectWith,
       context,
-      onTap: () {},
+      onTap: () {
+        MainBloc mainBloc = locator.get<MainBloc>();
+        CardReader? cardReader = mainBloc.getSelectedCounterparty<CardReader>();
+        if (cardReader != null) {
+          showQuestionDialog(
+            context: context,
+            title: localization.remove,
+            msg: localization.msgQuestionDelete,
+            callBack: (isOk) {
+              if (isOk) {
+                locator.get<MainBloc>().add(OnDeleteCounterparty(cardReader));
+              }
+            },
+          );
+        }
+      },
     ),
     editActionItem(objectWith, context, onTap: () {
       MainBloc mainBloc = locator.get<MainBloc>();

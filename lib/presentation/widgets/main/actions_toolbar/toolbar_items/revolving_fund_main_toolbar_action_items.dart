@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/domain/entities/common/revolving_fund.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/revolving_fund_modal.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
@@ -19,11 +23,13 @@ List<Widget> revolvingFundMainToolbarActionItems(
             context: context,
             builder: (BuildContext context) {
               return CustomDialog(
-                title: localization.titleAccountParty,
+                title: localization.newRevolvingFund,
                 width: maxWidth,
                 body: RevolvingFundModal(
                   formWidth: maxWidth,
                   formKey: GlobalKey<FormState>(),
+                  revolvingFund:
+                      RevolvingFund(counterparty: Counterparty.empty()),
                 ),
               );
             });
@@ -42,7 +48,26 @@ List<Widget> revolvingFundMainToolbarActionItems(
       context,
       onTap: () {},
     ),
-    editActionItem(objectWith, context, onTap: () {}),
+    editActionItem(objectWith, context, onTap: () {
+      MainBloc mainBloc = locator.get<MainBloc>();
+      RevolvingFund? selectedRevolvingFund =
+      mainBloc.getSelectedCounterparty<RevolvingFund>();
+      if (selectedRevolvingFund != null) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                title: localization.updateRevolvingFund,
+                width: maxWidth,
+                body: RevolvingFundModal(
+                  formWidth: maxWidth,
+                  formKey: GlobalKey<FormState>(),
+                  revolvingFund: selectedRevolvingFund,
+                ),
+              );
+            });
+      }
+    }),
     sendActionItem(
       objectWith,
       onTap: () {},

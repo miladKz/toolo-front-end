@@ -180,6 +180,7 @@
  "terminalNumber": "شماره ترمینال",
  "relatedBank": "بانک مرتبط",
  "newRevolvingFund": "ایجاد تنخواه گردان جدید",
+ "updateRevolvingFund": "ویرایش تنخواه گردان",
  "revolvingFundType": "نوع تنخواه گردان",
  "revolvingFundLimit": "سقف تنخواه",
  "titleBankList": "لیست بانک ها",

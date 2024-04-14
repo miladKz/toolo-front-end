@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/common/revolving_fund.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
-import '../../../../domain/entities/common/drop_down_item.dart';
+import '../../../../di/di.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
+import '../../../../domain/entities/common/drop_down_item.dart';
+import '../../../blocs/main_bloc/main_bloc.dart';
 import '../../main/forms/form_elements/form_item_title.dart';
 import '../../main/forms/form_elements/form_text_field.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 
 class RevolvingFundModal extends StatefulWidget {
-  const RevolvingFundModal({
+  RevolvingFundModal({
     super.key,
     required this.formWidth,
     this.isActive = true,
     required GlobalKey<FormState> formKey,
+    required this.revolvingFund,
   }) : _formKey = formKey;
+
   final bool isActive;
   final double formWidth;
   final GlobalKey<FormState> _formKey;
+  final RevolvingFund revolvingFund;
+  RevolvingFund? tempRevolvingFund;
 
   @override
   State<RevolvingFundModal> createState() => _RevolvingFundModalState();
@@ -37,6 +44,18 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUpdate = (widget.revolvingFund.id != -1);
+
+    if (isUpdate) {
+      copyRevolvingFundToTempRevolvingFund();
+      codeController.text = widget.revolvingFund.code.toString();
+      nameController.text = widget.revolvingFund.name;
+      //todo: set currect field to limit currency
+      revolvingFundLimitController.text =
+          widget.revolvingFund.detailId.toString();
+      descriptionController.text = widget.revolvingFund.description;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +76,28 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
         ModalActionButtons(
           formWidth: widget.formWidth,
           formKey: widget._formKey,
-          onConfirm: () {},
+          onConfirm: () {
+            int code;
+            try {
+              code = int.parse(codeController.text);
+            } on FormatException {
+              code = 0;
+            }
+
+            widget.revolvingFund.updateCode(code);
+            widget.revolvingFund.updateName(nameController.text);
+            widget.revolvingFund.updateDescription(descriptionController.text);
+
+            if (isUpdate) {
+              locator
+                  .get<MainBloc>()
+                  .add(OnUpdateCounterparty(widget.revolvingFund));
+            } else {
+              locator
+                  .get<MainBloc>()
+                  .add(OnCreateCounterparty(widget.revolvingFund));
+            }
+          },
         )
       ],
     );
@@ -128,9 +168,14 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
         GenericDropDown<IDropDownItem>(
           isEnable: widget.isActive,
           itemWidth: width - 5,
-          value: items[0],
+          value: widget.revolvingFund.isActive ? items[0] : items[1],
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              widget.revolvingFund
+                  .updateIsActive(value.name == localization.active);
+            }
+          },
         ),
       ],
     );
@@ -180,6 +225,18 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
       DropDownItem(name: localization.titleItemCurrencyTurkishLira),
       DropDownItem(name: localization.titleItemCurrencySwedishKrona),
     ];
+
+    int selectedIndex = items.indexWhere((item) {
+      //todo: put correct field in below code
+      return item.name
+          .toLowerCase()
+          .contains(widget.revolvingFund.type.toString());
+    });
+
+    if (selectedIndex == -1) {
+      selectedIndex = 0; // Set a default index
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -189,9 +246,15 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
         GenericDropDown<IDropDownItem>(
           isEnable: widget.isActive,
           itemWidth: width - 5,
-          value: items[0],
+          value: items[selectedIndex],
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              //todo: set Correct Field
+              widget.revolvingFund
+                  .updateIsActive(value.name == localization.active);
+            }
+          },
         ),
       ],
     );
@@ -201,6 +264,16 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
     List<DropDownItem> items = [
       DropDownItem(name: ''),
     ];
+    int selectedIndex = items.indexWhere((item) {
+      //todo: put correct field in below code
+      return item.name
+          .toLowerCase()
+          .contains(widget.revolvingFund.type.toString());
+    });
+
+    if (selectedIndex == -1) {
+      selectedIndex = 0; // Set a default index
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -210,9 +283,15 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
         GenericDropDown<IDropDownItem>(
           isEnable: widget.isActive,
           itemWidth: width - 5,
+          value: items[selectedIndex],
           items: items,
           hint: '---',
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              widget.revolvingFund
+                  .updateIsActive(value.name == localization.active);
+            }
+          },
         ),
       ],
     );
@@ -258,5 +337,10 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
 
   double getItemWidth({int itemsCount = 2, required maxWidth}) {
     return (((maxWidth) / itemsCount) - 25);
+  }
+
+  void copyRevolvingFundToTempRevolvingFund() {
+    widget.tempRevolvingFund =
+        RevolvingFund(counterparty: widget.revolvingFund.copy());
   }
 }

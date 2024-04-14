@@ -8,6 +8,8 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/c
 import 'package:toolo_gostar/presentation/widgets/common/modals/revolving_fund_modal.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
 
+import '../../../../question_dialog.dart';
+
 List<Widget> revolvingFundMainToolbarActionItems(
     {required BuildContext context, required double maxWidth}) {
   double objectCount = 5 + 1;
@@ -46,12 +48,30 @@ List<Widget> revolvingFundMainToolbarActionItems(
     removeActionItem(
       objectWith,
       context,
-      onTap: () {},
+      onTap: () {
+        MainBloc mainBloc = locator.get<MainBloc>();
+        RevolvingFund? revolvingFund =
+            mainBloc.getSelectedCounterparty<RevolvingFund>();
+        if (revolvingFund != null) {
+          showQuestionDialog(
+            context: context,
+            title: localization.remove,
+            msg: localization.msgQuestionDelete,
+            callBack: (isOk) {
+              if (isOk) {
+                locator
+                    .get<MainBloc>()
+                    .add(OnDeleteCounterparty(revolvingFund));
+              }
+            },
+          );
+        }
+      },
     ),
     editActionItem(objectWith, context, onTap: () {
       MainBloc mainBloc = locator.get<MainBloc>();
       RevolvingFund? selectedRevolvingFund =
-      mainBloc.getSelectedCounterparty<RevolvingFund>();
+          mainBloc.getSelectedCounterparty<RevolvingFund>();
       if (selectedRevolvingFund != null) {
         showDialog(
             context: context,

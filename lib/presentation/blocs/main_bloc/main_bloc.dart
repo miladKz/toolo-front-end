@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
+import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/delete_counter_party_use_case.dart';
@@ -276,5 +277,34 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(MainLoadingOnView(isShow: false));
     selectedCounterparty = null;
     emit(SuccessDeletedCounterparty(message));
+    reGetCounterParty(event.counterparty);
+  }
+
+  void reGetCounterParty(Counterparty counterparty) async{
+    await Future.delayed(const Duration(milliseconds: 200));
+    add(MainAnotherList(endpoint: "", apiEnum: getCorrectApiFromCounterpartyKind(counterparty)));
+  }
+
+  ApiEnum getCorrectApiFromCounterpartyKind(Counterparty counterparty) {
+    CounterPartyKinds kind = CounterPartyKinds.fromValue(counterparty.kind);
+    ApiEnum apiEnum;
+    switch(kind){
+      case CounterPartyKinds.people:
+        apiEnum = ApiEnum.managementPeople;
+        break;
+      case CounterPartyKinds.bank:
+        apiEnum = ApiEnum.managementBankBranch;
+        break;
+      case CounterPartyKinds.cardReader:
+        apiEnum = ApiEnum.managementCardReader;
+        break;
+      case CounterPartyKinds.revolvingFund:
+        apiEnum = ApiEnum.managementRevolvingFund;
+        break;
+      case CounterPartyKinds.cashBox:
+        apiEnum = ApiEnum.unknown;
+        break;
+    }
+    return apiEnum;
   }
 }

@@ -26,7 +26,7 @@ class AuthLocalDataSourceImpl extends IAuthLocalDataSource {
 
   @override
   String getToken() {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTMxNTU1MjV9.ddD65XzQlRhpWbilzz_k3lPTtIJumAhXwCMLywJ08iI";
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjcsIlVzZXJOYW1lIjoiYWJiYXNpIiwiRGlzcGxheU5hbWUiOiLYp9io2YjYp9mE2YHYttmEINi52KjYp9iz24wiLCJleHAiOjE3MTMyMTAyMjN9.iAQV-IeeoT6HSTcQeSwrU-inhPIhaKWS8Fbnxtnczgk";
     var object = _sharedPreferences.getString(keyLoginUserInfo) ?? "";
     debugPrint('getToken method data is: $object');
     return AuthBaseDataDto.fromMap(jsonDecode(object)).token;

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 
 
-class FormCheckBox extends StatefulWidget {
+class CheckBoxForm extends StatefulWidget {
   Function()? onChange;
   bool enable;
   bool value;
   String title;
 
-  FormCheckBox(
+  CheckBoxForm(
       {
         super.key,
         this.onChange,
@@ -17,10 +17,10 @@ class FormCheckBox extends StatefulWidget {
         this.enable = true,});
 
   @override
-  State<FormCheckBox> createState() => _FormCheckBoxState();
+  State<CheckBoxForm> createState() => _CheckBoxFormState();
 }
 
-class _FormCheckBoxState extends State<FormCheckBox> {
+class _CheckBoxFormState extends State<CheckBoxForm> {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -43,9 +43,9 @@ class _FormCheckBoxState extends State<FormCheckBox> {
                   }
                 });
               },),
-            const SizedBox(
+            /*const SizedBox(
               width: 5,
-            ),
+            ),*/
             FormItemTitle(title: widget.title,)
         ],),
       ),
@@ -53,5 +53,4 @@ class _FormCheckBoxState extends State<FormCheckBox> {
   }
 
 
-  getValue() {}
 }

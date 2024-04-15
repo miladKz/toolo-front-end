@@ -6,7 +6,7 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/f
 
 import '../../../../main.dart';
 import 'modal_elements/drop_down_input.dart';
-import 'modal_elements/form_check_box.dart';
+import 'modal_elements/check_box_form.dart';
 import 'modal_elements/multiline_text_input.dart';
 import 'modal_elements/tab_button.dart';
 
@@ -374,23 +374,23 @@ class AccountPartyForm extends StatelessWidget {
               Flexible(
                   child: Column(
                 children: [
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isSupplier,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isCustomer,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isIntermediary,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isOtherParty,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isShareholder,
                     value: false,
                   )
@@ -399,19 +399,19 @@ class AccountPartyForm extends StatelessWidget {
               Flexible(
                   child: Column(
                 children: [
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isInvestor,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isLender,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isBorrower,
                     value: false,
                   ),
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isEmployee,
                     value: false,
                   ),
@@ -431,7 +431,7 @@ class AccountPartyForm extends StatelessWidget {
               Flexible(
                   child: Column(
                 children: [
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isBoardMember,
                     value: false,
                   ),
@@ -440,7 +440,7 @@ class AccountPartyForm extends StatelessWidget {
               Flexible(
                   child: Column(
                 children: [
-                  FormCheckBox(
+                  CheckBoxForm(
                     title: localization.isRelatedParty,
                     value: false,
                   ),

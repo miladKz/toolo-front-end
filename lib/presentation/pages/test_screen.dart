@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/presentation/widgets/main/report/report_filter/report_filter.dart';
 
 import '../../domain/entities/common/city.dart';
 import '../../domain/entities/common/revolving_fund.dart';
@@ -32,40 +33,45 @@ class TestScreen extends StatelessWidget {
 
     return Material(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Center(
-          child: Column(
-            children: [
-              myCustomToolbar(
-                  toolBarEnum:
-                      ToolBarEnum.groupRelationshipManagementModalToolbar),
-              const SizedBox(
-                height: 50,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        //double formWidth = MediaQuery.of(context).size.width;
-                        double formWidth = 400;
-                        return CustomDialog(
-                          title: localization
-                              .titleGroupRelationshipAndLastLevelAccountCode,
-                          width: formWidth,
-                          body: CardReaderModal(cardReader: CardReader(counterparty:Counterparty.empty()),
-                            formWidth: formWidth,
-                            formKey: _formKey,
-                            isActive: true,
-                          ),
-                        ); // Pass your account data here
-                      },
-                    );
-                  },
-                  child: const Text("click")),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                myCustomToolbar(
+                    toolBarEnum:
+                        ToolBarEnum.groupRelationshipManagementModalToolbar),
+                const SizedBox(
+                  height: 50,
+                ),
+            
+                ReportFilter(),
+                const SizedBox(
+                  height: 50,
+                ),
+                TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          //double formWidth = MediaQuery.of(context).size.width;
+                          double formWidth = 400;
+                          return CustomDialog(
+                            title: localization
+                                .titleGroupRelationshipAndLastLevelAccountCode,
+                            width: formWidth,
+                            body: CardReaderModal(cardReader: CardReader(counterparty:Counterparty.empty()),
+                              formWidth: formWidth,
+                              formKey: _formKey,
+                              isActive: true,
+                            ),
+                          ); // Pass your account data here
+                        },
+                      );
+                    },
+                    child: const Text("click")),
+              ],
+            ),
           ),
         ),
       ),

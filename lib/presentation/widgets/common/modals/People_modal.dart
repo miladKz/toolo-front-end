@@ -28,7 +28,7 @@ class PeopleModal extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
   final People people;
 
-  PeopleModalTab selectedTab = PeopleModalTab.otherFeatures;
+  PeopleModalTab selectedTab = PeopleModalTab.details;
   final Color addButtonBackground = const Color(0xFFEFEFF4);
 
   @override

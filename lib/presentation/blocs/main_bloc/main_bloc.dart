@@ -8,6 +8,22 @@ import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
+import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
+import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
+import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
+import 'package:toolo_gostar/domain/entities/base/document_type.dart';
+import 'package:toolo_gostar/domain/entities/base/person_type.dart';
+import 'package:toolo_gostar/domain/entities/base/prefix.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_person_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/delete_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -17,6 +33,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_counter_party_use_case.dart';
+import 'package:toolo_gostar/presentation/view_models/base_data_model.dart';
 import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
 import '../../../app_exception.dart';
@@ -32,10 +49,10 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
+late BaseDataModel baseDataModel;
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
@@ -63,6 +80,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnCreateCounterparty>(_createCounterpartyHandler);
     on<OnUpdateCounterparty>(_updateCounterpartyHandler);
     on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
+    on<FetchBaseData>(_fetchBaseData);
   }
 
   FutureOr<void> _mainActionList(
@@ -76,6 +94,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnView(isShow: false));
       filteredActions = _filterActions(WorkSpaceItems.accounting);
       emit(AccountingActionsSuccess(filteredActions));
+      await Future.delayed(const Duration(milliseconds: 200));
+      add(FetchBaseData());
     } catch (e) {
       e.toString();
     }
@@ -306,5 +326,53 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         break;
     }
     return apiEnum;
+  }
+
+  FutureOr<void> _fetchBaseData(
+      FetchBaseData event, Emitter<MainState> emit) async {
+    FetchBankAccTypeListUseCase useCaseFetchBankAccTypeList =
+        locator<FetchBankAccTypeListUseCase>();
+    FetchBourseTypeListUseCase useCaseFetchBourseTypeList =
+        locator<FetchBourseTypeListUseCase>();
+    FetchCurrencyTypeListUseCase useCaseFetchCurrencyTypeList =
+        locator<FetchCurrencyTypeListUseCase>();
+/*    FetchCustomerDataDetailListUseCase useCaseFetchCustomerDataDetailList =
+        locator<FetchCustomerDataDetailListUseCase>();*/
+    FetchDetailGroupRootListUseCase useCaseFetchDetailGroupRootList =
+        locator<FetchDetailGroupRootListUseCase>();
+    FetchDocumentTypeListUseCase useCaseFetchDocumentTypeList =
+        locator<FetchDocumentTypeListUseCase>();
+    FetchPersonTypeListUseCase useCaseFetchPersonTypeList =
+        locator<FetchPersonTypeListUseCase>();
+    FetchPrefixListUseCase useCaseFetchPrefixList =
+        locator<FetchPrefixListUseCase>();
+    FetchCustomerStatusListUseCase useCaseFetchCustomerStatusList =
+        locator<FetchCustomerStatusListUseCase>();
+    /* FetchStandardDetailListUseCase useCaseFetchStandardDetailList =
+        locator<FetchStandardDetailListUseCase>();*/
+
+    List<BankAccType> bankAccTypeList = await useCaseFetchBankAccTypeList();
+    List<BourseType> bourseTypeList = await useCaseFetchBourseTypeList();
+    List<CurrencyType> currencyTypeList = await useCaseFetchCurrencyTypeList();
+    List<DetailGroupRoot> detailGroupRootList =
+        await useCaseFetchDetailGroupRootList();
+    List<DocumentType> documentTypeList = await useCaseFetchDocumentTypeList();
+    List<PersonType> personTypeList = await useCaseFetchPersonTypeList();
+    List<Prefix> prefixList = await useCaseFetchPrefixList();
+    List<CustomerStatus> customerStatusList =
+        await useCaseFetchCustomerStatusList();
+    //List<CustomerDataDetail> customerDataDetailList = await useCaseFetchCustomerDataDetailList();
+    //List<StandardDetail> standardDetailList = await useCaseFetchStandardDetailList();
+    baseDataModel = BaseDataModel(
+        bankAccTypeList: bankAccTypeList,
+        bourseTypeList: bourseTypeList,
+        currencyTypeList: currencyTypeList,
+        customerStatusList: customerStatusList,
+        detailGroupRootList: detailGroupRootList,
+        documentTypeList: documentTypeList,
+        personTypeList: personTypeList,
+        prefixList: prefixList);
+
+    debugPrint(baseDataModel.toString());
   }
 }

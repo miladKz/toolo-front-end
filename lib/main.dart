@@ -78,7 +78,7 @@ Widget testScreen() {
     create: (_) {
       return locator<MainBloc>();
     },
-    child: screenMain(),
+    child: TestScreen(),
   );
 }
 

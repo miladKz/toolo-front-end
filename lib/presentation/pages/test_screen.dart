@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/people_modal.dart';
 
 import '../../domain/entities/common/city.dart';
+import '../../domain/entities/common/people.dart';
 import '../../domain/entities/common/revolving_fund.dart';
 import '../../main.dart';
 import '../factories/table_view_model_factory.dart';
@@ -50,12 +52,12 @@ class TestScreen extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         //double formWidth = MediaQuery.of(context).size.width;
-                        double formWidth = 400;
+                        double formWidth = 800;
                         return CustomDialog(
                           title: localization
                               .titleGroupRelationshipAndLastLevelAccountCode,
                           width: formWidth,
-                          body: CardReaderModal(cardReader: CardReader(counterparty:Counterparty.empty()),
+                          body: PeopleModal(people: People(counterparty:Counterparty.empty()),
                             formWidth: formWidth,
                             formKey: _formKey,
                             isActive: true,

@@ -28,7 +28,8 @@ class PeopleModal extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
   final People people;
 
-  PeopleModalTab selectedTab = PeopleModalTab.details;
+  PeopleModalTab selectedTab = PeopleModalTab.otherFeatures;
+  final Color addButtonBackground = const Color(0xFFEFEFF4);
 
   @override
   State<PeopleModal> createState() => _PeopleModalState();
@@ -83,10 +84,12 @@ class _PeopleModalState extends State<PeopleModal> {
           verticalGapDivider,
           addressInfoSection(),
           verticalGapDivider,
-          if (widget.selectedTab == PeopleModalTab.details)...
-            detailSection(),
-          if (widget.selectedTab == PeopleModalTab.groups)...
-            groupSection(),
+          if (widget.selectedTab == PeopleModalTab.details) ...detailSection(),
+          if (widget.selectedTab == PeopleModalTab.groups) ...groupSection(),
+          if (widget.selectedTab == PeopleModalTab.otherFeatures)
+            ...OtherFeaturesSection(),
+          if (widget.selectedTab == PeopleModalTab.addresses)
+            ...addressSection(),
           const SizedBox(
             height: 20,
           ),
@@ -328,11 +331,11 @@ class _PeopleModalState extends State<PeopleModal> {
         ));
   }
 
-  Divider divider() {
-    return const Divider(
-      color: Color(0xFFDEE2E6),
-      height: 25,
-      thickness: 2,
+  Divider divider({double dividerHeight = 25, double dividerThickness = 2}) {
+    return Divider(
+      color: const Color(0xFFDEE2E6),
+      height: dividerHeight,
+      thickness: dividerThickness,
     );
   }
 
@@ -612,6 +615,165 @@ class _PeopleModalState extends State<PeopleModal> {
 
   void copyPeopleToTempPeople() {
     tempPeople = People(counterparty: widget.people.copy());
+  }
+
+  OtherFeaturesSection() {
+    return [
+      FormItemTitle(
+        title: localization.otherFeatures,
+        textColor: const Color(0xFF6C3483),
+        fontWeight: FontWeight.w900,
+        fontSize: 15,
+      ),
+      titleInputSpacing,
+      detailTable(),
+    ];
+  }
+
+  addressSection() {
+    return [
+      FormItemTitle(
+        title: localization.otherFeatures,
+        textColor: const Color(0xFF6C3483),
+        fontWeight: FontWeight.w900,
+        fontSize: 15,
+      ),
+      titleInputSpacing,
+      detailTable(),
+    ];
+  }
+
+  Container detailTable() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 1, color: Color(0xFFE9EBEE))),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FormItemTitle(
+                title: localization.title,
+                fontWeight: FontWeight.w900,
+                fontSize: 14,
+              ),
+              FormItemTitle(
+                title: localization.value,
+                fontWeight: FontWeight.w900,
+                fontSize: 14,
+              ),
+              TextButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: widget.addButtonBackground,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                ),
+                onPressed: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    width: 80,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Color(0xFF6F42C1),
+                          size: 20,
+                        ),
+                        Container(
+                          color: Color(0xFFCED4DA),
+                          width: 1,
+                          height: 20,
+                          margin: EdgeInsets.only(left: 5, right: 2),
+                        ),
+                        Text(
+                          localization.add,
+                          style: const TextStyle(
+                              color: Color(0xFF7C848C),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          divider(dividerThickness: 1),
+          Container(
+            height: 100,
+            child: Expanded(
+                child: ListView.builder(
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FormItemTitle(
+                            title: "لورم ایپسوم",
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                          ),
+                          FormItemTitle(
+                            title: (400000 * 2).toString(),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                          ),
+                          Container(
+                            width: 100,
+                            height: 33,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFEFEFF4),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    minimumSize: const Size.fromRadius(20),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: const Icon(Icons.delete_outline,
+                                      color: Color(0xFFDC3545)),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFEFEFF4),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    minimumSize: Size.fromRadius(20),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: const Icon(Icons.mode_outlined,
+                                      color: Color(0xFF198754)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      divider(dividerThickness: 1)
+                    ],
+                  ),
+                );
+              },
+            )),
+          )
+        ],
+      ),
+    );
   }
 }
 

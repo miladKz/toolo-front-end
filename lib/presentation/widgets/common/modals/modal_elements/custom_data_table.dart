@@ -7,16 +7,18 @@ import '../../../../blocs/main_bloc/main_bloc.dart';
 import '../../../../view_models/table_view_model.dart';
 
 class CustomDataTable extends StatefulWidget {
-  CustomDataTable({super.key, required this.viewModel});
-
   DataTableViewModel viewModel;
+  ITableRowData? selectedItem;
+
+  CustomDataTable(
+      {super.key, required this.viewModel});
 
   @override
   State<CustomDataTable> createState() => _CustomDataTableState();
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
-  ITableRowData? selectedItem;
+
   int? sortColumnIndex;
   bool isAscending = false;
   double tableRowHeight = 45.0;
@@ -25,6 +27,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   Widget build(BuildContext context) {
     final List<DataColumn> columns = widget.viewModel.labels
         .map((label) => DataColumn2(
+            numeric: double.tryParse(label) != null,
             label: Text(label, overflow: TextOverflow.ellipsis, maxLines: 1),
             tooltip: label,
             size: ColumnSize.M,
@@ -32,19 +35,21 @@ class _CustomDataTableState extends State<CustomDataTable> {
         .toList();
     final List<DataRow2> rows = widget.viewModel.data.map((dataItem) {
       final List<DataCell> cells = dataItem.props.map((prop) {
-        return DataCell(Text(
-          '$prop',
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),);
+        return DataCell(
+          Text(
+            '$prop',
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        );
       }).toList();
 
       return DataRow2(
         cells: cells,
-        selected: selectedItem == dataItem,
+        selected: widget.selectedItem == dataItem,
         onSelectChanged: (value) {
           setState(() {
-            selectedItem = dataItem;
+            widget.selectedItem = dataItem;
             selectItem(dataItem);
           });
         },
@@ -58,7 +63,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
       child: DataTable2(
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(5)),
-          dataTextStyle: const TextStyle(color: Color(0xFF7F868D),fontSize: 10),
+          dataTextStyle:
+              const TextStyle(color: Color(0xFF7F868D), fontSize: 10),
           dataRowHeight: tableRowHeight,
           sortColumnIndex: sortColumnIndex,
           sortAscending: isAscending,
@@ -92,6 +98,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   int compareString(bool isAscending, String value1, String value2) {
     return isAscending ? value1.compareTo(value2) : value2.compareTo(value1);
   }
+
   void selectItem(ITableRowData data) {
     locator.get<MainBloc>().add(OnClickOnTableRowData(data));
   }

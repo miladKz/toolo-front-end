@@ -1,7 +1,7 @@
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
-class Bank extends Counterparty {
-  Bank({required Counterparty counterparty})
+class BankInSelectiveModal extends Counterparty {
+        BankInSelectiveModal({required Counterparty counterparty})
       : super(
           id: counterparty.id,
           currencyType:  counterparty.currencyType,
@@ -52,5 +52,5 @@ class Bank extends Counterparty {
         );
 
   @override
-  List<Object?> get props => [firstName, code, name, type];
+  List<Object?> get props => [code, name];
 }

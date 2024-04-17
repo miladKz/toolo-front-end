@@ -25,7 +25,7 @@ class People extends Counterparty {
           groupValueId: counterparty.groupValueId,
           responsibleBoard: counterparty.responsibleBoard,
           isActive: counterparty.isActive,
-          isBlackList: counterparty.isBlackList,
+          customerStatus: counterparty.customerStatus,
           isBoardMember: counterparty.isBoardMember,
           isStaff: counterparty.isStaff,
           isCustomer: counterparty.isCustomer,

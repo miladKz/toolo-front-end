@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
+import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
+import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
@@ -8,8 +11,12 @@ import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_const
 import '../../../../../main.dart';
 import '../../../../di/di.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
+import '../../../../domain/entities/common/abstracts/table_row_data_abs.dart';
+import '../../../../domain/entities/common/bank.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import 'custom_view_with_data_table.dart';
+import 'modal_elements/custom_dialog.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
 
@@ -27,12 +34,18 @@ class CardReaderModal extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
   final CardReader cardReader;
   CardReader? tempCardReader;
+  late Bank bankList;
 
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
 }
 
 class _CardReaderModalState extends State<CardReaderModal> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final TextEditingController codeController = TextEditingController(text: '');
 
   final TextEditingController nameController = TextEditingController(text: '');
@@ -49,7 +62,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   @override
   Widget build(BuildContext context) {
-    bool isUpdate = (widget.cardReader.id != -1);
+    bool isUpdate = (widget.cardReader.id != 0);
     codeController.text = isUpdate ? widget.cardReader.code.toString() : '';
     nameController.text = isUpdate ? widget.cardReader.name.toString() : '';
     terminalNumberController.text =
@@ -232,21 +245,24 @@ class _CardReaderModalState extends State<CardReaderModal> {
       children: [
         FormItemTitle(title: localization.relatedBank),
         titleInputSpacing,
-        ModalOpenerButton(width: width, value: 'بانک ملت'),
+        ModalOpenerButton(
+          width: width,
+          value: '',
+          formKey: widget._formKey,
+          onSelectItemFromTableModal: (bank) {
+            if (bank != null) {
+              widget.cardReader.updateBankId(bank.id);
+              setState(() {
+                currencyTypeDropBoxVisibility = true;
+              });
+            }
+          },
+        ),
       ],
     );
   }
 
   Widget currencyTypeDropBox({required double width}) {
-/*    List<DropDownItem> items = [
-      DropDownItem(name: localization.titleItemCurrencyRial),
-      DropDownItem(name: localization.titleItemCurrencyUSDollar),
-      DropDownItem(name: localization.titleItemCurrencyEuro),
-      DropDownItem(name: localization.titleItemCurrencyPound),
-      DropDownItem(name: localization.titleItemCurrencyAED),
-      DropDownItem(name: localization.titleItemCurrencyTurkishLira),
-      DropDownItem(name: localization.titleItemCurrencySwedishKrona),
-    ];*/
     List<CurrencyType> items = baseDataModel.currencyTypeList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +275,11 @@ class _CardReaderModalState extends State<CardReaderModal> {
           itemWidth: width - 29,
           value: items[0],
           items: items,
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              widget.cardReader.currencyType = value.id;
+            }
+          },
         ),
       ],
     );
@@ -294,20 +314,62 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 }
 
-class ModalOpenerButton extends StatelessWidget {
-  const ModalOpenerButton(
-      {super.key, required this.width, required this.value});
+class ModalOpenerButton extends StatefulWidget {
+  ModalOpenerButton(
+      {super.key,
+      required this.width,
+      required this.value,
+      required this.onSelectItemFromTableModal,
+      required formKey});
 
   final double width;
-  final String value;
+  String value;
+  final void Function(ITableRowData?) onSelectItemFromTableModal;
+
+  @override
+  State<ModalOpenerButton> createState() => _ModalOpenerButtonState();
+}
+
+class _ModalOpenerButtonState extends State<ModalOpenerButton> {
+  ITableRowData? selectedItem;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    List<Counterparty> bankList = baseDataModel.counterpartyBankList;
+    DataTableViewModel dataTableViewModel =
+        DataTableViewModelFactory.createTableViewModelFromBankAccTypeList(
+            bankList);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return CustomDialog(
+              title: localization.titleBankList,
+              width: widget.width + 100,
+              body: CustomViewWithDataTable(
+                  isShowActionButtons: true,
+                  formWidth: widget.width + 100,
+                  viewModel: dataTableViewModel,
+                  onClickOnConfirmCallback: (selectedItem) {
+                    this.selectedItem = selectedItem;
+
+                    Navigator.of(context).pop();
+                    setState(() {
+                      widget.value = (selectedItem as Counterparty).name;
+                      widget.onSelectItemFromTableModal(selectedItem);
+                    });
+                  },
+                  formKey: _formKey),
+            );
+          },
+        );
+      },
       child: Container(
         padding: const EdgeInsets.only(left: 5, right: 10),
-        width: width,
+        width: widget.width,
         height: 35,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -317,7 +379,7 @@ class ModalOpenerButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FormItemTitle(
-              title: value,
+              title: widget.value,
               fontWeight: FontWeight.normal,
             ),
             const Icon(Icons.arrow_drop_down_outlined),

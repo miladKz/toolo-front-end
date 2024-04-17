@@ -1,3 +1,5 @@
+import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
+import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/people.dart';
 import 'package:toolo_gostar/main.dart';
@@ -110,5 +112,19 @@ class DataTableViewModelFactory {
     }
 
     return DataTableViewModel(labels: labels, data: cashBoxList);
+  }
+
+  static DataTableViewModel createTableViewModelFromBankAccTypeList(
+      List<Counterparty> counterParties) {
+    final List<String> labels = [
+      localization.code,
+      localization.name,
+    ];
+    final List<BankInSelectiveModal> bankList = List.empty(growable: true);
+
+    for (Counterparty counterparty in counterParties) {
+      bankList.add(BankInSelectiveModal(counterparty: counterparty));
+    }
+    return DataTableViewModel(labels: labels, data: bankList);
   }
 }

@@ -269,62 +269,61 @@ class AccountingRepositoryImpl implements IAccountingRepository {
 
   CounterpartyDto getCounterpartyAsDto(Counterparty counterparty) {
     return CounterpartyDto(
-        id: counterparty.id,
-        currencyType:  counterparty.currencyType,
-        code: counterparty.code,
-        kind: counterparty.kind,
-        address: counterparty.address,
-        bankAccType: counterparty.bankAccType,
-        bankCardNumber: counterparty.bankCardNumber,
-        exchangeType: counterparty.exchangeType,
-        cityId: counterparty.cityId,
-        nationalCode: counterparty.nationalCode,
-        postalCode: counterparty.postalCode,
-        companyName: counterparty.companyName,
-        sharePercentage: counterparty.sharePercentage,
-        foundationDate: counterparty.foundationDate,
-        description: counterparty.description,
-        creditCheck: counterparty.creditCheck,
-        creditRial: counterparty.creditRial,
-        fax: counterparty.fax,
-        firstName: counterparty.firstName,
-        groupValueId: counterparty.groupValueId,
-        responsibleBoard: counterparty.responsibleBoard,
-        isActive: counterparty.isActive,
-        isBlackList: counterparty.isBlackList,
-        isBoardMember: counterparty.isBoardMember,
-        isStaff: counterparty.isStaff,
-        isCustomer: counterparty.isCustomer,
-        isInvestee: counterparty.isInvestee,
-        isOther: counterparty.isOther,
-        isPartner: counterparty.isPartner,
-        isSupply: counterparty.isSupply,
-        isFacilitator: counterparty.isFacilitator,
-        isReceiverFacility: counterparty.isReceiverFacility,
-        isDependent: counterparty.isDependent,
-        isIntermediary: counterparty.isIntermediary,
-        lastName: counterparty.lastName,
-        name: counterparty.name,
-        parentId: counterparty.parentId,
-        passportNumber: counterparty.passportNumber,
-        prefixId: counterparty.prefixId,
-        jobTitle: counterparty.jobTitle,
-        shebaNumber: counterparty.shebaNumber,
-        registrationNumber: counterparty.registrationNumber,
-        nationality: counterparty.nationality,
-        detailId: counterparty.detailId,
-        tel: counterparty.tel,
-        type: counterparty.type);
+      id: counterparty.id,
+      currencyType: counterparty.currencyType,
+      code: counterparty.code,
+      kind: counterparty.kind,
+      address: counterparty.address,
+      bankAccType: counterparty.bankAccType,
+      bankCardNumber: counterparty.bankCardNumber,
+      exchangeType: counterparty.exchangeType,
+      cityId: counterparty.cityId,
+      nationalCode: counterparty.nationalCode,
+      postalCode: counterparty.postalCode,
+      companyName: counterparty.companyName,
+      sharePercentage: counterparty.sharePercentage,
+      foundationDate: counterparty.foundationDate,
+      description: counterparty.description,
+      creditCheck: counterparty.creditCheck,
+      creditRial: counterparty.creditRial,
+      fax: counterparty.fax,
+      firstName: counterparty.firstName,
+      groupValueId: counterparty.groupValueId,
+      responsibleBoard: counterparty.responsibleBoard,
+      isActive: counterparty.isActive,
+      isBoardMember: counterparty.isBoardMember,
+      isStaff: counterparty.isStaff,
+      isCustomer: counterparty.isCustomer,
+      isInvestee: counterparty.isInvestee,
+      isOther: counterparty.isOther,
+      isPartner: counterparty.isPartner,
+      isSupply: counterparty.isSupply,
+      isFacilitator: counterparty.isFacilitator,
+      isReceiverFacility: counterparty.isReceiverFacility,
+      isDependent: counterparty.isDependent,
+      isIntermediary: counterparty.isIntermediary,
+      lastName: counterparty.lastName,
+      name: counterparty.name,
+      parentId: counterparty.parentId,
+      passportNumber: counterparty.passportNumber,
+      prefixId: counterparty.prefixId,
+      jobTitle: counterparty.jobTitle,
+      shebaNumber: counterparty.shebaNumber,
+      registrationNumber: counterparty.registrationNumber,
+      nationality: counterparty.nationality,
+      detailId: counterparty.detailId,
+      tel: counterparty.tel,
+      type: counterparty.type,
+      customerStatus: counterparty.customerStatus,
+    );
   }
 
-
-
   @override
-  Future<List<BankAccType>> fetchBankAccTypeList() async{
+  Future<List<BankAccType>> fetchBankAccTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBankAccTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchBankAccTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BankAccType> items = List.empty(growable: true);
 
@@ -342,11 +341,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BourseType>> fetchBourseTypeList() async{
+  Future<List<BourseType>> fetchBourseTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchBourseTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BourseType> items = List.empty(growable: true);
 
@@ -364,10 +363,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CurrencyType>> fetchCurrencyTypeList() async{
+  Future<List<CurrencyType>> fetchCurrencyTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchCurrencyTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchCurrencyTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<CurrencyType> items = List.empty(growable: true);
 
@@ -385,16 +385,18 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(CustomerDataDetailParam customerDataDetailParam) async{
+  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
+      CustomerDataDetailParam customerDataDetailParam) async {
     // TODO: implement fetchCustomerDataDetailList
     throw UnimplementedError();
   }
 
   @override
-  Future<List<CustomerStatus>> fetchCustomerStatusList() async{
+  Future<List<CustomerStatus>> fetchCustomerStatusList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchCustomerStatusList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchCustomerStatusList(token: token);
       if (serverResponse.isSuccess) {
         List<CustomerStatus> items = List.empty(growable: true);
 
@@ -412,10 +414,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async{
+  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchDetailGroupRootList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchDetailGroupRootList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupRoot> items = List.empty(growable: true);
 
@@ -433,10 +436,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DocumentType>> fetchDocumentTypeList() async{
+  Future<List<DocumentType>> fetchDocumentTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchDocumentTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchDocumentTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<DocumentType> items = List.empty(growable: true);
 
@@ -454,10 +458,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<PersonType>> fetchPersonTypeList() async{
+  Future<List<PersonType>> fetchPersonTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchPersonTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchPersonTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<PersonType> items = List.empty(growable: true);
 
@@ -475,10 +480,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<Prefix>> fetchPrefixList() async{
+  Future<List<Prefix>> fetchPrefixList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchPrefixList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchPrefixList(token: token);
       if (serverResponse.isSuccess) {
         List<Prefix> items = List.empty(growable: true);
 
@@ -496,7 +502,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<StandardDetail>> fetchStandardDetailList(StandardDetailParamDto param) async{
+  Future<List<StandardDetail>> fetchStandardDetailList(
+      StandardDetailParamDto param) async {
     // TODO: implement fetchStandardDetailList
     throw UnimplementedError();
   }

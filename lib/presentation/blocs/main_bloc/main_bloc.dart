@@ -47,6 +47,7 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
+import '../../../domain/entities/common/bank.dart';
 import '../../../domain/entities/common/counterparty.dart';
 import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
@@ -346,6 +347,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     List<PersonType> personTypeList = await fetchPersonTypeList();
     List<Prefix> prefixList = await fetchPrefixList();
     List<CustomerStatus> customerStatusList = await fetchCustomerStatusList();
+    List<Counterparty> counterpartyBankList = await fetchCounterpartyBankList();
 
 
     baseDataModel = BaseDataModel(
@@ -356,7 +358,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         detailGroupRootList: detailGroupRootList,
         documentTypeList: documentTypeList,
         personTypeList: personTypeList,
-        prefixList: prefixList);
+        prefixList: prefixList,
+        counterpartyBankList: counterpartyBankList);
 
     debugPrint(baseDataModel.toString());
   }
@@ -407,6 +410,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     FetchCustomerStatusListUseCase useCaseFetchCustomerStatusList =
         locator<FetchCustomerStatusListUseCase>();
     return await useCaseFetchCustomerStatusList();
+  }
+  Future<List<Counterparty>> fetchCounterpartyBankList() async {
+    GetBankListUseCase useCaseFetchCounterpartyBankList =
+        locator<GetBankListUseCase>();
+    return await useCaseFetchCounterpartyBankList();
   }
 
   Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(

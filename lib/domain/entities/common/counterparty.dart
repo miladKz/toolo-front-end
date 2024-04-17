@@ -6,6 +6,7 @@ class Counterparty extends ITableRowData {
   int bankAccType;
   String bankCardNumber;
   int exchangeType;
+  int customerStatus;
   int cityId;
   int code;
   String nationalCode;
@@ -21,7 +22,6 @@ class Counterparty extends ITableRowData {
   int groupValueId;
   String responsibleBoard;
   bool isActive;
-  bool isBlackList;
   bool isBoardMember;
   bool isStaff;
   bool isCustomer;
@@ -53,6 +53,7 @@ class Counterparty extends ITableRowData {
     required this.bankAccType,
     required this.bankCardNumber,
     required this.exchangeType,
+    required this.customerStatus,
     required this.cityId,
     required this.code,
     required this.nationalCode,
@@ -68,7 +69,6 @@ class Counterparty extends ITableRowData {
     required this.groupValueId,
     required this.responsibleBoard,
     required this.isActive,
-    required this.isBlackList,
     required this.isBoardMember,
     required this.isStaff,
     required this.isCustomer,
@@ -98,28 +98,27 @@ class Counterparty extends ITableRowData {
 
   factory Counterparty.empty() {
     return Counterparty(
-      id: -1,
-      code: -1,
-      kind: -1,
+      id: 0,
+      code: 0,
+      kind: 0,
       address: '',
-      bankAccType: -1,
+      bankAccType: 0,
       bankCardNumber: '',
-      exchangeType: -1,
-      cityId: -1,
+      exchangeType: 0,
+      cityId: 1,
       nationalCode: '',
       postalCode: '',
       companyName: '',
-      sharePercentage: -1,
+      sharePercentage: 0,
       foundationDate: DateTime.now(),
       description: '',
-      creditCheck: -1,
-      creditRial: -1,
+      creditCheck: 0,
+      creditRial: 0,
       fax: '',
       firstName: '',
-      groupValueId: -1,
+      groupValueId: 13,
       responsibleBoard: '',
       isActive: false,
-      isBlackList: false,
       isBoardMember: false,
       isStaff: false,
       isCustomer: false,
@@ -133,69 +132,69 @@ class Counterparty extends ITableRowData {
       isIntermediary: false,
       lastName: '',
       name: '',
-      parentId: -1,
+      parentId: 0,
       passportNumber: '',
-      prefixId: -1,
+      prefixId: 1,
       jobTitle: '',
       shebaNumber: '',
       registrationNumber: '',
       nationality: '',
-      detailId: -1,
+      detailId: 1,
       tel: '',
-      type: -1,
-      currencyType: -1,
+      type: 0,
+      currencyType: 0,
+      customerStatus: 0,
     );
   }
 
   Counterparty copy() {
     return Counterparty(
-      id: id,
-      code: code,
-      kind: kind,
-      address: address,
-      bankAccType: bankAccType,
-      bankCardNumber: bankCardNumber,
-      exchangeType: exchangeType,
-      cityId: cityId,
-      nationalCode: nationalCode,
-      postalCode: postalCode,
-      companyName: companyName,
-      sharePercentage: sharePercentage,
-      foundationDate: foundationDate,
-      description: description,
-      creditCheck: creditCheck,
-      creditRial: creditRial,
-      fax: fax,
-      firstName: firstName,
-      groupValueId: groupValueId,
-      responsibleBoard: responsibleBoard,
-      isActive: isActive,
-      isBlackList: isBlackList,
-      isBoardMember: isBoardMember,
-      isStaff: isStaff,
-      isCustomer: isCustomer,
-      isInvestee: isInvestee,
-      isOther: isOther,
-      isPartner: isPartner,
-      isSupply: isSupply,
-      isFacilitator: isFacilitator,
-      isReceiverFacility: isReceiverFacility,
-      isDependent: isDependent,
-      isIntermediary: isIntermediary,
-      lastName: lastName,
-      name: name,
-      parentId: parentId,
-      passportNumber: passportNumber,
-      prefixId: prefixId,
-      jobTitle: jobTitle,
-      shebaNumber: shebaNumber,
-      registrationNumber: registrationNumber,
-      nationality: nationality,
-      detailId: detailId,
-      tel: tel,
-      type: type,
-      currencyType: currencyType,
-    );
+        id: id,
+        code: code,
+        kind: kind,
+        address: address,
+        bankAccType: bankAccType,
+        bankCardNumber: bankCardNumber,
+        exchangeType: exchangeType,
+        cityId: cityId,
+        nationalCode: nationalCode,
+        postalCode: postalCode,
+        companyName: companyName,
+        sharePercentage: sharePercentage,
+        foundationDate: foundationDate,
+        description: description,
+        creditCheck: creditCheck,
+        creditRial: creditRial,
+        fax: fax,
+        firstName: firstName,
+        groupValueId: groupValueId,
+        responsibleBoard: responsibleBoard,
+        isActive: isActive,
+        isBoardMember: isBoardMember,
+        isStaff: isStaff,
+        isCustomer: isCustomer,
+        isInvestee: isInvestee,
+        isOther: isOther,
+        isPartner: isPartner,
+        isSupply: isSupply,
+        isFacilitator: isFacilitator,
+        isReceiverFacility: isReceiverFacility,
+        isDependent: isDependent,
+        isIntermediary: isIntermediary,
+        lastName: lastName,
+        name: name,
+        parentId: parentId,
+        passportNumber: passportNumber,
+        prefixId: prefixId,
+        jobTitle: jobTitle,
+        shebaNumber: shebaNumber,
+        registrationNumber: registrationNumber,
+        nationality: nationality,
+        detailId: detailId,
+        tel: tel,
+        type: type,
+        currencyType: currencyType,
+        customerStatus: customerStatus);
   }
 
   void updateCode(int newCode) {
@@ -264,7 +263,7 @@ class Counterparty extends ITableRowData {
 
   void updateBankId(int newBankId) {
     if (newBankId != 0) {
-      bankAccType = newBankId;
+      parentId = newBankId;
     }
   }
 

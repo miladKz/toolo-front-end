@@ -232,18 +232,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
       children: [
         FormItemTitle(title: localization.relatedBank),
         titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
-          isEnable: widget.isActive,
-          itemWidth: width - 29,
-          value: items[0],
-          items: items,
-          onChanged: (value) {
-            setState(() {
-              currencyTypeDropBoxVisibility =
-                  (value != null && value.name.isNotEmpty);
-            });
-          },
-        ),
+        ModalOpenerButton(width: width, value: 'بانک ملت'),
       ],
     );
   }
@@ -258,7 +247,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
       DropDownItem(name: localization.titleItemCurrencyTurkishLira),
       DropDownItem(name: localization.titleItemCurrencySwedishKrona),
     ];*/
-    List<CurrencyType> items =baseDataModel.currencyTypeList;
+    List<CurrencyType> items = baseDataModel.currencyTypeList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -302,5 +291,39 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   void copyCounterpartyToTempCounterparty() {
     widget.tempCardReader = CardReader(counterparty: widget.cardReader.copy());
+  }
+}
+
+class ModalOpenerButton extends StatelessWidget {
+  const ModalOpenerButton(
+      {super.key, required this.width, required this.value});
+
+  final double width;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        padding: const EdgeInsets.only(left: 5, right: 10),
+        width: width,
+        height: 35,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
+            borderRadius: BorderRadius.circular(4)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FormItemTitle(
+              title: value,
+              fontWeight: FontWeight.normal,
+            ),
+            const Icon(Icons.arrow_drop_down_outlined),
+          ],
+        ),
+      ),
+    );
   }
 }

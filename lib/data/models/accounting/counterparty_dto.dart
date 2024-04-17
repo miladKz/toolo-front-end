@@ -6,6 +6,7 @@ class CounterpartyDto extends Counterparty {
   CounterpartyDto(
       {required super.id,
       required super.address,
+      required super.currencyType,
       required super.bankAccType,
       required super.bankCardNumber,
       required super.exchangeType,
@@ -54,6 +55,7 @@ class CounterpartyDto extends Counterparty {
     return CounterpartyDto(
       id: map.findAsInt('ID'),
       address: map.findAsString('Address'),
+      currencyType: map.findAsInt('ArzTypeID'),
       bankAccType: map.findAsInt('BankAccType'),
       bankCardNumber: map.findAsString('BankCardNumber'),
       exchangeType: map.findAsInt('BoorsType'),
@@ -147,6 +149,7 @@ class CounterpartyDto extends Counterparty {
       'TafziliID': detailId,
       'Tel': tel,
       'Types': type,
+      'ArzTypeID': currencyType,
     }..removeWhere((dynamic key, dynamic value) =>
         value == '' || value == null || (value == -1 && key != 'PrefixID'));
   }

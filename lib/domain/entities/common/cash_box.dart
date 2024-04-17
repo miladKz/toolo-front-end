@@ -4,6 +4,7 @@ class CashBox extends Counterparty {
   CashBox({required Counterparty counterparty})
       : super(
           id: counterparty.id,
+          currencyType: counterparty.currencyType,
           code: counterparty.code,
           kind: counterparty.kind,
           address: counterparty.address,

@@ -250,6 +250,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   CounterpartyDto getCounterpartyAsDto(Counterparty counterparty) {
     return CounterpartyDto(
         id: counterparty.id,
+        currencyType:  counterparty.currencyType,
         code: counterparty.code,
         kind: counterparty.kind,
         address: counterparty.address,

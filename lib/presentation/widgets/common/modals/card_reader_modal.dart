@@ -299,6 +299,6 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   void copyCounterpartyToTempCounterparty() {
-    widget.tempCardReader = widget.cardReader.copy();
+    widget.tempCardReader = CardReader(counterparty: widget.cardReader.copy());
   }
 }

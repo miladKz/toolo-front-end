@@ -1,6 +1,7 @@
 import 'abstracts/table_row_data_abs.dart';
 
 class Counterparty extends ITableRowData {
+  int currencyType;
   String address;
   int bankAccType;
   String bankCardNumber;
@@ -46,52 +47,54 @@ class Counterparty extends ITableRowData {
   String tel;
   int type;
 
-  Counterparty(
-      {required super.id,
-      required this.address,
-      required this.bankAccType,
-      required this.bankCardNumber,
-      required this.exchangeType,
-      required this.cityId,
-      required this.code,
-      required this.nationalCode,
-      required this.postalCode,
-      required this.companyName,
-      required this.sharePercentage,
-      required this.foundationDate,
-      required this.description,
-      required this.creditCheck,
-      required this.creditRial,
-      required this.fax,
-      required this.firstName,
-      required this.groupValueId,
-      required this.responsibleBoard,
-      required this.isActive,
-      required this.isBlackList,
-      required this.isBoardMember,
-      required this.isStaff,
-      required this.isCustomer,
-      required this.isInvestee,
-      required this.isOther,
-      required this.isPartner,
-      required this.isSupply,
-      required this.isFacilitator,
-      required this.isReceiverFacility,
-      required this.isDependent,
-      required this.isIntermediary,
-      required this.kind,
-      required this.lastName,
-      required this.name,
-      required this.parentId,
-      required this.passportNumber,
-      required this.prefixId,
-      required this.jobTitle,
-      required this.shebaNumber,
-      required this.registrationNumber,
-      required this.nationality,
-      required this.detailId,
-      required this.tel,
-      required this.type});
+  Counterparty({
+    required super.id,
+    required this.address,
+    required this.bankAccType,
+    required this.bankCardNumber,
+    required this.exchangeType,
+    required this.cityId,
+    required this.code,
+    required this.nationalCode,
+    required this.postalCode,
+    required this.companyName,
+    required this.sharePercentage,
+    required this.foundationDate,
+    required this.description,
+    required this.creditCheck,
+    required this.creditRial,
+    required this.fax,
+    required this.firstName,
+    required this.groupValueId,
+    required this.responsibleBoard,
+    required this.isActive,
+    required this.isBlackList,
+    required this.isBoardMember,
+    required this.isStaff,
+    required this.isCustomer,
+    required this.isInvestee,
+    required this.isOther,
+    required this.isPartner,
+    required this.isSupply,
+    required this.isFacilitator,
+    required this.isReceiverFacility,
+    required this.isDependent,
+    required this.isIntermediary,
+    required this.kind,
+    required this.lastName,
+    required this.name,
+    required this.parentId,
+    required this.passportNumber,
+    required this.prefixId,
+    required this.jobTitle,
+    required this.shebaNumber,
+    required this.registrationNumber,
+    required this.nationality,
+    required this.detailId,
+    required this.tel,
+    required this.type,
+    required this.currencyType,
+  });
 
   factory Counterparty.empty() {
     return Counterparty(
@@ -140,6 +143,7 @@ class Counterparty extends ITableRowData {
       detailId: -1,
       tel: '',
       type: -1,
+      currencyType: -1,
     );
   }
 
@@ -190,9 +194,9 @@ class Counterparty extends ITableRowData {
       detailId: detailId,
       tel: tel,
       type: type,
+      currencyType: currencyType,
     );
   }
-
 
   void updateCode(int newCode) {
     if (newCode != 0) {
@@ -224,9 +228,9 @@ class Counterparty extends ITableRowData {
     }
   }
 
-  void updateCurrencyType(String newCurrencyType) {
-    if (newCurrencyType.isNotEmpty) {
-      nationalCode = newCurrencyType;
+  void updateCurrencyType(int newCurrencyType) {
+    if (newCurrencyType > 0) {
+      currencyType = newCurrencyType;
     }
   }
 

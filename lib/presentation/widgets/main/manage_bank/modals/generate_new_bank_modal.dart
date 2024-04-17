@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
@@ -272,7 +273,7 @@ class GenerateNewBank extends StatelessWidget {
           items: items,
           onChanged: (value) {
             //todo: put correct field in below code
-            if (value != null) bank.updateCurrencyType(value.name);
+            //if (value != null) bank.updateCurrencyType(value.name.toInteger());
           },
         ),
       ],

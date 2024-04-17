@@ -5,6 +5,7 @@ class CardReader extends Counterparty {
   CardReader({required Counterparty counterparty})
       : super(
           id: counterparty.id,
+          currencyType: counterparty.currencyType,
           code: counterparty.code,
           kind: CounterPartyKinds.cardReader.value,
           address: counterparty.address,
@@ -50,57 +51,6 @@ class CardReader extends Counterparty {
           tel: counterparty.tel,
           type: counterparty.type,
         );
-
-  CardReader copy() {
-    Counterparty counterparty = Counterparty(
-      id: id,
-      code: code,
-      kind: kind,
-      address: address,
-      bankAccType: bankAccType,
-      bankCardNumber: bankCardNumber,
-      exchangeType: exchangeType,
-      cityId: cityId,
-      nationalCode: nationalCode,
-      postalCode: postalCode,
-      companyName: companyName,
-      sharePercentage: sharePercentage,
-      foundationDate: foundationDate,
-      description: description,
-      creditCheck: creditCheck,
-      creditRial: creditRial,
-      fax: fax,
-      firstName: firstName,
-      groupValueId: groupValueId,
-      responsibleBoard: responsibleBoard,
-      isActive: isActive,
-      isBlackList: isBlackList,
-      isBoardMember: isBoardMember,
-      isStaff: isStaff,
-      isCustomer: isCustomer,
-      isInvestee: isInvestee,
-      isOther: isOther,
-      isPartner: isPartner,
-      isSupply: isSupply,
-      isFacilitator: isFacilitator,
-      isReceiverFacility: isReceiverFacility,
-      isDependent: isDependent,
-      isIntermediary: isIntermediary,
-      lastName: lastName,
-      name: name,
-      parentId: parentId,
-      passportNumber: passportNumber,
-      prefixId: prefixId,
-      jobTitle: jobTitle,
-      shebaNumber: shebaNumber,
-      registrationNumber: registrationNumber,
-      nationality: nationality,
-      detailId: detailId,
-      tel: tel,
-      type: type,
-    );
-    return CardReader(counterparty: counterparty);
-  }
 
   @override
   List<Object?> get props => [code, name, type, description];

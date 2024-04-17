@@ -1,13 +1,11 @@
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
-import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
-import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 
 class BaseDataModel{
  final List<BankAccType> bankAccTypeList;

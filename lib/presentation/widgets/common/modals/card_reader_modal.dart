@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
@@ -248,7 +249,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   Widget currencyTypeDropBox({required double width}) {
-    List<DropDownItem> items = [
+/*    List<DropDownItem> items = [
       DropDownItem(name: localization.titleItemCurrencyRial),
       DropDownItem(name: localization.titleItemCurrencyUSDollar),
       DropDownItem(name: localization.titleItemCurrencyEuro),
@@ -256,14 +257,15 @@ class _CardReaderModalState extends State<CardReaderModal> {
       DropDownItem(name: localization.titleItemCurrencyAED),
       DropDownItem(name: localization.titleItemCurrencyTurkishLira),
       DropDownItem(name: localization.titleItemCurrencySwedishKrona),
-    ];
+    ];*/
+    List<CurrencyType> items =baseDataModel.currencyTypeList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         FormItemTitle(title: localization.titleCurrencyType),
         titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
+        GenericDropDown<CurrencyType>(
           isEnable: widget.isActive,
           itemWidth: width - 29,
           value: items[0],

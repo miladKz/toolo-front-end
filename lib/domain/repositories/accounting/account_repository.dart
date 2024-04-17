@@ -1,5 +1,5 @@
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
-import 'package:toolo_gostar/data/models/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';

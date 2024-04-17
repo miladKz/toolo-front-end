@@ -1,15 +1,15 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/bank_acc_type_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/bourse_type_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/currency_type_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/customer_status_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/detail_group_root_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/document_type_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/param/standard_detail_param_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/person_type_dto.dart';
-import 'package:toolo_gostar/data/models/base_dto/prefix_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/bank_acc_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/bourse_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/currency_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/customer_status_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/detail_group_root_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/document_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
@@ -366,8 +366,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<CurrencyType>> fetchCurrencyTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCurrencyTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<CurrencyType> items = List.empty(growable: true);
 
@@ -394,8 +393,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<CustomerStatus>> fetchCustomerStatusList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCustomerStatusList(token: token);
       if (serverResponse.isSuccess) {
         List<CustomerStatus> items = List.empty(growable: true);
 
@@ -416,8 +414,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDetailGroupRootList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupRoot> items = List.empty(growable: true);
 
@@ -438,8 +435,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<DocumentType>> fetchDocumentTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDocumentTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<DocumentType> items = List.empty(growable: true);
 
@@ -460,8 +456,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<PersonType>> fetchPersonTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPersonTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<PersonType> items = List.empty(growable: true);
 
@@ -482,8 +477,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   Future<List<Prefix>> fetchPrefixList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPrefixList(token: token);
       if (serverResponse.isSuccess) {
         List<Prefix> items = List.empty(growable: true);
 

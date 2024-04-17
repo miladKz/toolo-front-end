@@ -1,8 +1,28 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/bank_acc_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/bourse_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/currency_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/customer_status_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/detail_group_root_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/document_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
+import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
+import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
+import 'package:toolo_gostar/domain/entities/base/document_type.dart';
+import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_param.dart';
+import 'package:toolo_gostar/domain/entities/base/person_type.dart';
+import 'package:toolo_gostar/domain/entities/base/prefix.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 
@@ -295,5 +315,189 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         detailId: counterparty.detailId,
         tel: counterparty.tel,
         type: counterparty.type);
+  }
+
+
+
+  @override
+  Future<List<BankAccType>> fetchBankAccTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchBankAccTypeList(token: token);
+      if (serverResponse.isSuccess) {
+        List<BankAccType> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<BankAccTypeDto>.from(itemsAsMap.map((data) {
+          return BankAccTypeDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<BourseType>> fetchBourseTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchBourseTypeList(token: token);
+      if (serverResponse.isSuccess) {
+        List<BourseType> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<BourseTypeDto>.from(itemsAsMap.map((data) {
+          return BourseTypeDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CurrencyType>> fetchCurrencyTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCurrencyTypeList(token: token);
+      if (serverResponse.isSuccess) {
+        List<CurrencyType> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<CurrencyTypeDto>.from(itemsAsMap.map((data) {
+          return CurrencyTypeDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(CustomerDataDetailParam customerDataDetailParam) async{
+    // TODO: implement fetchCustomerDataDetailList
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CustomerStatus>> fetchCustomerStatusList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCustomerStatusList(token: token);
+      if (serverResponse.isSuccess) {
+        List<CustomerStatus> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<CustomerStatusDto>.from(itemsAsMap.map((data) {
+          return CustomerStatusDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDetailGroupRootList(token: token);
+      if (serverResponse.isSuccess) {
+        List<DetailGroupRoot> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<DetailGroupRootDto>.from(itemsAsMap.map((data) {
+          return DetailGroupRootDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<DocumentType>> fetchDocumentTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDocumentTypeList(token: token);
+      if (serverResponse.isSuccess) {
+        List<DocumentType> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<DocumentTypeDto>.from(itemsAsMap.map((data) {
+          return DocumentTypeDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PersonType>> fetchPersonTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPersonTypeList(token: token);
+      if (serverResponse.isSuccess) {
+        List<PersonType> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<PersonTypeDto>.from(itemsAsMap.map((data) {
+          return PersonTypeDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Prefix>> fetchPrefixList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPrefixList(token: token);
+      if (serverResponse.isSuccess) {
+        List<Prefix> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<PrefixDto>.from(itemsAsMap.map((data) {
+          return PrefixDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<StandardDetail>> fetchStandardDetailList(StandardDetailParamDto param) async{
+    // TODO: implement fetchStandardDetailList
+    throw UnimplementedError();
   }
 }

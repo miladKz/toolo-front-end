@@ -262,7 +262,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
 
   Widget revolvingFundTypeDropBox({required double width}) {
     List<DropDownItem> items = [
-      DropDownItem(name: ''),
+      DropDownItem(name: 'عادی'),
     ];
     int selectedIndex = items.indexWhere((item) {
       //todo: put correct field in below code
@@ -285,7 +285,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
           itemWidth: width - 5,
           value: items[selectedIndex],
           items: items,
-          hint: '---',
+          hint: 'عادی',
           onChanged: (value) {
             if (value != null) {
               widget.revolvingFund

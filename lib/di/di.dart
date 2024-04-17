@@ -10,6 +10,16 @@ import 'package:toolo_gostar/data/repositories/accounting/account_repository_imp
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_data_detail_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_person_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_standard_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/create_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_cash_box_list.dart';
@@ -86,6 +96,30 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => GetCardReaderListUseCase(locator()));
   locator.registerLazySingleton(() => GetRevolvingFundListUseCase(locator()));
   locator.registerLazySingleton(() => GetCashBoxListUseCase(locator()));
+
+  //AccountingBaseUseCase
+  locator.registerLazySingleton(() => FetchBankAccTypeListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchBourseTypeListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchCurrencyTypeListUseCase(locator()));
+
+  locator.registerLazySingleton(
+      () => FetchCustomerDataDetailListUseCase(locator()));
+
+  locator
+      .registerLazySingleton(() => FetchDetailGroupRootListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchDocumentTypeListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchPersonTypeListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchPrefixListUseCase(locator()));
+
+  locator
+      .registerLazySingleton(() => FetchStandardDetailListUseCase(locator()));
+  locator
+      .registerLazySingleton(() => FetchCustomerStatusListUseCase(locator()));
 
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(

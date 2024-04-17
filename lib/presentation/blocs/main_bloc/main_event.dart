@@ -75,3 +75,8 @@ class OnDeleteCounterparty extends MainEvent {
 
   OnDeleteCounterparty(this.counterparty);
 }
+
+class FetchBaseData extends MainEvent {
+
+  FetchBaseData();
+}

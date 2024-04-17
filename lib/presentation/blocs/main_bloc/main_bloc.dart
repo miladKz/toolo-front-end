@@ -6,8 +6,30 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
+import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
+import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
+import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
+import 'package:toolo_gostar/domain/entities/base/document_type.dart';
+import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_param.dart';
+import 'package:toolo_gostar/domain/entities/base/person_type.dart';
+import 'package:toolo_gostar/domain/entities/base/prefix.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_data_detail_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_person_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_standard_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/delete_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
@@ -17,6 +39,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_counter_party_use_case.dart';
+import 'package:toolo_gostar/presentation/view_models/base_data_model.dart';
 import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
 
 import '../../../app_exception.dart';
@@ -32,10 +55,10 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
+late BaseDataModel baseDataModel;
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   List<AccountingAction> actions = [];
@@ -63,6 +86,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnCreateCounterparty>(_createCounterpartyHandler);
     on<OnUpdateCounterparty>(_updateCounterpartyHandler);
     on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
+    on<FetchBaseData>(_fetchBaseData);
   }
 
   FutureOr<void> _mainActionList(
@@ -76,6 +100,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnView(isShow: false));
       filteredActions = _filterActions(WorkSpaceItems.accounting);
       emit(AccountingActionsSuccess(filteredActions));
+      await Future.delayed(const Duration(milliseconds: 200));
+      add(FetchBaseData());
     } catch (e) {
       e.toString();
     }
@@ -306,5 +332,95 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         break;
     }
     return apiEnum;
+  }
+
+  FutureOr<void> _fetchBaseData(
+      FetchBaseData event, Emitter<MainState> emit) async {
+
+
+    List<BankAccType> bankAccTypeList = await fetchBankAccTypeList();
+    List<BourseType> bourseTypeList = await fetchBourseTypeList();
+    List<CurrencyType> currencyTypeList = await fetchCurrencyTypeList();
+    List<DetailGroupRoot> detailGroupRootList = await fetchDetailGroupRootList();
+    List<DocumentType> documentTypeList = await fetchDocumentTypeList();
+    List<PersonType> personTypeList = await fetchPersonTypeList();
+    List<Prefix> prefixList = await fetchPrefixList();
+    List<CustomerStatus> customerStatusList = await fetchCustomerStatusList();
+
+
+    baseDataModel = BaseDataModel(
+        bankAccTypeList: bankAccTypeList,
+        bourseTypeList: bourseTypeList,
+        currencyTypeList: currencyTypeList,
+        customerStatusList: customerStatusList,
+        detailGroupRootList: detailGroupRootList,
+        documentTypeList: documentTypeList,
+        personTypeList: personTypeList,
+        prefixList: prefixList);
+
+    debugPrint(baseDataModel.toString());
+  }
+
+  Future<List<BankAccType>> fetchBankAccTypeList() async {
+    FetchBankAccTypeListUseCase useCaseFetchBankAccTypeList =
+        locator<FetchBankAccTypeListUseCase>();
+    return await useCaseFetchBankAccTypeList();
+  }
+
+  Future<List<BourseType>> fetchBourseTypeList() async {
+    FetchBourseTypeListUseCase useCaseFetchBourseTypeList =
+        locator<FetchBourseTypeListUseCase>();
+    return await useCaseFetchBourseTypeList();
+  }
+
+  Future<List<CurrencyType>> fetchCurrencyTypeList() async {
+    FetchCurrencyTypeListUseCase useCaseFetchCurrencyTypeList =
+        locator<FetchCurrencyTypeListUseCase>();
+    return await useCaseFetchCurrencyTypeList();
+  }
+
+  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async {
+    FetchDetailGroupRootListUseCase useCaseFetchDetailGroupRootList =
+        locator<FetchDetailGroupRootListUseCase>();
+    return await useCaseFetchDetailGroupRootList();
+  }
+
+  Future<List<DocumentType>> fetchDocumentTypeList() async {
+    FetchDocumentTypeListUseCase useCaseFetchDocumentTypeList =
+        locator<FetchDocumentTypeListUseCase>();
+    return await useCaseFetchDocumentTypeList();
+  }
+
+  Future<List<PersonType>> fetchPersonTypeList() async {
+    FetchPersonTypeListUseCase useCaseFetchPersonTypeList =
+        locator<FetchPersonTypeListUseCase>();
+    return await useCaseFetchPersonTypeList();
+  }
+
+  Future<List<Prefix>> fetchPrefixList() async {
+    FetchPrefixListUseCase useCaseFetchPrefixList =
+        locator<FetchPrefixListUseCase>();
+    return await useCaseFetchPrefixList();
+  }
+
+  Future<List<CustomerStatus>> fetchCustomerStatusList() async {
+    FetchCustomerStatusListUseCase useCaseFetchCustomerStatusList =
+        locator<FetchCustomerStatusListUseCase>();
+    return await useCaseFetchCustomerStatusList();
+  }
+
+  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
+      {required CustomerDataDetailParam param}) async {
+    FetchCustomerDataDetailListUseCase useCaseFetchCustomerDataDetailList =
+        locator<FetchCustomerDataDetailListUseCase>();
+    return await useCaseFetchCustomerDataDetailList(param: param);
+  }
+
+  Future<List<StandardDetail>> fetchStandardDetailList(
+      {required StandardDetailParamDto standardDetailParamDto}) async {
+    FetchStandardDetailListUseCase useCaseFetchStandardDetailList =
+        locator<FetchStandardDetailListUseCase>();
+    return await useCaseFetchStandardDetailList(
+        standardDetailParamDto: standardDetailParamDto);
   }
 }

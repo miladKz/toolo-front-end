@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
+import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 
@@ -71,18 +73,19 @@ class ModalGroupRelationshipManagement extends StatelessWidget {
   }
 
   Widget dropBoxDetailGroup({required List<DetailGroup> items}) {
-    List<DetailGroup> detailGroup = List.empty(growable: true);
+    /*List<DetailGroup> detailGroup = List.empty(growable: true);
     detailGroup.add(DetailGroup(id: 1, name: "اشخاص", code: '',type: 0,children: []));
     detailGroup.add(DetailGroup(id: 2, name: "بانک ها", code: '',type: 0,children: []));
     detailGroup.add(DetailGroup(id: 3, name: "صندوق ها", code: '',type: 0,children: []));
-    detailGroup.add(DetailGroup(id: 3, name: "سایر", code: '',type: 0,children: []));
+    detailGroup.add(DetailGroup(id: 3, name: "سایر", code: '',type: 0,children: []));*/
+    List<DetailGroupRoot> detailGroup=baseDataModel.detailGroupRootList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         FormItemTitle(title: localization.titleDetailGroup),
         titleInputSpacing,
-        GenericDropDown<DetailGroup>(
+        GenericDropDown<DetailGroupRoot>(
           isEnable: isActive,
           itemWidth: (formWidth * 0.9),
           value: detailGroup[0],

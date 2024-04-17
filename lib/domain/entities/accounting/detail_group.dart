@@ -1,7 +1,6 @@
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 
 import '../../../presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
-import 'detail_account.dart';
 
 class DetailGroup extends IDropDownItem  implements IDataTreeModel{
   final int id;

@@ -1,5 +1,7 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
@@ -241,7 +243,7 @@ class GenerateNewBank extends StatelessWidget {
   }
 
   Widget currencyTypeDropBox({required double width}) {
-    List<DropDownItem> items = [
+    /*List<DropDownItem> items = [
       DropDownItem(name: localization.titleItemCurrencyRial),
       DropDownItem(name: localization.titleItemCurrencyUSDollar),
       DropDownItem(name: localization.titleItemCurrencyEuro),
@@ -249,8 +251,9 @@ class GenerateNewBank extends StatelessWidget {
       DropDownItem(name: localization.titleItemCurrencyAED),
       DropDownItem(name: localization.titleItemCurrencyTurkishLira),
       DropDownItem(name: localization.titleItemCurrencySwedishKrona),
-    ];
+    ];*/
 
+    List<CurrencyType> items=baseDataModel.currencyTypeList;
     int selectedIndex = items.indexWhere((item) {
       //todo: put correct field in below code
       return item.name.toLowerCase().contains(bank.type.toString());
@@ -266,7 +269,7 @@ class GenerateNewBank extends StatelessWidget {
       children: [
         FormItemTitle(title: localization.titleCurrencyType),
         titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
+        GenericDropDown<CurrencyType>(
           isEnable: isActive,
           itemWidth: width,
           value: items[selectedIndex],
@@ -324,19 +327,21 @@ class GenerateNewBank extends StatelessWidget {
   }
 
   Widget accountTypeDropBox({required double width}) {
-    List<DropDownItem> items = [
+    /*List<DropDownItem> items = [
       DropDownItem(name: localization.titleItemCurrentAccount),
       DropDownItem(name: localization.titleItemLoanAccount),
       DropDownItem(name: localization.titleItemShortTermAccount),
       DropDownItem(name: localization.titleItemLongTermAccount),
-    ];
+    ];*/
+
+    List<BankAccType> items=baseDataModel.bankAccTypeList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         FormItemTitle(title: localization.titleAccountType),
         titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
+        GenericDropDown<BankAccType>(
           isEnable: isActive,
           itemWidth: width + 15,
           value: items[0],

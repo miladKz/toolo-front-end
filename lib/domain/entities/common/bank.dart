@@ -1,12 +1,14 @@
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
+import '../../../data/enum/counter_party_kinds.dart';
+
 class Bank extends Counterparty {
   Bank({required Counterparty counterparty})
       : super(
           id: counterparty.id,
-          currencyType:  counterparty.currencyType,
+          currencyType: counterparty.currencyType,
           code: counterparty.code,
-          kind: counterparty.kind,
+          kind: CounterPartyKinds.bank.value,
           customerStatus: counterparty.customerStatus,
           address: counterparty.address,
           bankAccType: counterparty.bankAccType,

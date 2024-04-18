@@ -2,6 +2,7 @@ import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
@@ -53,6 +54,8 @@ abstract class IAccountingRepository {
   Future<List<PersonType>> fetchPersonTypeList();
 
   Future<List<Prefix>> fetchPrefixList();
+
+  Future<List<AvailableBank>> fetchAvailableBankList();
 
   Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
       CustomerDataDetailParam customerDataDetailParam);

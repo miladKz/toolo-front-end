@@ -104,27 +104,26 @@ class CounterpartyDto extends Counterparty {
   }
 
   Map<String, dynamic> toMap() {
-
     return <String, dynamic>{
-      'ID': id,
-      'Address': address,
+      'ID': (id != 0) ? id : null,
+      'Address': address.toString(),
       'BankAccType': bankAccType,
-      'BankCardNumber': bankCardNumber,
+      'BankCardNumber': bankCardNumber.toString(),
       'BoorsType': exchangeType,
       'CityID': cityId,
       'Code': code,
-      'CodeMeli': nationalCode,
-      'CodePosti': postalCode,
-      'CompanyName': companyName,
+      'CodeMeli': nationalCode.toString(),
+      'CodePosti': postalCode.toString(),
+      'CompanyName': companyName.toString(),
       'DarsadSaham': sharePercentage,
-      'DateTasis': formatDateTime(foundationDate),
-      'Descriptions': description,
+      'DateTasis': formatDateTime(foundationDate).toString(),
+      'Descriptions': description.toString(),
       'EtebarCheck': creditCheck,
       'EtebarRial': creditRial,
-      'Fax': fax,
-      'FirstName': firstName,
+      'Fax': fax.toString(),
+      'FirstName': firstName.toString(),
       'GroupValueID': groupValueId,
-      'HeiatModireMasouliat': responsibleBoard,
+      'HeiatModireMasouliat': responsibleBoard.toString(),
       'IsActive': isActive,
       'IsHeiatModire': isBoardMember,
       'IsKarkonan': isStaff,
@@ -138,21 +137,22 @@ class CounterpartyDto extends Counterparty {
       'IsVabaste': isDependent,
       'IsVasete': isIntermediary,
       'Kind': kind,
-      'LastName': lastName,
-      'Name': name,
+      'LastName': lastName.toString(),
+      'Name': name.toString(),
       'ParentID': parentId,
-      'PassportNumber': passportNumber,
+      'PassportNumber': passportNumber.toString(),
       'PrefixID': prefixId,
-      'Semat': jobTitle,
-      'ShabaNumber': shebaNumber,
-      'ShomareSabt': registrationNumber,
-      'Tabeyat': nationality,
+      'Semat': jobTitle.toString(),
+      'ShabaNumber': shebaNumber.toString(),
+      'ShomareSabt': registrationNumber.toString(),
+      'Tabeyat': nationality.toString(),
       'TafziliID': detailId,
-      'Tel': tel,
+      'Tel': tel.toString(),
       'Types': type,
       'ArzTypeID': currencyType,
       'CustomerStatus': customerStatus
-    };
+    }..removeWhere((dynamic key, dynamic value) =>
+        (key == "id" && value == 0) || value == null);
   }
 
   String formatDateTime(DateTime dateTime) {

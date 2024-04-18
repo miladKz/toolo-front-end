@@ -2,14 +2,15 @@ import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs
 
 import '../common/abstracts/table_row_data_abs.dart';
 
-class BankAccType extends IDropDownItem implements ITableRowData {
+class AvailableBank extends IDropDownItem implements ITableRowData {
   @override
   final int id;
+  final int code;
 
-  BankAccType({required super.name, required this.id});
+  AvailableBank({required super.name, required this.code, required this.id});
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [name];
 
   @override
   bool? get stringify => true;

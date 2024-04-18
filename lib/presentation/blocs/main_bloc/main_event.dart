@@ -77,6 +77,7 @@ class OnDeleteCounterparty extends MainEvent {
 }
 
 class FetchBaseData extends MainEvent {
-
   FetchBaseData();
 }
+
+class OnLoadAvailableBankModalData extends MainEvent {}

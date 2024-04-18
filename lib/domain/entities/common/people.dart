@@ -1,3 +1,4 @@
+import '../../../data/enum/counter_party_kinds.dart';
 import 'counterparty.dart';
 
 class People extends Counterparty {
@@ -6,7 +7,7 @@ class People extends Counterparty {
           id: counterparty.id,
           currencyType: counterparty.currencyType,
           code: counterparty.code,
-          kind: counterparty.kind,
+          kind: CounterPartyKinds.people.value,
           address: counterparty.address,
           bankAccType: counterparty.bankAccType,
           bankCardNumber: counterparty.bankCardNumber,

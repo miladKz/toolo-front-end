@@ -35,7 +35,6 @@ class Counterparty extends ITableRowData {
   bool isIntermediary;
   int kind;
   String lastName;
-  String name;
   int parentId;
   String passportNumber;
   int prefixId;
@@ -82,7 +81,7 @@ class Counterparty extends ITableRowData {
     required this.isIntermediary,
     required this.kind,
     required this.lastName,
-    required this.name,
+    required super.name,
     required this.parentId,
     required this.passportNumber,
     required this.prefixId,
@@ -223,7 +222,7 @@ class Counterparty extends ITableRowData {
 
   void updateAccountOwnerName(String newAccountOwnerName) {
     if (newAccountOwnerName.isNotEmpty) {
-      firstName = newAccountOwnerName;
+      lastName = newAccountOwnerName;
     }
   }
 
@@ -248,6 +247,12 @@ class Counterparty extends ITableRowData {
   void updateShebaNumber(String newShebaNumber) {
     if (newShebaNumber.isNotEmpty) {
       bankCardNumber = newShebaNumber;
+    }
+  }
+
+  void updateFirstName(String newFirstName) {
+    if (newFirstName.isNotEmpty) {
+      firstName = newFirstName;
     }
   }
 

@@ -15,11 +15,11 @@ import 'modal_elements/tab_button.dart';
 class PeopleModal extends StatefulWidget {
   PeopleModal(
       {super.key,
-        required this.formWidth,
-        this.isActive = true,
-        this.iconColor = const Color(0xFF9E79AC),
-        required GlobalKey<FormState> formKey,
-        required this.people})
+      required this.formWidth,
+      this.isActive = true,
+      this.iconColor = const Color(0xFF9E79AC),
+      required GlobalKey<FormState> formKey,
+      required this.people})
       : _formKey = formKey;
 
   final bool isActive;
@@ -52,7 +52,7 @@ class _PeopleModalState extends State<PeopleModal> {
 
   @override
   Widget build(BuildContext context) {
-    bool isUpdate = (widget.people.id != -1);
+    bool isUpdate = (widget.people.id > 0);
 
     if (isUpdate) {
       copyPeopleToTempPeople();
@@ -139,50 +139,50 @@ class _PeopleModalState extends State<PeopleModal> {
         children: [
           Flexible(
               child: Column(
-                children: [
-                  FormCheckBox(
-                    title: localization.isSupplier,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isCustomer,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isIntermediary,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isOtherParty,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isShareholder,
-                    value: false,
-                  )
-                ],
-              )),
+            children: [
+              FormCheckBox(
+                title: localization.isSupplier,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isCustomer,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isIntermediary,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isOtherParty,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isShareholder,
+                value: false,
+              )
+            ],
+          )),
           Flexible(
               child: Column(
-                children: [
-                  FormCheckBox(
-                    title: localization.isInvestor,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isLender,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isBorrower,
-                    value: false,
-                  ),
-                  FormCheckBox(
-                    title: localization.isEmployee,
-                    value: false,
-                  ),
-                ],
-              )),
+            children: [
+              FormCheckBox(
+                title: localization.isInvestor,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isLender,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isBorrower,
+                value: false,
+              ),
+              FormCheckBox(
+                title: localization.isEmployee,
+                value: false,
+              ),
+            ],
+          )),
         ],
       ),
       divider(),
@@ -192,22 +192,22 @@ class _PeopleModalState extends State<PeopleModal> {
         children: [
           Flexible(
               child: Column(
-                children: [
-                  FormCheckBox(
-                    title: localization.isBoardMember,
-                    value: false,
-                  ),
-                ],
-              )),
+            children: [
+              FormCheckBox(
+                title: localization.isBoardMember,
+                value: false,
+              ),
+            ],
+          )),
           Flexible(
               child: Column(
-                children: [
-                  FormCheckBox(
-                    title: localization.isRelatedParty,
-                    value: false,
-                  ),
-                ],
-              )),
+            children: [
+              FormCheckBox(
+                title: localization.isRelatedParty,
+                value: false,
+              ),
+            ],
+          )),
         ],
       ),
     ];
@@ -677,7 +677,7 @@ class _PeopleModalState extends State<PeopleModal> {
                   child: Container(
                     width: 80,
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(5)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -711,65 +711,65 @@ class _PeopleModalState extends State<PeopleModal> {
             height: 100,
             child: Expanded(
                 child: ListView.builder(
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return Expanded(
-                      child: Column(
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FormItemTitle(
-                                title: "لورم ایپسوم",
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                              ),
-                              FormItemTitle(
-                                title: (400000 * 2).toString(),
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                              ),
-                              Container(
-                                width: 100,
-                                height: 33,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFFEFEFF4),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5)),
-                                        minimumSize: const Size.fromRadius(20),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                      child: const Icon(Icons.delete_outline,
-                                          color: Color(0xFFDC3545)),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFFEFEFF4),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5)),
-                                        minimumSize: Size.fromRadius(20),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                      child: const Icon(Icons.mode_outlined,
-                                          color: Color(0xFF198754)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
+                          FormItemTitle(
+                            title: "لورم ایپسوم",
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
                           ),
-                          divider(dividerThickness: 1)
+                          FormItemTitle(
+                            title: (400000 * 2).toString(),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                          ),
+                          Container(
+                            width: 100,
+                            height: 33,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFEFEFF4),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    minimumSize: const Size.fromRadius(20),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: const Icon(Icons.delete_outline,
+                                      color: Color(0xFFDC3545)),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFEFEFF4),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    minimumSize: Size.fromRadius(20),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: const Icon(Icons.mode_outlined,
+                                      color: Color(0xFF198754)),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    );
-                  },
-                )),
+                      divider(dividerThickness: 1)
+                    ],
+                  ),
+                );
+              },
+            )),
           )
         ],
       ),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
-import 'package:toolo_gostar/presentation/view_models/base_data_model.dart';
 import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
@@ -13,15 +11,13 @@ import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_const
 import '../../../../../main.dart';
 import '../../../../di/di.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
-import '../../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../../domain/entities/common/bank.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../snakbar.dart';
-import 'custom_view_with_data_table.dart';
-import 'modal_elements/custom_dialog.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
+import 'modal_elements/modal_opener_button.dart';
 
 class CardReaderModal extends StatefulWidget {
   CardReaderModal(
@@ -40,12 +36,12 @@ class CardReaderModal extends StatefulWidget {
   late Bank bankList;
   bool isShowProgress = false;
   late bool isUpdate;
+
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
 }
 
 class _CardReaderModalState extends State<CardReaderModal> {
-
   final TextEditingController codeController = TextEditingController(text: '');
 
   final TextEditingController nameController = TextEditingController(text: '');
@@ -64,11 +60,14 @@ class _CardReaderModalState extends State<CardReaderModal> {
   Widget build(BuildContext context) {
     checkSate();
     widget.isUpdate = (widget.cardReader.id != 0);
-    codeController.text = widget.isUpdate ? widget.cardReader.code.toString() : '';
-    nameController.text = widget.isUpdate ? widget.cardReader.name.toString() : '';
+    codeController.text =
+        widget.isUpdate ? widget.cardReader.code.toString() : '';
+    nameController.text =
+        widget.isUpdate ? widget.cardReader.name.toString() : '';
     terminalNumberController.text =
-    widget.isUpdate ? widget.cardReader.detailId.toString() : '';
-    descriptionController.text = widget.isUpdate ? widget.cardReader.description : '';
+        widget.isUpdate ? widget.cardReader.detailId.toString() : '';
+    descriptionController.text =
+        widget.isUpdate ? widget.cardReader.description : '';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -237,7 +236,10 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   Widget relatedBankModalOpenerButton({required double width}) {
-    String value = (widget.isUpdate) ? getRelatedBankName(): '';
+    String value = (widget.isUpdate) ? getRelatedBankName() : '';
+    DataTableViewModel dataTableViewModel =
+        DataTableViewModelFactory.createTableViewModelFromBankAccTypeList(
+            baseDataModel.counterpartyBankList);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -245,7 +247,9 @@ class _CardReaderModalState extends State<CardReaderModal> {
         FormItemTitle(title: localization.relatedBank),
         titleInputSpacing,
         ModalOpenerButton(
-          width: width,
+          dialogTitle: localization.titleBankList,
+          buttonWidth: width,
+          formWidth: widget.formWidth - 200,
           value: value,
           formKey: widget._formKey,
           onSelectItemFromTableModal: (bank) {
@@ -265,6 +269,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
               }
             }
           },
+          dataTableViewModel: dataTableViewModel,
         ),
       ],
     );
@@ -316,22 +321,25 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   String getCurrencyTypeName() {
-    return baseDataModel.currencyTypeList.firstWhere(
-            (element) => element.id == widget.cardReader.currencyType,
-    ).name ?? '';
+    return baseDataModel.currencyTypeList
+            .firstWhere(
+              (element) => element.id == widget.cardReader.currencyType,
+            )
+            .name ??
+        '';
   }
 
   String getRelatedBankName() {
     String bankName = '';
-   for (Counterparty counterparty in baseDataModel.counterpartyBankList){
-     if(widget.cardReader.parentId == counterparty.id){
-       bankName = counterparty.name;
-     }
-   }
-   if(bankName.isNotEmpty){
-     currencyTypeDropBoxVisibility = true;
-   }
-   return bankName;
+    for (Counterparty counterparty in baseDataModel.counterpartyBankList) {
+      if (widget.cardReader.parentId == counterparty.id) {
+        bankName = counterparty.name;
+      }
+    }
+    if (bankName.isNotEmpty) {
+      currencyTypeDropBoxVisibility = true;
+    }
+    return bankName;
   }
 
   void checkSate() {
@@ -340,95 +348,21 @@ class _CardReaderModalState extends State<CardReaderModal> {
       setState(() {
         widget.isShowProgress = state.isShow;
       });
-    } else if (state is SuccessUpdateCounterparty || state is SuccessCreateCounterparty) {
+    } else if (state is SuccessUpdateCounterparty ||
+        state is SuccessCreateCounterparty) {
       Navigator.of(context).pop();
-    }else if (state is FailedUpdateCounterparty ) {
-      debugPrint( ' editGroup error: ${state.errorMessage}');
+    } else if (state is FailedUpdateCounterparty) {
+      debugPrint(' editGroup error: ${state.errorMessage}');
       Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) => showSnack(title: localization.errorTitle, message: state.errorMessage));
-
-    }else if (state is FailedCreateCounterparty) {
-      debugPrint( ' editGroup error: ${state.errorMessage}');
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    } else if (state is FailedCreateCounterparty) {
+      debugPrint(' editGroup error: ${state.errorMessage}');
       Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) => showSnack(title: localization.errorTitle, message: state.errorMessage));
-
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
     }
-  }
-
-}
-
-class ModalOpenerButton extends StatefulWidget {
-  ModalOpenerButton(
-      {super.key,
-      required this.width,
-      required this.value,
-      required this.onSelectItemFromTableModal,
-      required formKey});
-
-  final double width;
-  String value;
-  final void Function(ITableRowData?) onSelectItemFromTableModal;
-
-  @override
-  State<ModalOpenerButton> createState() => _ModalOpenerButtonState();
-}
-
-class _ModalOpenerButtonState extends State<ModalOpenerButton> {
-  ITableRowData? selectedItem;
-
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    List<Counterparty> bankList = baseDataModel.counterpartyBankList;
-    DataTableViewModel dataTableViewModel =
-        DataTableViewModelFactory.createTableViewModelFromBankAccTypeList(
-            bankList);
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return CustomDialog(
-              title: localization.titleBankList,
-              width: widget.width + 100,
-              body: CustomViewWithDataTable(
-                  isShowActionButtons: true,
-                  formWidth: widget.width + 100,
-                  viewModel: dataTableViewModel,
-                  onClickOnConfirmCallback: (selectedItem) {
-                    this.selectedItem = selectedItem;
-
-                    Navigator.of(context).pop();
-                    setState(() {
-                      widget.value = (selectedItem as Counterparty).name;
-                      widget.onSelectItemFromTableModal(selectedItem);
-                    });
-                  },
-                  formKey: _formKey),
-            );
-          },
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: 5, right: 10),
-        width: widget.width,
-        height: 35,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(width: 1, color: const Color(0xFFDDE1E5)),
-            borderRadius: BorderRadius.circular(4)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FormItemTitle(
-              title: widget.value,
-              fontWeight: FontWeight.normal,
-            ),
-            const Icon(Icons.arrow_drop_down_outlined),
-          ],
-        ),
-      ),
-    );
   }
 }

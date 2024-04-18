@@ -1,6 +1,7 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/available_bank_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/bank_acc_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/bourse_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/currency_type_dto.dart';
@@ -12,6 +13,7 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dar
 import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
@@ -506,5 +508,27 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       StandardDetailParamDto param) async {
     // TODO: implement fetchStandardDetailList
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<AvailableBank>> fetchAvailableBankList() async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchAvailableBankList(token: token);
+      if (serverResponse.isSuccess) {
+        List<AvailableBank> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<AvailableBank>.from(itemsAsMap.map((data) {
+          return AvailableBankDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

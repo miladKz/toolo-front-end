@@ -25,6 +25,22 @@ class MainLoadingOnButton extends MainState {
   List<Object?> get props => [];
 }
 
+class LoadingAvailableBankModalData extends MainState {
+  final bool isShow;
+
+  LoadingAvailableBankModalData({required this.isShow});
+
+  List<Object?> get props => [];
+}
+
+class LoadedAvailableBankModalData extends MainState {
+  final List<AvailableBank> availableBankList;
+
+  LoadedAvailableBankModalData({required this.availableBankList});
+
+  List<Object?> get props => [];
+}
+
 class AccountingActionsSuccess extends MainState {
   final List<AccountingAction> actions;
 

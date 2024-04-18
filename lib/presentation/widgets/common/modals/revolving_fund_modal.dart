@@ -6,8 +6,8 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/f
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 
 import '../../../../../main.dart';
-import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
+import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
@@ -44,7 +44,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
 
   @override
   Widget build(BuildContext context) {
-    bool isUpdate = (widget.revolvingFund.id != -1);
+    bool isUpdate = (widget.revolvingFund.id > 0);
 
     if (isUpdate) {
       copyRevolvingFundToTempRevolvingFund();

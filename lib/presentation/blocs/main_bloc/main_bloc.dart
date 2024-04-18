@@ -20,6 +20,7 @@ import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_par
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_bank_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
@@ -46,8 +47,8 @@ import '../../../app_exception.dart';
 import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
+import '../../../domain/entities/base/available_bank_.dart';
 import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
-import '../../../domain/entities/common/bank.dart';
 import '../../../domain/entities/common/counterparty.dart';
 import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
@@ -88,6 +89,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnUpdateCounterparty>(_updateCounterpartyHandler);
     on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
     on<FetchBaseData>(_fetchBaseData);
+    on<OnLoadAvailableBankModalData>(_onLoadAvailableBankModalData);
   }
 
   FutureOr<void> _mainActionList(
@@ -282,8 +284,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     } catch (e) {
       emit(FailedUpdateCounterparty(errorMessage: e.toString()));
     }
-
-
   }
 
   FutureOr<void> _updateCounterpartyHandler(
@@ -311,15 +311,17 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     reGetCounterParty(event.counterparty);
   }
 
-  void reGetCounterParty(Counterparty counterparty) async{
+  void reGetCounterParty(Counterparty counterparty) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    add(MainAnotherList(endpoint: "", apiEnum: getCorrectApiFromCounterpartyKind(counterparty)));
+    add(MainAnotherList(
+        endpoint: "",
+        apiEnum: getCorrectApiFromCounterpartyKind(counterparty)));
   }
 
   ApiEnum getCorrectApiFromCounterpartyKind(Counterparty counterparty) {
     CounterPartyKinds kind = CounterPartyKinds.fromValue(counterparty.kind);
     ApiEnum apiEnum;
-    switch(kind){
+    switch (kind) {
       case CounterPartyKinds.people:
         apiEnum = ApiEnum.managementPeople;
         break;
@@ -341,18 +343,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _fetchBaseData(
       FetchBaseData event, Emitter<MainState> emit) async {
-
-
     List<BankAccType> bankAccTypeList = await fetchBankAccTypeList();
     List<BourseType> bourseTypeList = await fetchBourseTypeList();
     List<CurrencyType> currencyTypeList = await fetchCurrencyTypeList();
-    List<DetailGroupRoot> detailGroupRootList = await fetchDetailGroupRootList();
+    List<DetailGroupRoot> detailGroupRootList =
+        await fetchDetailGroupRootList();
     List<DocumentType> documentTypeList = await fetchDocumentTypeList();
     List<PersonType> personTypeList = await fetchPersonTypeList();
     List<Prefix> prefixList = await fetchPrefixList();
     List<CustomerStatus> customerStatusList = await fetchCustomerStatusList();
     List<Counterparty> counterpartyBankList = await fetchCounterpartyBankList();
-
 
     baseDataModel = BaseDataModel(
         bankAccTypeList: bankAccTypeList,
@@ -415,6 +415,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         locator<FetchCustomerStatusListUseCase>();
     return await useCaseFetchCustomerStatusList();
   }
+
   Future<List<Counterparty>> fetchCounterpartyBankList() async {
     GetBankListUseCase useCaseFetchCounterpartyBankList =
         locator<GetBankListUseCase>();
@@ -434,5 +435,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         locator<FetchStandardDetailListUseCase>();
     return await useCaseFetchStandardDetailList(
         standardDetailParamDto: standardDetailParamDto);
+  }
+
+  FutureOr<void> _onLoadAvailableBankModalData(
+      OnLoadAvailableBankModalData event, Emitter<MainState> emit) async {
+    FetchAvailableBankListUseCase availableBankListUseCase =
+        locator<FetchAvailableBankListUseCase>();
+    emit(LoadingAvailableBankModalData(isShow: true));
+    List<AvailableBank> availableBankList = await availableBankListUseCase();
+    emit(LoadedAvailableBankModalData(availableBankList: availableBankList));
   }
 }

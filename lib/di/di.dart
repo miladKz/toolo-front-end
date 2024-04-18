@@ -10,6 +10,7 @@ import 'package:toolo_gostar/data/repositories/accounting/account_repository_imp
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_bank_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
@@ -120,6 +121,8 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
       .registerLazySingleton(() => FetchStandardDetailListUseCase(locator()));
   locator
       .registerLazySingleton(() => FetchCustomerStatusListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchAvailableBankListUseCase(locator()));
 
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(

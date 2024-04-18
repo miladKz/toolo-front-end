@@ -29,7 +29,8 @@ class AccountingDocumentMain extends ITableRowData {
       required this.documentType,
       required this.ceilingNumber,
       required this.issuerSystem,
-      required this.note});
+      required this.note,
+      super.name = ''});
 
   @override
   List<Object?> get props => [

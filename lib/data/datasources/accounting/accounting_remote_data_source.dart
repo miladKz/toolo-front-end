@@ -7,9 +7,9 @@ import 'package:toolo_gostar/data/common/mixin/http_response_validator.dart';
 import 'package:toolo_gostar/data/common/models/server_response_dto.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/customer_data_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
@@ -194,9 +194,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-
-
-
   Future<ServerResponseDto> fetchDetailGroupRootList({
     required String token,
   }) async {
@@ -213,12 +210,10 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-
-
   ///get Neshani And SayerMoshakhasat List
-  Future<ServerResponseDto> fetchCustomerDataDetailList({
-    required String token,required CustomerDataDetailParamDto param
-  }) async {
+  Future<ServerResponseDto> fetchCustomerDataDetailList(
+      {required String token,
+      required CustomerDataDetailParamDto param}) async {
     String apiAddress = "/api/acc/moshtarian-detail/list";
     try {
       Response<dynamic> response = await httpClient.get(
@@ -232,6 +227,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
+
   //______________________________________Base Api____________________________________
 
   Future<ServerResponseDto> fetchBankAccTypeList({
@@ -286,8 +282,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-
-
   Future<ServerResponseDto> fetchCustomerStatusList({
     required String token,
   }) async {
@@ -304,7 +298,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
-
 
   Future<ServerResponseDto> fetchDocumentTypeList({
     required String token,
@@ -371,6 +364,23 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       );
       log('fetchStandardDetailList :${getData(response)}');
 
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchAvailableBankList({
+    required String token,
+  }) async {
+    String apiAddress = "/api/base/bank/list";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      log('fetchBankList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);

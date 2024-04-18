@@ -39,7 +39,7 @@ class CardReaderModal extends StatefulWidget {
   CardReader? tempCardReader;
   late Bank bankList;
   bool isShowProgress = false;
-
+  late bool isUpdate;
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
 }
@@ -57,18 +57,18 @@ class _CardReaderModalState extends State<CardReaderModal> {
       TextEditingController(text: '');
   bool currencyTypeDropBoxVisibility = false;
 
-  late Widget relatedBankDropBoxInstance =
-      relatedBankDropBox(width: widget.formWidth);
+  late Widget relatedBankModalOpenerButtonInstance =
+      relatedBankModalOpenerButton(width: widget.formWidth);
 
   @override
   Widget build(BuildContext context) {
     checkSate();
-    bool isUpdate = (widget.cardReader.id != 0);
-    codeController.text = isUpdate ? widget.cardReader.code.toString() : '';
-    nameController.text = isUpdate ? widget.cardReader.name.toString() : '';
+    widget.isUpdate = (widget.cardReader.id != 0);
+    codeController.text = widget.isUpdate ? widget.cardReader.code.toString() : '';
+    nameController.text = widget.isUpdate ? widget.cardReader.name.toString() : '';
     terminalNumberController.text =
-        isUpdate ? widget.cardReader.detailId.toString() : '';
-    descriptionController.text = isUpdate ? widget.cardReader.description : '';
+    widget.isUpdate ? widget.cardReader.detailId.toString() : '';
+    descriptionController.text = widget.isUpdate ? widget.cardReader.description : '';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -81,10 +81,10 @@ class _CardReaderModalState extends State<CardReaderModal> {
         terminalNumberBox(
             width: widget.formWidth, controller: terminalNumberController),
         verticalGapDivider,
-        relatedBankDropBoxInstance,
+        relatedBankModalOpenerButtonInstance,
         verticalGapDivider,
         if (currencyTypeDropBoxVisibility) ...[
-          currencyTypeDropBox(width: widget.formWidth)
+          currencyTypeField(width: widget.formWidth)
         ],
         verticalGapDivider,
         descriptionBox(
@@ -123,7 +123,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
             widget.cardReader.updateDetailCode(terminalCode);
             //todo:  widget.cardReader.updateBankId();
             widget.cardReader.updateDescription(descriptionController.text);
-            if (isUpdate) {
+            if (widget.isUpdate) {
               locator
                   .get<MainBloc>()
                   .add(OnUpdateCounterparty(widget.cardReader));
@@ -236,10 +236,8 @@ class _CardReaderModalState extends State<CardReaderModal> {
     );
   }
 
-  Widget relatedBankDropBox({required double width}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: ''),
-    ];
+  Widget relatedBankModalOpenerButton({required double width}) {
+    String value = (widget.isUpdate) ? getRelatedBankName(): '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -248,7 +246,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
         titleInputSpacing,
         ModalOpenerButton(
           width: width,
-          value: '',
+          value: value,
           formKey: widget._formKey,
           onSelectItemFromTableModal: (bank) {
             if (bank != null) {
@@ -272,7 +270,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
     );
   }
 
-  Widget currencyTypeDropBox({required double width}) {
+  Widget currencyTypeField({required double width}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -323,6 +321,19 @@ class _CardReaderModalState extends State<CardReaderModal> {
     ).name ?? '';
   }
 
+  String getRelatedBankName() {
+    String bankName = '';
+   for (Counterparty counterparty in baseDataModel.counterpartyBankList){
+     if(widget.cardReader.parentId == counterparty.id){
+       bankName = counterparty.name;
+     }
+   }
+   if(bankName.isNotEmpty){
+     currencyTypeDropBoxVisibility = true;
+   }
+   return bankName;
+  }
+
   void checkSate() {
     final state = context.watch<MainBloc>().state;
     if (state is MainLoadingOnButton) {
@@ -343,6 +354,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
     }
   }
+
 }
 
 class ModalOpenerButton extends StatefulWidget {

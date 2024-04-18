@@ -26,7 +26,6 @@ class CardReader extends Counterparty {
           groupValueId: counterparty.groupValueId,
           responsibleBoard: counterparty.responsibleBoard,
           isActive: counterparty.isActive,
-          isBlackList: counterparty.isBlackList,
           isBoardMember: counterparty.isBoardMember,
           isStaff: counterparty.isStaff,
           isCustomer: counterparty.isCustomer,
@@ -50,6 +49,7 @@ class CardReader extends Counterparty {
           detailId: counterparty.detailId,
           tel: counterparty.tel,
           type: counterparty.type,
+          customerStatus: counterparty.customerStatus
         );
 
   @override

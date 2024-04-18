@@ -10,6 +10,6 @@ enum RialType {
   const RialType(this.value);
 
   static RialType fromValue(int value) {
-    return RialType.values[value];
+    return RialType.values[value - 1];
   }
 }

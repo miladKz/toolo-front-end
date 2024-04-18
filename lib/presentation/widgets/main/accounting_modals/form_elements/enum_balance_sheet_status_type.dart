@@ -8,6 +8,6 @@ enum BalanceSheetStatusType {
   const BalanceSheetStatusType(this.value);
 
   static BalanceSheetStatusType fromValue(int value) {
-    return BalanceSheetStatusType.values[value];
+    return BalanceSheetStatusType.values[value - 1];
   }
 }

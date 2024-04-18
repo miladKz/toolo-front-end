@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
+import 'package:toolo_gostar/presentation/view_models/base_data_model.dart';
 import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
@@ -15,6 +17,7 @@ import '../../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../../domain/entities/common/bank.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import '../snakbar.dart';
 import 'custom_view_with_data_table.dart';
 import 'modal_elements/custom_dialog.dart';
 import 'modal_elements/drop_down_generic.dart';
@@ -35,16 +38,13 @@ class CardReaderModal extends StatefulWidget {
   final CardReader cardReader;
   CardReader? tempCardReader;
   late Bank bankList;
+  bool isShowProgress = false;
 
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
 }
 
 class _CardReaderModalState extends State<CardReaderModal> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   final TextEditingController codeController = TextEditingController(text: '');
 
@@ -62,6 +62,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   @override
   Widget build(BuildContext context) {
+    checkSate();
     bool isUpdate = (widget.cardReader.id != 0);
     codeController.text = isUpdate ? widget.cardReader.code.toString() : '';
     nameController.text = isUpdate ? widget.cardReader.name.toString() : '';
@@ -251,10 +252,19 @@ class _CardReaderModalState extends State<CardReaderModal> {
           formKey: widget._formKey,
           onSelectItemFromTableModal: (bank) {
             if (bank != null) {
-              widget.cardReader.updateBankId(bank.id);
-              setState(() {
-                currencyTypeDropBoxVisibility = true;
-              });
+              try {
+                Counterparty bankCounterparty = bank as Counterparty;
+                widget.cardReader.updateBankId(bankCounterparty.id);
+                widget.cardReader
+                    .updateCurrencyType(bankCounterparty.currencyType);
+                setState(() {
+                  currencyTypeDropBoxVisibility = true;
+                });
+              } catch (e) {
+                setState(() {
+                  currencyTypeDropBoxVisibility = false;
+                });
+              }
             }
           },
         ),
@@ -263,23 +273,17 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   Widget currencyTypeDropBox({required double width}) {
-    List<CurrencyType> items = baseDataModel.currencyTypeList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         FormItemTitle(title: localization.titleCurrencyType),
         titleInputSpacing,
-        GenericDropDown<CurrencyType>(
-          isEnable: widget.isActive,
-          itemWidth: width - 29,
-          value: items[0],
-          items: items,
-          onChanged: (value) {
-            if (value != null) {
-              widget.cardReader.currencyType = value.id;
-            }
-          },
+        FormTextField(
+          inputType: TextInputType.number,
+          textHint: getCurrencyTypeName(),
+          enable: false,
+          widgetWidth: width,
         ),
       ],
     );
@@ -311,6 +315,33 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   void copyCounterpartyToTempCounterparty() {
     widget.tempCardReader = CardReader(counterparty: widget.cardReader.copy());
+  }
+
+  String getCurrencyTypeName() {
+    return baseDataModel.currencyTypeList.firstWhere(
+            (element) => element.id == widget.cardReader.currencyType,
+    ).name ?? '';
+  }
+
+  void checkSate() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainLoadingOnButton) {
+      setState(() {
+        widget.isShowProgress = state.isShow;
+      });
+    } else if (state is SuccessUpdateCounterparty || state is SuccessCreateCounterparty) {
+      Navigator.of(context).pop();
+    }else if (state is FailedUpdateCounterparty ) {
+      debugPrint( ' editGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) => showSnack(title: localization.errorTitle, message: state.errorMessage));
+
+    }else if (state is FailedCreateCounterparty) {
+      debugPrint( ' editGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) => showSnack(title: localization.errorTitle, message: state.errorMessage));
+
+    }
   }
 }
 

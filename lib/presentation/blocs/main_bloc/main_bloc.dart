@@ -278,9 +278,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       Counterparty counterparty = await useCase(event.counterparty);
       emit(MainLoadingOnButton(isShow: false));
       emit(SuccessCreateCounterparty(counterparty));
+      reGetCounterParty(counterparty);
     } catch (e) {
       emit(FailedUpdateCounterparty(errorMessage: e.toString()));
     }
+
+
   }
 
   FutureOr<void> _updateCounterpartyHandler(
@@ -291,6 +294,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       Counterparty counterparty = await useCase(event.counterparty);
       emit(MainLoadingOnButton(isShow: false));
       emit(SuccessUpdateCounterparty(counterparty));
+      reGetCounterParty(counterparty);
     } catch (e) {
       emit(FailedUpdateCounterparty(errorMessage: e.toString()));
     }

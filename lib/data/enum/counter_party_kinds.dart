@@ -10,6 +10,6 @@ enum CounterPartyKinds {
   const CounterPartyKinds(this.value);
 
   static CounterPartyKinds fromValue(int value) {
-    return CounterPartyKinds.values[value];
+    return CounterPartyKinds.values[value - 1];
   }
 }

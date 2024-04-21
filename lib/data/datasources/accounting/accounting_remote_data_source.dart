@@ -9,6 +9,7 @@ import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/customer_data_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
@@ -355,11 +356,11 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> fetchStandardDetailList(
       {required String token, required StandardDetailParamDto param}) async {
-    String apiAddress = "/api/base/standard-text/list";
+    String apiAddress = "/api/base/standard-text/list?BargeTypeID=${param.bargeTypeID}&Section=${param.section}";
+    debugPrint("${param.toMap()}");
     try {
       Response<dynamic> response = await httpClient.get(
         apiAddress,
-        data: param.toMap(),
         options: _getHeaders(token),
       );
       log('fetchStandardDetailList :${getData(response)}');
@@ -388,6 +389,40 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+  Future<ServerResponseDto> createStandardDetail(
+      {required String token, required StandardDetailDto param}) async {
+    String apiAddress = "/api/base/standard-text";
+    try {
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log('create standardDetail msg: $e}');
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> updateStandardDetail(
+      {required String token, required StandardDetailDto param}) async {
+    String apiAddress = "/api/base/standard-text";
+    try {
+      log(param.toMap());
+      Response<dynamic> response = await httpClient.put(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log('update standardDetail msg: ${response.data}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log('update standardDetail msg: $e}');
+      throw HttpException(e.toString());
+    }
+  }
   void log(Object logable) {
     debugPrint('fetchData--> ${logable.toString()}');
   }

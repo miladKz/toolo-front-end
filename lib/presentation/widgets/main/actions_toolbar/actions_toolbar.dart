@@ -11,6 +11,7 @@ import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_i
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/group_relationship_modal_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/manage_pepole_main_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/revolving_fund_main_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/standard_detail_toolbar_action_items.dart';
 
 import '../../../blocs/main_bloc/main_bloc.dart';
 import 'expandable_menu.dart';
@@ -25,7 +26,7 @@ Widget myCustomToolbar(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final maxWidth = constraints.maxWidth;
-          late  List<Widget> toolbarActionItems;
+          late List<Widget> toolbarActionItems;
 
           switch (toolBarEnum) {
             case ToolBarEnum.accountMainToolbar:
@@ -81,12 +82,17 @@ Widget myCustomToolbar(
                 toolbarActionItems = cardReaderMainToolbarActionItems(
                     context: context, maxWidth: maxWidth);
                 break;
-              }case ToolBarEnum.accountDocumentMainToolbar:
+              }
+            case ToolBarEnum.accountDocumentMainToolbar:
               {
                 toolbarActionItems = accountDocumentMainToolbarActionItems(
                     context: context, maxWidth: maxWidth);
                 break;
               }
+            case ToolBarEnum.standardDetailToolbar:
+              toolbarActionItems = standardDetailToolbarActionItems(
+                  context: context, maxWidth: maxWidth);
+              break;
             default:
               {
                 toolbarActionItems = List.empty();
@@ -107,6 +113,7 @@ Widget myCustomToolbar(
 
 class ActionsToolbar extends StatefulWidget {
   final List<Widget> toolbarActionItems;
+
   ActionsToolbar({
     super.key,
     required this.maxWidth,

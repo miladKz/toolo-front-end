@@ -32,11 +32,26 @@ class LoadingAvailableBankModalData extends MainState {
 
   List<Object?> get props => [];
 }
+class LoadingStandardDetailList extends MainState {
+  final bool isShow;
+
+  LoadingStandardDetailList({required this.isShow});
+
+  List<Object?> get props => [];
+}
 
 class LoadedAvailableBankModalData extends MainState {
   final List<AvailableBank> availableBankList;
 
   LoadedAvailableBankModalData({required this.availableBankList});
+
+  List<Object?> get props => [];
+}
+
+class LoadedStandardDetails extends MainState {
+  final List<StandardDetail> standardDetailList;
+
+  LoadedStandardDetails({required this.standardDetailList});
 
   List<Object?> get props => [];
 }
@@ -196,6 +211,42 @@ class FailedDeleteCounterparty extends MainState {
   final String errorMessage;
 
   FailedDeleteCounterparty({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessCreateStandardDetail extends MainState {
+  final StandardDetail standardDetail;
+
+  SuccessCreateStandardDetail(this.standardDetail);
+
+  @override
+  List<Object?> get props => [standardDetail];
+}
+
+class FailedCreateStandardDetail extends MainState {
+  final String errorMessage;
+
+  FailedCreateStandardDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessUpdateStandardDetail extends MainState {
+  final StandardDetail standardDetail;
+
+  SuccessUpdateStandardDetail(this.standardDetail);
+
+  @override
+  List<Object?> get props => [standardDetail];
+}
+
+class FailedUpdateStandardDetail extends MainState {
+  final String errorMessage;
+
+  FailedUpdateStandardDetail({required this.errorMessage});
 
   @override
   List<Object?> get props => [];

@@ -81,3 +81,19 @@ class FetchBaseData extends MainEvent {
 }
 
 class OnLoadAvailableBankModalData extends MainEvent {}
+
+class OnLoadRevolvingFundTypes extends MainEvent {
+  OnLoadRevolvingFundTypes();
+}
+
+class OnCreateStandardDetail extends MainEvent {
+  StandardDetail standardDetail;
+
+  OnCreateStandardDetail(this.standardDetail);
+}
+
+class OnUpdateStandardDetail extends MainEvent {
+  StandardDetail standardDetail;
+
+  OnUpdateStandardDetail(this.standardDetail);
+}

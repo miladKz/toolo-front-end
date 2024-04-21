@@ -16,6 +16,7 @@ import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 
 import '../../../data/models/accounting/detail_group_dto.dart';
+import '../../entities/base/param/standard_detail_param.dart';
 import '../../entities/common/counterparty.dart';
 
 abstract class IAccountingRepository {
@@ -61,7 +62,13 @@ abstract class IAccountingRepository {
       CustomerDataDetailParam customerDataDetailParam);
 
   Future<List<StandardDetail>> fetchStandardDetailList(
-      StandardDetailParamDto param);
+      StandardDetailParam param);
+
+  Future<StandardDetail> createStandardDetailList(
+      StandardDetail param);
+
+  Future<StandardDetail> updateStandardDetailList(
+      StandardDetail param);
 
   Future<List<DetailGroupRoot>> fetchDetailGroupRootList();
 }

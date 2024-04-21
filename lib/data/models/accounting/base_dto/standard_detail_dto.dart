@@ -12,10 +12,20 @@ class StandardDetailDto extends StandardDetail {
   factory StandardDetailDto.fromMap(Map<String, dynamic> map) {
     return StandardDetailDto(
       id: map.findAsInt('ID'),
-      name: map.findAsString("Name"),
+      name: map.findAsString("Description"),
       bargeTypeID: map.findAsInt('BargeTypeID'),
       description: map.findAsString('Description'),
       section: map.findAsInt('Section'),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'ID': (id != 0) ? id : null,
+      'BargeTypeID': bargeTypeID,
+      'Section': section,
+      'Description': description,
+    }..removeWhere(
+        (dynamic key, dynamic value) => value == '' || value == null);
   }
 }

@@ -11,6 +11,7 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/document_type_dto.d
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
@@ -28,6 +29,7 @@ import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 
+import '../../../domain/entities/base/param/standard_detail_param.dart';
 import '../../common/models/server_response_dto.dart';
 import '../../datasources/accounting/accounting_remote_data_source.dart';
 import '../../datasources/auth/auth_local_data_source_impl.dart';
@@ -504,10 +506,36 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<StandardDetail>> fetchStandardDetailList(
-      StandardDetailParamDto param) async {
-    // TODO: implement fetchStandardDetailList
-    throw UnimplementedError();
+  Future<List<StandardDetailDto>> fetchStandardDetailList(
+      StandardDetailParam param) async {
+    try {
+      String token = _getToken();
+      StandardDetailParamDto paramDto = getStandardDetailParamAsDto(param);
+
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchStandardDetailList(token: token, param: paramDto);
+      if (serverResponse.isSuccess) {
+        List<StandardDetailDto> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<StandardDetailDto>.from(itemsAsMap.map((data) {
+          return StandardDetailDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  StandardDetailParamDto getStandardDetailParamAsDto(
+      StandardDetailParam param) {
+    return StandardDetailParamDto(
+      bargeTypeID: param.bargeTypeID,
+      section: param.section,
+    );
   }
 
   @override
@@ -530,5 +558,51 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<StandardDetail> createStandardDetailList(StandardDetail param) async {
+    StandardDetailDto standardDetailDto = getStandardDetailAsDto(param);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .createStandardDetail(token: token, param: standardDetailDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return StandardDetailDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StandardDetail> updateStandardDetailList(StandardDetail param) async {
+    StandardDetailDto standardDetailDto = getStandardDetailAsDto(param);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .updateStandardDetail(token: token, param: standardDetailDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return StandardDetailDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  StandardDetailDto getStandardDetailAsDto(StandardDetail param) {
+    return StandardDetailDto(
+      name: param.name,
+      id: param.id,
+      bargeTypeID: param.bargeTypeID,
+      description: param.description,
+      section: param.section,
+    );
   }
 }

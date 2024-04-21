@@ -1,4 +1,5 @@
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/people.dart';
@@ -130,10 +131,12 @@ class DataTableViewModelFactory {
 
   static DataTableViewModel createTableViewModelFromAvailableBankList(
       List<AvailableBank> availableBankList) {
-    final List<String> labels = [
-      localization.name,
-    ];
-
+    final List<String> labels = [localization.name];
     return DataTableViewModel(labels: labels, data: availableBankList);
+  }
+  static DataTableViewModel createTableViewModelFromStandardDetailList(
+      List<StandardDetail> standardDetailList) {
+    final List<String> labels = [localization.explanation];
+    return DataTableViewModel(labels: labels, data: standardDetailList);
   }
 }

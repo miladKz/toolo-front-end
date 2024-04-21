@@ -6,6 +6,7 @@ import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
 class BaseDataModel {

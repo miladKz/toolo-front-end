@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/revolving_fund.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
@@ -9,8 +12,12 @@ import '../../../../../main.dart';
 import '../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
 import '../../../../domain/entities/common/drop_down_item.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
+import '../../../factories/table_view_model_factory.dart';
+import '../../../view_models/table_view_model.dart';
+import '../snakbar.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/modal_action_buttons.dart';
+import 'modal_elements/modal_opener_button.dart';
 
 class RevolvingFundModal extends StatefulWidget {
   RevolvingFundModal({
@@ -26,6 +33,8 @@ class RevolvingFundModal extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
   final RevolvingFund revolvingFund;
   RevolvingFund? tempRevolvingFund;
+
+  late bool isUpdate;
 
   @override
   State<RevolvingFundModal> createState() => _RevolvingFundModalState();
@@ -43,10 +52,17 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
       TextEditingController(text: '');
 
   @override
+  void initState() {
+    super.initState();
+    locator.get<MainBloc>().add(OnLoadRevolvingFundTypes());
+  }
+  @override
   Widget build(BuildContext context) {
-    bool isUpdate = (widget.revolvingFund.id > 0);
+    print("startBuild");
+    checkSate();
+    widget.isUpdate = (widget.revolvingFund.id > 0);
 
-    if (isUpdate) {
+    if (widget.isUpdate) {
       copyRevolvingFundToTempRevolvingFund();
       codeController.text = widget.revolvingFund.code.toString();
       nameController.text = widget.revolvingFund.name;
@@ -88,7 +104,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
             widget.revolvingFund.updateName(nameController.text);
             widget.revolvingFund.updateDescription(descriptionController.text);
 
-            if (isUpdate) {
+            if (widget.isUpdate) {
               locator
                   .get<MainBloc>()
                   .add(OnUpdateCounterparty(widget.revolvingFund));
@@ -127,7 +143,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          revolvingFundTypeDropBox(width: itemWidth),
+          revolvingFundTypeModalOpenerButton(width: itemWidth),
           horizontalGapDivider,
           revolvingFundLimit(
               width: itemWidth, controller: revolvingFundLimitController),
@@ -260,38 +276,39 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
     );
   }
 
-  Widget revolvingFundTypeDropBox({required double width}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: 'عادی'),
-    ];
-    int selectedIndex = items.indexWhere((item) {
-      //todo: put correct field in below code
-      return item.name
-          .toLowerCase()
-          .contains(widget.revolvingFund.type.toString());
-    });
-
-    if (selectedIndex == -1) {
-      selectedIndex = 0; // Set a default index
+  Widget revolvingFundTypeModalOpenerButton({required double width}) {
+    String value = (widget.isUpdate) ? getRevolvingFundTypeName() : '';
+    DataTableViewModel? dataTableViewModel;
+    MainBloc mainBloc = locator.get<MainBloc>();
+    if (mainBloc.standardDetailList != null) {
+      dataTableViewModel =
+          DataTableViewModelFactory.createTableViewModelFromStandardDetailList(
+              mainBloc.standardDetailList!);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.revolvingFundType),
+        FormItemTitle(title: localization.relatedBank),
         titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
-          isEnable: widget.isActive,
-          itemWidth: width - 5,
-          value: items[selectedIndex],
-          items: items,
-          hint: 'عادی',
-          onChanged: (value) {
-            if (value != null) {
-              widget.revolvingFund
-                  .updateIsActive(value.name == localization.active);
+        ModalOpenerButton(
+          dialogTitle: localization.titleBankList,
+          buttonWidth: width,
+          formWidth: widget.formWidth - 200,
+          value: value,
+          formKey: widget._formKey,
+          onSelectItemFromTableModal: (revolvingFoundType) {
+            if (revolvingFoundType != null) {
+              try {
+                StandardDetail standardDetail =
+                revolvingFoundType as StandardDetail;
+                widget.revolvingFund.type = standardDetail.id;
+              } catch (e) {
+                debugPrint("cast failed: $e");
+              }
             }
           },
+          dataTableViewModel: dataTableViewModel,
         ),
       ],
     );
@@ -303,7 +320,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.titleCurrencyType),
+        FormItemTitle(title: localization.revolvingFundLimit),
         titleInputSpacing,
         FormTextField(
           controller: controller,
@@ -342,5 +359,43 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
   void copyRevolvingFundToTempRevolvingFund() {
     widget.tempRevolvingFund =
         RevolvingFund(counterparty: widget.revolvingFund.copy());
+  }
+
+  String getRevolvingFundTypeName() {
+    String revolvingFundName = '';
+    MainBloc mainBloc = locator.get<MainBloc>();
+    if (mainBloc.standardDetailList != null) {
+      for (StandardDetail standardDetail in mainBloc.standardDetailList!) {
+        if (widget.revolvingFund.type == standardDetail.id) {
+          revolvingFundName = standardDetail.description;
+        }
+      }
+    }
+
+    return revolvingFundName;
+  }
+
+  void checkSate() {
+    final mainBloc = context.watch<MainBloc>();
+    final state = mainBloc.state;
+
+    if (state is LoadedStandardDetails) {
+      mainBloc.standardDetailList = state.standardDetailList;
+    } else if (state is SuccessUpdateCounterparty ||
+        state is SuccessCreateCounterparty) {
+      Navigator.of(context).pop();
+    } else if (state is FailedUpdateCounterparty) {
+      debugPrint('generate counterpartyBank error: ${state.errorMessage}');
+      //Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    } else if (state is FailedCreateCounterparty) {
+      debugPrint('generate counterpartyBank error: ${state.errorMessage}');
+      // Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    }
   }
 }

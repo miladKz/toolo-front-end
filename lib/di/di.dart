@@ -38,6 +38,8 @@ import '../data/datasources/auth/auth_local_data_source_impl.dart';
 import '../data/datasources/auth/remote_data_source.dart';
 import '../data/repositories/auth/auth_repository_impl.dart';
 import '../data/repositories/fiscal_year/fiscal_repository.dart';
+import '../domain/usecases/accounting/base/create_standard_detail_use_case.dart';
+import '../domain/usecases/accounting/base/update_standard_detail_use_case.dart';
 import '../domain/usecases/accounting/create_account_use_case.dart';
 import '../domain/usecases/accounting/delete_account_use_case.dart';
 import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
@@ -118,11 +120,16 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => FetchPrefixListUseCase(locator()));
 
   locator
-      .registerLazySingleton(() => FetchStandardDetailListUseCase(locator()));
-  locator
       .registerLazySingleton(() => FetchCustomerStatusListUseCase(locator()));
 
   locator.registerLazySingleton(() => FetchAvailableBankListUseCase(locator()));
+
+  locator
+      .registerLazySingleton(() => FetchStandardDetailListUseCase(locator()));
+
+  locator.registerLazySingleton(() => CreateStandardDetailUseCase(locator()));
+
+  locator.registerLazySingleton(() => UpdateStandardDetailUseCase(locator()));
 
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(

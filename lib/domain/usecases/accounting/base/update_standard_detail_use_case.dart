@@ -4,14 +4,14 @@ import 'package:toolo_gostar/domain/repositories/accounting/account_repository.d
 
 import '../../../entities/base/param/standard_detail_param.dart';
 
-class FetchStandardDetailListUseCase {
+class UpdateStandardDetailUseCase {
   final IAccountingRepository _repository;
 
-  FetchStandardDetailListUseCase(this._repository);
+  UpdateStandardDetailUseCase(this._repository);
 
   @override
-  Future<List<StandardDetail>> call(
-      {required StandardDetailParam standardDetailParam}) async {
-    return _repository.fetchStandardDetailList(standardDetailParam);
+  Future<StandardDetail> call(
+      {required StandardDetail standardDetail}) async {
+    return _repository.updateStandardDetailList(standardDetail);
   }
 }

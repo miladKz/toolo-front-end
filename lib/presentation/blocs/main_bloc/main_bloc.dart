@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
-import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
@@ -20,6 +19,7 @@ import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_par
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/create_standard_detail_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_bank_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
@@ -48,6 +48,8 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../domain/entities/base/available_bank_.dart';
+import '../../../domain/entities/base/enums/standard_detail_type.dart';
+import '../../../domain/entities/base/param/standard_detail_param.dart';
 import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../domain/entities/common/counterparty.dart';
 import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
@@ -57,6 +59,7 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
+
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
@@ -70,6 +73,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   List<DetailGroup> detailAccountGroup = [];
 
   List<Counterparty> counterpartyList = [];
+
+  List<StandardDetail>? standardDetailList;
 
   ITableRowData? selectedCounterparty;
 
@@ -90,6 +95,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
     on<FetchBaseData>(_fetchBaseData);
     on<OnLoadAvailableBankModalData>(_onLoadAvailableBankModalData);
+    on<OnLoadRevolvingFundTypes>(_onLoadRevolvingFundType);
+    on<OnCreateStandardDetail>(_onCreateStandardDetail);
+    on<OnUpdateStandardDetail>(_onUpdateStandardDetail);
   }
 
   FutureOr<void> _mainActionList(
@@ -430,11 +438,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   }
 
   Future<List<StandardDetail>> fetchStandardDetailList(
-      {required StandardDetailParamDto standardDetailParamDto}) async {
+      {required StandardDetailParam standardDetailParamDto}) async {
     FetchStandardDetailListUseCase useCaseFetchStandardDetailList =
         locator<FetchStandardDetailListUseCase>();
     return await useCaseFetchStandardDetailList(
-        standardDetailParamDto: standardDetailParamDto);
+        standardDetailParam: standardDetailParamDto);
   }
 
   FutureOr<void> _onLoadAvailableBankModalData(
@@ -444,5 +452,43 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(LoadingAvailableBankModalData(isShow: true));
     List<AvailableBank> availableBankList = await availableBankListUseCase();
     emit(LoadedAvailableBankModalData(availableBankList: availableBankList));
+  }
+
+  FutureOr<void> _onLoadRevolvingFundType(
+      OnLoadRevolvingFundTypes event, Emitter<MainState> emit) async {
+    FetchStandardDetailListUseCase standardDetailListUseCase =
+        locator<FetchStandardDetailListUseCase>();
+    emit(LoadingStandardDetailList(isShow: true));
+    StandardDetailParam standardDetailParam = StandardDetailParam(
+        bargeTypeID: StandardDetailType.revolvingFundType.value, section: 1);
+    List<StandardDetail> standardDetailList = await standardDetailListUseCase(
+        standardDetailParam: standardDetailParam);
+    await Future.delayed(const Duration(milliseconds: 500));
+    this.standardDetailList = standardDetailList;
+    emit(LoadedStandardDetails(standardDetailList: standardDetailList));
+
+  }
+
+  FutureOr<void> _onCreateStandardDetail(
+      OnCreateStandardDetail event, Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnButton(isShow: true));
+      CreateStandardDetailUseCase useCase =
+          locator<CreateStandardDetailUseCase>();
+      StandardDetail standardDetail = await useCase(event.standardDetail);
+      emit(MainLoadingOnButton(isShow: false));
+      emit(SuccessCreateStandardDetail(standardDetail));
+      reGetRevolvingFundTypes();
+    } catch (e) {
+      emit(FailedCreateStandardDetail(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onUpdateStandardDetail(
+      OnUpdateStandardDetail event, Emitter<MainState> emit) {}
+
+  void reGetRevolvingFundTypes() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    add(OnLoadRevolvingFundTypes());
   }
 }

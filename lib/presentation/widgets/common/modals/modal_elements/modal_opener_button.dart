@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
 
 import '../../../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../../view_models/table_view_model.dart';
@@ -48,6 +49,7 @@ class _ModalOpenerButtonState extends State<ModalOpenerButton> {
                 body: CustomViewWithDataTable(
                     isShowActionButtons: true,
                     formWidth: widget.formWidth,
+                    toolBarEnum: ToolBarEnum.standardDetailToolbar,
                     viewModel: widget.dataTableViewModel!,
                     onClickOnConfirmCallback: (selectedItem) {
                       this.selectedItem = selectedItem;

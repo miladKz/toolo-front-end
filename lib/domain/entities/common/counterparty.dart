@@ -5,7 +5,7 @@ class Counterparty extends ITableRowData {
   String address;
   int bankAccType;
   String bankCardNumber;
-  int exchangeType;
+  int bursType;
   int customerStatus;
   int cityId;
   int code;
@@ -15,22 +15,22 @@ class Counterparty extends ITableRowData {
   int sharePercentage;
   DateTime foundationDate;
   String description;
-  int creditCheck;
-  int creditRial;
+  int chequeCredit;
+  int rialCredit;
   String fax;
   String firstName;
   int groupValueId;
   String responsibleBoard;
   bool isActive;
   bool isBoardMember;
-  bool isStaff;
+  bool isEmployee;
   bool isCustomer;
-  bool isInvestee;
-  bool isOther;
-  bool isPartner;
-  bool isSupply;
-  bool isFacilitator;
-  bool isReceiverFacility;
+  bool isInvestor;
+  bool isOtherParty;
+  bool isShareholder;
+  bool isSupplier;
+  bool isLender;
+  bool isBorrower;
   bool isDependent;
   bool isIntermediary;
   int kind;
@@ -43,7 +43,7 @@ class Counterparty extends ITableRowData {
   String registrationNumber;
   String nationality;
   int detailId;
-  String tel;
+  String phone;
   int type;
 
   Counterparty({
@@ -51,7 +51,7 @@ class Counterparty extends ITableRowData {
     required this.address,
     required this.bankAccType,
     required this.bankCardNumber,
-    required this.exchangeType,
+    required this.bursType,
     required this.customerStatus,
     required this.cityId,
     required this.code,
@@ -61,22 +61,22 @@ class Counterparty extends ITableRowData {
     required this.sharePercentage,
     required this.foundationDate,
     required this.description,
-    required this.creditCheck,
-    required this.creditRial,
+    required this.chequeCredit,
+    required this.rialCredit,
     required this.fax,
     required this.firstName,
     required this.groupValueId,
     required this.responsibleBoard,
     required this.isActive,
     required this.isBoardMember,
-    required this.isStaff,
+    required this.isEmployee,
     required this.isCustomer,
-    required this.isInvestee,
-    required this.isOther,
-    required this.isPartner,
-    required this.isSupply,
-    required this.isFacilitator,
-    required this.isReceiverFacility,
+    required this.isInvestor,
+    required this.isOtherParty,
+    required this.isShareholder,
+    required this.isSupplier,
+    required this.isLender,
+    required this.isBorrower,
     required this.isDependent,
     required this.isIntermediary,
     required this.kind,
@@ -90,7 +90,7 @@ class Counterparty extends ITableRowData {
     required this.registrationNumber,
     required this.nationality,
     required this.detailId,
-    required this.tel,
+    required this.phone,
     required this.type,
     required this.currencyType,
   });
@@ -103,7 +103,7 @@ class Counterparty extends ITableRowData {
       address: '',
       bankAccType: 0,
       bankCardNumber: '',
-      exchangeType: 0,
+      bursType: 0,
       cityId: 1,
       nationalCode: '',
       postalCode: '',
@@ -111,22 +111,22 @@ class Counterparty extends ITableRowData {
       sharePercentage: 0,
       foundationDate: DateTime.now(),
       description: '',
-      creditCheck: 0,
-      creditRial: 0,
+      chequeCredit: 0,
+      rialCredit: 0,
       fax: '',
       firstName: '',
       groupValueId: 13,
       responsibleBoard: '',
       isActive: false,
       isBoardMember: false,
-      isStaff: false,
+      isEmployee: false,
       isCustomer: false,
-      isInvestee: false,
-      isOther: false,
-      isPartner: false,
-      isSupply: false,
-      isFacilitator: false,
-      isReceiverFacility: false,
+      isInvestor: false,
+      isOtherParty: false,
+      isShareholder: false,
+      isSupplier: false,
+      isLender: false,
+      isBorrower: false,
       isDependent: false,
       isIntermediary: false,
       lastName: '',
@@ -139,7 +139,7 @@ class Counterparty extends ITableRowData {
       registrationNumber: '',
       nationality: '',
       detailId: 1,
-      tel: '',
+      phone: '',
       type: 0,
       currencyType: 0,
       customerStatus: 0,
@@ -154,7 +154,7 @@ class Counterparty extends ITableRowData {
         address: address,
         bankAccType: bankAccType,
         bankCardNumber: bankCardNumber,
-        exchangeType: exchangeType,
+        bursType: bursType,
         cityId: cityId,
         nationalCode: nationalCode,
         postalCode: postalCode,
@@ -162,22 +162,22 @@ class Counterparty extends ITableRowData {
         sharePercentage: sharePercentage,
         foundationDate: foundationDate,
         description: description,
-        creditCheck: creditCheck,
-        creditRial: creditRial,
+        chequeCredit: chequeCredit,
+        rialCredit: rialCredit,
         fax: fax,
         firstName: firstName,
         groupValueId: groupValueId,
         responsibleBoard: responsibleBoard,
         isActive: isActive,
         isBoardMember: isBoardMember,
-        isStaff: isStaff,
+        isEmployee: isEmployee,
         isCustomer: isCustomer,
-        isInvestee: isInvestee,
-        isOther: isOther,
-        isPartner: isPartner,
-        isSupply: isSupply,
-        isFacilitator: isFacilitator,
-        isReceiverFacility: isReceiverFacility,
+        isInvestor: isInvestor,
+        isOtherParty: isOtherParty,
+        isShareholder: isShareholder,
+        isSupplier: isSupplier,
+        isLender: isLender,
+        isBorrower: isBorrower,
         isDependent: isDependent,
         isIntermediary: isIntermediary,
         lastName: lastName,
@@ -190,7 +190,7 @@ class Counterparty extends ITableRowData {
         registrationNumber: registrationNumber,
         nationality: nationality,
         detailId: detailId,
-        tel: tel,
+        phone: phone,
         type: type,
         currencyType: currencyType,
         customerStatus: customerStatus);
@@ -202,9 +202,77 @@ class Counterparty extends ITableRowData {
     }
   }
 
+  void updateNationalCode(String newNationalCode) {
+    if (newNationalCode.isNotEmpty) {
+      nationalCode = newNationalCode;
+    }
+  }
+
+  void updateCompanyName(String newCompanyName) {
+    if (newCompanyName.isNotEmpty) {
+      companyName = newCompanyName;
+    }
+  }
+
+  void updateEconomicCode(String newEconomicCode) {
+    if (newEconomicCode.isNotEmpty) {
+      postalCode = newEconomicCode;
+    }
+  }
+
+  void updateRegistrationNumber(String newRegistrationNumber) {
+    if (newRegistrationNumber.isNotEmpty) {
+      registrationNumber = newRegistrationNumber;
+    }
+  }
+
+  void updatePostalCode(String newPostalCode) {
+    if (newPostalCode.isNotEmpty) {
+      postalCode = newPostalCode;
+    }
+  }
+
+  void updateAddress(String newAddress) {
+    if (newAddress.isNotEmpty) {
+      address = newAddress;
+    }
+  }
+
+  void updatePhone(String newPhone) {
+    if (newPhone.isNotEmpty) {
+      phone = newPhone;
+    }
+  }
+
+  void updateFax(String newFax) {
+    if (newFax.isNotEmpty) {
+      fax = newFax;
+    }
+  }
+
+  void updateFoundationDate(String newFoundationDate) {
+    if (newFoundationDate.isNotEmpty) {
+      foundationDate = DateTime.parse(newFoundationDate);
+    }
+  }
+
+  void updateRialCredit(int newRialCredit) {
+    rialCredit = newRialCredit;
+  }
+
+  void updateChequeCredit(int newChequeCredit) {
+    chequeCredit = newChequeCredit;
+  }
+
   void updateName(String newName) {
     if (newName.isNotEmpty) {
       name = newName;
+    }
+  }
+
+  void updateCityId(int cityId) {
+    if (cityId > 0) {
+      this.cityId = cityId;
     }
   }
 

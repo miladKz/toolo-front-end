@@ -32,6 +32,7 @@ class LoadingAvailableBankModalData extends MainState {
 
   List<Object?> get props => [];
 }
+
 class LoadingStandardDetailList extends MainState {
   final bool isShow;
 
@@ -250,4 +251,13 @@ class FailedUpdateStandardDetail extends MainState {
 
   @override
   List<Object?> get props => [];
+}
+
+class LoadedCityList extends MainState {
+  final List<City> cityList;
+
+  LoadedCityList({required this.cityList});
+
+  @override
+  List<Object?> get props => cityList;
 }

@@ -13,15 +13,13 @@ import '../../domain/entities/common/revolving_fund.dart';
 import '../view_models/table_view_model.dart';
 
 class DataTableViewModelFactory {
-  static DataTableViewModel createTableViewModelFromCities(List<City> cities) {
+  static DataTableViewModel createTableViewModelFromCityList(List<City> cities) {
     final List<String> labels = [
       localization.code,
       localization.province,
       localization.city
     ];
-    City city = City(id: 1, code: 1, name: 'کرج', province: 'البرز');
-    City city2 = City(id: 2, code: 2, name: 'تهران', province: 'تهران');
-    cities = [city, city2];
+
     return DataTableViewModel(labels: labels, data: cities);
   }
 
@@ -134,6 +132,7 @@ class DataTableViewModelFactory {
     final List<String> labels = [localization.name];
     return DataTableViewModel(labels: labels, data: availableBankList);
   }
+
   static DataTableViewModel createTableViewModelFromStandardDetailList(
       List<StandardDetail> standardDetailList) {
     final List<String> labels = [localization.explanation];

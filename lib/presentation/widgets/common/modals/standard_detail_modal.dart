@@ -45,7 +45,7 @@ class _StandardDetailModalState extends State<StandardDetailModal> {
 
   @override
   Widget build(BuildContext context) {
-    checkSate();
+    checkState();
     widget.isUpdate = (widget.standardDetail.id > 0);
 
     if (widget.isUpdate) {
@@ -136,7 +136,7 @@ class _StandardDetailModalState extends State<StandardDetailModal> {
     );
   }
 
-  void checkSate() {
+  void checkState() {
     final state = context.watch<MainBloc>().state;
     if (state is SuccessCreateStandardDetail ||
         state is SuccessUpdateStandardDetail) {

@@ -58,7 +58,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
 
   @override
   Widget build(BuildContext context) {
-    checkSate();
+    checkState();
     widget.isUpdate = (widget.cardReader.id != 0);
     codeController.text =
         widget.isUpdate ? widget.cardReader.code.toString() : '';
@@ -192,7 +192,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
           onChanged: (value) {
             if (value != null) {
               widget.cardReader
-                  .updateIsActive(value!.name == localization.active);
+                  .updateIsActive(value.name == localization.active);
             }
           },
         ),
@@ -342,7 +342,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
     return bankName;
   }
 
-  void checkSate() {
+  void checkState() {
     final state = context.watch<MainBloc>().state;
     if (state is MainLoadingOnButton) {
       setState(() {

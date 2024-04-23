@@ -109,7 +109,7 @@
  "isBorrower":"این طرف حساب جز تسهیلات گیرندگان می باشد",
  "isEmployee": "این طرف حساب جز  کارکنان می باشد",
  "isBoardMember": "این طرف حساب جز هیئت مدیره می باشد",
- "isRelatedParty": "این طرف حساب جز اشخاص وابسته می باشد",
+ "isDependent": "این طرف حساب جز اشخاص وابسته می باشد",
  "counterpartyType": "نوع طرف حساب",
  "legal": "حقوقی",
  "individual": "حقیقی",
@@ -218,5 +218,6 @@
  "titleSeparation2": "تفکیک 2",
  "titleSeparation3": "تفکیک 3",
  "titlePaymentNotice": "اطلاعیه پرداخت",
- "titleNewDocument": "سند جدید"
+ "titleNewDocument": "سند جدید",
+ "numericZero": "0"
 }

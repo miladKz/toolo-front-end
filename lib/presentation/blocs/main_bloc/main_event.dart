@@ -97,3 +97,7 @@ class OnUpdateStandardDetail extends MainEvent {
 
   OnUpdateStandardDetail(this.standardDetail);
 }
+
+class OnLoadCityList extends MainEvent {
+  OnLoadCityList();
+}

@@ -51,7 +51,9 @@ import '../../../domain/entities/base/available_bank_.dart';
 import '../../../domain/entities/base/enums/standard_detail_type.dart';
 import '../../../domain/entities/base/param/standard_detail_param.dart';
 import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
+import '../../../domain/entities/common/city.dart';
 import '../../../domain/entities/common/counterparty.dart';
+import '../../../domain/usecases/accounting/base/fetch_city_list_use_case.dart';
 import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
 import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
@@ -98,6 +100,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnLoadRevolvingFundTypes>(_onLoadRevolvingFundType);
     on<OnCreateStandardDetail>(_onCreateStandardDetail);
     on<OnUpdateStandardDetail>(_onUpdateStandardDetail);
+    on<OnLoadCityList>(_onLoadCityListHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -352,7 +355,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _fetchBaseData(
       FetchBaseData event, Emitter<MainState> emit) async {
     List<BankAccType> bankAccTypeList = await fetchBankAccTypeList();
-    List<BourseType> bourseTypeList = await fetchBourseTypeList();
+    List<BursType> bourseTypeList = await fetchBourseTypeList();
     List<CurrencyType> currencyTypeList = await fetchCurrencyTypeList();
     List<DetailGroupRoot> detailGroupRootList =
         await fetchDetailGroupRootList();
@@ -364,7 +367,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
     baseDataModel = BaseDataModel(
         bankAccTypeList: bankAccTypeList,
-        bourseTypeList: bourseTypeList,
+        bursTypeList: bourseTypeList,
         currencyTypeList: currencyTypeList,
         customerStatusList: customerStatusList,
         detailGroupRootList: detailGroupRootList,
@@ -382,7 +385,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     return await useCaseFetchBankAccTypeList();
   }
 
-  Future<List<BourseType>> fetchBourseTypeList() async {
+  Future<List<BursType>> fetchBourseTypeList() async {
     FetchBourseTypeListUseCase useCaseFetchBourseTypeList =
         locator<FetchBourseTypeListUseCase>();
     return await useCaseFetchBourseTypeList();
@@ -466,7 +469,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     await Future.delayed(const Duration(milliseconds: 500));
     this.standardDetailList = standardDetailList;
     emit(LoadedStandardDetails(standardDetailList: standardDetailList));
-
   }
 
   FutureOr<void> _onCreateStandardDetail(
@@ -490,5 +492,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   void reGetRevolvingFundTypes() async {
     await Future.delayed(const Duration(milliseconds: 500));
     add(OnLoadRevolvingFundTypes());
+  }
+
+  FutureOr<void> _onLoadCityListHandler(
+      OnLoadCityList event, Emitter<MainState> emit) async {
+    FetchCityListUseCase fetchCityListUseCase = locator<FetchCityListUseCase>();
+    emit(LoadingStandardDetailList(isShow: true));
+    List<City> cityList = await fetchCityListUseCase();
+    emit(LoadedCityList(cityList: cityList));
   }
 }

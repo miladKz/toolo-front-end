@@ -18,10 +18,11 @@ class TestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    City city = City(id: 1, name: 'کرج', province: 'البرز', code: 0);
-    City city2 = City(id: 2, name: 'تهران', province: 'تهران', code: 1);
+    City city = City(id: 1, name: 'کرج', cityCode: "0",fullCode: "0",fullName: '',stateCode: "0",stateName: 'البرز');
+    City city2 = City(id: 1, name: 'تهران', cityCode: "0",fullCode: "0",fullName: '',stateCode: "0",stateName: 'البرز');
+
     DataTableViewModel viewModel =
-        DataTableViewModelFactory.createTableViewModelFromCities([city, city2]);
+        DataTableViewModelFactory.createTableViewModelFromCityList([city, city2]);
 
     /*RevolvingFund tankhah = RevolvingFund(description: "تنخواه دستگاه مرکزی", id: 1);
     RevolvingFund tankhah2 = RevolvingFund(description: "تنخواه کارخانه", id: 2);*/

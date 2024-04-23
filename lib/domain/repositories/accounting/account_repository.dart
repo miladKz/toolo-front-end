@@ -17,6 +17,7 @@ import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 
 import '../../../data/models/accounting/detail_group_dto.dart';
 import '../../entities/base/param/standard_detail_param.dart';
+import '../../entities/common/city.dart';
 import '../../entities/common/counterparty.dart';
 
 abstract class IAccountingRepository {
@@ -44,7 +45,7 @@ abstract class IAccountingRepository {
 
   Future<List<BankAccType>> fetchBankAccTypeList();
 
-  Future<List<BourseType>> fetchBourseTypeList();
+  Future<List<BursType>> fetchBourseTypeList();
 
   Future<List<CurrencyType>> fetchCurrencyTypeList();
 
@@ -57,6 +58,8 @@ abstract class IAccountingRepository {
   Future<List<Prefix>> fetchPrefixList();
 
   Future<List<AvailableBank>> fetchAvailableBankList();
+
+  Future<List<City>> getCityList();
 
   Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
       CustomerDataDetailParam customerDataDetailParam);

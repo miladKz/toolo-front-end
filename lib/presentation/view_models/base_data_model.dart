@@ -11,7 +11,7 @@ import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
 class BaseDataModel {
   final List<BankAccType> bankAccTypeList;
-  final List<BourseType> bourseTypeList;
+  final List<BursType> bursTypeList;
   final List<CurrencyType> currencyTypeList;
   final List<CustomerStatus> customerStatusList;
   final List<DetailGroupRoot> detailGroupRootList;
@@ -22,7 +22,7 @@ class BaseDataModel {
 
   BaseDataModel({
     required this.bankAccTypeList,
-    required this.bourseTypeList,
+    required this.bursTypeList,
     required this.currencyTypeList,
     required this.customerStatusList,
     required this.detailGroupRootList,

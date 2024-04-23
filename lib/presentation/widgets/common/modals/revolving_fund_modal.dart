@@ -59,7 +59,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
   @override
   Widget build(BuildContext context) {
     print("startBuild");
-    checkSate();
+    checkState();
     widget.isUpdate = (widget.revolvingFund.id > 0);
 
     if (widget.isUpdate) {
@@ -375,7 +375,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
     return revolvingFundName;
   }
 
-  void checkSate() {
+  void checkState() {
     final mainBloc = context.watch<MainBloc>();
     final state = mainBloc.state;
 

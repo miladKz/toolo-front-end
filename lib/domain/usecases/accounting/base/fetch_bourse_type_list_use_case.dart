@@ -7,7 +7,7 @@ class FetchBourseTypeListUseCase {
   FetchBourseTypeListUseCase(this._repository);
 
   @override
-  Future<List<BourseType>> call() async {
+  Future<List<BursType>> call() async {
     return _repository.fetchBourseTypeList();
   }
 }

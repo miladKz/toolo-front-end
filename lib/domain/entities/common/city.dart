@@ -3,14 +3,21 @@ import 'abstracts/table_row_data_abs.dart';
 class City extends ITableRowData {
   City({
     required super.id,
-    required this.code,
+    required this.cityCode,
+    required this.fullCode,
+    required this.stateCode,
     required super.name,
-    required this.province,
+    required this.fullName,
+    required this.stateName,
   });
 
-  int code;
-  String province;
+  String cityCode;
+  String fullCode;
+  String fullName;
+  String stateCode;
+  String stateName;
+
 
   @override
-  List<Object?> get props => [code, name, province];
+  List<Object?> get props => [fullCode, name, stateName];
 }

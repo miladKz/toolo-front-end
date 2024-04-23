@@ -26,6 +26,7 @@ import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_par
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/entities/common/city.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 
@@ -34,6 +35,7 @@ import '../../common/models/server_response_dto.dart';
 import '../../datasources/accounting/accounting_remote_data_source.dart';
 import '../../datasources/auth/auth_local_data_source_impl.dart';
 import '../../models/accounting/account_dto.dart';
+import '../../models/accounting/base_dto/city_dto.dart';
 import '../../models/accounting/counterparty_dto.dart';
 import '../../models/accounting/detail_group_dto.dart';
 
@@ -48,7 +50,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.getAccountList(token: token);
+      await remoteDataSource.getAccountList(token: token);
       if (serverResponse.isSuccess) {
         List<AccountDto> accountList = List.empty(growable: true);
 
@@ -70,14 +72,14 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.getActionList(token: token);
+      await remoteDataSource.getActionList(token: token);
       if (serverResponse.isSuccess) {
         List<AccountingAction> accountingActionList =
-            List.empty(growable: true);
+        List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         accountingActionList =
-            List<AccountingAction>.from(itemsAsMap.map((data) {
+        List<AccountingAction>.from(itemsAsMap.map((data) {
           return AccountingActionDto.fromMap(data);
         }));
         return accountingActionList;
@@ -95,7 +97,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.updateAccount(token: token, param: accountDto);
+      await remoteDataSource.updateAccount(token: token, param: accountDto);
       if (serverResponse.isSuccess) {
         final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
         return AccountDto.fromMap(itemsAsMap);
@@ -143,7 +145,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.deleteAccount(token: token, param: accountDto);
+      await remoteDataSource.deleteAccount(token: token, param: accountDto);
       if (serverResponse.isSuccess) {
         return serverResponse.message;
       } else {
@@ -160,7 +162,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.createAccount(token: token, param: accountDto);
+      await remoteDataSource.createAccount(token: token, param: accountDto);
       if (serverResponse.isSuccess) {
         final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
         return AccountDto.fromMap(itemsAsMap);
@@ -177,14 +179,14 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.getDetailAccountList(token: token);
+      await remoteDataSource.getDetailAccountList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupDto> detailAccountGroupList =
-            List.empty(growable: true);
+        List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         detailAccountGroupList =
-            List<DetailGroupDto>.from(itemsAsMap.map((data) {
+        List<DetailGroupDto>.from(itemsAsMap.map((data) {
           return DetailGroupDto.fromMap(data);
         }));
         return detailAccountGroupList;
@@ -201,7 +203,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.getCounterPartyList(token: token, kind: kind);
+      await remoteDataSource.getCounterPartyList(token: token, kind: kind);
       if (serverResponse.isSuccess) {
         List<CounterpartyDto> customerList = List.empty(growable: true);
 
@@ -280,7 +282,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       address: counterparty.address,
       bankAccType: counterparty.bankAccType,
       bankCardNumber: counterparty.bankCardNumber,
-      exchangeType: counterparty.exchangeType,
+      bursType: counterparty.bursType,
       cityId: counterparty.cityId,
       nationalCode: counterparty.nationalCode,
       postalCode: counterparty.postalCode,
@@ -288,22 +290,22 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       sharePercentage: counterparty.sharePercentage,
       foundationDate: counterparty.foundationDate,
       description: counterparty.description,
-      creditCheck: counterparty.creditCheck,
-      creditRial: counterparty.creditRial,
+      chequeCredit: counterparty.chequeCredit,
+      rialCredit: counterparty.rialCredit,
       fax: counterparty.fax,
       firstName: counterparty.firstName,
       groupValueId: counterparty.groupValueId,
       responsibleBoard: counterparty.responsibleBoard,
       isActive: counterparty.isActive,
       isBoardMember: counterparty.isBoardMember,
-      isStaff: counterparty.isStaff,
+      isEmployee: counterparty.isEmployee,
       isCustomer: counterparty.isCustomer,
-      isInvestee: counterparty.isInvestee,
-      isOther: counterparty.isOther,
-      isPartner: counterparty.isPartner,
-      isSupply: counterparty.isSupply,
-      isFacilitator: counterparty.isFacilitator,
-      isReceiverFacility: counterparty.isReceiverFacility,
+      isInvestor: counterparty.isInvestor,
+      isOtherParty: counterparty.isOtherParty,
+      isShareholder: counterparty.isShareholder,
+      isSupplier: counterparty.isSupplier,
+      isLender: counterparty.isLender,
+      isBorrower: counterparty.isBorrower,
       isDependent: counterparty.isDependent,
       isIntermediary: counterparty.isIntermediary,
       lastName: counterparty.lastName,
@@ -316,7 +318,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       registrationNumber: counterparty.registrationNumber,
       nationality: counterparty.nationality,
       detailId: counterparty.detailId,
-      tel: counterparty.tel,
+      phone: counterparty.phone,
       type: counterparty.type,
       customerStatus: counterparty.customerStatus,
     );
@@ -327,7 +329,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchBankAccTypeList(token: token);
+      await remoteDataSource.fetchBankAccTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BankAccType> items = List.empty(growable: true);
 
@@ -345,13 +347,13 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BourseType>> fetchBourseTypeList() async {
+  Future<List<BursType>> fetchBourseTypeList() async {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchBourseTypeList(token: token);
+      await remoteDataSource.fetchBourseTypeList(token: token);
       if (serverResponse.isSuccess) {
-        List<BourseType> items = List.empty(growable: true);
+        List<BursType> items = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         items = List<BourseTypeDto>.from(itemsAsMap.map((data) {
@@ -371,7 +373,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchCurrencyTypeList(token: token);
+      await remoteDataSource.fetchCurrencyTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<CurrencyType> items = List.empty(growable: true);
 
@@ -400,7 +402,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchCustomerStatusList(token: token);
+      await remoteDataSource.fetchCustomerStatusList(token: token);
       if (serverResponse.isSuccess) {
         List<CustomerStatus> items = List.empty(growable: true);
 
@@ -422,7 +424,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchDetailGroupRootList(token: token);
+      await remoteDataSource.fetchDetailGroupRootList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupRoot> items = List.empty(growable: true);
 
@@ -444,7 +446,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchDocumentTypeList(token: token);
+      await remoteDataSource.fetchDocumentTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<DocumentType> items = List.empty(growable: true);
 
@@ -466,7 +468,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchPersonTypeList(token: token);
+      await remoteDataSource.fetchPersonTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<PersonType> items = List.empty(growable: true);
 
@@ -488,7 +490,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchPrefixList(token: token);
+      await remoteDataSource.fetchPrefixList(token: token);
       if (serverResponse.isSuccess) {
         List<Prefix> items = List.empty(growable: true);
 
@@ -543,7 +545,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     try {
       String token = _getToken();
       ServerResponseDto serverResponse =
-          await remoteDataSource.fetchAvailableBankList(token: token);
+      await remoteDataSource.fetchAvailableBankList(token: token);
       if (serverResponse.isSuccess) {
         List<AvailableBank> items = List.empty(growable: true);
 
@@ -604,5 +606,26 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       description: param.description,
       section: param.section,
     );
+  }
+
+  @override
+  Future<List<City>> getCityList() async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.getCityList(
+          token: token, stateCode: "10");
+      if (serverResponse.isSuccess) {
+        List<CityDto> items = List.empty(growable: true);
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<CityDto>.from(itemsAsMap.map((data) {
+          return CityDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

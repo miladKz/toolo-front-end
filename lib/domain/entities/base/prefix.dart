@@ -5,8 +5,4 @@ class Prefix extends IDropDownItem {
   final int personTypeID;
 
   Prefix({required super.name, required this.id, required this.personTypeID});
-
-
-
-
 }

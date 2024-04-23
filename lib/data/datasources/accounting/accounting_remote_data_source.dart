@@ -12,6 +12,8 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_deta
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
+import '../../models/accounting/base_dto/city_dto.dart';
+
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
 
@@ -425,5 +427,19 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
   void log(Object logable) {
     debugPrint('fetchData--> ${logable.toString()}');
+  }
+
+  Future<ServerResponseDto> getCityList({required String token, required String stateCode}) async {
+    String apiAddress = "/api/base/city/list?StateCode=$stateCode";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
   }
 }

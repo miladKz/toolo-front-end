@@ -54,4 +54,6 @@ class People extends Counterparty {
 
   @override
   List<Object?> get props => [id, name, firstName, nationalCode];
+
+  bool get isIndividual => type == 0;
 }

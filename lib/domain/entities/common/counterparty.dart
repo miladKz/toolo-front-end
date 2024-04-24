@@ -269,6 +269,11 @@ class Counterparty extends ITableRowData {
       name = newName;
     }
   }
+  void updateLastName(String newLastName) {
+    if (newLastName.isNotEmpty) {
+      lastName = newLastName;
+    }
+  }
 
   void updateCityId(int cityId) {
     if (cityId > 0) {

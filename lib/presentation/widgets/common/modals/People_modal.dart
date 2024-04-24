@@ -86,6 +86,7 @@ class _PeopleModalState extends State<PeopleModal> {
   TextEditingController faxController = TextEditingController(text: '');
   TextEditingController datePickerController = TextEditingController(text: '');
   TextEditingController firstNameController = TextEditingController(text: '');
+  TextEditingController lastNameController = TextEditingController(text: '');
 
   @override
   void initState() {
@@ -125,6 +126,8 @@ class _PeopleModalState extends State<PeopleModal> {
       faxController = TextEditingController(text: widget.people.fax);
       firstNameController =
           TextEditingController(text: widget.people.firstName);
+
+      lastNameController = TextEditingController(text: widget.people.lastName);
       //datePickerController = TextEditingController(text: widget.people.foundationDate.toIso8601String());
     }
     return IgnorePointer(
@@ -205,6 +208,8 @@ class _PeopleModalState extends State<PeopleModal> {
               widget.people.updateFoundationDate(faxController.text);
 
               widget.people.updateName(firstNameController.text);
+
+              widget.people.updateLastName(lastNameController.text);
 
               if (widget.isUpdate) {
                 locator
@@ -597,10 +602,13 @@ class _PeopleModalState extends State<PeopleModal> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.registrationNumber),
+        FormItemTitle(
+          title: widget.people.isIndividual
+              ? localization.birthCertificateNumber
+              : localization.registrationNumber,
+        ),
         titleInputSpacing,
         FormTextField(
-          textHint: '',
           widgetWidth: width,
           controller: registrationNumberController,
         ),
@@ -627,7 +635,9 @@ class _PeopleModalState extends State<PeopleModal> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        companyNameBox(width: (widget.formWidth / 4) - 15),
+        widget.people.isIndividual
+            ? personalNameBox(width: (widget.formWidth / 2) - 15)
+            : companyNameBox(width: (widget.formWidth / 4) - 15),
         datePickerBox(width: (widget.formWidth / 4) - 50),
         bursType(width: (widget.formWidth / 4) - 50),
         isActiveBox(width: (widget.formWidth / 4) - 43),
@@ -668,17 +678,19 @@ class _PeopleModalState extends State<PeopleModal> {
       children: [
         FormItemTitle(title: localization.stockMarketStatus),
         titleInputSpacing,
-        GenericDropDown<BursType>(
-          isEnable: widget.isActive,
-          itemWidth: width,
-          value: selectedBursType,
-          items: bursTypeList,
-          onChanged: (value) {
-            if (value != null) {
-              widget.people.bursType = value.id;
-            }
-          },
-        ),
+        (widget.people.isIndividual)
+            ? Container(width: width)
+            : GenericDropDown<BursType>(
+                isEnable: widget.isActive,
+                itemWidth: width,
+                value: selectedBursType,
+                items: bursTypeList,
+                onChanged: (value) {
+                  if (value != null) {
+                    widget.people.bursType = value.id;
+                  }
+                },
+              ),
       ],
     );
   }
@@ -688,7 +700,11 @@ class _PeopleModalState extends State<PeopleModal> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.foundationDate),
+        FormItemTitle(
+          title: widget.people.isIndividual
+              ? localization.birthDate
+              : localization.foundationDate,
+        ),
         titleInputSpacing,
         InkWell(
           onTap: () async {
@@ -713,6 +729,45 @@ class _PeopleModalState extends State<PeopleModal> {
     );
   }
 
+  Row personalNameBox({required double width}) {
+    return Row(
+      children: [
+        firstNameBox(width / 2),
+        lastNameBox(width / 2),
+      ],
+    );
+  }
+
+  Column lastNameBox(double width) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.lastName),
+        titleInputSpacing,
+        FormTextField(
+          widgetWidth: width,
+          controller: lastNameController,
+        )
+      ],
+    );
+  }
+
+  Column firstNameBox(double width) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.name),
+        titleInputSpacing,
+        FormTextField(
+          widgetWidth: width,
+          controller: firstNameController,
+        )
+      ],
+    );
+  }
+
   Column companyNameBox({required double width}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -727,7 +782,6 @@ class _PeopleModalState extends State<PeopleModal> {
       ],
     );
   }
-
   Row row1() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -761,7 +815,10 @@ class _PeopleModalState extends State<PeopleModal> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.nationalId),
+        FormItemTitle(
+            title: widget.people.isIndividual
+                ? localization.nationalCode
+                : localization.nationalId),
         titleInputSpacing,
         FormTextField(
           controller: nationalCodeController,
@@ -818,7 +875,9 @@ class _PeopleModalState extends State<PeopleModal> {
           items: counterpartyTypes,
           onChanged: (value) {
             if (value != null) {
-              widget.people.type = value.id;
+              setState(() {
+                widget.people.type = value.id;
+              });
             }
           },
         )

@@ -50,6 +50,10 @@ class CounterpartyDto extends Counterparty {
     required super.phone,
     required super.type,
     required super.customerStatus,
+    required super.birthCertificateNumber,
+    required super.brand,
+    required super.economicCode,
+    super.counterpartyDetail,
   });
 
   factory CounterpartyDto.fromMap(Map<String, dynamic> map) {
@@ -100,10 +104,20 @@ class CounterpartyDto extends Counterparty {
       phone: map.findAsString('Tel'),
       type: map.findAsInt('Types'),
       customerStatus: map.findAsInt('CustomerStatus'),
+      economicCode: map.findAsString('EconomicCode'),
+      birthCertificateNumber: map.findAsString('ShenasnamehNumber'),
+      brand: map.findAsString('Brand'),
     );
   }
 
   Map<String, dynamic> toMap() {
+    int birthDayCert = 0;
+    try {
+      birthDayCert = int.parse(birthCertificateNumber);
+    } catch (e) {
+      birthDayCert = 0;
+    }
+
     return <String, dynamic>{
       'ID': (id != 0) ? id : null,
       'Address': address.toString(),
@@ -150,7 +164,10 @@ class CounterpartyDto extends Counterparty {
       'Tel': phone.toString(),
       'Types': type,
       'ArzTypeID': currencyType,
-      'CustomerStatus': customerStatus
+      'CustomerStatus': customerStatus,
+      'EconomicCode': economicCode,
+      'ShenasnamehNumber': birthDayCert,
+      'Brand': brand,
     }..removeWhere((dynamic key, dynamic value) =>
         (key == "id" && value == 0) || value == null);
   }

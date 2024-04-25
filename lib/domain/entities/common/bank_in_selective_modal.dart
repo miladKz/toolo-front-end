@@ -1,10 +1,10 @@
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
 class BankInSelectiveModal extends Counterparty {
-        BankInSelectiveModal({required Counterparty counterparty})
+  BankInSelectiveModal({required Counterparty counterparty})
       : super(
           id: counterparty.id,
-          currencyType:  counterparty.currencyType,
+          currencyType: counterparty.currencyType,
           code: counterparty.code,
           kind: counterparty.kind,
           customerStatus: counterparty.customerStatus,
@@ -49,6 +49,10 @@ class BankInSelectiveModal extends Counterparty {
           detailId: counterparty.detailId,
           phone: counterparty.phone,
           type: counterparty.type,
+          birthCertificateNumber: counterparty.birthCertificateNumber,
+          economicCode: counterparty.economicCode,
+          brand: counterparty.brand,
+          counterpartyDetail: counterparty.counterpartyDetail,
         );
 
   @override

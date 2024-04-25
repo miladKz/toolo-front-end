@@ -86,6 +86,10 @@ class OnLoadRevolvingFundTypes extends MainEvent {
   OnLoadRevolvingFundTypes();
 }
 
+class OnLoadCompanyTypes extends MainEvent {
+  OnLoadCompanyTypes();
+}
+
 class OnCreateStandardDetail extends MainEvent {
   StandardDetail standardDetail;
 

@@ -50,6 +50,10 @@ class CashBox extends Counterparty {
           detailId: counterparty.detailId,
           phone: counterparty.phone,
           type: counterparty.type,
+          birthCertificateNumber: counterparty.birthCertificateNumber,
+          economicCode: counterparty.economicCode,
+          brand: counterparty.brand,
+          counterpartyDetail: counterparty.counterpartyDetail,
         );
 
   @override

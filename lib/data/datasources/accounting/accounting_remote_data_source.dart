@@ -12,8 +12,6 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_deta
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
-import '../../models/accounting/base_dto/city_dto.dart';
-
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
 
@@ -358,7 +356,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> fetchStandardDetailList(
       {required String token, required StandardDetailParamDto param}) async {
-    String apiAddress = "/api/base/standard-text/list?BargeTypeID=${param.bargeTypeID}&Section=${param.section}";
+    String apiAddress =
+        "/api/base/standard-text/list?BargeTypeID=${param.bargeTypeID}&Section=${param.section}";
     debugPrint("${param.toMap()}");
     try {
       Response<dynamic> response = await httpClient.get(
@@ -425,11 +424,13 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
+
   void log(Object logable) {
     debugPrint('fetchData--> ${logable.toString()}');
   }
 
-  Future<ServerResponseDto> getCityList({required String token, required String stateCode}) async {
+  Future<ServerResponseDto> getCityList(
+      {required String token, required String stateCode}) async {
     String apiAddress = "/api/base/city/list?StateCode=$stateCode";
     try {
       Response<dynamic> response = await httpClient.get(

@@ -42,6 +42,7 @@
  "captionCancel": "انصراف",
  "titleBack": "برگشت",
  "fiscalYearInputDataInvalid": "سال مالی و نام شرکت به درستی وارد نشده است!",
+ "brandName": "نام تجاری",
  "titleFiscalYearError": "پیغام خطا",
  "titleReceiveMessages": "پیام های دریافتی",
  "titleDashboard": "داشبورد",
@@ -227,5 +228,6 @@
  "titleSeparation3": "تفکیک 3",
  "titlePaymentNotice": "اطلاعیه پرداخت",
  "titleNewDocument": "سند جدید",
- "numericZero": "0"
+ "numericZero": "0",
+ "descriptionOfDocuments": "شرح اسناد"
 }

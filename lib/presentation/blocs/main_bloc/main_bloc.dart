@@ -61,7 +61,6 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
@@ -98,6 +97,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<FetchBaseData>(_fetchBaseData);
     on<OnLoadAvailableBankModalData>(_onLoadAvailableBankModalData);
     on<OnLoadRevolvingFundTypes>(_onLoadRevolvingFundType);
+    on<OnLoadCompanyTypes>(_onLoadCompanyType);
     on<OnCreateStandardDetail>(_onCreateStandardDetail);
     on<OnUpdateStandardDetail>(_onUpdateStandardDetail);
     on<OnLoadCityList>(_onLoadCityListHandler);
@@ -457,18 +457,28 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(LoadedAvailableBankModalData(availableBankList: availableBankList));
   }
 
-  FutureOr<void> _onLoadRevolvingFundType(
-      OnLoadRevolvingFundTypes event, Emitter<MainState> emit) async {
+  FutureOr<void> _loadStandardDetails(
+      int bargeTypeID, Emitter<MainState> emit) async {
     FetchStandardDetailListUseCase standardDetailListUseCase =
         locator<FetchStandardDetailListUseCase>();
     emit(LoadingStandardDetailList(isShow: true));
-    StandardDetailParam standardDetailParam = StandardDetailParam(
-        bargeTypeID: StandardDetailType.revolvingFundType.value, section: 1);
+    StandardDetailParam standardDetailParam =
+        StandardDetailParam(bargeTypeID: bargeTypeID, section: 1);
     List<StandardDetail> standardDetailList = await standardDetailListUseCase(
         standardDetailParam: standardDetailParam);
-    await Future.delayed(const Duration(milliseconds: 500));
     this.standardDetailList = standardDetailList;
     emit(LoadedStandardDetails(standardDetailList: standardDetailList));
+  }
+
+  FutureOr<void> _onLoadRevolvingFundType(
+      OnLoadRevolvingFundTypes event, Emitter<MainState> emit) async {
+    await _loadStandardDetails(
+        StandardDetailType.revolvingFundType.value, emit);
+  }
+
+  FutureOr<void> _onLoadCompanyType(
+      OnLoadCompanyTypes event, Emitter<MainState> emit) async {
+    await _loadStandardDetails(StandardDetailType.companyType.value, emit);
   }
 
   FutureOr<void> _onCreateStandardDetail(

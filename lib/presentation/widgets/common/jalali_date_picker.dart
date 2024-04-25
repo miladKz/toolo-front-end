@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
@@ -11,5 +10,10 @@ class JalaliDatePicker {
       lastDate: Jalali(1410, 1, 1),
     );
     return picked?.formatCompactDate();
+  }
+
+  static DateTime toGregorian(String jalaliDate) {
+    Jalali jalaliDateTime = parseCompactDate(jalaliDate);
+    return jalaliDateTime.toGregorian().toDateTime();
   }
 }

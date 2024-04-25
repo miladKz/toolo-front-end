@@ -1,4 +1,6 @@
+import '../../../presentation/widgets/common/jalali_date_picker.dart';
 import 'abstracts/table_row_data_abs.dart';
+import 'counterparty_detail.dart';
 
 class Counterparty extends ITableRowData {
   int currencyType;
@@ -44,7 +46,12 @@ class Counterparty extends ITableRowData {
   String nationality;
   int detailId;
   String phone;
+  String economicCode;
+  String birthCertificateNumber;
+  String brand;
   int type;
+
+  CounterpartyDetail? counterpartyDetail;
 
   Counterparty({
     required super.id,
@@ -93,6 +100,10 @@ class Counterparty extends ITableRowData {
     required this.phone,
     required this.type,
     required this.currencyType,
+    required this.brand,
+    required this.economicCode,
+    required this.birthCertificateNumber,
+    this.counterpartyDetail,
   });
 
   factory Counterparty.empty() {
@@ -143,6 +154,9 @@ class Counterparty extends ITableRowData {
       type: 0,
       currencyType: 0,
       customerStatus: 0,
+      birthCertificateNumber: '',
+      brand: '',
+      economicCode: '',
     );
   }
 
@@ -193,7 +207,11 @@ class Counterparty extends ITableRowData {
         phone: phone,
         type: type,
         currencyType: currencyType,
-        customerStatus: customerStatus);
+        customerStatus: customerStatus,
+        birthCertificateNumber: birthCertificateNumber,
+        brand: brand,
+        economicCode: economicCode,
+        counterpartyDetail: counterpartyDetail);
   }
 
   void updateCode(int newCode) {
@@ -211,12 +229,6 @@ class Counterparty extends ITableRowData {
   void updateCompanyName(String newCompanyName) {
     if (newCompanyName.isNotEmpty) {
       companyName = newCompanyName;
-    }
-  }
-
-  void updateEconomicCode(String newEconomicCode) {
-    if (newEconomicCode.isNotEmpty) {
-      postalCode = newEconomicCode;
     }
   }
 
@@ -252,7 +264,9 @@ class Counterparty extends ITableRowData {
 
   void updateFoundationDate(String newFoundationDate) {
     if (newFoundationDate.isNotEmpty) {
-      foundationDate = DateTime.parse(newFoundationDate);
+      DateTime gregorianDateTime =
+          JalaliDatePicker.toGregorian(newFoundationDate);
+      foundationDate = gregorianDateTime;
     }
   }
 
@@ -269,9 +283,16 @@ class Counterparty extends ITableRowData {
       name = newName;
     }
   }
+
   void updateLastName(String newLastName) {
     if (newLastName.isNotEmpty) {
       lastName = newLastName;
+    }
+  }
+
+  void updateEconomicCode(String newEconomicCode) {
+    if (newEconomicCode.isNotEmpty) {
+      economicCode = newEconomicCode;
     }
   }
 
@@ -326,6 +347,18 @@ class Counterparty extends ITableRowData {
   void updateFirstName(String newFirstName) {
     if (newFirstName.isNotEmpty) {
       firstName = newFirstName;
+    }
+  }
+
+  void updateBirthCertificateNumber(String newBirthCertificateNumber) {
+    if (newBirthCertificateNumber.isNotEmpty) {
+      birthCertificateNumber = newBirthCertificateNumber;
+    }
+  }
+
+  void updateBrandName(String newBrand) {
+    if (newBrand.isNotEmpty) {
+      birthCertificateNumber = newBrand;
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:toolo_gostar/domain/entities/common/city.dart';
 
 import '../../../../di/di.dart';
 import '../../../../domain/entities/base/enums/people_counterparty_type.dart';
+import '../../../../domain/entities/base/standard_detail.dart';
 import '../../../../domain/entities/common/people.dart';
 import '../../../../main.dart';
 import '../../../blocs/main_bloc/main_bloc.dart';
@@ -76,7 +77,8 @@ class _PeopleModalState extends State<PeopleModal> {
 
   TextEditingController registrationNumberController =
       TextEditingController(text: '');
-
+  TextEditingController birthCertificateNumberController =
+      TextEditingController(text: '');
   TextEditingController rialCreditController = TextEditingController(text: '');
   TextEditingController chequeCreditController =
       TextEditingController(text: '');
@@ -87,11 +89,13 @@ class _PeopleModalState extends State<PeopleModal> {
   TextEditingController datePickerController = TextEditingController(text: '');
   TextEditingController firstNameController = TextEditingController(text: '');
   TextEditingController lastNameController = TextEditingController(text: '');
+  TextEditingController brandNameController = TextEditingController(text: '');
 
   @override
   void initState() {
     super.initState();
     locator.get<MainBloc>().add(OnLoadCityList());
+    locator.get<MainBloc>().add(OnLoadCompanyTypes());
   }
 
   @override
@@ -115,6 +119,9 @@ class _PeopleModalState extends State<PeopleModal> {
       registrationNumberController =
           TextEditingController(text: widget.people.registrationNumber);
 
+      birthCertificateNumberController =
+          TextEditingController(text: widget.people.birthCertificateNumber);
+
       rialCreditController =
           TextEditingController(text: widget.people.rialCredit.toString());
       chequeCreditController =
@@ -128,6 +135,7 @@ class _PeopleModalState extends State<PeopleModal> {
           TextEditingController(text: widget.people.firstName);
 
       lastNameController = TextEditingController(text: widget.people.lastName);
+      brandNameController = TextEditingController(text: widget.people.brand);
       //datePickerController = TextEditingController(text: widget.people.foundationDate.toIso8601String());
     }
     return IgnorePointer(
@@ -181,6 +189,9 @@ class _PeopleModalState extends State<PeopleModal> {
               widget.people
                   .updateRegistrationNumber(registrationNumberController.text);
 
+              widget.people.updateBirthCertificateNumber(
+                  birthCertificateNumberController.text);
+
               int rialCredit;
               try {
                 rialCredit = int.parse(rialCreditController.text);
@@ -205,11 +216,13 @@ class _PeopleModalState extends State<PeopleModal> {
 
               widget.people.updateFax(faxController.text);
 
-              widget.people.updateFoundationDate(faxController.text);
+              widget.people.updateFoundationDate(datePickerController.text);
 
               widget.people.updateName(firstNameController.text);
 
               widget.people.updateLastName(lastNameController.text);
+
+              widget.people.updateBrandName(brandNameController.text);
 
               if (widget.isUpdate) {
                 locator
@@ -477,7 +490,7 @@ class _PeopleModalState extends State<PeopleModal> {
         FormItemTitle(title: localization.city),
         titleInputSpacing,
         ModalOpenerButton(
-          dialogTitle: localization.titleCityList,
+          dialogTitle: localization.descriptionOfDocuments,
           buttonWidth: width,
           formWidth: widget.formWidth - 200,
           value: value,
@@ -564,7 +577,9 @@ class _PeopleModalState extends State<PeopleModal> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         economicCodeBox(width: (widget.formWidth / 4) - 15),
-        registrationNumber(width: (widget.formWidth / 4) - 20),
+        widget.people.isIndividual
+            ? birthCertificateNumberBox(width: (widget.formWidth / 4) - 20)
+            : registrationNumber(width: (widget.formWidth / 4) - 20),
         isActiveBox(width: (widget.formWidth / 4) - 50),
         customerStatus(width: (widget.formWidth / 4) - 45),
       ],
@@ -603,14 +618,30 @@ class _PeopleModalState extends State<PeopleModal> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FormItemTitle(
-          title: widget.people.isIndividual
-              ? localization.birthCertificateNumber
-              : localization.registrationNumber,
+          title: localization.registrationNumber,
         ),
         titleInputSpacing,
         FormTextField(
           widgetWidth: width,
           controller: registrationNumberController,
+        ),
+      ],
+    );
+  }
+
+  Column birthCertificateNumberBox({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(
+          title: localization.birthCertificateNumber,
+        ),
+        titleInputSpacing,
+        FormTextField(
+          widgetWidth: width,
+          inputType: TextInputType.number,
+          controller: birthCertificateNumberController,
         ),
       ],
     );
@@ -639,8 +670,12 @@ class _PeopleModalState extends State<PeopleModal> {
             ? personalNameBox(width: (widget.formWidth / 2) - 15)
             : companyNameBox(width: (widget.formWidth / 4) - 15),
         datePickerBox(width: (widget.formWidth / 4) - 50),
-        bursType(width: (widget.formWidth / 4) - 50),
-        isActiveBox(width: (widget.formWidth / 4) - 43),
+        (widget.people.isIndividual)
+            ? brandNameBox(width: (widget.formWidth / 4) - 50)
+            : bursType(width: (widget.formWidth / 4) - 50),
+        if (!widget.people.isIndividual) ...[
+          companyKindModalOpenerButton(width: (widget.formWidth / 4) - 50)
+        ]
       ],
     );
   }
@@ -666,6 +701,21 @@ class _PeopleModalState extends State<PeopleModal> {
     );
   }
 
+  Column brandNameBox({required double width}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.brandName),
+        titleInputSpacing,
+        FormTextField(
+          widgetWidth: width,
+          controller: brandNameController,
+        )
+      ],
+    );
+  }
+
   Column bursType({required double width}) {
     List<BursType> bursTypeList = baseDataModel.bursTypeList;
 
@@ -678,19 +728,17 @@ class _PeopleModalState extends State<PeopleModal> {
       children: [
         FormItemTitle(title: localization.stockMarketStatus),
         titleInputSpacing,
-        (widget.people.isIndividual)
-            ? Container(width: width)
-            : GenericDropDown<BursType>(
-                isEnable: widget.isActive,
-                itemWidth: width,
-                value: selectedBursType,
-                items: bursTypeList,
-                onChanged: (value) {
-                  if (value != null) {
-                    widget.people.bursType = value.id;
-                  }
-                },
-              ),
+        GenericDropDown<BursType>(
+          isEnable: widget.isActive,
+          itemWidth: width,
+          value: selectedBursType,
+          items: bursTypeList,
+          onChanged: (value) {
+            if (value != null) {
+              widget.people.bursType = value.id;
+            }
+          },
+        ),
       ],
     );
   }
@@ -732,13 +780,13 @@ class _PeopleModalState extends State<PeopleModal> {
   Row personalNameBox({required double width}) {
     return Row(
       children: [
-        firstNameBox(width / 2),
-        lastNameBox(width / 2),
+        firstNameBox(width: width / 2 - 20),
+        lastNameBox(width: width / 2 - 20),
       ],
     );
   }
 
-  Column lastNameBox(double width) {
+  Column lastNameBox({required double width}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -753,7 +801,7 @@ class _PeopleModalState extends State<PeopleModal> {
     );
   }
 
-  Column firstNameBox(double width) {
+  Column firstNameBox({required double width}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -782,6 +830,7 @@ class _PeopleModalState extends State<PeopleModal> {
       ],
     );
   }
+
   Row row1() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1127,6 +1176,58 @@ class _PeopleModalState extends State<PeopleModal> {
     } else if (state is LoadedCityList) {
       widget.cityList = state.cityList;
     }
+  }
+
+  Widget companyKindModalOpenerButton({required double width}) {
+    String value = (widget.isUpdate) ? getCompanyTypeName() : '';
+    DataTableViewModel? dataTableViewModel;
+    MainBloc mainBloc = locator.get<MainBloc>();
+    if (mainBloc.standardDetailList != null) {
+      dataTableViewModel =
+          DataTableViewModelFactory.createTableViewModelFromStandardDetailList(
+              mainBloc.standardDetailList!);
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.relatedBank),
+        titleInputSpacing,
+        ModalOpenerButton(
+          dialogTitle: localization.titleBankList,
+          buttonWidth: width,
+          formWidth: widget.formWidth - 200,
+          value: value,
+          formKey: widget._formKey,
+          onSelectItemFromTableModal: (revolvingFoundType) {
+            if (revolvingFoundType != null) {
+              try {
+                StandardDetail standardDetail =
+                    revolvingFoundType as StandardDetail;
+                widget.people.type = standardDetail.id;
+              } catch (e) {
+                debugPrint("cast failed: $e");
+              }
+            }
+          },
+          dataTableViewModel: dataTableViewModel,
+        ),
+      ],
+    );
+  }
+
+  String getCompanyTypeName() {
+    String revolvingFundName = '';
+    MainBloc mainBloc = locator.get<MainBloc>();
+    if (mainBloc.standardDetailList != null) {
+      for (StandardDetail standardDetail in mainBloc.standardDetailList!) {
+        if (widget.people.type == standardDetail.id) {
+          revolvingFundName = standardDetail.description;
+        }
+      }
+    }
+
+    return revolvingFundName;
   }
 }
 

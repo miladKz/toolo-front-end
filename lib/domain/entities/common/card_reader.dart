@@ -49,11 +49,13 @@ class CardReader extends Counterparty {
           detailId: counterparty.detailId,
           phone: counterparty.phone,
           type: counterparty.type,
-          customerStatus: counterparty.customerStatus
+          customerStatus: counterparty.customerStatus,
+          birthCertificateNumber: counterparty.birthCertificateNumber,
+          economicCode: counterparty.economicCode,
+          brand: counterparty.brand,
+          counterpartyDetail: counterparty.counterpartyDetail,
         );
 
   @override
   List<Object?> get props => [code, name, type, description];
-
-
 }

@@ -1,13 +1,8 @@
-
+import '../enums/customer_detail_type.dart';
 
 class CustomerDataDetailParam {
-  final int moshtarianID;
-  ///valueType value -1=all
-  ///valueType value 0=neshani
-  ///valueType value 1=sayer moshakhasat
-  final int valueType;
+  final int customerId;
+  CustomerDetailType valueType;
 
-  CustomerDataDetailParam({required this.moshtarianID, required this.valueType});
-
-
+  CustomerDataDetailParam({required this.customerId, required this.valueType});
 }

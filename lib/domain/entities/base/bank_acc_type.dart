@@ -4,7 +4,7 @@ import '../common/abstracts/table_row_data_abs.dart';
 
 class BankAccType extends IDropDownItem implements ITableRowData {
   @override
-  final int id;
+   int id;
 
   BankAccType({required super.name, required this.id});
 

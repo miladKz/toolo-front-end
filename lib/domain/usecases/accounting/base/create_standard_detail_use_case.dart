@@ -11,6 +11,6 @@ class CreateStandardDetailUseCase {
 
   @override
   Future<StandardDetail> call(StandardDetail standardDetail) async {
-    return _repository.createStandardDetailList(standardDetail);
+    return _repository.createStandardDetail(standardDetail);
   }
 }

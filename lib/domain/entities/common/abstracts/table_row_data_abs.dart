@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class ITableRowData extends Equatable {
-  final int id;
+   int id;
   String name;
 
   ITableRowData({required this.id, required this.name});

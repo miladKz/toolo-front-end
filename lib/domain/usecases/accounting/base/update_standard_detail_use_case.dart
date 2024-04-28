@@ -12,6 +12,6 @@ class UpdateStandardDetailUseCase {
   @override
   Future<StandardDetail> call(
       {required StandardDetail standardDetail}) async {
-    return _repository.updateStandardDetailList(standardDetail);
+    return _repository.updateStandardDetail(standardDetail);
   }
 }

@@ -105,3 +105,27 @@ class OnUpdateStandardDetail extends MainEvent {
 class OnLoadCityList extends MainEvent {
   OnLoadCityList();
 }
+
+class OnLoadCustomerDetailList extends MainEvent {
+  CustomerDataDetailParam customerDataDetailParam;
+
+  OnLoadCustomerDetailList(this.customerDataDetailParam);
+}
+
+class OnCreateCustomerDetail extends MainEvent {
+  CounterpartyDetail counterpartyDetail;
+
+  OnCreateCustomerDetail(this.counterpartyDetail);
+}
+
+class OnUpdateCustomerDetail extends MainEvent {
+  CounterpartyDetail counterpartyDetail;
+
+  OnUpdateCustomerDetail(this.counterpartyDetail);
+}
+
+class OnDeleteCustomerDetail extends MainEvent {
+  CounterpartyDetail counterpartyDetail;
+
+  OnDeleteCustomerDetail(this.counterpartyDetail);
+}

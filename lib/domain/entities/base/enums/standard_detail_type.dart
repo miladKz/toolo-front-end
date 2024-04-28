@@ -1,6 +1,8 @@
 enum StandardDetailType {
   companyType(1),
-  revolvingFundType(2);
+  revolvingFundType(2),
+  counterpartyAdditionalDetail(3),
+  counterpartyAdditionalAddress(4);
 
   final int value;
 

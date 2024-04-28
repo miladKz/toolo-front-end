@@ -1,5 +1,6 @@
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/counterparty_detail_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
@@ -19,6 +20,7 @@ import '../../../data/models/accounting/detail_group_dto.dart';
 import '../../entities/base/param/standard_detail_param.dart';
 import '../../entities/common/city.dart';
 import '../../entities/common/counterparty.dart';
+import '../../entities/common/counterparty_detail.dart';
 
 abstract class IAccountingRepository {
   Future<List<AccountingAction>> getActions();
@@ -61,17 +63,22 @@ abstract class IAccountingRepository {
 
   Future<List<City>> getCityList();
 
-  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
-      CustomerDataDetailParam customerDataDetailParam);
-
   Future<List<StandardDetail>> fetchStandardDetailList(
       StandardDetailParam param);
 
-  Future<StandardDetail> createStandardDetailList(
+  Future<StandardDetail> createStandardDetail(
       StandardDetail param);
 
-  Future<StandardDetail> updateStandardDetailList(
+  Future<StandardDetail> updateStandardDetail(
       StandardDetail param);
 
   Future<List<DetailGroupRoot>> fetchDetailGroupRootList();
+
+  Future<List<CounterpartyDetail>> getCustomerDetailList(CustomerDataDetailParam customerDataDetailParam);
+
+  Future<CounterpartyDetail> createCounterpartyDetail(
+      CounterpartyDetail param);
+
+  Future<CounterpartyDetail> updateCounterpartyDetail(
+      CounterpartyDetail param);
 }

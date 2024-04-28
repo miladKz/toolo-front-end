@@ -14,7 +14,6 @@ import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_ban
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
-import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_data_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type_list_use_case.dart';
@@ -22,6 +21,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_person_type_l
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_standard_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/create_counter_party_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/create_counterparty_detail_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_cash_box_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
@@ -47,9 +47,11 @@ import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/get_bank_list.dart';
 import '../domain/usecases/accounting/get_card_reader_list.dart';
+import '../domain/usecases/accounting/get_customer_detail_list_use_case.dart';
 import '../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
 import '../domain/usecases/accounting/update_account_use_case.dart';
 import '../domain/usecases/accounting/update_counter_party_use_case.dart';
+import '../domain/usecases/accounting/update_counterparty_detail_use_case.dart';
 import '../domain/usecases/auth/get_token_usecase.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
 
@@ -108,9 +110,6 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
 
   locator.registerLazySingleton(() => FetchCurrencyTypeListUseCase(locator()));
 
-  locator.registerLazySingleton(
-      () => FetchCustomerDataDetailListUseCase(locator()));
-
   locator
       .registerLazySingleton(() => FetchDetailGroupRootListUseCase(locator()));
 
@@ -133,6 +132,14 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => UpdateStandardDetailUseCase(locator()));
 
   locator.registerLazySingleton(() => FetchCityListUseCase(locator()));
+
+  locator.registerLazySingleton(() => GetCustomerDetailListUseCase(locator()));
+
+  locator
+      .registerLazySingleton(() => CreateCounterpartyDetailUseCase(locator()));
+
+  locator
+      .registerLazySingleton(() => UpdateCounterpartyDetailUseCase(locator()));
 
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(

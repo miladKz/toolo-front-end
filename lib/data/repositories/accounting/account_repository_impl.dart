@@ -12,13 +12,13 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_deta
 import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/counterparty_detail_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
-import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
@@ -28,6 +28,7 @@ import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/city.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/domain/entities/common/counterparty_detail.dart';
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 
 import '../../../domain/entities/base/param/standard_detail_param.dart';
@@ -324,7 +325,6 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       brand: counterparty.brand,
       economicCode: counterparty.economicCode,
       birthCertificateNumber: counterparty.birthCertificateNumber,
-      counterpartyDetail: counterparty.counterpartyDetail,
     );
   }
 
@@ -392,13 +392,6 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     } catch (e) {
       rethrow;
     }
-  }
-
-  @override
-  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
-      CustomerDataDetailParam customerDataDetailParam) async {
-    // TODO: implement fetchCustomerDataDetailList
-    throw UnimplementedError();
   }
 
   @override
@@ -567,7 +560,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<StandardDetail> createStandardDetailList(StandardDetail param) async {
+  Future<StandardDetail> createStandardDetail(StandardDetail param) async {
     StandardDetailDto standardDetailDto = getStandardDetailAsDto(param);
     try {
       String token = _getToken();
@@ -585,7 +578,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<StandardDetail> updateStandardDetailList(StandardDetail param) async {
+  Future<StandardDetail> updateStandardDetail(StandardDetail param) async {
     StandardDetailDto standardDetailDto = getStandardDetailAsDto(param);
     try {
       String token = _getToken();
@@ -622,6 +615,80 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         List<CityDto> items = List.empty(growable: true);
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         items = List<CityDto>.from(itemsAsMap.map((data) {
+          return CityDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CounterpartyDetail> createCounterpartyDetail(
+      CounterpartyDetail param) async {
+    CounterpartyDetailDto counterpartyDetailDto =
+        getCounterpartyDetailAsDto(param);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .createCounterPartyDetail(token: token, param: counterpartyDetailDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return CounterpartyDetailDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CounterpartyDetail> updateCounterpartyDetail(
+      CounterpartyDetail param) async {
+    CounterpartyDetailDto counterpartyDetailDto =
+        getCounterpartyDetailAsDto(param);
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .updateCounterpartyDetail(token: token, param: counterpartyDetailDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
+        return CounterpartyDetailDto.fromMap(itemsAsMap);
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  CounterpartyDetailDto getCounterpartyDetailAsDto(CounterpartyDetail param) {
+    return CounterpartyDetailDto(
+      id: param.id,
+      name: param.name,
+      counterpartyId: param.counterpartyId,
+      value: param.value,
+      parentId: param.parentId,
+      valueType: param.valueType,
+    );
+  }
+
+  @override
+  Future<List<CounterpartyDetail>> getCustomerDetailList(
+      CustomerDataDetailParam customerDataDetailParam) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.getCounterPartyDetailList(
+              token: token, param: customerDataDetailParam);
+      if (serverResponse.isSuccess) {
+        List<CounterpartyDetailDto> items = List.empty(growable: true);
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<CounterpartyDetailDto>.from(itemsAsMap.map((data) {
           return CityDto.fromMap(data);
         }));
         return items;

@@ -225,5 +225,6 @@
  "titlePaymentNotice": "اطلاعیه پرداخت",
  "titleNewDocument": "سند جدید",
  "numericZero": "0",
- "descriptionOfDocuments": "شرح اسناد"
+ "descriptionOfDocuments": "شرح اسناد",
+ "addSpecifications": "اضافه کردن مشخصات"
 }

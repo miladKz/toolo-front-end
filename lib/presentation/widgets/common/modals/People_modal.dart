@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
+import 'package:toolo_gostar/domain/entities/base/enums/customer_detail_type.dart';
+import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_param.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/common/city.dart';
 
@@ -15,6 +17,7 @@ import '../../../factories/table_view_model_factory.dart';
 import '../../../view_models/table_view_model.dart';
 import '../jalali_date_picker.dart';
 import '../snakbar.dart';
+import 'modal_elements/counterparty_detail_viewer.dart';
 import 'modal_elements/drop_down_generic.dart';
 import 'modal_elements/drop_down_input.dart';
 import 'modal_elements/form_check_box.dart';
@@ -40,6 +43,7 @@ class PeopleModal extends StatefulWidget {
   final Color iconColor;
   final GlobalKey<FormState> _formKey;
   List<City>? cityList;
+
   final People people;
   late bool isUpdate;
 
@@ -93,14 +97,27 @@ class _PeopleModalState extends State<PeopleModal> {
 
   @override
   void initState() {
+    widget.isUpdate = (widget.people.id > 0);
     super.initState();
     locator.get<MainBloc>().add(OnLoadCityList());
     locator.get<MainBloc>().add(OnLoadCompanyTypes());
+    if (widget.isUpdate) {
+      CustomerDataDetailParam customerDataDetailParam = CustomerDataDetailParam(
+          customerId: widget.people.id,
+          valueType: CustomerDetailType.additionalDetail);
+      locator
+          .get<MainBloc>()
+          .add(OnLoadCustomerDetailList(customerDataDetailParam));
+
+      customerDataDetailParam.valueType = CustomerDetailType.additionalAddress;
+      locator
+          .get<MainBloc>()
+          .add(OnLoadCustomerDetailList(customerDataDetailParam));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.isUpdate = (widget.people.id > 0);
     checkState();
     if (widget.isUpdate) {
       copyPeopleToTempPeople();
@@ -124,13 +141,19 @@ class _PeopleModalState extends State<PeopleModal> {
 
       rialCreditController =
           TextEditingController(text: widget.people.rialCredit.toString());
+
       chequeCreditController =
           TextEditingController(text: widget.people.chequeCredit.toString());
+
       postalCodeController =
           TextEditingController(text: widget.people.postalCode);
+
       addressController = TextEditingController(text: widget.people.address);
+
       phoneController = TextEditingController(text: widget.people.phone);
+
       faxController = TextEditingController(text: widget.people.fax);
+
       firstNameController =
           TextEditingController(text: widget.people.firstName);
 
@@ -253,7 +276,7 @@ class _PeopleModalState extends State<PeopleModal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Flexible(
+          Expanded(
               child: Column(
             children: [
               FormCheckBox(
@@ -293,7 +316,7 @@ class _PeopleModalState extends State<PeopleModal> {
               )
             ],
           )),
-          Flexible(
+          Expanded(
               child: Column(
             children: [
               FormCheckBox(
@@ -576,12 +599,12 @@ class _PeopleModalState extends State<PeopleModal> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        economicCodeBox(width: (widget.formWidth / 4) - 15),
+        economicCodeBox(width: (widget.formWidth / 4) - 30),
         widget.people.isIndividual
-            ? birthCertificateNumberBox(width: (widget.formWidth / 4) - 20)
-            : registrationNumber(width: (widget.formWidth / 4) - 20),
+            ? birthCertificateNumberBox(width: (widget.formWidth / 4) - 30)
+            : registrationNumber(width: (widget.formWidth / 4) - 30),
         isActiveBox(width: (widget.formWidth / 4) - 50),
-        customerStatus(width: (widget.formWidth / 4) - 45),
+        customerStatus(width: (widget.formWidth / 4) - 50),
       ],
     );
   }
@@ -667,14 +690,14 @@ class _PeopleModalState extends State<PeopleModal> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         widget.people.isIndividual
-            ? personalNameBox(width: (widget.formWidth / 2) - 15)
-            : companyNameBox(width: (widget.formWidth / 4) - 15),
-        datePickerBox(width: (widget.formWidth / 4) - 50),
+            ? personalNameBox(width: (widget.formWidth / 2) - 30)
+            : companyNameBox(width: (widget.formWidth / 4) - 30),
+        datePickerBox(width: (widget.formWidth / 4) - 30),
         (widget.people.isIndividual)
-            ? brandNameBox(width: (widget.formWidth / 4) - 50)
-            : bursType(width: (widget.formWidth / 4) - 50),
+            ? brandNameBox(width: (widget.formWidth / 4) - 30)
+            : bursType(width: (widget.formWidth / 4) - 30),
         if (!widget.people.isIndividual) ...[
-          companyKindModalOpenerButton(width: (widget.formWidth / 4) - 50)
+          companyKindModalOpenerButton(width: (widget.formWidth / 4) - 30)
         ]
       ],
     );
@@ -771,18 +794,24 @@ class _PeopleModalState extends State<PeopleModal> {
                 onPressed: () {}),
             enable: false,
             widgetWidth: width,
+            widgetHeight: 38,
           ),
         ),
       ],
     );
   }
 
-  Row personalNameBox({required double width}) {
-    return Row(
-      children: [
-        firstNameBox(width: width / 2 - 20),
-        lastNameBox(width: width / 2 - 20),
-      ],
+  SizedBox personalNameBox({required double width}) {
+    return SizedBox(
+      width: width,
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          firstNameBox(width: width / 2 - 10),
+          lastNameBox(width: width / 2 - 10),
+        ],
+      ),
     );
   }
 
@@ -835,10 +864,10 @@ class _PeopleModalState extends State<PeopleModal> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        counterpartyTypeBox(width: (widget.formWidth / 4) - 50),
-        prefixBox(width: (widget.formWidth / 4) - 50),
-        nationalIDBox(width: (widget.formWidth / 4) - 12),
-        counterpartyCode(width: (widget.formWidth / 4) - 12),
+        counterpartyTypeBox(width: (widget.formWidth / 4) - 30),
+        prefixBox(width: (widget.formWidth / 4) - 30),
+        nationalIDBox(width: (widget.formWidth / 4) - 30),
+        counterpartyCode(width: (widget.formWidth / 4) - 30),
       ],
     );
   }
@@ -999,6 +1028,7 @@ class _PeopleModalState extends State<PeopleModal> {
   }
 
   addressSection() {
+    print("ASDASDASDASDSADASDASD");
     return [
       FormItemTitle(
         title: localization.otherFeatures,
@@ -1007,140 +1037,27 @@ class _PeopleModalState extends State<PeopleModal> {
         fontSize: 15,
       ),
       titleInputSpacing,
-      detailTable(),
+      CounterpartyDetailViewer(
+        key: widget.key,
+        items: widget.people.additionalDetailList
+            .where((detail) =>
+                detail.valueType == CustomerDetailType.additionalAddress.value)
+            .toList(),
+        addModalTitle: localization.addSpecifications,
+        customerDetailType: CustomerDetailType.additionalAddress,
+      ),
     ];
   }
 
-  Container detailTable() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(width: 1, color: Color(0xFFE9EBEE))),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FormItemTitle(
-                title: localization.title,
-                fontWeight: FontWeight.w900,
-                fontSize: 14,
-              ),
-              FormItemTitle(
-                title: localization.value,
-                fontWeight: FontWeight.w900,
-                fontSize: 14,
-              ),
-              TextButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.addButtonBackground,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                ),
-                onPressed: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Container(
-                    width: 80,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Color(0xFF6F42C1),
-                          size: 20,
-                        ),
-                        Container(
-                          color: Color(0xFFCED4DA),
-                          width: 1,
-                          height: 20,
-                          margin: EdgeInsets.only(left: 5, right: 2),
-                        ),
-                        Text(
-                          localization.add,
-                          style: const TextStyle(
-                              color: Color(0xFF7C848C),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          divider(dividerThickness: 1),
-          Container(
-            height: 100,
-            child: Expanded(
-                child: ListView.builder(
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FormItemTitle(
-                            title: "لورم ایپسوم",
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                          ),
-                          FormItemTitle(
-                            title: (400000 * 2).toString(),
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                          ),
-                          Container(
-                            width: 100,
-                            height: 33,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFEFEFF4),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    minimumSize: const Size.fromRadius(20),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  child: const Icon(Icons.delete_outline,
-                                      color: Color(0xFFDC3545)),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFEFEFF4),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    minimumSize: Size.fromRadius(20),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  child: const Icon(Icons.mode_outlined,
-                                      color: Color(0xFF198754)),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      divider(dividerThickness: 1)
-                    ],
-                  ),
-                );
-              },
-            )),
-          )
-        ],
-      ),
+  CounterpartyDetailViewer detailTable() {
+    return CounterpartyDetailViewer(
+      key: widget.key,
+      items: widget.people.additionalDetailList
+          .where((detail) =>
+              detail.valueType == CustomerDetailType.additionalDetail.value)
+          .toList(),
+      addModalTitle: localization.addSpecifications,
+      customerDetailType: CustomerDetailType.additionalDetail,
     );
   }
 
@@ -1154,28 +1071,6 @@ class _PeopleModalState extends State<PeopleModal> {
       }
     }
     return cityName;
-  }
-
-  void checkState() {
-    final state = context.watch<MainBloc>().state;
-    if (state is SuccessCreateCounterparty ||
-        state is SuccessUpdateCounterparty) {
-      Navigator.of(context).pop();
-    } else if (state is FailedUpdateCounterparty) {
-      debugPrint('update CounterpartyPeople error: ${state.errorMessage}');
-      //Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) =>
-          showSnack(
-              title: localization.errorTitle, message: state.errorMessage));
-    } else if (state is FailedCreateCounterparty) {
-      debugPrint('create CounterpartyPeople error: ${state.errorMessage}');
-      // Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) =>
-          showSnack(
-              title: localization.errorTitle, message: state.errorMessage));
-    } else if (state is LoadedCityList) {
-      widget.cityList = state.cityList;
-    }
   }
 
   Widget companyKindModalOpenerButton({required double width}) {
@@ -1228,6 +1123,50 @@ class _PeopleModalState extends State<PeopleModal> {
     }
 
     return revolvingFundName;
+  }
+
+  void checkState() {
+    final state = context.watch<MainBloc>().state;
+    if (state is SuccessCreateCounterparty ||
+        state is SuccessUpdateCounterparty) {
+      Navigator.of(context).pop();
+    } else if (state is FailedUpdateCounterparty) {
+      debugPrint('update CounterpartyPeople error: ${state.errorMessage}');
+      //Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    } else if (state is FailedCreateCounterparty) {
+      debugPrint('create CounterpartyPeople error: ${state.errorMessage}');
+      // Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    } else if (state is LoadedCityList) {
+      widget.cityList = state.cityList;
+    } else if (state is SuccessCreateCustomerDetail) {
+      print("X");
+      print(state.counterpartyDetail.valueType);
+      if (state.counterpartyDetail.valueType ==
+          CustomerDetailType.additionalDetail.value) {
+        widget.people.additionalDetailList.add(state.counterpartyDetail);
+      } else if (state.counterpartyDetail.valueType ==
+          CustomerDetailType.additionalAddress.value) {
+        widget.people.additionalDetailList.add(state.counterpartyDetail);
+      }
+    } else if (state is SuccessLoadCustomerDetail) {
+      widget.people.additionalDetailList = state.detailList;
+    } else if (state is SuccessLoadCustomerAddress) {
+      widget.people.additionalDetailList = state.addressList;
+    } else if (state is SuccessDeleteCustomerDetail) {
+      if (state.counterpartyDetail.valueType ==
+          CustomerDetailType.additionalDetail.value) {
+        widget.people.additionalDetailList.remove(state.counterpartyDetail);
+      } else if (state.counterpartyDetail.valueType ==
+          CustomerDetailType.additionalAddress.value) {
+        widget.people.additionalDetailList.remove(state.counterpartyDetail);
+      }
+    }
   }
 }
 

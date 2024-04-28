@@ -50,8 +50,8 @@ class Counterparty extends ITableRowData {
   String birthCertificateNumber;
   String brand;
   int type;
-
-  CounterpartyDetail? counterpartyDetail;
+  List<CounterpartyDetail> additionalDetailList =
+      List<CounterpartyDetail>.empty(growable: true);
 
   Counterparty({
     required super.id,
@@ -103,7 +103,6 @@ class Counterparty extends ITableRowData {
     required this.brand,
     required this.economicCode,
     required this.birthCertificateNumber,
-    this.counterpartyDetail,
   });
 
   factory Counterparty.empty() {
@@ -162,56 +161,56 @@ class Counterparty extends ITableRowData {
 
   Counterparty copy() {
     return Counterparty(
-        id: id,
-        code: code,
-        kind: kind,
-        address: address,
-        bankAccType: bankAccType,
-        bankCardNumber: bankCardNumber,
-        bursType: bursType,
-        cityId: cityId,
-        nationalCode: nationalCode,
-        postalCode: postalCode,
-        companyName: companyName,
-        sharePercentage: sharePercentage,
-        foundationDate: foundationDate,
-        description: description,
-        chequeCredit: chequeCredit,
-        rialCredit: rialCredit,
-        fax: fax,
-        firstName: firstName,
-        groupValueId: groupValueId,
-        responsibleBoard: responsibleBoard,
-        isActive: isActive,
-        isBoardMember: isBoardMember,
-        isEmployee: isEmployee,
-        isCustomer: isCustomer,
-        isInvestor: isInvestor,
-        isOtherParty: isOtherParty,
-        isShareholder: isShareholder,
-        isSupplier: isSupplier,
-        isLender: isLender,
-        isBorrower: isBorrower,
-        isDependent: isDependent,
-        isIntermediary: isIntermediary,
-        lastName: lastName,
-        name: name,
-        parentId: parentId,
-        passportNumber: passportNumber,
-        prefixId: prefixId,
-        jobTitle: jobTitle,
-        shebaNumber: shebaNumber,
-        registrationNumber: registrationNumber,
-        nationality: nationality,
-        detailId: detailId,
-        phone: phone,
-        type: type,
-        currencyType: currencyType,
-        customerStatus: customerStatus,
-        birthCertificateNumber: birthCertificateNumber,
-        brand: brand,
-        economicCode: economicCode,
-        counterpartyDetail: counterpartyDetail);
+      id: id,
+      code: code,
+      kind: kind,
+      address: address,
+      bankAccType: bankAccType,
+      bankCardNumber: bankCardNumber,
+      bursType: bursType,
+      cityId: cityId,
+      nationalCode: nationalCode,
+      postalCode: postalCode,
+      companyName: companyName,
+      sharePercentage: sharePercentage,
+      foundationDate: foundationDate,
+      description: description,
+      chequeCredit: chequeCredit,
+      rialCredit: rialCredit,
+      fax: fax,
+      firstName: firstName,
+      groupValueId: groupValueId,
+      responsibleBoard: responsibleBoard,
+      isActive: isActive,
+      isBoardMember: isBoardMember,
+      isEmployee: isEmployee,
+      isCustomer: isCustomer,
+      isInvestor: isInvestor,
+      isOtherParty: isOtherParty,
+      isShareholder: isShareholder,
+      isSupplier: isSupplier,
+      isLender: isLender,
+      isBorrower: isBorrower,
+      isDependent: isDependent,
+      isIntermediary: isIntermediary,
+      lastName: lastName,
+      name: name,
+      parentId: parentId,
+      passportNumber: passportNumber,
+      prefixId: prefixId,
+      jobTitle: jobTitle,
+      shebaNumber: shebaNumber,
+      registrationNumber: registrationNumber,
+      nationality: nationality,
+      detailId: detailId,
+      phone: phone,
+      type: type,
+      currencyType: currencyType,
+      customerStatus: customerStatus,
+      birthCertificateNumber: birthCertificateNumber,
+      brand: brand,
+      economicCode: economicCode,
+    );
   }
 
   void updateCode(int newCode) {
@@ -326,12 +325,6 @@ class Counterparty extends ITableRowData {
     }
   }
 
-  void updateBranchCode(String newBranchCode) {
-    if (newBranchCode.isNotEmpty) {
-      bankCardNumber = newBranchCode;
-    }
-  }
-
   void updateCardNumber(String newCardNumber) {
     if (newCardNumber.isNotEmpty) {
       bankCardNumber = newCardNumber;
@@ -340,7 +333,7 @@ class Counterparty extends ITableRowData {
 
   void updateShebaNumber(String newShebaNumber) {
     if (newShebaNumber.isNotEmpty) {
-      bankCardNumber = newShebaNumber;
+      shebaNumber = newShebaNumber;
     }
   }
 
@@ -358,7 +351,7 @@ class Counterparty extends ITableRowData {
 
   void updateBrandName(String newBrand) {
     if (newBrand.isNotEmpty) {
-      birthCertificateNumber = newBrand;
+      brand = newBrand;
     }
   }
 
@@ -368,7 +361,7 @@ class Counterparty extends ITableRowData {
 
   void updateDetailCode(int newDetailCode) {
     if (newDetailCode != 0) {
-      code = newDetailCode;
+      detailId = newDetailCode;
     }
   }
 

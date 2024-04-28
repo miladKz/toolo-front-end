@@ -53,7 +53,6 @@ class CounterpartyDto extends Counterparty {
     required super.birthCertificateNumber,
     required super.brand,
     required super.economicCode,
-    super.counterpartyDetail,
   });
 
   factory CounterpartyDto.fromMap(Map<String, dynamic> map) {
@@ -111,13 +110,6 @@ class CounterpartyDto extends Counterparty {
   }
 
   Map<String, dynamic> toMap() {
-    int birthDayCert = 0;
-    try {
-      birthDayCert = int.parse(birthCertificateNumber);
-    } catch (e) {
-      birthDayCert = 0;
-    }
-
     return <String, dynamic>{
       'ID': (id != 0) ? id : null,
       'Address': address.toString(),
@@ -166,7 +158,7 @@ class CounterpartyDto extends Counterparty {
       'ArzTypeID': currencyType,
       'CustomerStatus': customerStatus,
       'EconomicCode': economicCode,
-      'ShenasnamehNumber': birthDayCert,
+      'ShenasnamehNumber': birthCertificateNumber,
       'Brand': brand,
     }..removeWhere((dynamic key, dynamic value) =>
         (key == "id" && value == 0) || value == null);

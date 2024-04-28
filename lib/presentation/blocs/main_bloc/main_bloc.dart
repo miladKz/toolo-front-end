@@ -11,7 +11,6 @@ import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
-import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
@@ -24,7 +23,6 @@ import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_ban
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
-import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_data_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type_list_use_case.dart';
@@ -36,6 +34,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_bank_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_card_reader_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/get_customer_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
@@ -48,19 +47,24 @@ import '../../../di/di.dart';
 import '../../../domain/entities/accounting/account.dart';
 import '../../../domain/entities/accounting/accounting_action.dart';
 import '../../../domain/entities/base/available_bank_.dart';
+import '../../../domain/entities/base/enums/customer_detail_type.dart';
 import '../../../domain/entities/base/enums/standard_detail_type.dart';
 import '../../../domain/entities/base/param/standard_detail_param.dart';
 import '../../../domain/entities/common/abstracts/table_row_data_abs.dart';
 import '../../../domain/entities/common/city.dart';
 import '../../../domain/entities/common/counterparty.dart';
+import '../../../domain/entities/common/counterparty_detail.dart';
 import '../../../domain/usecases/accounting/base/fetch_city_list_use_case.dart';
 import '../../../domain/usecases/accounting/create_counter_party_use_case.dart';
+import '../../../domain/usecases/accounting/create_counterparty_detail_use_case.dart';
 import '../../../domain/usecases/accounting/delete_account_use_case.dart';
 import '../../../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
+import '../../../domain/usecases/accounting/update_counterparty_detail_use_case.dart';
 import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
+
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
@@ -101,6 +105,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnCreateStandardDetail>(_onCreateStandardDetail);
     on<OnUpdateStandardDetail>(_onUpdateStandardDetail);
     on<OnLoadCityList>(_onLoadCityListHandler);
+    on<OnLoadCustomerDetailList>(_onLoadCustomerDetailListHandler);
+    on<OnCreateCustomerDetail>(_onCreateCustomerDetailHandler);
+    on<OnUpdateCustomerDetail>(_onUpdateCustomerDetailHandler);
+    on<OnDeleteCustomerDetail>(_onDeleteCustomerDetailHandler);
   }
 
   FutureOr<void> _mainActionList(
@@ -289,11 +297,47 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnButton(isShow: true));
       CreateCounterpartyUseCase useCase = locator<CreateCounterpartyUseCase>();
       Counterparty counterparty = await useCase(event.counterparty);
+      print("01");
+      if (counterparty.kind == CounterPartyKinds.people.value) {
+        print("02");
+        event.counterparty.id = counterparty.id;
+        syncDetailListWithServer(event.counterparty);
+      }
+      print("03");
       emit(MainLoadingOnButton(isShow: false));
       emit(SuccessCreateCounterparty(counterparty));
       reGetCounterParty(counterparty);
     } catch (e) {
-      emit(FailedUpdateCounterparty(errorMessage: e.toString()));
+
+      emit(FailedCreateCounterparty(errorMessage: e.toString()));
+    }
+  }
+
+  void syncDetailListWithServer(Counterparty counterparty) async {
+    try {
+      print("XXXXXXXXX");
+      if (counterparty.additionalDetailList.isNotEmpty) {
+        print("aaaa");
+
+        for (CounterpartyDetail detailItem
+            in counterparty.additionalDetailList) {
+          print(detailItem.value);
+          detailItem.counterpartyId = counterparty.id;
+          if (detailItem.isNew) {
+            CreateCounterpartyDetailUseCase useCase =
+                locator<CreateCounterpartyDetailUseCase>();
+
+            CounterpartyDetail counterpartyDetail = await useCase(detailItem);
+            detailItem.id = counterpartyDetail.id;
+          } else if (detailItem.isModified) {
+            UpdateCounterpartyDetailUseCase useCase =
+                locator<UpdateCounterpartyDetailUseCase>();
+            await useCase(detailItem);
+          }
+        }
+      }
+    } catch (e) {
+      print("cdsdfsdf $e");
     }
   }
 
@@ -433,13 +477,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     return await useCaseFetchCounterpartyBankList();
   }
 
-  Future<List<CustomerDataDetail>> fetchCustomerDataDetailList(
-      {required CustomerDataDetailParam param}) async {
-    FetchCustomerDataDetailListUseCase useCaseFetchCustomerDataDetailList =
-        locator<FetchCustomerDataDetailListUseCase>();
-    return await useCaseFetchCustomerDataDetailList(param: param);
-  }
-
   Future<List<StandardDetail>> fetchStandardDetailList(
       {required StandardDetailParam standardDetailParamDto}) async {
     FetchStandardDetailListUseCase useCaseFetchStandardDetailList =
@@ -510,5 +547,68 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(LoadingStandardDetailList(isShow: true));
     List<City> cityList = await fetchCityListUseCase();
     emit(LoadedCityList(cityList: cityList));
+  }
+
+  FutureOr<void> _onCreateCustomerDetailHandler(
+      OnCreateCustomerDetail event, Emitter<MainState> emit) async {
+    try {
+      emit(SuccessCreateCustomerDetail(event.counterpartyDetail));
+      reGetRevolvingFundTypes();
+    } catch (e) {
+      emit(FailedCreateCustomerDetail(errorMessage: e.toString()));
+    }
+    /*  try {
+      emit(MainLoadingOnButton(isShow: true));
+      CreateCounterpartyDetailUseCase useCase =
+          locator<CreateCounterpartyDetailUseCase>();
+      CounterpartyDetail counterpartyDetail =
+          await useCase(event.counterpartyDetail);
+      emit(MainLoadingOnButton(isShow: false));
+      emit(SuccessCreateCustomerDetail(counterpartyDetail));
+      reGetRevolvingFundTypes();
+    } catch (e) {
+      emit(FailedCreateCustomerDetail(errorMessage: e.toString()));
+    }*/
+  }
+
+  FutureOr<void> _onUpdateCustomerDetailHandler(
+      OnUpdateCustomerDetail event, Emitter<MainState> emit) async {
+    try {
+      emit(SuccessUpdateCustomerDetail(event.counterpartyDetail));
+      reGetRevolvingFundTypes();
+    } catch (e) {
+      emit(FailedUpdateCustomerDetail(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onLoadCustomerDetailListHandler(
+      OnLoadCustomerDetailList event, Emitter<MainState> emit) async {
+    GetCustomerDetailListUseCase getCustomerDetailListUseCase =
+        locator<GetCustomerDetailListUseCase>();
+
+    emit(LoadingStandardDetailList(isShow: true));
+
+    List<CounterpartyDetail> customerDetailList =
+        await getCustomerDetailListUseCase(
+            customerDataDetailParam: event.customerDataDetailParam);
+
+    emit(LoadingStandardDetailList(isShow: false));
+    if (event.customerDataDetailParam.valueType ==
+        CustomerDetailType.additionalDetail) {
+      emit(SuccessLoadCustomerDetail(detailList: customerDetailList));
+    } else if (event.customerDataDetailParam.valueType ==
+        CustomerDetailType.additionalAddress) {
+      emit(SuccessLoadCustomerAddress(addressList: customerDetailList));
+    }
+  }
+
+  FutureOr<void> _onDeleteCustomerDetailHandler(
+      OnDeleteCustomerDetail event, Emitter<MainState> emit) {
+    try {
+      emit(SuccessDeleteCustomerDetail(event.counterpartyDetail));
+      reGetRevolvingFundTypes();
+    } catch (e) {
+      emit(FailedDeleteCustomerDetail(errorMessage: e.toString()));
+    }
   }
 }

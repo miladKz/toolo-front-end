@@ -25,7 +25,7 @@ class CounterpartyDetailDto extends CounterpartyDetail {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'ID': (id != 0) ? id : null,
+      'ID': (id > 0) ? id : null,
       'Title': name,
       'MoshtarianID': counterpartyId,
       'ParentID': parentId,

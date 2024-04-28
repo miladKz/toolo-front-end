@@ -12,6 +12,9 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_deta
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 
+import '../../../domain/entities/base/param/customer_data_detail_param.dart';
+import '../../models/accounting/counterparty_detail_dto.dart';
+
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
 
@@ -440,6 +443,58 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> getCounterPartyDetailList(
+      {required String token, required CustomerDataDetailParam param}) async {
+    String apiAddress =
+        "/api/base/bank/list?MoshtarianID=${param.customerId}&ValueType=${param.valueType}";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      log('getCounterPartyDetailList :${getData(response)}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> createCounterPartyDetail(
+      {required String token, required CounterpartyDetailDto param}) async {
+    String apiAddress = "/api/acc/moshtarian-detail";
+    try {
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log(response.data);
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log('create CounterpartyDetail msg: $e}');
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> updateCounterpartyDetail(
+      {required String token, required CounterpartyDetailDto param}) async {
+    String apiAddress = "/api/acc/moshtarian-detail";
+    try {
+      log(param.toMap());
+      Response<dynamic> response = await httpClient.put(
+        apiAddress,
+        data: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log('update CounterpartyDetail msg: ${response.data}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log('update standardDetail msg: $e}');
       throw HttpException(e.toString());
     }
   }

@@ -53,7 +53,6 @@ class RevolvingFund extends Counterparty {
           birthCertificateNumber: counterparty.birthCertificateNumber,
           economicCode: counterparty.economicCode,
           brand: counterparty.brand,
-          counterpartyDetail: counterparty.counterpartyDetail,
         );
 
   @override

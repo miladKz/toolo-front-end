@@ -261,3 +261,92 @@ class LoadedCityList extends MainState {
   @override
   List<Object?> get props => cityList;
 }
+
+class SuccessLoadCustomerDetail extends MainState {
+  final List<CounterpartyDetail> detailList;
+
+  SuccessLoadCustomerDetail({required this.detailList});
+
+  @override
+  List<Object?> get props => [detailList];
+}
+
+class SuccessLoadCustomerAddress extends MainState {
+  final List<CounterpartyDetail> addressList;
+
+  SuccessLoadCustomerAddress({required this.addressList});
+
+  @override
+  List<Object?> get props => [addressList];
+}
+
+class FailedLoadCustomerDetail extends MainState {
+  final String errorMessage;
+
+  FailedLoadCustomerDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessCreateCustomerDetail extends MainState {
+  final CounterpartyDetail counterpartyDetail;
+
+  SuccessCreateCustomerDetail(this.counterpartyDetail);
+
+  @override
+  List<Object?> get props => [counterpartyDetail];
+}
+
+class FailedCreateCustomerDetail extends MainState {
+  final String errorMessage;
+
+  FailedCreateCustomerDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessUpdateCustomerDetail extends MainState {
+  final CounterpartyDetail counterpartyDetail;
+
+  SuccessUpdateCustomerDetail(this.counterpartyDetail);
+
+  @override
+  List<Object?> get props => [counterpartyDetail];
+}
+
+class FailedUpdateCustomerDetail extends MainState {
+  final String errorMessage;
+
+  FailedUpdateCustomerDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SuccessDeleteCustomerDetail extends MainState {
+  final CounterpartyDetail counterpartyDetail;
+
+  SuccessDeleteCustomerDetail(this.counterpartyDetail);
+
+  @override
+  List<Object?> get props => [counterpartyDetail];
+}
+
+class FailedDeleteCustomerDetail extends MainState {
+  final String errorMessage;
+
+  FailedDeleteCustomerDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [errorMessage];
+}
+class FailedSyncCustomerDetail extends MainState {
+  final String errorMessage;
+
+  FailedSyncCustomerDetail({required this.errorMessage});
+
+  @override
+  List<Object?> get props => [errorMessage];
+}

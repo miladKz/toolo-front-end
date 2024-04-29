@@ -297,31 +297,24 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoadingOnButton(isShow: true));
       CreateCounterpartyUseCase useCase = locator<CreateCounterpartyUseCase>();
       Counterparty counterparty = await useCase(event.counterparty);
-      print("01");
       if (counterparty.kind == CounterPartyKinds.people.value) {
-        print("02");
         event.counterparty.id = counterparty.id;
         syncDetailListWithServer(event.counterparty);
       }
-      print("03");
       emit(MainLoadingOnButton(isShow: false));
       emit(SuccessCreateCounterparty(counterparty));
       reGetCounterParty(counterparty);
     } catch (e) {
-
+      debugPrint("createCounterpartyHandler error: $e");
       emit(FailedCreateCounterparty(errorMessage: e.toString()));
     }
   }
 
   void syncDetailListWithServer(Counterparty counterparty) async {
     try {
-      print("XXXXXXXXX");
       if (counterparty.additionalDetailList.isNotEmpty) {
-        print("aaaa");
-
         for (CounterpartyDetail detailItem
             in counterparty.additionalDetailList) {
-          print(detailItem.value);
           detailItem.counterpartyId = counterparty.id;
           if (detailItem.isNew) {
             CreateCounterpartyDetailUseCase useCase =
@@ -337,7 +330,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         }
       }
     } catch (e) {
-      print("cdsdfsdf $e");
+      debugPrint("syncDetailListWithServer error: $e");
     }
   }
 

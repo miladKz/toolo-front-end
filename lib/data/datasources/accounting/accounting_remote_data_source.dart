@@ -473,7 +473,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log(response.data);
+      log('create CounterpartyDetail msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('create CounterpartyDetail msg: $e}');

@@ -1145,8 +1145,6 @@ class _PeopleModalState extends State<PeopleModal> {
     } else if (state is LoadedCityList) {
       widget.cityList = state.cityList;
     } else if (state is SuccessCreateCustomerDetail) {
-      print("X");
-      print(state.counterpartyDetail.valueType);
       if (state.counterpartyDetail.valueType ==
           CustomerDetailType.additionalDetail.value) {
         widget.people.additionalDetailList.add(state.counterpartyDetail);

@@ -229,8 +229,9 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse = await remoteDataSource
           .createCounterParty(token: token, param: counterpartyDto);
       if (serverResponse.isSuccess) {
-        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
-        return CounterpartyDto.fromMap(itemsAsMap);
+        int id = serverResponse.data!.findAsInt('ID');
+        counterparty.id = id;
+        return counterparty;
       } else {
         throw Exception();
       }

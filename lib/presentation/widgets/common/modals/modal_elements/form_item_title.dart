@@ -16,10 +16,13 @@ class FormItemTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(
-          color: textColor, fontSize: fontSize, fontWeight: fontWeight),
+    return Expanded(
+      child: Text(
+        title,
+        maxLines: 1,
+        style: TextStyle(
+            color: textColor, fontSize: fontSize, fontWeight: fontWeight,overflow: TextOverflow.ellipsis),
+      ),
     );
   }
 }

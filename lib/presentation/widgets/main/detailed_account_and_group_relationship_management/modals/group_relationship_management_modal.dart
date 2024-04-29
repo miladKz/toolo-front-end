@@ -8,8 +8,8 @@ import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_const
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 
 import '../../../../../main.dart';
+import '../../../common/modals/modal_elements/check_box_form.dart';
 import '../../../common/modals/modal_elements/drop_down_generic.dart';
-import '../../../common/modals/modal_elements/form_check_box.dart';
 import '../../../common/modals/modal_elements/modal_action_buttons.dart';
 
 class ModalGroupRelationshipManagement extends StatelessWidget {

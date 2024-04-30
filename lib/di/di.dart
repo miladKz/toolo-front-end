@@ -54,6 +54,7 @@ import '../domain/usecases/accounting/update_counter_party_use_case.dart';
 import '../domain/usecases/accounting/update_counterparty_detail_use_case.dart';
 import '../domain/usecases/auth/get_token_usecase.dart';
 import '../presentation/blocs/main_bloc/main_bloc.dart';
+import '../presentation/blocs/report_bloc/report_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -71,6 +72,7 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton<AuthBloc>(() => AuthBloc());
   locator.registerLazySingleton<MainBloc>(() => MainBloc());
   locator.registerLazySingleton<FiscalYearBloc>(() => FiscalYearBloc());
+  locator.registerLazySingleton<ReportBloc>(() => ReportBloc());
   locator.registerLazySingleton<ThemeData>(() => Theme.of(Get.context!));
 
   //AuthUseCases

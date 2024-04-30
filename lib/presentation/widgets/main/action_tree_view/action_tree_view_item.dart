@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/constants/color_constants.dart';
+import 'package:toolo_gostar/presentation/pages/screen_report.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_builder.dart';
 
 import '../../../../gen/assets.gen.dart';
+import '../../../blocs/report_bloc/report_bloc.dart';
 
 class ActionsTreeViewItem extends StatefulWidget {
   final AccountingAction item;
   final double fontSize;
   final double textScale;
   final Function() onTap;
- final bool isSelected;
+  final bool isSelected;
 
   const ActionsTreeViewItem({
     required this.isSelected,
@@ -23,7 +27,6 @@ class ActionsTreeViewItem extends StatefulWidget {
     required this.onTap,
     super.key,
   });
-
 
   @override
   State<ActionsTreeViewItem> createState() => _ActionsTreeViewItemState();
@@ -145,6 +148,11 @@ void callApiByEndpoint(String endPoint) {
     locator
         .get<MainBloc>()
         .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+  } else if (endPoint.contains('گزارشات و فهرستها')) {
+    Get.to(BlocProvider.value(
+      value: locator.get<ReportBloc>(),
+      child: ScreenReport(),
+    ));
   } else {
     locator
         .get<MainBloc>()

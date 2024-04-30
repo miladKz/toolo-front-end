@@ -9,8 +9,10 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/gen/fonts.gen.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
+import 'package:toolo_gostar/presentation/pages/screen_report.dart';
 import 'package:toolo_gostar/presentation/pages/test_screen.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
@@ -53,7 +55,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return screenMain();
+        return screenReport();
       }),
     );
   }
@@ -88,6 +90,15 @@ Widget screenMain() {
       return locator<MainBloc>();
     },
     child: const ScreenMain(),
+  );
+}
+
+Widget screenReport() {
+  return BlocProvider(
+    create: (_) {
+      return locator<ReportBloc>();
+    },
+    child: const ScreenReport(),
   );
 }
 

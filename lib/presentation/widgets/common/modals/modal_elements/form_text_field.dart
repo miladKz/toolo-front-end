@@ -12,6 +12,7 @@ class FormTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final int maxLines;
+  final VoidCallback? onEditingComplete;
   FormTextField(
       {
          this.widgetWidth,
@@ -23,7 +24,7 @@ class FormTextField extends StatelessWidget {
       this.controller,
       super.key,
       this.prefixIcon,
-      this.suffixIcon,  this.maxLines=1,});
+      this.suffixIcon,  this.maxLines=1, this.onEditingComplete,});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class FormTextField extends StatelessWidget {
               return errorText;
             }
           },
+          onEditingComplete: onEditingComplete,
           decoration: InputDecoration(
               hintText: textHint,
               suffixIcon: suffixIcon,

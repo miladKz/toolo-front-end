@@ -9,5 +9,6 @@ enum ToolBarEnum {
   revolvingFundManagementModalToolbar,
   cardReaderManagementModalToolbar,
   accountDocumentMainToolbar,
+  accountDocumentDetailMainToolbar,
   standardDetailToolbar,
 }

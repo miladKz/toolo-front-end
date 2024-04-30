@@ -43,8 +43,9 @@ class _WorkspaceState extends State<Workspace> {
           collapsedIconColor: const Color(0xFFBD8AD0),
           tilePadding:
               const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 4),
-          title: Row(
+          title: Flex(
             mainAxisAlignment: MainAxisAlignment.start,
+            direction: Axis.horizontal,
             children: [
               Expanded(
                 child: Row(
@@ -60,7 +61,7 @@ class _WorkspaceState extends State<Workspace> {
                     ),
                     Text(
                       localization.titleDesktop,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF7B7B84)),

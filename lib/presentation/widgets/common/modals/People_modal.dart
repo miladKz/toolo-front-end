@@ -371,7 +371,7 @@ class _PeopleModalState extends State<PeopleModal> {
               child: Column(
             children: [
               FormCheckBox(
-                  title: localization.isDependent,
+                  title: localization.isRelatedParty,
                   value: false,
                   onChange: (value) {
                     widget.people.isDependent = value;
@@ -740,9 +740,9 @@ class _PeopleModalState extends State<PeopleModal> {
   }
 
   Column bursType({required double width}) {
-    List<BursType> bursTypeList = baseDataModel.bursTypeList;
+    List<BourseType> bursTypeList = baseDataModel.bourseTypeList;
 
-    BursType? selectedBursType = bursTypeList
+    BourseType? selectedBursType = bursTypeList
         .firstWhere((element) => element.id == widget.people.bursType);
 
     return Column(
@@ -751,7 +751,7 @@ class _PeopleModalState extends State<PeopleModal> {
       children: [
         FormItemTitle(title: localization.stockMarketStatus),
         titleInputSpacing,
-        GenericDropDown<BursType>(
+        GenericDropDown<BourseType>(
           isEnable: widget.isActive,
           itemWidth: width,
           value: selectedBursType,

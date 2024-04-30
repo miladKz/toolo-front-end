@@ -1,6 +1,9 @@
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
+import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/people.dart';
 import 'package:toolo_gostar/main.dart';
@@ -21,6 +24,47 @@ class DataTableViewModelFactory {
     ];
 
     return DataTableViewModel(labels: labels, data: cities);
+  }
+
+  static DataTableViewModel createTableViewModelFromAccountingDocumentMaster(
+      {required List<DocumentMaster> documentMaster}) {
+
+
+    final List<String> labels = [
+      localization.titleReference,
+      localization.titleDaily,
+      localization.titleMonthly,
+      localization.titleDocument,
+      localization.titleDocumentDate,
+      localization.status,
+      localization.titleSumTotal,
+      localization.titleDetailDocument,
+      localization.titleSeparationType,
+      localization.titleDocumentType,
+      localization.titleCeilingNumber,
+      localization.titleExporterModule,
+      localization.titleNote,
+    ];
+
+    return DataTableViewModel(labels: labels, data: documentMaster);
+  }
+  static DataTableViewModel createTableViewModelFromAccountingDocumentMasterDetail(
+      {required List<DocumentMasterDetail> documentMasterDetail,}) {
+
+
+    final List<String> labels = [
+      localization.accountCode,
+      localization.titleAccountName,
+      localization.titleDetailRow,
+      localization.titleDebtorAmount,
+      localization.titleCreditorAmount,
+      localization.titleArticle,
+      localization.titleCurrencyAmount,
+      localization.titleCurrencyType,
+      localization.titleExchangeParity,
+    ];
+
+    return DataTableViewModel(labels: labels, data: documentMasterDetail);
   }
 
   static DataTableViewModel createTableViewModelFromPersonList(
@@ -137,5 +181,17 @@ class DataTableViewModelFactory {
       List<StandardDetail> standardDetailList) {
     final List<String> labels = [localization.explanation];
     return DataTableViewModel(labels: labels, data: standardDetailList);
+  }
+
+  static DataTableViewModel createTableViewModelFromAccountHaveTafziliGroup({required List<AccountHaveTafziliGroup> accountList}) {
+
+    final List<String> labels = [
+      localization.code,
+      localization.name,
+      localization.description
+    ];
+
+
+    return DataTableViewModel(labels: labels, data: accountList);
   }
 }

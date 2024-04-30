@@ -31,6 +31,11 @@ class AccountingAction {
   void updatePinned(bool pinned){
     isPinned = pinned;
   }
+
+  @override
+  String toString() {
+    return 'AccountingAction{id: $id, actionCode: $actionCode, actionName: $actionName, code: $code, categoryIndex: $categoryIndex, description: $description, endPoint: $endPoint, hasChildren: $hasChildren, children: $children, levelIndex: $levelIndex, orderIndex: $orderIndex, parentCode: $parentCode, isPinned: $isPinned}';
+  }
 }
 
 

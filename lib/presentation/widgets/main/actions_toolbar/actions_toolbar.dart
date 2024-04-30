@@ -6,6 +6,7 @@ import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_i
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/bank_branch_main_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_data_table_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/card_reader_main_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/document_detail_main_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/floating_detail_main_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/group_relationship_main_toolbar_action_items.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/group_relationship_modal_toolbar_action_items.dart';
@@ -86,6 +87,12 @@ Widget myCustomToolbar(
             case ToolBarEnum.accountDocumentMainToolbar:
               {
                 toolbarActionItems = accountDocumentMainToolbarActionItems(
+                    context: context, maxWidth: maxWidth);
+                break;
+              }
+            case ToolBarEnum.accountDocumentDetailMainToolbar:
+              {
+                toolbarActionItems = documentDetailMainToolbarActionItems(
                     context: context, maxWidth: maxWidth);
                 break;
               }

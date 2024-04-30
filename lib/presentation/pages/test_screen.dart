@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
+import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
+import 'package:toolo_gostar/presentation/widgets/main/documents/modals/new_document_row_modal.dart';
 
 import '../../domain/entities/common/city.dart';
-import '../../domain/entities/common/people.dart';
-import '../../main.dart';
 import '../factories/table_view_model_factory.dart';
 import '../view_models/table_view_model.dart';
-import '../widgets/common/modals/People_modal.dart';
-import '../widgets/common/modals/modal_elements/custom_dialog.dart';
-import '../widgets/main/actions_toolbar/actions_toolbar.dart';
-import '../widgets/main/actions_toolbar/toolbar_enum.dart';
 
 class TestScreen extends StatelessWidget {
   TestScreen({super.key});
@@ -32,45 +29,41 @@ class TestScreen extends StatelessWidget {
     ]);
 
     return Material(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              myCustomToolbar(
-                  toolBarEnum:
-                      ToolBarEnum.groupRelationshipManagementModalToolbar),
-              const SizedBox(
-                height: 50,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        //double formWidth = MediaQuery.of(context).size.width;
-                        double formWidth = 800;
-                        return CustomDialog(
-                          title: localization
-                              .titleGroupRelationshipAndLastLevelAccountCode,
-                          width: formWidth,
-                          body: PeopleModal(
-                            people: People(counterparty: Counterparty.empty()),
-                            formWidth: formWidth,
-                            formKey: _formKey,
-                            isActive: true,
-                          ),
-                        ); // Pass your account data here
-                      },
-                    );
-                  },
-                  child: const Text("click")),
-            ],
-          ),
+        child: Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          children: [
+            TextButton(
+                onPressed: () {
+                  JalaliDatePicker.convertJalaliToGregorian(
+                      dateAsStr: '1403/02/09');
+                  JalaliDatePicker.convertJalaliToGregorian(
+                      dateAsStr: '1370/12/30');
+                  JalaliDatePicker.convertJalaliToGregorian(
+                      dateAsStr: '1350/01/31');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      //double formWidth = MediaQuery.of(context).size.width;
+                      double formWidth = 800;
+                      return CustomDialog(
+                        title: localization.titleNewRow,
+                        width: formWidth,
+                        body: NewDocumentRowModal(
+                          formWidth: formWidth,
+                          formKey: _formKey,
+                          voucherMSID: 10,
+                          onCreateOrUpdateStatus: (bool isSuccess) {},
+                        ),
+                      ); // Pass your account data here
+                    },
+                  );
+                },
+                child: const Text("click")),
+          ],
         ),
       ),
-    );
+    ));
   }
 }

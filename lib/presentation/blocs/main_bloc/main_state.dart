@@ -14,7 +14,8 @@ class MainLoadingOnView extends MainState {
 
   MainLoadingOnView({required this.isShow});
 
-  List<Object?> get props => [];
+  @override
+  List<Object?> get props => [isShow];
 }
 
 class MainLoadingOnButton extends MainState {
@@ -22,7 +23,8 @@ class MainLoadingOnButton extends MainState {
 
   MainLoadingOnButton({required this.isShow});
 
-  List<Object?> get props => [];
+  @override
+  List<Object?> get props => [isShow];
 }
 
 class LoadingAvailableBankModalData extends MainState {
@@ -62,6 +64,7 @@ class AccountingActionsSuccess extends MainState {
 
   AccountingActionsSuccess(this.actions);
 
+  @override
   List<Object?> get props => [];
 }
 
@@ -70,6 +73,7 @@ class MainAccountSuccess extends MainState {
 
   MainAccountSuccess(this.accounts);
 
+  @override
   List<Object?> get props => [];
 }
 
@@ -78,6 +82,7 @@ class MainError extends MainState {
 
   MainError(this.appException);
 
+  @override
   List<Object?> get props => [];
 }
 
@@ -190,6 +195,7 @@ class SuccessUpdateCounterparty extends MainState {
   List<Object?> get props => [counterparty];
 }
 
+
 class FailedUpdateCounterparty extends MainState {
   final String errorMessage;
 
@@ -197,6 +203,33 @@ class FailedUpdateCounterparty extends MainState {
 
   @override
   List<Object?> get props => [];
+}
+
+class CreateDocumentMasterStatus extends MainState {
+  final bool isSuccess;
+
+  CreateDocumentMasterStatus({required this.isSuccess});
+
+  @override
+  List<Object?> get props => [isSuccess];
+}
+
+class SuccessFetchAccountHaveTafziliGroup extends MainState {
+  final List<AccountHaveTafziliGroup> items;
+
+  SuccessFetchAccountHaveTafziliGroup({required this.items});
+
+  @override
+  List<Object?> get props => [items];
+}
+class SuccessFetchTafziliGroupAndChildList extends MainState {
+  final List<TafziliGroupAndChildren> items;
+
+  SuccessFetchTafziliGroupAndChildList({required this.items});
+
+
+  @override
+  List<Object?> get props => [items];
 }
 
 class SuccessDeletedCounterparty extends MainState {

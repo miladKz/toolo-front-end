@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/new_document.dart';
-import 'package:toolo_gostar/presentation/widgets/common/modals/revolving_fund_modal.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/base_toolbar_action_items.dart';
-
+import 'package:toolo_gostar/presentation/widgets/main/main_base_body.dart';
+DocumentMaster? selectedDocumentMaster;
 List<Widget> accountDocumentMainToolbarActionItems(
     {required BuildContext context, required double maxWidth}) {
   double objectCount = 5 + 1;
@@ -19,14 +19,8 @@ List<Widget> accountDocumentMainToolbarActionItems(
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return CustomDialog(
-                title: localization.titleNewDocument,
-                width: maxWidth,
-                body: NewDocumentModal(
-                  formWidth: maxWidth,
-                  formKey: GlobalKey<FormState>(),
-                ),
-              );
+              return ShowCreateOrUpdateDocumentMasterModal(
+                  maxWidth: maxWidth, isCreate: true);
             });
       },
     ),
@@ -43,7 +37,14 @@ List<Widget> accountDocumentMainToolbarActionItems(
       context,
       onTap: () {},
     ),
-    editActionItem(objectWith, context, onTap: () {}),
+    editActionItem(objectWith, context, onTap: () {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ShowCreateOrUpdateDocumentMasterModal(
+                maxWidth: maxWidth, isCreate: false,documentMaster: selectedDocumentMaster,);
+          });
+    }),
     sendActionItem(
       objectWith,
       onTap: () {},

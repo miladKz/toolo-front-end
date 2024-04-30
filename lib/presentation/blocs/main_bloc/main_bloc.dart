@@ -6,10 +6,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/body/create_document_master_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
+import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/detail_group.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
+import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
 import 'package:toolo_gostar/domain/entities/auth/user_data.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
@@ -18,10 +25,12 @@ import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_par
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/account_list_have_tafzili_group_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/create_standard_detail_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_bank_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_category_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
@@ -29,7 +38,9 @@ import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_document_type
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_person_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_standard_detail_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/create_document_master_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/delete_counter_party_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/document_master_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_accounting_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_bank_list.dart';
@@ -37,6 +48,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_card_reader_list.dar
 import 'package:toolo_gostar/domain/usecases/accounting/get_customer_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/tafzili_group_and_child_list_with_account_id_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_account_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/update_counter_party_use_case.dart';
 import 'package:toolo_gostar/presentation/view_models/base_data_model.dart';
@@ -64,7 +76,6 @@ import '../../../domain/usecases/auth/get_user_data_usecase.dart';
 import '../../widgets/main/workspace_menu.dart';
 
 part 'main_event.dart';
-
 part 'main_state.dart';
 
 List<Account> accountItems = List.empty(growable: true);
@@ -81,7 +92,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   List<StandardDetail>? standardDetailList;
 
+  List<DocumentMaster> documentMasterList = List.empty(growable: true);
+
   ITableRowData? selectedCounterparty;
+
+  ApiEnum lastApiCalled = ApiEnum.unknown;
 
   MainBloc() : super(MainInitial()) {
     on<MainActionList>(_mainActionList);
@@ -99,6 +114,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<OnUpdateCounterparty>(_updateCounterpartyHandler);
     on<OnDeleteCounterparty>(_deleteCounterpartyHandler);
     on<FetchBaseData>(_fetchBaseData);
+    on<MainFetchAccountHaveTafziliGroup>(_fetchAccountHaveTafziliGroup);
+    on<MainFetchTafziliGroupAndChildListWithAccountId>(
+        _fetchTafziliGroupAndChildListWithAccountId);
+    on<MainCreateDocumentMaster>(_createDocumentMaster);
     on<OnLoadAvailableBankModalData>(_onLoadAvailableBankModalData);
     on<OnLoadRevolvingFundTypes>(_onLoadRevolvingFundType);
     on<OnLoadCompanyTypes>(_onLoadCompanyType);
@@ -203,10 +222,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       GetRevolvingFundListUseCase useCase =
           locator<GetRevolvingFundListUseCase>();
       counterpartyList = await useCase();
+    } else if (event.apiEnum == ApiEnum.accountDocument) {
+      FetchDocumentMasterListUseCase useCase =
+          locator<FetchDocumentMasterListUseCase>();
+      documentMasterList = await useCase(
+          documentMasterParamDto: DocumentMasterParamDto(bargeTypeID: -1));
     }
     emit(ApiChange(apiEnum: ApiEnum.unknown));
     await Future.delayed(const Duration(milliseconds: 10));
     emit(ApiChange(apiEnum: event.apiEnum));
+    lastApiCalled = event.apiEnum;
     await Future.delayed(const Duration(milliseconds: 100));
     emit(MainLoadingOnView(isShow: false));
   }
@@ -330,7 +355,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         }
       }
     } catch (e) {
-      debugPrint("syncDetailListWithServer error: $e");
+      emit(FailedUpdateCounterparty(errorMessage: e.toString()));
     }
   }
 
@@ -392,7 +417,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _fetchBaseData(
       FetchBaseData event, Emitter<MainState> emit) async {
     List<BankAccType> bankAccTypeList = await fetchBankAccTypeList();
-    List<BursType> bourseTypeList = await fetchBourseTypeList();
+    List<BourseType> bourseTypeList = await fetchBourseTypeList();
     List<CurrencyType> currencyTypeList = await fetchCurrencyTypeList();
     List<DetailGroupRoot> detailGroupRootList =
         await fetchDetailGroupRootList();
@@ -401,17 +426,18 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     List<Prefix> prefixList = await fetchPrefixList();
     List<CustomerStatus> customerStatusList = await fetchCustomerStatusList();
     List<Counterparty> counterpartyBankList = await fetchCounterpartyBankList();
-
+    List<CategoryModel> categoryList = await fetchCategoryList();
     baseDataModel = BaseDataModel(
         bankAccTypeList: bankAccTypeList,
-        bursTypeList: bourseTypeList,
+        bourseTypeList: bourseTypeList,
         currencyTypeList: currencyTypeList,
         customerStatusList: customerStatusList,
         detailGroupRootList: detailGroupRootList,
         documentTypeList: documentTypeList,
         personTypeList: personTypeList,
         prefixList: prefixList,
-        counterpartyBankList: counterpartyBankList);
+        counterpartyBankList: counterpartyBankList,
+        categoryList: categoryList);
 
     debugPrint(baseDataModel.toString());
   }
@@ -422,7 +448,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     return await useCaseFetchBankAccTypeList();
   }
 
-  Future<List<BursType>> fetchBourseTypeList() async {
+  Future<List<BourseType>> fetchBourseTypeList() async {
     FetchBourseTypeListUseCase useCaseFetchBourseTypeList =
         locator<FetchBourseTypeListUseCase>();
     return await useCaseFetchBourseTypeList();
@@ -458,6 +484,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     return await useCaseFetchPrefixList();
   }
 
+  Future<List<CategoryModel>> fetchCategoryList() async {
+    FetchCategoryListUseCase useCase = locator<FetchCategoryListUseCase>();
+    return await useCase();
+  }
+
   Future<List<CustomerStatus>> fetchCustomerStatusList() async {
     FetchCustomerStatusListUseCase useCaseFetchCustomerStatusList =
         locator<FetchCustomerStatusListUseCase>();
@@ -471,7 +502,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   }
 
   Future<List<StandardDetail>> fetchStandardDetailList(
-      {required StandardDetailParam standardDetailParamDto}) async {
+      {required StandardDetailParamDto standardDetailParamDto}) async {
     FetchStandardDetailListUseCase useCaseFetchStandardDetailList =
         locator<FetchStandardDetailListUseCase>();
     return await useCaseFetchStandardDetailList(
@@ -602,6 +633,60 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       reGetRevolvingFundTypes();
     } catch (e) {
       emit(FailedDeleteCustomerDetail(errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _createDocumentMaster(
+      MainCreateDocumentMaster event, Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnView(isShow: true));
+      //emit(MainLoadingOnButton(isShow: true));
+      CreateDocumentMasterUseCase useCase =
+          locator<CreateDocumentMasterUseCase>();
+      bool isSuccess =
+          await useCase(documentMasterBodyDto: event.documentMasterBodyDto);
+      emit(MainLoadingOnView(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 20));
+      emit(CreateDocumentMasterStatus(isSuccess: isSuccess));
+    } catch (e) {
+      emit(CreateDocumentMasterStatus(isSuccess: false));
+    }
+  }
+
+/*  locator.registerLazySingleton(() => FetchTafziliGroupAndChildListWithAccountIdUseCase(locator()));
+  locator.registerLazySingleton(() => FetchAccountListHaveTafziliGroupUseCase(locator()));*/
+
+  FutureOr<void> _fetchAccountHaveTafziliGroup(
+      MainFetchAccountHaveTafziliGroup event, Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnView(isShow: true));
+      //emit(MainLoadingOnButton(isShow: true));
+      FetchAccountListHaveTafziliGroupUseCase useCase =
+          locator<FetchAccountListHaveTafziliGroupUseCase>();
+      List<AccountHaveTafziliGroup> items = await useCase();
+      emit(MainLoadingOnView(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 20));
+      emit(SuccessFetchAccountHaveTafziliGroup(items: items));
+    } catch (e) {
+      emit(MainLoadingOnView(isShow: false));
+    }
+  }
+
+  FutureOr<void> _fetchTafziliGroupAndChildListWithAccountId(
+      MainFetchTafziliGroupAndChildListWithAccountId event,
+      Emitter<MainState> emit) async {
+    try {
+      emit(MainLoadingOnView(isShow: true));
+      //emit(MainLoadingOnButton(isShow: true));
+      FetchTafziliGroupAndChildListWithAccountIdUseCase useCase =
+          locator<FetchTafziliGroupAndChildListWithAccountIdUseCase>();
+      List<TafziliGroupAndChildren> items =
+          await useCase(accountId: event.accountId);
+      emit(MainLoadingOnView(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 20));
+      emit(SuccessFetchTafziliGroupAndChildList(items: items));
+    } catch (e) {
+      emit(MainLoadingOnView(isShow: false));
     }
   }
 }

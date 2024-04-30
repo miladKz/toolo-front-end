@@ -1,17 +1,24 @@
-import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/gen/assets.gen.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/fake_data/fake_data.dart';
+import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/custom_view_with_data_table.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/custom_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/account_tree_view/account_tree_view_builder.dart';
 import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/show_account_form.dart';
 import 'package:toolo_gostar/presentation/widgets/main/accounting_modals/show_group_form.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_pinned_menu.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/actions_toolbar.dart';
 import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_items/account_document_main_toolbar_action_items.dart';
+import 'package:toolo_gostar/presentation/widgets/main/documents/modals/create_or_update_document_master_modal.dart';
 import 'package:toolo_gostar/presentation/widgets/main/floating_detail_tree_view/floating_detail_tree_view.dart';
 import 'package:toolo_gostar/presentation/widgets/main/profile.dart';
 import 'package:toolo_gostar/presentation/widgets/main/search_box.dart';
@@ -338,6 +345,16 @@ class _LeftSectionViewState extends State<LeftSectionView> {
           );
         }  case ApiEnum.accountDocument:
         {
+          /*    showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ShowCreateOrUpdateDocumentMasterModal(
+                    maxWidth: maxWidth, isCreate: true);
+              });*/
+          DataTableViewModel dataTableViewModel = DataTableViewModelFactory
+              .createTableViewModelFromAccountingDocumentMaster(
+              documentMaster: mainBloc.documentMasterList);
+
           return Column(
             children: [
               myCustomToolbar(
@@ -348,7 +365,16 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
-                    viewModel: FakeData.getAccountingDocumentMain(),
+                    onTap: (data) {
+                      selectedDocumentMaster = data as DocumentMaster;
+                    },
+                    onDoubleTap: (data) {
+                      selectedDocumentMaster = data as DocumentMaster;
+
+                      gotoDocumentDetailScreen(documentMaster: data);
+                    },
+                    viewModel: dataTableViewModel,
+                    //viewModel: FakeData.getAccountingDocumentMain(),
                     formKey: formKey),
               ),
             ],
@@ -373,13 +399,26 @@ class _LeftSectionViewState extends State<LeftSectionView> {
       });
     }
   }
+
+  void gotoDocumentDetailScreen({required DocumentMaster documentMaster}) {
+
+
+    Get.to(BlocProvider(
+      create: (_) {
+        return locator.get<DocDetailBloc>();
+      },
+      child: ScreenDocumentDetail(
+        documentMaster: documentMaster,
+      ),
+    ));
+  }
 }
 
 AccountTreeViewBuilder accountTreeView = AccountTreeViewBuilder();
 AccountDetailView accountDetailView = AccountDetailView();
 
 class AccountWidget extends StatelessWidget {
-  AccountWidget({super.key});
+  const AccountWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -452,35 +491,48 @@ Widget emptyData() {
   ));
 }
 
-/*BlocBuilder<MainBloc, MainState> accountDetailView() {
-  return BlocBuilder<MainBloc, MainState>(
-    buildWhen: (previous, current) {
-      return current is MainAccountDetailInFormVisibility ||
-          current is MainUpdatedAccountSuccess;
-    },
-    builder: (context, state) {
-      bool isDetailFormState = (state is MainAccountDetailInFormVisibility);
-      if (isDetailFormState && !state.isShow) {
-        return const SizedBox().visible(false);
-      } else {
-        if (isDetailFormState && state.account?.accountLevel == 0) {
-          return ShowGroupForm(account: state.account!);
-        } else if (state is MainAccountDetailInFormVisibility) {
-          return ShowAccountForm(
-            account: state.account!,
-          );
-        }
+class ShowCreateOrUpdateDocumentMasterModal extends StatelessWidget {
+  ShowCreateOrUpdateDocumentMasterModal({super.key,
+    required this.maxWidth,
+    required this.isCreate,
+    this.documentMaster});
 
-        if (state is MainUpdatedAccountSuccess &&
-            state.account.accountLevel == 0) {
-          return ShowGroupForm(account: state.account);
-        } else if (state is MainUpdatedAccountSuccess) {
-          return ShowAccountForm(
-            account: state.account,
+  final double maxWidth;
+  final bool isCreate;
+  DocumentMaster? documentMaster;
+  final mainBloc = locator.get<MainBloc>();
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget body = isCreate
+        ? CreateOrUpdateDocumentMasterModal.create(
+      formWidth: maxWidth,
+      formKey: GlobalKey<FormState>(),
+      onCreateOrUpdateStatus: (isSuccess) {
+        onCreateOrUpdateStatus(isSuccess);
+      },
+    )
+        : CreateOrUpdateDocumentMasterModal.update(
+      formWidth: maxWidth,
+      formKey: GlobalKey<FormState>(),
+      documentMaster: documentMaster,
+      onCreateOrUpdateStatus: (isSuccess) {
+        onCreateOrUpdateStatus(isSuccess);
+      },
           );
-        }
-        return const SizedBox().visible(false);
-      }
-    },
-  );
-}*/
+
+    return BlocProvider<MainBloc>.value(
+      value: mainBloc,
+      child: CustomDialog(
+          title: localization.titleNewDocument, width: maxWidth, body: body),
+    );
+  }
+
+  void onCreateOrUpdateStatus(bool isSuccess) {
+    if (mainBloc.lastApiCalled == ApiEnum.accountDocument) {
+      locator
+          .get<MainBloc>()
+          .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+    }
+  }
+}

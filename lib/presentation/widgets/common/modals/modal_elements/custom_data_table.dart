@@ -7,18 +7,28 @@ import '../../../../blocs/main_bloc/main_bloc.dart';
 import '../../../../view_models/table_view_model.dart';
 
 class CustomDataTable extends StatefulWidget {
+  CustomDataTable(
+      {super.key,
+      required this.viewModel,
+      this.onTap,
+      this.onDoubleTap,
+      this.backgroundColor = Colors.white});
+
+  /// Row tap handler, won't be called if tapped cell has any tap event handlers
+  final Function(ITableRowData)? onTap;
+  Color backgroundColor;
+
+  /// Row double tap handler, won't be called if tapped cell has any tap event handlers
+  final Function(ITableRowData)? onDoubleTap;
   DataTableViewModel viewModel;
   ITableRowData? selectedItem;
 
-  CustomDataTable(
-      {super.key, required this.viewModel});
 
   @override
   State<CustomDataTable> createState() => _CustomDataTableState();
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
-
   int? sortColumnIndex;
   bool isAscending = false;
   double tableRowHeight = 45.0;
@@ -27,7 +37,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
   Widget build(BuildContext context) {
     final List<DataColumn> columns = widget.viewModel.labels
         .map((label) => DataColumn2(
-            numeric: double.tryParse(label) != null,
             label: Text(label, overflow: TextOverflow.ellipsis, maxLines: 1),
             tooltip: label,
             size: ColumnSize.M,
@@ -47,6 +56,16 @@ class _CustomDataTableState extends State<CustomDataTable> {
       return DataRow2(
         cells: cells,
         selected: widget.selectedItem == dataItem,
+        onTap: () {
+          if (widget.onTap != null) {
+            widget.onTap!(dataItem);
+          }
+        },
+        onDoubleTap: () {
+          if (widget.onDoubleTap != null) {
+            widget.onDoubleTap!(dataItem);
+          }
+        },
         onSelectChanged: (value) {
           setState(() {
             widget.selectedItem = dataItem;
@@ -62,7 +81,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
       height: tableHeight,
       child: DataTable2(
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(5)),
+              color: widget.backgroundColor,
+              borderRadius: BorderRadius.circular(5)),
           dataTextStyle:
               const TextStyle(color: Color(0xFF7F868D), fontSize: 10),
           dataRowHeight: tableRowHeight,
@@ -78,7 +98,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
           )),
           columnSpacing: 12,
           horizontalMargin: 12,
-          minWidth: 500,
+          minWidth: 800,
           columns: columns,
           rows: rows),
     );
@@ -98,7 +118,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
   int compareString(bool isAscending, String value1, String value2) {
     return isAscending ? value1.compareTo(value2) : value2.compareTo(value1);
   }
-
   void selectItem(ITableRowData data) {
     locator.get<MainBloc>().add(OnClickOnTableRowData(data));
   }

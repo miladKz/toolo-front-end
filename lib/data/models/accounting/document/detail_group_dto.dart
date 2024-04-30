@@ -1,8 +1,8 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/models/accounting/detail_account_dto.dart';
 
-import '../../../domain/entities/accounting/detail_account.dart';
-import '../../../domain/entities/accounting/detail_group.dart';
+import '../../../../domain/entities/accounting/detail_account.dart';
+import '../../../../domain/entities/accounting/detail_group.dart';
 
 class DetailGroupDto extends DetailGroup {
   DetailGroupDto({

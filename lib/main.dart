@@ -77,7 +77,7 @@ Widget screenAuth() {
 }
 
 Widget screenDocDetail() {
-  const documentMaster =  DocumentMaster(id: 5,
+  DocumentMaster documentMaster =  DocumentMaster(id: 5,
       activeYear: "03/10/12",
       bargeTypeID: 1,
       bargeTypeName: "bargeTypeName",
@@ -110,7 +110,7 @@ Widget screenDocDetail() {
     create: (_) {
       return locator.get<DocDetailBloc>();
     },
-    child: const ScreenDocumentDetail(
+    child:  ScreenDocumentDetail(
       documentMaster: documentMaster,
     ),
   );

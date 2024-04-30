@@ -46,7 +46,7 @@ class DocumentMaster extends ITableRowData {
   final int debtorSum;
   final int remaining;
 
-  const DocumentMaster(
+   DocumentMaster(
       {required super.id,
       required this.activeYear,
       required this.bargeTypeID,
@@ -75,7 +75,7 @@ class DocumentMaster extends ITableRowData {
       required this.totalPrice,
       required this.creditorSum,
       required this.debtorSum,
-      required this.remaining});
+      required this.remaining, super.name = ''});
 
   @override
   List<Object?> get props => [

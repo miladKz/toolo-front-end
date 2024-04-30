@@ -2,7 +2,7 @@ import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 
 class DocumentMasterDto extends DocumentMaster {
-  const DocumentMasterDto(
+   DocumentMasterDto(
       {required super.id,
       required super.activeYear,
       required super.bargeTypeID,
@@ -31,7 +31,8 @@ class DocumentMasterDto extends DocumentMaster {
       required super.totalPrice,
       required super.creditorSum,
       required super.debtorSum,
-      required super.remaining});
+      required super.remaining,
+      super.name});
 
   factory DocumentMasterDto.fromMap(Map<String, dynamic> map) {
     return DocumentMasterDto(

@@ -101,6 +101,8 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
 
   void onItemSelect(AccountingAction item) {
     setState(() {
+
+      debugPrint('Action onItemSelect. item= ${item.toString()}');
       widget.onTap();
       actionsSubTitleSelected == widget.item.id;
 

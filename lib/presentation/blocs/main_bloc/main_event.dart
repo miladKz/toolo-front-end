@@ -64,6 +64,12 @@ class OnCreateCounterparty extends MainEvent {
   OnCreateCounterparty(this.counterparty);
 }
 
+class MainCreateDocumentMaster extends MainEvent {
+  final CreateDocumentMasterBodyDto documentMasterBodyDto;
+
+  MainCreateDocumentMaster(this.documentMasterBodyDto);
+}
+
 class OnUpdateCounterparty extends MainEvent {
   final Counterparty counterparty;
 
@@ -77,7 +83,18 @@ class OnDeleteCounterparty extends MainEvent {
 }
 
 class FetchBaseData extends MainEvent {
+
   FetchBaseData();
+}
+
+class MainFetchAccountHaveTafziliGroup extends MainEvent {
+  MainFetchAccountHaveTafziliGroup();
+}
+
+class MainFetchTafziliGroupAndChildListWithAccountId extends MainEvent {
+  final int accountId;
+
+  MainFetchTafziliGroupAndChildListWithAccountId({required this.accountId});
 }
 
 class OnLoadAvailableBankModalData extends MainEvent {}

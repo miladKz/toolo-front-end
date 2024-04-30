@@ -10,9 +10,11 @@ import 'package:toolo_gostar/data/repositories/accounting/account_repository_imp
 import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/account_list_have_tafzili_group_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_available_bank_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bank_acc_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_bourse_type_list_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_category_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_currency_type_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_customer_status_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_detail_group_root_list_use_case.dart';
@@ -22,16 +24,23 @@ import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_prefix_list_u
 import 'package:toolo_gostar/domain/usecases/accounting/base/fetch_standard_detail_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/create_counter_party_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/create_counterparty_detail_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/create_document_detail_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/create_document_master_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/document_master_detail_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/document_master_use_case.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/document_total_price_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_cash_box_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/tafzili_group_and_child_list_with_account_id_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/auth/login_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/fiscal_year/get_fiscal_year_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/fiscal_year/set_current_fiscal_year_use_case.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/fiscal_year_bloc/fiscal_year_bloc.dart';
 
 import '../data/datasources/auth/auth_local_data_source_impl.dart';
@@ -71,6 +80,7 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   //Bloc
   locator.registerLazySingleton<AuthBloc>(() => AuthBloc());
   locator.registerLazySingleton<MainBloc>(() => MainBloc());
+  locator.registerLazySingleton<DocDetailBloc>(() => DocDetailBloc());
   locator.registerLazySingleton<FiscalYearBloc>(() => FiscalYearBloc());
   locator.registerLazySingleton<ReportBloc>(() => ReportBloc());
   locator.registerLazySingleton<ThemeData>(() => Theme.of(Get.context!));
@@ -92,6 +102,9 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => UpdateAccountUseCase(locator()));
   locator.registerLazySingleton(() => DeleteAccountUseCase(locator()));
 
+  locator.registerLazySingleton(() => FetchTafziliGroupAndChildListWithAccountIdUseCase(locator()));
+  locator.registerLazySingleton(() => FetchAccountListHaveTafziliGroupUseCase(locator()));
+
   locator.registerLazySingleton(() => CreateCounterpartyUseCase(locator()));
   locator.registerLazySingleton(() => UpdateCounterpartyUseCase(locator()));
   locator.registerLazySingleton(() => DeleteCounterpartyUseCase(locator()));
@@ -104,6 +117,12 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => GetCardReaderListUseCase(locator()));
   locator.registerLazySingleton(() => GetRevolvingFundListUseCase(locator()));
   locator.registerLazySingleton(() => GetCashBoxListUseCase(locator()));
+
+  locator.registerLazySingleton(() => FetchDocumentMasterListUseCase(locator()));
+  locator.registerLazySingleton(() => FetchDocumentMasterDetailListUseCase(locator()));
+  locator.registerLazySingleton(() => CreateDocumentMasterUseCase(locator()));
+  locator.registerLazySingleton(() => CreateDocumentDetailUseCase(locator()));
+  locator.registerLazySingleton(() => FetchDocumentTotalPriceUseCase(locator()));
 
   //AccountingBaseUseCase
   locator.registerLazySingleton(() => FetchBankAccTypeListUseCase(locator()));
@@ -120,6 +139,7 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator.registerLazySingleton(() => FetchPersonTypeListUseCase(locator()));
 
   locator.registerLazySingleton(() => FetchPrefixListUseCase(locator()));
+  locator.registerLazySingleton(() => FetchCategoryListUseCase(locator()));
 
   locator
       .registerLazySingleton(() => FetchCustomerStatusListUseCase(locator()));

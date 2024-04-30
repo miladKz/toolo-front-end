@@ -1,9 +1,11 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
+import 'package:toolo_gostar/data/models/accounting/account_have_tafzili_group_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/available_bank_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/bank_acc_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/bourse_type_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/category_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/currency_type_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/customer_status_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/detail_group_root_dto.dart';
@@ -13,12 +15,28 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/person_type_dto.dar
 import 'package:toolo_gostar/data/models/accounting/base_dto/prefix_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_detail_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/body/create_document_detail_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/body/create_document_master_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/document_master_detail_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/document_master_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/document_total_price_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_master_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
+import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/doc_total_price.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
+import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
+import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
+import 'package:toolo_gostar/domain/entities/base/customer_data_detail.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
@@ -38,7 +56,7 @@ import '../../datasources/auth/auth_local_data_source_impl.dart';
 import '../../models/accounting/account_dto.dart';
 import '../../models/accounting/base_dto/city_dto.dart';
 import '../../models/accounting/counterparty_dto.dart';
-import '../../models/accounting/detail_group_dto.dart';
+import '../../models/accounting/document/detail_group_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -156,6 +174,50 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
+ @override
+  Future< List<AccountHaveTafziliGroup>> fetchAccountsListHaveTafziliGroup() async {
+   try {
+     String token = _getToken();
+     ServerResponseDto serverResponse = await remoteDataSource
+         .fetchAccountsListHaveTafziliGroup(token: token,);
+     if (serverResponse.isSuccess) {
+       List<AccountHaveTafziliGroup> items = List.empty(growable: true);
+
+       final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+       items = List<AccountHaveTafziliGroupDto>.from(itemsAsMap.map((data) {
+         return AccountHaveTafziliGroupDto.fromMap(data);
+       }));
+       return items;
+     } else {
+       throw serverResponse.message;
+     }
+   } catch (e) {
+     rethrow;
+   }
+  }
+  @override
+  Future<List<TafziliGroupAndChildren>> fetchTafziliAllDataList({required int accountId}) async {
+   try {
+     String token = _getToken();
+     ServerResponseDto serverResponse = await remoteDataSource
+         .fetchTafziliAllDataList(token: token,accountId: accountId);
+     if (serverResponse.isSuccess) {
+       List<TafziliGroupAndChildren> items = List.empty(growable: true);
+
+       final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+       items = List<TafziliGroupAndChildrenDto>.from(itemsAsMap.map((data) {
+         return TafziliGroupAndChildrenDto.fromMap(data);
+       }));
+       return items;
+     } else {
+       throw serverResponse.message;
+     }
+   } catch (e) {
+     rethrow;
+   }
+  }
+
+
 
   @override
   Future<Account> createAccount(Account account) async {
@@ -330,11 +392,106 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BankAccType>> fetchBankAccTypeList() async {
+  Future<List<DocumentMaster>> fetchDocumentMasterList(
+      DocumentMasterParamDto paramDto) async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchBankAccTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchDocumentMasterList(token: token, param: paramDto);
+      if (serverResponse.isSuccess) {
+        List<DocumentMaster> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<DocumentMasterDto>.from(itemsAsMap.map((data) {
+          return DocumentMasterDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> createDocumentMaster(CreateDocumentMasterBodyDto bodyDto) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .createDocumentMaster(token: token, body: bodyDto);
+      if (serverResponse.isSuccess) {
+        return true;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> createDocumentDetail(CreateDocumentDetailBodyDto bodyDto) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .createDocumentDetail(token: token, body: bodyDto);
+      if (serverResponse.isSuccess) {
+        return true;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<DocumentMasterDetail>> fetchDocumentMasterDetailList(
+      DocumentMasterDetailParamDto paramDto) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchDocumentMasterDetailList(token: token, param: paramDto);
+      if (serverResponse.isSuccess) {
+        List<DocumentMasterDetail> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<DocumentMasterDetailDto>.from(itemsAsMap.map((data) {
+          return DocumentMasterDetailDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<DocumentTotalPrice> fetchDocumentTotalPrice(
+      DocumentTotalPriceParamDto paramDto) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchDocumentTotalPrice(token: token, param: paramDto);
+      if (serverResponse.isSuccess) {
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        return DocumentTotalPriceDto.fromMap(itemsAsMap);
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<BankAccType>> fetchBankAccTypeList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchBankAccTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BankAccType> items = List.empty(growable: true);
 
@@ -352,13 +509,13 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BursType>> fetchBourseTypeList() async {
+  Future<List<BourseType>> fetchBourseTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchBourseTypeList(token: token);
       if (serverResponse.isSuccess) {
-        List<BursType> items = List.empty(growable: true);
+        List<BourseType> items = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         items = List<BourseTypeDto>.from(itemsAsMap.map((data) {
@@ -374,11 +531,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CurrencyType>> fetchCurrencyTypeList() async {
+  Future<List<CurrencyType>> fetchCurrencyTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchCurrencyTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCurrencyTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<CurrencyType> items = List.empty(growable: true);
 
@@ -396,11 +552,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CustomerStatus>> fetchCustomerStatusList() async {
+  Future<List<CustomerStatus>> fetchCustomerStatusList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchCustomerStatusList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCustomerStatusList(token: token);
       if (serverResponse.isSuccess) {
         List<CustomerStatus> items = List.empty(growable: true);
 
@@ -418,11 +573,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async {
+  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchDetailGroupRootList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDetailGroupRootList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupRoot> items = List.empty(growable: true);
 
@@ -440,11 +594,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DocumentType>> fetchDocumentTypeList() async {
+  Future<List<DocumentType>> fetchDocumentTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchDocumentTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchDocumentTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<DocumentType> items = List.empty(growable: true);
 
@@ -462,11 +615,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<PersonType>> fetchPersonTypeList() async {
+  Future<List<PersonType>> fetchPersonTypeList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchPersonTypeList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPersonTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<PersonType> items = List.empty(growable: true);
 
@@ -484,17 +636,36 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<Prefix>> fetchPrefixList() async {
+  Future<List<Prefix>> fetchPrefixList() async{
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse =
-          await remoteDataSource.fetchPrefixList(token: token);
+      ServerResponseDto serverResponse = await remoteDataSource.fetchPrefixList(token: token);
       if (serverResponse.isSuccess) {
         List<Prefix> items = List.empty(growable: true);
 
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         items = List<PrefixDto>.from(itemsAsMap.map((data) {
           return PrefixDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<List<CategoryModel>> fetchCategoryList() async{
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource.fetchCategoryList(token: token);
+      if (serverResponse.isSuccess) {
+        List<CategoryModel> items = List.empty(growable: true);
+
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<CategoryDto>.from(itemsAsMap.map((data) {
+          return CategoryDto.fromMap(data);
         }));
         return items;
       } else {
@@ -700,4 +871,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
+
+
+
 }

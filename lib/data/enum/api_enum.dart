@@ -7,5 +7,6 @@ enum ApiEnum {
   managementRevolvingFund, //مدیریت تنخواه گردان ها
   managementCardReader, //مدیریت کارت خوان ها
   accountDocument, //فهرست اسناد حسابداری
+  accountDocumentDetail, //فهرست جزییات سند حسابداری
   unknown,
 }

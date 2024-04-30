@@ -1,28 +1,30 @@
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
+import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
 import 'package:toolo_gostar/domain/entities/base/document_type.dart';
 import 'package:toolo_gostar/domain/entities/base/person_type.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
-import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 
-class BaseDataModel {
-  final List<BankAccType> bankAccTypeList;
-  final List<BursType> bursTypeList;
-  final List<CurrencyType> currencyTypeList;
-  final List<CustomerStatus> customerStatusList;
-  final List<DetailGroupRoot> detailGroupRootList;
-  final List<DocumentType> documentTypeList;
-  final List<PersonType> personTypeList;
-  final List<Prefix> prefixList;
-  final List<Counterparty> counterpartyBankList;
+class BaseDataModel{
+ final List<BankAccType> bankAccTypeList;
+ final List<BourseType> bourseTypeList;
+ final List<CurrencyType> currencyTypeList;
+ final List<CustomerStatus> customerStatusList;
+ final List<DetailGroupRoot> detailGroupRootList;
+ final List<DocumentType> documentTypeList;
+ final List<PersonType> personTypeList;
+ final List<Prefix> prefixList;
+ final List<Counterparty> counterpartyBankList;
+ final List<CategoryModel> categoryList;
+
 
   BaseDataModel({
     required this.bankAccTypeList,
-    required this.bursTypeList,
+    required this.bourseTypeList,
     required this.currencyTypeList,
     required this.customerStatusList,
     required this.detailGroupRootList,
@@ -30,5 +32,6 @@ class BaseDataModel {
     required this.personTypeList,
     required this.prefixList,
     required this.counterpartyBankList,
+    required this.categoryList,
   });
 }

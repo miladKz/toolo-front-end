@@ -213,12 +213,12 @@ class FakeData {
       localization.titleDocument,
       localization.titleDocumentDate,
       localization.status,
-      localization.titleTotal,
+      localization.titleSumTotal,
       localization.titleDetailDocument,
       localization.titleSeparationType,
       localization.titleDocumentType,
       localization.titleCeilingNumber,
-      localization.titleIssuerSystem,
+      localization.titleExporterModule,
       localization.titleNote,
     ];
     AccountingDocumentMain row1 = AccountingDocumentMain(

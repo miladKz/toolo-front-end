@@ -9,8 +9,13 @@ import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/customer_data_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/body/create_document_detail_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/body/create_document_master_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_master_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 
 import '../../../domain/entities/base/param/customer_data_detail_param.dart';
 import '../../models/accounting/counterparty_detail_dto.dart';
@@ -214,15 +219,15 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-  ///get Neshani And SayerMoshakhasat List
-  Future<ServerResponseDto> fetchCustomerDataDetailList(
+  Future<ServerResponseDto> createDocumentMaster(
       {required String token,
-      required CustomerDataDetailParamDto param}) async {
-    String apiAddress = "/api/acc/moshtarian-detail/list";
+      required CreateDocumentMasterBodyDto body}) async {
+    String apiAddress = "/api/acc/voucher/master";
     try {
-      Response<dynamic> response = await httpClient.get(
+      debugPrint('createDocumentMaster body: ${body.toMap()}');
+      Response<dynamic> response = await httpClient.post(
         apiAddress,
-        data: param.toMap(),
+        data: body.toMap(),
         options: _getHeaders(token),
       );
       return ServerResponseDto.fromMap(getData(response));
@@ -232,6 +237,126 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+  Future<ServerResponseDto> createDocumentDetail(
+      {required String token,
+      required CreateDocumentDetailBodyDto body}) async {
+    String apiAddress = "/api/acc/voucher/detail";
+    debugPrint('/api/acc/voucher/detail ${body.toMap()}');
+    try {
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: body.toMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchAccountsListHaveTafziliGroup({
+    required String token,
+  }) async {
+    String apiAddress = "/api/acc/accounts/list-have-tafziligroup";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchTafziliAllDataList(
+      {required String token, required int accountId}) async {
+    String apiAddress =
+        "/api/acc/tafzili/list-with-tafzili-group-by-accountid/$accountId";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchDocumentMasterList(
+      {required String token, required DocumentMasterParamDto param}) async {
+    String apiAddress = "/api/acc/voucher/master/list";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchDocumentMasterDetailList(
+      {required String token,
+      required DocumentMasterDetailParamDto param}) async {
+    String apiAddress = "/api/acc/voucher/detail/list-with-tafzili";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      debugPrint('detail/list-with-tafzili?5: ${getData(response).toString()}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchDocumentTotalPrice(
+      {required String token,
+      required DocumentTotalPriceParamDto param}) async {
+    String apiAddress = "/api/acc/voucher/detail/total-price";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      debugPrint(
+          'api/acc/voucher/detail/total-price: ${getData(response).toString()}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  ///get Neshani And SayerMoshakhasat List
+  Future<ServerResponseDto> fetchCustomerDataDetailList({
+    required String token,required CustomerDataDetailParamDto param
+  }) async {
+    String apiAddress = "/api/acc/moshtarian-detail/list";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
   //______________________________________Base Api____________________________________
 
   Future<ServerResponseDto> fetchBankAccTypeList({
@@ -286,6 +411,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
+
+
   Future<ServerResponseDto> fetchCustomerStatusList({
     required String token,
   }) async {
@@ -302,6 +429,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
+
 
   Future<ServerResponseDto> fetchDocumentTypeList({
     required String token,
@@ -359,9 +487,27 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> fetchStandardDetailList(
       {required String token, required StandardDetailParamDto param}) async {
-    String apiAddress =
-        "/api/base/standard-text/list?BargeTypeID=${param.bargeTypeID}&Section=${param.section}";
-    debugPrint("${param.toMap()}");
+    String apiAddress = "/api/base/standard-text/list";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log('fetchStandardDetailList :${getData(response)}');
+
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  ///لیست نوع تفکیک
+  Future<ServerResponseDto> fetchCategoryList({
+    required String token,
+  }) async {
+    String apiAddress = "/api/base/category/list";
     try {
       Response<dynamic> response = await httpClient.get(
         apiAddress,

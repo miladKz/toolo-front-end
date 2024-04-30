@@ -31,13 +31,12 @@ class ReportBaseBody extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        rightColumn(widthScree, context),
-        leftMainColumn(widthScree),
+        rightReportFilterView(widthScree),
       ],
     );
   }
 
-  Flexible leftMainColumn(double widthScreen) {
+  Flexible rightReportFilterView(double widthScreen) {
     return Flexible(
       flex: 8,
       child: Padding(
@@ -59,28 +58,6 @@ class ReportBaseBody extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  CollapsibleSidebar rightColumn(double widthScree, BuildContext context) {
-    return CollapsibleSidebar(
-      maxWidth: (widthScree * 0.17),
-      minWidth: 70,
-      isCollapsed: MediaQuery.of(context).size.width <= 950,
-      items: _items,
-      collapseOnBodyTap: true,
-      onTitleTap: () {},
-    );
-  }
-
-  Widget actionTreeView(widthScreen) {
-    double width = (widthScreen * 0.2).clamp(230, 280.0);
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
-          borderRadius: BorderRadius.circular(11)),
-      child: ActionsTreeViewBuilder(width: width),
     );
   }
 
@@ -131,49 +108,6 @@ class ReportBaseBody extends StatelessWidget {
     );
   }
 
-  List<CollapsibleItem> get _items {
-    return [
-      CollapsibleItem(
-        content: const Profile(),
-        iconImage: Assets.img.imgProfile.image(width: 52, height: 52),
-        isSelected: true,
-      ),
-      CollapsibleItem(
-        content: Padding(
-          padding: const EdgeInsets.only(top: 7, bottom: 4),
-          child: SearchBox(),
-        ),
-        iconImage: Assets.ico.icSearch.image(width: 20, height: 20),
-        isSelected: false,
-      ),
-      CollapsibleItem(
-        content: const Divider(
-          height: 1,
-          color: Colors.white,
-        ),
-      ),
-      CollapsibleItem(
-        content: const DashboardMenu(),
-        iconImage:
-            Assets.ico.icDashboardNotSelected.image(width: 20, height: 20),
-        //`iconImage` has priority over `icon` property
-        isSelected: false,
-      ),
-      CollapsibleItem(
-        content: pinnedWorkSpaceMenu,
-        iconImage: Assets.ico.icPinNotSelected.image(width: 20, height: 20),
-        //`iconImage` has priority over `icon` property
-        isSelected: false,
-      ),
-      CollapsibleItem(
-        content: workSpaceMenu,
-        iconImage:
-            Assets.ico.icCartableNotSelected.image(width: 20, height: 20),
-        //`iconImage` has priority over `icon` property
-        isSelected: false,
-      )
-    ];
-  }
 }
 
 class LeftSectionView extends StatefulWidget {

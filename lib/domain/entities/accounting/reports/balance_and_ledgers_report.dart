@@ -1,14 +1,13 @@
-import 'package:toolo_gostar/presentation/widgets/main/generic_tree_view/widget_tree_model_abs.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_column_title.dart';
 
-class BalanceAndLedgersReport extends IDataTreeModel {
-  BalanceAndLedgersReport(
-      {required super.displayName,
-      required super.id,
-      required super.hasChildren,
-      required super.children});
+import 'balance_and_ledgers.dart';
 
-  factory BalanceAndLedgersReport.empty() {
-    return BalanceAndLedgersReport(
-        displayName: '', id: 0, children: [], hasChildren: false);
-  }
+class BalanceAndLedgersReport {
+  List<BalanceAndLedgers> balanceAndLedgers;
+  List<ReportColumnTitle> reportColumnTitle;
+
+  BalanceAndLedgersReport({
+    required this.balanceAndLedgers,
+    required this.reportColumnTitle,
+  });
 }

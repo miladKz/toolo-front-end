@@ -1,23 +1,27 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_column_title_dto.dart';
 
 import '../../../../domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'balance_and_ledgers_dto.dart';
 
 class BalanceAndLedgersReportDto extends BalanceAndLedgersReport {
-  BalanceAndLedgersReportDto(
-      {required super.displayName,
-      required super.id,
-      required super.hasChildren,
-      required super.children});
-
-  Map<String, dynamic> toMap() {
-    return {};
-  }
+  BalanceAndLedgersReportDto({
+    required super.balanceAndLedgers,
+    required super.reportColumnTitle,
+  });
 
   factory BalanceAndLedgersReportDto.fromMap(Map<String, dynamic> map) {
     return BalanceAndLedgersReportDto(
-        displayName: map.findAsString("key"),
-        id: map.findAsInt("key"),
-        hasChildren: map.findAsBool("key"),
-        children: map.findAsDynamic("key"));
+      balanceAndLedgers: map
+          .findAsDynamic("DataList")
+          ?.map((dynamic item) =>
+              BalanceAndLedgersDto.fromMap(item as Map<String, dynamic>))
+          ?.toList(),
+      reportColumnTitle: map
+          .findAsDynamic("Titles")
+          ?.map((dynamic item) =>
+              ReportColumnTitleDto.fromMap(item as Map<String, dynamic>))
+          ?.toList(),
+    );
   }
 }

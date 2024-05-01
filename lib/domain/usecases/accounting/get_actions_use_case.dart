@@ -1,5 +1,5 @@
 import '../../entities/accounting/accounting_action.dart';
-import '../../repositories/accounting/account_repository.dart';
+import '../../repositories/accounting/accounting_repository.dart';
 
 class GetActionsUseCase {
   final IAccountingRepository _repository;

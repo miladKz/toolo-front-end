@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/data/common/network_connection/http_client.dart';
 import 'package:toolo_gostar/data/datasources/accounting/accounting_remote_data_source.dart';
 import 'package:toolo_gostar/data/repositories/accounting/account_repository_impl.dart';
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/accounting_repository.dart';
 import 'package:toolo_gostar/domain/repositories/auth/auth_repository.dart';
 import 'package:toolo_gostar/domain/repositories/fiscal_year/fiscal_repository.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/account_list_have_tafzili_group_use_case.dart';
@@ -53,6 +53,7 @@ import '../domain/usecases/accounting/base/update_standard_detail_use_case.dart'
 import '../domain/usecases/accounting/create_account_use_case.dart';
 import '../domain/usecases/accounting/delete_account_use_case.dart';
 import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
+import '../domain/usecases/accounting/fetch_balance_and_ledgers_report_list_usecases.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/get_bank_list.dart';
 import '../domain/usecases/accounting/get_card_reader_list.dart';
@@ -163,6 +164,9 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
   locator
       .registerLazySingleton(() => UpdateCounterpartyDetailUseCase(locator()));
 
+  //AccountingReportsUseCases
+  locator
+      .registerLazySingleton(() => FetchBalanceAndLedgersReportListUseCase(locator()));
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));

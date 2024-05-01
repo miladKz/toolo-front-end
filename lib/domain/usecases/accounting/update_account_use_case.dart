@@ -1,5 +1,5 @@
 import '../../entities/accounting/account.dart';
-import '../../repositories/accounting/account_repository.dart';
+import '../../repositories/accounting/accounting_repository.dart';
 
 class UpdateAccountUseCase {
   final IAccountingRepository _repository;

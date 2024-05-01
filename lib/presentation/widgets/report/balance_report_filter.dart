@@ -1,9 +1,11 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
+import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
@@ -11,6 +13,9 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/d
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
+
+import '../../../di/di.dart';
+import '../common/modals/modal_elements/form_button.dart';
 
 
 TextEditingController controllerFromDocument=TextEditingController();
@@ -443,57 +448,9 @@ class Filters extends StatelessWidget {
   List<Widget> getCheckBoxList(List<String> checkBoxName) {
     List<Widget> widgets = List.empty(growable: true);
     for (String title in checkBoxName) {
-      widgets.add(FormCheckBox(value: true, title: title));
+      widgets.add(FormCheckBox(value: true, title: title, borderColor: const Color(0xFF6392DE),));
     }
 
     return widgets;
   }
 }
-
-/*
-class RadioButtonList extends StatefulWidget {
-  final double width;
-  final double height;
-  int selectedRadio = 0;
-
-  RadioButtonList({super.key, required this.width, required this.height});
-
-  @override
-  State<RadioButtonList> createState() => _RadioButtonListState();
-}
-
-class _RadioButtonListState extends State<RadioButtonList> {
-  @override
-  Widget build(BuildContext context) {
-
-    double maxWidth = widget.width;
-    return SizedBox(
-      width: maxWidth,
-      height: widget.height,
-      child: GridView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 2,
-          mainAxisSpacing: 2,
-          childAspectRatio: (widget.width / widget.height) + 2,
-        ),
-        itemCount: radioButtonNames.length,
-        itemBuilder: (context, index) {
-          return RadioButtonForm(
-            title: radioButtonNames[index],
-            index: index,
-            selectedRadio: widget.selectedRadio,
-            onChanged: (int value) {
-              setState(() {
-                widget.selectedRadio = value;
-              });
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-*/

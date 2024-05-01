@@ -1,5 +1,5 @@
 import 'package:toolo_gostar/domain/entities/base/detail_group_root.dart';
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/accounting_repository.dart';
 
 class FetchDetailGroupRootListUseCase {
   final IAccountingRepository _repository;

@@ -23,7 +23,6 @@ class CustomDataTable extends StatefulWidget {
   DataTableViewModel viewModel;
   ITableRowData? selectedItem;
 
-
   @override
   State<CustomDataTable> createState() => _CustomDataTableState();
 }
@@ -57,6 +56,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
         cells: cells,
         selected: widget.selectedItem == dataItem,
         onTap: () {
+          setSelectedItem(dataItem);
+
           if (widget.onTap != null) {
             widget.onTap!(dataItem);
           }
@@ -65,12 +66,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
           if (widget.onDoubleTap != null) {
             widget.onDoubleTap!(dataItem);
           }
-        },
-        onSelectChanged: (value) {
-          setState(() {
-            widget.selectedItem = dataItem;
-            selectItem(dataItem);
-          });
         },
       );
     }).toList();
@@ -104,6 +99,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
     );
   }
 
+  void setSelectedItem(ITableRowData dataItem) {
+    setState(() {
+      widget.selectedItem = dataItem;
+      selectItem(dataItem);
+    });
+  }
+
   void onSort(int columnIndex, bool isAscending) {
     setState(() {
       widget.viewModel.data.sort((value1, value2) => compareString(
@@ -118,6 +120,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   int compareString(bool isAscending, String value1, String value2) {
     return isAscending ? value1.compareTo(value2) : value2.compareTo(value1);
   }
+
   void selectItem(ITableRowData data) {
     locator.get<MainBloc>().add(OnClickOnTableRowData(data));
   }

@@ -926,7 +926,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       toNumber: balanceAndLedgersParam.toNumber,
       fromNumber2: balanceAndLedgersParam.fromNumber2,
       toNumber2: balanceAndLedgersParam.toNumber2,
-      pageTypeId: balanceAndLedgersParam.pageTypeId,
+      categoryId: balanceAndLedgersParam.categoryId,
       saveTypeId: balanceAndLedgersParam.saveTypeId,
       withOpening: balanceAndLedgersParam.withOpening,
       withClosing: balanceAndLedgersParam.withClosing,

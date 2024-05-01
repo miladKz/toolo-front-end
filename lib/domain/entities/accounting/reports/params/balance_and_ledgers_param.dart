@@ -7,7 +7,7 @@ class BalanceAndLedgersParam {
   final int toNumber;
   final int fromNumber2;
   final int toNumber2;
-  final int pageTypeId;
+  final int categoryId;
   final int saveTypeId;
   final bool withOpening;
   final bool withClosing;
@@ -25,7 +25,7 @@ class BalanceAndLedgersParam {
     required this.toNumber,
     required this.fromNumber2,
     required this.toNumber2,
-    required this.pageTypeId,
+    required this.categoryId,
     required this.saveTypeId,
     required this.withOpening,
     required this.withClosing,

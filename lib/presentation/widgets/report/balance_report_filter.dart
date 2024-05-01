@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
@@ -9,6 +10,7 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/c
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
+import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
 
 
 TextEditingController controllerFromDocument=TextEditingController();
@@ -21,84 +23,20 @@ TextEditingController controllerSeparation=TextEditingController();
 TextEditingController controllerGroup=TextEditingController();
 TextEditingController controllerRadioButton=TextEditingController();
 class BalanceReportFilter extends StatelessWidget {
-  final double width = 300;
   final double height = 70;
-  final double inputHeight = 40;
+  final double inputHeight = 70;
 
   const BalanceReportFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          AdvanceFiltersButton(width: width, height: height),
-          verticalGapDivider,
-          Filters(
-            width: width,
-            height: inputHeight,
-          ),
-        ],
-      ),
-    );
+    return AdvanceFiltersButton( height: height,body: const Filters(
+      width: 300,
+      height: 70,
+    ),);
   }
 }
 
-class AdvanceFiltersButton extends StatefulWidget {
-  AdvanceFiltersButton({super.key, required this.width, required this.height});
-
-  final double width;
-  final double height;
-
-  bool isExpand = false;
-
-  @override
-  State<AdvanceFiltersButton> createState() => _AdvanceFiltersButtonState();
-}
-
-class _AdvanceFiltersButtonState extends State<AdvanceFiltersButton> {
-  @override
-  Widget build(BuildContext context) {
-    BoxDecoration baseDecoration = BoxDecoration(
-        color: const Color(0xffF9FAFB), borderRadius: BorderRadius.circular(5));
-    return InkWell(
-      onTap: () {
-        setState(() {
-          widget.isExpand = !widget.isExpand;
-        });
-      },
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: baseDecoration,
-        child: Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(8),
-          decoration: baseDecoration.copyWith(color: const Color(0xffEFE0F5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                localization.titleAdvanceFilter,
-                style: const TextStyle(
-                    color: Color(0xff616161),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500),
-              ),
-              Icon(
-                widget.isExpand
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.keyboard_arrow_down_rounded,
-                color: const Color(0xff616161),
-                size: 15,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class Filters extends StatelessWidget {
   const Filters({super.key, required this.width, required this.height});
@@ -486,7 +424,7 @@ class Filters extends StatelessWidget {
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;
-    double itemHeight = 40;
+    double itemHeight = 48;
     return SizedBox(
       width: maxWidth,
       child: GridView.count(

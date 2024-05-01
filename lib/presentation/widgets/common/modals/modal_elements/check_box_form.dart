@@ -48,8 +48,11 @@ class _FormCheckBoxState extends State<FormCheckBox> {
             const SizedBox(
               width: 5,
             ),
-            FormItemTitle(
-              title: widget.title,
+            Expanded(
+              child: FormItemTitle(
+                title: widget.title,
+                maxLine: 1,
+              ),
             )
           ],
         ),

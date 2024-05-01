@@ -6,7 +6,7 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/constants/color_constants.dart';
-import 'package:toolo_gostar/presentation/pages/screen_report.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_builder.dart';
 
 import '../../../../gen/assets.gen.dart';
@@ -153,7 +153,7 @@ void callApiByEndpoint(String endPoint) {
   } else if (endPoint.contains('گزارشات و فهرستها')) {
     Get.to(BlocProvider.value(
       value: locator.get<ReportBloc>(),
-      child: ScreenReport(),
+      child: ScreenReportTarazDafaterPelekani(),
     ));
   } else {
     locator

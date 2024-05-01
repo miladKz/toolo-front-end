@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
-import 'package:toolo_gostar/presentation/widgets/report/report_base_body.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/report_page_t_d_p.dart';
 
-import '../blocs/main_bloc/main_bloc.dart';
-import '../blocs/report_bloc/report_bloc.dart';
+import '../../../blocs/main_bloc/main_bloc.dart';
+import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ScreenReport extends StatefulWidget {
-  const ScreenReport({super.key});
+class ScreenReportTarazDafaterPelekani extends StatefulWidget {
+  const ScreenReportTarazDafaterPelekani({super.key});
 
   @override
-  State<ScreenReport> createState() => _ScreenReportState();
+  State<ScreenReportTarazDafaterPelekani> createState() => _ScreenReportTarazDafaterPelekaniState();
 }
 
-class _ScreenReportState extends State<ScreenReport> {
+class _ScreenReportTarazDafaterPelekaniState extends State<ScreenReportTarazDafaterPelekani> {
   @override
   void initState() {
     super.initState();
@@ -40,7 +40,7 @@ class _ScreenReportState extends State<ScreenReport> {
               },
               builder: (context, state) {
                 return Container(
-                    color:  Colors.white, child: ReportBaseBody());
+                    color:  Colors.white, child: ReportPageTDP());
               },
             ),
           )),

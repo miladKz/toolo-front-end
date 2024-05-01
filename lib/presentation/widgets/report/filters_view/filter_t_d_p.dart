@@ -9,98 +9,39 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/c
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
+import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
 
+TextEditingController controllerFromDocument = TextEditingController();
+TextEditingController controllerToDocument = TextEditingController();
+TextEditingController controllerFromDate = TextEditingController();
+TextEditingController controllerToDate = TextEditingController();
+TextEditingController controllerFromReference = TextEditingController();
+TextEditingController controllerToReference = TextEditingController();
+TextEditingController controllerSeparation = TextEditingController();
+TextEditingController controllerGroup = TextEditingController();
+TextEditingController controllerRadioButton = TextEditingController();
 
-TextEditingController controllerFromDocument=TextEditingController();
-TextEditingController controllerToDocument=TextEditingController();
-TextEditingController controllerFromDate=TextEditingController();
-TextEditingController controllerToDate=TextEditingController();
-TextEditingController controllerFromReference=TextEditingController();
-TextEditingController controllerToReference=TextEditingController();
-TextEditingController controllerSeparation=TextEditingController();
-TextEditingController controllerGroup=TextEditingController();
-TextEditingController controllerRadioButton=TextEditingController();
-class ReportFilter extends StatelessWidget {
-  final double width = 300;
+class FilterTDPView extends StatelessWidget {
   final double height = 70;
+  final double inputHeight = 70;
+  final Function(dynamic) onChangeFilter;
 
-  const ReportFilter({super.key});
+  const FilterTDPView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AdvanceFiltersButton(width: width, height: height),
-        verticalGapDivider,
-        Filters(
-          width: width,
-          height: height,
-        ),
-      ],
-    );
-  }
-}
-
-class AdvanceFiltersButton extends StatefulWidget {
-  AdvanceFiltersButton({super.key, required this.width, required this.height});
-
-  final double width;
-  final double height;
-
-  bool isExpand = false;
-
-  @override
-  State<AdvanceFiltersButton> createState() => _AdvanceFiltersButtonState();
-}
-
-class _AdvanceFiltersButtonState extends State<AdvanceFiltersButton> {
-  @override
-  Widget build(BuildContext context) {
-    BoxDecoration baseDecoration = BoxDecoration(
-        color: const Color(0xffF9FAFB), borderRadius: BorderRadius.circular(5));
-    return InkWell(
-      onTap: () {
-        setState(() {
-          widget.isExpand = !widget.isExpand;
-        });
-      },
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: baseDecoration,
-        child: Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(8),
-          decoration: baseDecoration.copyWith(color: const Color(0xffEFE0F5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                localization.titleAdvanceFilter,
-                style: const TextStyle(
-                    color: Color(0xff616161),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500),
-              ),
-              Icon(
-                widget.isExpand
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.keyboard_arrow_down_rounded,
-                color: const Color(0xff616161),
-                size: 15,
-              )
-            ],
-          ),
-        ),
+    return AdvanceFiltersButton(
+      height: height,
+      body: const Filters(
+        height: 70,
       ),
     );
   }
 }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.width, required this.height});
+  const Filters({super.key, required this.height});
 
-  final double width;
   final double height;
 
   TextStyle get getFilterBodyTitleStyle => const TextStyle(
@@ -111,41 +52,44 @@ class Filters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          baseFilterTitle(
-              title: localization.titleDocument,
-              body: row1(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleDate,
-              body: row2(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleReference,
-              body: row3(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleSeparation,
-              body: row4(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleGroup,
-              body: row5(width: width),
-              width: width,
-              height: height),
-          const SizedBox(
-            height: 6,
-          ),
-          column1(width: width)
-        ],
-      ),
-    );
+    return SingleChildScrollView(child: LayoutBuilder(
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
+        return Column(
+          children: [
+            baseFilterTitle(
+                title: localization.titleDocument,
+                body: row1(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleDate,
+                body: row2(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleReference,
+                body: row3(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleSeparation,
+                body: row4(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleGroup,
+                body: row5(width: width),
+                width: width,
+                height: height),
+            const SizedBox(
+              height: 6,
+            ),
+            column1(width: width)
+          ],
+        );
+      },
+    ));
   }
 
   Widget baseFilterTitle(
@@ -398,9 +342,7 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         groupItem(
-            itemWidth: itemWidth,
-            hint: 'اشخاص',
-            controller: controllerGroup),
+            itemWidth: itemWidth, hint: 'اشخاص', controller: controllerGroup),
       ],
     );
   }
@@ -483,7 +425,7 @@ class Filters extends StatelessWidget {
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;
-    double itemHeight = 40;
+    double itemHeight = 48;
     return SizedBox(
       width: maxWidth,
       child: GridView.count(

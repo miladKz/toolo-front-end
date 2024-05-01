@@ -15,7 +15,7 @@ import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
-import 'package:toolo_gostar/presentation/pages/screen_report.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
 import 'package:toolo_gostar/presentation/pages/test_screen.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
@@ -141,7 +141,7 @@ Widget screenReport() {
     create: (_) {
       return locator<ReportBloc>();
     },
-    child: const ScreenReport(),
+    child: const ScreenReportTarazDafaterPelekani(),
   );
 }
 

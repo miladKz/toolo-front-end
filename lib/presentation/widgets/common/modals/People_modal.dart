@@ -371,7 +371,7 @@ class _PeopleModalState extends State<PeopleModal> {
               child: Column(
             children: [
               FormCheckBox(
-                  title: localization.isRelatedParty,
+                  title: localization.isDependent,
                   value: false,
                   onChange: (value) {
                     widget.people.isDependent = value;

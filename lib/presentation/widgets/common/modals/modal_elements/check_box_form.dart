@@ -6,13 +6,14 @@ class FormCheckBox extends StatefulWidget {
   bool enable;
   bool value;
   String title;
-
+  Color borderColor;
   FormCheckBox({
     super.key,
     this.onChange,
     required this.value,
     required this.title,
     this.enable = true,
+    this.borderColor = const Color(0xFFDEE2E6)
   });
 
   @override
@@ -29,10 +30,16 @@ class _FormCheckBoxState extends State<FormCheckBox> {
         child: Row(
           children: [
             Checkbox(
+              shape:  RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0)),
+              side: BorderSide(
+                color: widget.borderColor,
+                width: 1.0,
+              ),
               value: widget.value,
               fillColor: MaterialStateProperty.resolveWith((states) {
                 if (states.contains(MaterialState.selected)) {
-                  return const Color(0xff479F76);
+                  return const Color(0xFF6FC469);
                 }
                 return null;
               }),
@@ -48,8 +55,11 @@ class _FormCheckBoxState extends State<FormCheckBox> {
             const SizedBox(
               width: 5,
             ),
-            FormItemTitle(
-              title: widget.title,
+            Expanded(
+              child: FormItemTitle(
+                title: widget.title,
+                maxLine: 1,
+              ),
             )
           ],
         ),

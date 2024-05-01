@@ -1,5 +1,6 @@
 import 'package:toolo_gostar/domain/entities/base/category.dart';
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+
+import '../../../repositories/accounting/accounting_repository.dart';
 
 class FetchCategoryListUseCase {
   final IAccountingRepository _repository;

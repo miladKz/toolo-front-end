@@ -19,6 +19,7 @@ import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto
 
 import '../../../domain/entities/base/param/customer_data_detail_param.dart';
 import '../../models/accounting/counterparty_detail_dto.dart';
+import '../../models/accounting/reports/params/balance_and_ledgers_param_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
@@ -641,6 +642,24 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('update standardDetail msg: $e}');
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchBalanceAndLedgersReportList(
+      {required String token,
+      required BalanceAndLedgersParamDto param}) async {
+    String apiAddress = "/apiacc/rep/taraz-ha-dafater-pelekani";
+    try {
+      Response<dynamic> response = await httpClient.get(
+        apiAddress,
+        queryParameters: param.toMap(),
+        options: _getHeaders(token),
+      );
+      log('fetchCounterPartyDetailList :${getData(response)}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
       throw HttpException(e.toString());
     }
   }

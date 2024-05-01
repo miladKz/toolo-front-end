@@ -1,4 +1,4 @@
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/accounting_repository.dart';
 
 import '../../../entities/common/city.dart';
 

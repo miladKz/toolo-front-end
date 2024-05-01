@@ -1,5 +1,5 @@
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/accounting_repository.dart';
 
 import '../../entities/common/counterparty.dart';
 

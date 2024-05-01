@@ -39,9 +39,11 @@ class ModalInputWrapper extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          FormItemTitle(
-            title: title,
-            textColor: const Color(0xFF616161),
+          Text(
+            title,
+            maxLines: 1,
+            style:const TextStyle(
+                color:  Color(0xFF616161), fontSize: 12, fontWeight: FontWeight.w600,overflow: TextOverflow.ellipsis),
           ),
           const SizedBox(width: 8),
           SizedBox(

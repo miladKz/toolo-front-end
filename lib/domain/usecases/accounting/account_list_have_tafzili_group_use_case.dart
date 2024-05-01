@@ -1,5 +1,5 @@
 import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
-import '../../repositories/accounting/account_repository.dart';
+import '../../repositories/accounting/accounting_repository.dart';
 
 class FetchAccountListHaveTafziliGroupUseCase {
   final IAccountingRepository _repository;

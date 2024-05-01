@@ -1,6 +1,6 @@
 import 'package:toolo_gostar/domain/entities/common/counterparty_detail.dart';
 
-import '../../repositories/accounting/account_repository.dart';
+import '../../repositories/accounting/accounting_repository.dart';
 
 class UpdateCounterpartyDetailUseCase {
   final IAccountingRepository _repository;

@@ -27,11 +27,13 @@ import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
-import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/doc_total_price.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/params/balance_and_ledgers_param.dart';
 import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
+import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
 import 'package:toolo_gostar/domain/entities/base/bourse_type.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
@@ -47,7 +49,7 @@ import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/city.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty_detail.dart';
-import 'package:toolo_gostar/domain/repositories/accounting/account_repository.dart';
+import 'package:toolo_gostar/domain/repositories/accounting/accounting_repository.dart';
 
 import '../../../domain/entities/base/param/standard_detail_param.dart';
 import '../../common/models/server_response_dto.dart';
@@ -57,6 +59,8 @@ import '../../models/accounting/account_dto.dart';
 import '../../models/accounting/base_dto/city_dto.dart';
 import '../../models/accounting/counterparty_dto.dart';
 import '../../models/accounting/document/detail_group_dto.dart';
+import '../../models/accounting/reports/balance_and_ledgers_report_dto.dart';
+import '../../models/accounting/reports/params/balance_and_ledgers_param_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -174,50 +178,54 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
- @override
-  Future< List<AccountHaveTafziliGroup>> fetchAccountsListHaveTafziliGroup() async {
-   try {
-     String token = _getToken();
-     ServerResponseDto serverResponse = await remoteDataSource
-         .fetchAccountsListHaveTafziliGroup(token: token,);
-     if (serverResponse.isSuccess) {
-       List<AccountHaveTafziliGroup> items = List.empty(growable: true);
 
-       final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
-       items = List<AccountHaveTafziliGroupDto>.from(itemsAsMap.map((data) {
-         return AccountHaveTafziliGroupDto.fromMap(data);
-       }));
-       return items;
-     } else {
-       throw serverResponse.message;
-     }
-   } catch (e) {
-     rethrow;
-   }
-  }
   @override
-  Future<List<TafziliGroupAndChildren>> fetchTafziliAllDataList({required int accountId}) async {
-   try {
-     String token = _getToken();
-     ServerResponseDto serverResponse = await remoteDataSource
-         .fetchTafziliAllDataList(token: token,accountId: accountId);
-     if (serverResponse.isSuccess) {
-       List<TafziliGroupAndChildren> items = List.empty(growable: true);
+  Future<List<AccountHaveTafziliGroup>>
+      fetchAccountsListHaveTafziliGroup() async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchAccountsListHaveTafziliGroup(
+        token: token,
+      );
+      if (serverResponse.isSuccess) {
+        List<AccountHaveTafziliGroup> items = List.empty(growable: true);
 
-       final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
-       items = List<TafziliGroupAndChildrenDto>.from(itemsAsMap.map((data) {
-         return TafziliGroupAndChildrenDto.fromMap(data);
-       }));
-       return items;
-     } else {
-       throw serverResponse.message;
-     }
-   } catch (e) {
-     rethrow;
-   }
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<AccountHaveTafziliGroupDto>.from(itemsAsMap.map((data) {
+          return AccountHaveTafziliGroupDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
+  @override
+  Future<List<TafziliGroupAndChildren>> fetchTafziliAllDataList(
+      {required int accountId}) async {
+    try {
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchTafziliAllDataList(token: token, accountId: accountId);
+      if (serverResponse.isSuccess) {
+        List<TafziliGroupAndChildren> items = List.empty(growable: true);
 
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<TafziliGroupAndChildrenDto>.from(itemsAsMap.map((data) {
+          return TafziliGroupAndChildrenDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   @override
   Future<Account> createAccount(Account account) async {
@@ -468,6 +476,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
+
   @override
   Future<DocumentTotalPrice> fetchDocumentTotalPrice(
       DocumentTotalPriceParamDto paramDto) async {
@@ -487,11 +496,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BankAccType>> fetchBankAccTypeList() async{
+  Future<List<BankAccType>> fetchBankAccTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBankAccTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchBankAccTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BankAccType> items = List.empty(growable: true);
 
@@ -509,11 +518,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BourseType>> fetchBourseTypeList() async{
+  Future<List<BourseType>> fetchBourseTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource
-          .fetchBourseTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchBourseTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<BourseType> items = List.empty(growable: true);
 
@@ -531,10 +540,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CurrencyType>> fetchCurrencyTypeList() async{
+  Future<List<CurrencyType>> fetchCurrencyTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchCurrencyTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchCurrencyTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<CurrencyType> items = List.empty(growable: true);
 
@@ -552,10 +562,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<CustomerStatus>> fetchCustomerStatusList() async{
+  Future<List<CustomerStatus>> fetchCustomerStatusList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchCustomerStatusList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchCustomerStatusList(token: token);
       if (serverResponse.isSuccess) {
         List<CustomerStatus> items = List.empty(growable: true);
 
@@ -573,10 +584,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async{
+  Future<List<DetailGroupRoot>> fetchDetailGroupRootList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchDetailGroupRootList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchDetailGroupRootList(token: token);
       if (serverResponse.isSuccess) {
         List<DetailGroupRoot> items = List.empty(growable: true);
 
@@ -594,10 +606,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<DocumentType>> fetchDocumentTypeList() async{
+  Future<List<DocumentType>> fetchDocumentTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchDocumentTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchDocumentTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<DocumentType> items = List.empty(growable: true);
 
@@ -615,10 +628,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<PersonType>> fetchPersonTypeList() async{
+  Future<List<PersonType>> fetchPersonTypeList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchPersonTypeList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchPersonTypeList(token: token);
       if (serverResponse.isSuccess) {
         List<PersonType> items = List.empty(growable: true);
 
@@ -636,10 +650,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<Prefix>> fetchPrefixList() async{
+  Future<List<Prefix>> fetchPrefixList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchPrefixList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchPrefixList(token: token);
       if (serverResponse.isSuccess) {
         List<Prefix> items = List.empty(growable: true);
 
@@ -655,11 +670,13 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       rethrow;
     }
   }
+
   @override
-  Future<List<CategoryModel>> fetchCategoryList() async{
+  Future<List<CategoryModel>> fetchCategoryList() async {
     try {
       String token = _getToken();
-      ServerResponseDto serverResponse = await remoteDataSource.fetchCategoryList(token: token);
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchCategoryList(token: token);
       if (serverResponse.isSuccess) {
         List<CategoryModel> items = List.empty(growable: true);
 
@@ -872,6 +889,51 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
+  @override
+  Future<List<BalanceAndLedgersReport>> fetchBalanceAndLedgersReportList(
+      BalanceAndLedgersParam balanceAndLedgersParam) async {
+    try {
+      BalanceAndLedgersParamDto balanceAndLedgersParamDto =
+          getBalanceAndLedgersParamAsDto(balanceAndLedgersParam);
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchBalanceAndLedgersReportList(
+              token: token, param: balanceAndLedgersParamDto);
+      if (serverResponse.isSuccess) {
+        List<BalanceAndLedgersReport> items = List.empty(growable: true);
+        //todo: replace item to correct key
+        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
+        items = List<BalanceAndLedgersReport>.from(itemsAsMap.map((data) {
+          return BalanceAndLedgersReportDto.fromMap(data);
+        }));
+        return items;
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-
+  BalanceAndLedgersParamDto getBalanceAndLedgersParamAsDto(
+      BalanceAndLedgersParam balanceAndLedgersParam) {
+    return BalanceAndLedgersParamDto(
+      activeYear: balanceAndLedgersParam.activeYear,
+      fromDate: balanceAndLedgersParam.fromDate,
+      toDate: balanceAndLedgersParam.toDate,
+      accountCd: balanceAndLedgersParam.accountCd,
+      fromNumber: balanceAndLedgersParam.fromNumber,
+      toNumber: balanceAndLedgersParam.toNumber,
+      fromNumber2: balanceAndLedgersParam.fromNumber2,
+      toNumber2: balanceAndLedgersParam.toNumber2,
+      pageTypeId: balanceAndLedgersParam.pageTypeId,
+      saveTypeId: balanceAndLedgersParam.saveTypeId,
+      withOpening: balanceAndLedgersParam.withOpening,
+      withClosing: balanceAndLedgersParam.withClosing,
+      withEffect: balanceAndLedgersParam.withEffect,
+      withProfitAndLoss: balanceAndLedgersParam.withProfitAndLoss,
+      accountLevel: balanceAndLedgersParam.accountLevel,
+      withSubLevels: balanceAndLedgersParam.withSubLevels,
+    );
+  }
 }

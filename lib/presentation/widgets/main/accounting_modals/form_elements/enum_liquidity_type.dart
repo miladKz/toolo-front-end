@@ -8,6 +8,6 @@ enum LiquidityType {
   const LiquidityType(this.value);
 
   static LiquidityType fromValue(int value) {
-    return LiquidityType.values[value - 1];
+    return LiquidityType.values[value];
   }
 }

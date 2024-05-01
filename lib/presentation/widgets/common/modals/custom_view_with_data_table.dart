@@ -56,9 +56,6 @@ class CustomViewWithDataTable extends StatelessWidget {
             ? row1(rowWidth: formWidth, toolBarEnum: toolBarEnum!)
             : const SizedBox().visible(false),
         verticalGapDivider,
-        row2(rowWidth: formWidth),
-        verticalGapDivider,
-        customDataTable,
         Column(
           children: [
             row2(rowWidth: formWidth),

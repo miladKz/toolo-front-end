@@ -1,4 +1,8 @@
-class BalanceAndLedgers {
+import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
+import 'package:toolo_gostar/presentation/view_models/report_base_data_table_model.dart';
+
+class BalanceAndLedgers extends ITableRowData{
   final String accountName;
   final String accountCd;
   final double openingBalanceDebit;
@@ -33,7 +37,7 @@ class BalanceAndLedgers {
     required this.endingOpeningBalanceCredit,
     required this.endingBalanceDebit,
     required this.endingBalanceCredit,
-  });
+  }):super(id: -1,name: accountName);
 
   factory BalanceAndLedgers.empty() {
     return BalanceAndLedgers(
@@ -56,7 +60,7 @@ class BalanceAndLedgers {
     );
   }
 
-  getFieldValue(String key) {
+  BalanceAndLedgers getFieldsValue(List<String> keys) {
     final Map<String, dynamic> fieldMap = {
       'AccountName': accountName,
       'Accountcd': accountCd,
@@ -76,10 +80,17 @@ class BalanceAndLedgers {
       "MablaghMandePayanBes": endingBalanceCredit
     };
 
-    if (fieldMap.containsKey(key)) {
-      return fieldMap[key];
-    } else {
-      throw ArgumentError('Invalid key: $key');
+    for(String key in keys){
+      if (fieldMap.containsKey(key)) {
+        props.add(ReportBaseDataTableModel(id: -1,name: '${fieldMap.findAsDynamic(key)}')) ;
+      } else {
+        throw ArgumentError('Invalid key: $key');
+      }
     }
+    return this;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>List.empty(growable: true);
 }

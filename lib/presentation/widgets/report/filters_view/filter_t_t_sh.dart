@@ -389,8 +389,8 @@ class Filters extends StatelessWidget {
     final List<String> radioButtonTitle = [
       localization.titleDisplayStyleCol2,
       localization.titleDisplayStyleCol4,
+      localization.titleDisplayStyleCol6,
       localization.titleDisplayStyleCol8,
-      localization.titleDisplayStyleCol10,
     ];
     return SizedBox(
       width: width,

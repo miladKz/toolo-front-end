@@ -53,7 +53,7 @@ import '../domain/usecases/accounting/base/update_standard_detail_use_case.dart'
 import '../domain/usecases/accounting/create_account_use_case.dart';
 import '../domain/usecases/accounting/delete_account_use_case.dart';
 import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
-import '../domain/usecases/accounting/fetch_balance_and_ledgers_report_list_usecases.dart';
+import '../domain/usecases/accounting/report/fetch_balance_and_ledgers_report_list_usecases.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/get_bank_list.dart';
 import '../domain/usecases/accounting/get_card_reader_list.dart';

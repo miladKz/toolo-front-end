@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/data/enum/api_enum.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_j_t.dart';
+import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
+import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/custom_view_with_data_table.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_d_p.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_g_t_sh.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_m.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
 
@@ -19,7 +17,7 @@ class ReportPageTDP extends StatelessWidget {
       direction: Axis.horizontal,
       children: [
         Flexible(flex: 3, child: rightReportFilterView()),
-        const Flexible(flex: 7, child: LeftReportFilterView()),
+         Flexible(flex: 7, child: LeftReportFilterView()),
       ],
     );
   }
@@ -27,7 +25,7 @@ class ReportPageTDP extends StatelessWidget {
   Widget rightReportFilterView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FilterTMView(
+      child: FilterTDPView(
         onChangeFilter: (body) {},
       ),
     );
@@ -36,10 +34,11 @@ class ReportPageTDP extends StatelessWidget {
 }
 
 class LeftReportFilterView extends StatefulWidget {
-  const LeftReportFilterView({
+   LeftReportFilterView({
     super.key,
   });
 
+  DataTableViewModel? dataTableViewModel;
 
   @override
   State<LeftReportFilterView> createState() => _LeftReportFilterViewState();
@@ -49,18 +48,35 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
   @override
   Widget build(BuildContext context) {
     listenToApi();
+
     return Container(
         color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return Container();
+            return widget.dataTableViewModel == null
+                ? emptyData()
+                : CustomViewWithDataTable(
+                    isShowActionButtons: false,
+                    isShowSearchBox: false,
+                    backgroundColor: const Color(0xffF8F8F8),
+                    formWidth: constraints.maxWidth,
+                    onTap: (data) {},
+                    viewModel: widget.dataTableViewModel!,
+                  );
           },
         ));
   }
 
   void listenToApi() {
     final state = context.watch<ReportBloc>().state;
+    if (state is ReportSuccessTDP) {
+      setState(() {
+        widget.dataTableViewModel =
+            DataTableViewModelFactory.createTableViewModelFromReportTDP(
+                balanceAndLedgersReport: state.model);
+      });
+    }
   }
 }
 

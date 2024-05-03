@@ -17,3 +17,12 @@ class ReportLoadingOnView extends ReportState {
   @override
   List<Object?> get props => [isShow];
 }
+
+class ReportSuccessTDP extends ReportState {
+  final BalanceAndLedgersReport model;
+
+  const ReportSuccessTDP({required this.model});
+
+  @override
+  List<Object?> get props => [model];
+}

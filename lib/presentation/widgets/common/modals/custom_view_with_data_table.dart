@@ -12,20 +12,21 @@ import 'modal_elements/modal_action_buttons.dart';
 import 'modal_elements/modal_input_wrapper.dart';
 
 class CustomViewWithDataTable extends StatelessWidget {
-  CustomViewWithDataTable(
-      {super.key,
+  CustomViewWithDataTable({super.key,
       required this.formWidth,
       required this.viewModel,
       this.isActive = true,
-      required GlobalKey<FormState> formKey,
       this.toolBarEnum,
       this.isShowActionButtons = true,
       this.isShowSearchBox = true,
       this.onTap,
       this.onDoubleTap,
       this.backgroundColor = Colors.white,
-      this.onClickOnConfirmCallback})
-      : _formKey = formKey;
+    this.onClickOnConfirmCallback,
+    this.formKey,
+  });
+
+  GlobalKey<FormState>? formKey;
   final bool isShowActionButtons;
   final bool isShowSearchBox;
   final bool isActive;
@@ -33,7 +34,6 @@ class CustomViewWithDataTable extends StatelessWidget {
   DataTableViewModel viewModel;
   final ToolBarEnum? toolBarEnum;
   final void Function(ITableRowData?)? onClickOnConfirmCallback;
-  final GlobalKey<FormState> _formKey;
   Color backgroundColor;
   final TextEditingController searchInController =
       TextEditingController(text: '');
@@ -48,6 +48,8 @@ class CustomViewWithDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CustomDataTable customDataTable = CustomDataTable(viewModel: viewModel,onTap: onTap,);
+
+    formKey ??= GlobalKey<FormState>();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +70,7 @@ class CustomViewWithDataTable extends StatelessWidget {
         ),
         ModalActionButtons(
           formWidth: formWidth,
-          formKey: _formKey,
+          formKey: formKey!,
           onConfirm: () {
             if (onClickOnConfirmCallback != null &&
                 customDataTable.selectedItem != null) {

@@ -4,11 +4,17 @@ abstract class ReportEvent extends Equatable {
   const ReportEvent();
 }
 
-class ReportGetData extends ReportEvent {
-  final String token;
+class RepInitial extends ReportEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+class RepFetchRepostTDP extends ReportEvent {
+  final BalanceAndLedgersParam body;
 
-  const ReportGetData({required this.token});
+  const RepFetchRepostTDP({required this.body});
+
 
   @override
-  List<Object?> get props => [token];
+  List<Object?> get props => [bool];
 }

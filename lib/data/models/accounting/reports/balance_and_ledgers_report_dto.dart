@@ -11,17 +11,19 @@ class BalanceAndLedgersReportDto extends BalanceAndLedgersReport {
   });
 
   factory BalanceAndLedgersReportDto.fromMap(Map<String, dynamic> map) {
+    final dataListMap = map.findAsDynamic("Data");
+    final titlesMap = map.findAsDynamic("Titles");
+
+    List<BalanceAndLedgersDto> dataList =
+        List<BalanceAndLedgersDto>.from(dataListMap.map((data) {
+      return BalanceAndLedgersDto.fromMap(data);
+    })).toList();
+
+    List<ReportColumnTitleDto> titleList =
+        List<ReportColumnTitleDto>.from(titlesMap.map((data) {
+      return ReportColumnTitleDto.fromMap(data);
+    })).toList();
     return BalanceAndLedgersReportDto(
-      balanceAndLedgers: map
-          .findAsDynamic("DataList")
-          ?.map((dynamic item) =>
-              BalanceAndLedgersDto.fromMap(item as Map<String, dynamic>))
-          ?.toList(),
-      reportColumnTitle: map
-          .findAsDynamic("Titles")
-          ?.map((dynamic item) =>
-              ReportColumnTitleDto.fromMap(item as Map<String, dynamic>))
-          ?.toList(),
-    );
+        balanceAndLedgers: dataList, reportColumnTitle: titleList);
   }
 }

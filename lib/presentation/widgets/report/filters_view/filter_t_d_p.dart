@@ -1,10 +1,15 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/params/balance_and_ledgers_param.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
 import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
@@ -13,18 +18,7 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/d
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
-
-TextEditingController controllerFromDocument = TextEditingController();
-TextEditingController controllerToDocument = TextEditingController();
-TextEditingController controllerFromDate = TextEditingController();
-TextEditingController controllerToDate = TextEditingController();
-TextEditingController controllerDocumentCode = TextEditingController();
-TextEditingController controllerDocCodDesc = TextEditingController();
-TextEditingController controllerFromReference = TextEditingController();
-TextEditingController controllerToReference = TextEditingController();
-TextEditingController controllerSeparation = TextEditingController();
-TextEditingController controllerGroup = TextEditingController();
-TextEditingController controllerRadioButton = TextEditingController();
+import 'package:toolo_gostar/presentation/widgets/report/btn_set_filter.dart';
 
 class FilterTDPView extends StatelessWidget {
   final double height = 70;
@@ -41,7 +35,7 @@ class FilterTDPView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body: const Filters(
+            body:  Filters(
               height: 70,
             ),
           ),
@@ -52,7 +46,7 @@ class FilterTDPView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.height});
+   Filters({super.key, required this.height});
 
   final double height;
 
@@ -61,6 +55,20 @@ class Filters extends StatelessWidget {
 
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
+
+  TextEditingController controllerFromDocument = TextEditingController(text: '1');
+  TextEditingController controllerToDocument = TextEditingController(text: '100');
+  TextEditingController controllerFromDate = TextEditingController(text: '1403/02/01');
+  TextEditingController controllerToDate = TextEditingController(text: '1403/02/30');
+  TextEditingController controllerDocumentCode = TextEditingController(text: '');
+  TextEditingController controllerDocCodDesc = TextEditingController(text: '');
+  TextEditingController controllerFromReference = TextEditingController(text: '1');
+  TextEditingController controllerToReference = TextEditingController(text: '100');
+  TextEditingController controllerSeparation = TextEditingController(text: '');
+  TextEditingController controllerGroup = TextEditingController(text: '');
+  TextEditingController controllerTarazType = TextEditingController(text: '');
+  TextEditingController controllerDisplayColumnNumber = TextEditingController(text: '2');
+  List<FormCheckBox> checkBoxList = List.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +114,12 @@ class Filters extends StatelessWidget {
             column2(width: width),
             verticalGapDivider,
             showListCheckBox(width: width),
+            BtnSetFilter(
+                width: width,
+                onTap: () {
+                  BalanceAndLedgersParam body = getFilterBody();
+                  locator.get<ReportBloc>().add(RepFetchRepostTDP(body: body));
+                }),
           ],
         );
       },
@@ -340,6 +354,7 @@ class Filters extends StatelessWidget {
       required TextEditingController controller,
       required String hint}) {
     List<CategoryModel> items= baseDataModel.categoryList;
+    controllerSeparation.text = '${ items[0].id}';
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -347,36 +362,7 @@ class Filters extends StatelessWidget {
       items: items,
       hint: hint,
       onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
-      },
-    );
-  }
-
-  Widget row5({required double width}) {
-    final double itemWidth = width - 20;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        groupItem(
-            itemWidth: itemWidth, hint: 'اشخاص', controller: controllerGroup),
-      ],
-    );
-  }
-
-  Widget groupItem(
-      {required double itemWidth,
-      required TextEditingController controller,
-      required String hint}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.titlePersonnel),
-    ];
-    return GenericDropDown<IDropDownItem>(
-      isEnable: true,
-      itemWidth: itemWidth,
-      value: items[0],
-      items: items,
-      hint: hint,
-      onChanged: (value) {
+        controllerSeparation.text = '${value?.id}';
         //controller.value=TextEditingValue(text: value.toString());
       },
     );
@@ -400,7 +386,8 @@ class Filters extends StatelessWidget {
               width: width,
               height: height,
               radioButtonTitle: radioButtonTitle,
-              controller: controllerRadioButton),
+              values: const [0, 1, 2, 3, 4],
+              controller: controllerTarazType),
         ],
       ),
     );
@@ -410,8 +397,8 @@ class Filters extends StatelessWidget {
     final List<String> radioButtonTitle = [
       localization.titleDisplayStyleCol2,
       localization.titleDisplayStyleCol4,
+      localization.titleDisplayStyleCol6,
       localization.titleDisplayStyleCol8,
-      localization.titleDisplayStyleCol10,
     ];
     return SizedBox(
       width: width,
@@ -423,7 +410,8 @@ class Filters extends StatelessWidget {
               width: width,
               height: height,
               radioButtonTitle: radioButtonTitle,
-              controller: controllerRadioButton),
+              values: const [2, 4, 6, 8],
+              controller: controllerDisplayColumnNumber),
         ],
       ),
     );
@@ -455,11 +443,13 @@ class Filters extends StatelessWidget {
       localization.titleClosingDocument,
       localization.titleCurrencyExchangeDocument,
       localization.titleTemporaryAccountClosingDocument,
-      localization.titleAutomaticSizeAdjustment,
+      localization.titleHesabEntezami,
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
-      localization.titleOnlyDebitBalances,
+      localization.titleOnlyCreditorBalances,
+      localization.profitAndLoss,
+      localization.titleHamrahZirSath,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;
@@ -479,12 +469,86 @@ class Filters extends StatelessWidget {
     );
   }
 
-  List<Widget> getCheckBoxList(List<String> checkBoxName) {
-    List<Widget> widgets = List.empty(growable: true);
+  List<FormCheckBox> getCheckBoxList(List<String> checkBoxName) {
     for (String title in checkBoxName) {
-      widgets.add(FormCheckBox(value: true, title: title));
+      checkBoxList.add(FormCheckBox(value: true, title: title));
     }
 
-    return widgets;
+    return checkBoxList;
+  }
+
+  BalanceAndLedgersParam getFilterBody() {
+    int accountLevel = controllerTarazType.text.toInt();
+    String fromDate = controllerFromDate.text;
+    String toDate = controllerToDate.text;
+    String accountCd = controllerDocumentCode.text;
+    int fromNumber = controllerFromDocument.text.toInt();
+    int toNumber = controllerToDocument.text.toInt();
+    int fromNumber2 = controllerFromReference.text.toInt();
+    int toNumber2 = controllerToReference.text.toInt();
+    int categoryId = controllerSeparation.text.toInt();
+    int displayColumn = controllerDisplayColumnNumber.text.toInt();
+    bool withEftetahie = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOpeningDocument);
+    bool withEkhtetamieh = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleClosingDocument);
+    bool withTasir = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleCurrencyExchangeDocument);
+    bool withBastanHesabhayeMovaqat = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleTemporaryAccountClosingDocument);
+    bool withEntezamiAccounts = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleHesabEntezami);
+    bool withFaqatGardeshDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyInCirculation);
+    bool withFaqatMandeDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyLeftovers);
+    bool withFaqatMandeDarhayeBed = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyDebitBalances);
+    bool withFaqatMandeDarhayeBes = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyCreditorBalances);
+    bool withSoodZian = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.profitAndLoss);
+    bool withZirSath = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleHamrahZirSath);
+
+    BalanceAndLedgersParam body=   BalanceAndLedgersParam(
+        activeYear: 0,
+        fromDate: fromDate,
+        toDate: toDate,
+        accountCd: accountCd,
+        fromNumber: fromNumber,
+        toNumber: toNumber,
+        fromNumber2: fromNumber2,
+        toNumber2: toNumber2,
+        categoryId: categoryId,
+        saveTypeId: 0,
+        accountLevel: accountLevel,
+        displayColumn: displayColumn,
+        withEftetahie: withEftetahie,
+        withEkhtetamieh: withEkhtetamieh,
+        withTasir: withTasir,
+        withSoodZian: withSoodZian,
+        withZirSath: withZirSath,
+        withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
+        withEntezamiAccounts: withEntezamiAccounts,
+        withFaqatGardeshDarha: withFaqatGardeshDarha,
+        withFaqatMandeDarha: withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes);
+    return body;
+  }
+
+  bool getCheckBoxValue(
+      {required List<FormCheckBox> checkBoxList, required String title}) {
+    final FormCheckBox? formCheckBox = checkBoxList.firstWhereOrNull(
+        (element) => element.title == localization.titleOpeningDocument);
+    if (formCheckBox != null) {
+      return formCheckBox.value;
+    } else {
+      return false;
+    }
   }
 }

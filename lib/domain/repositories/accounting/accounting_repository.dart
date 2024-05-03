@@ -111,6 +111,6 @@ abstract class IAccountingRepository {
 
   //______________________________________ reports ____________________________
 
-  Future<List<BalanceAndLedgersReport>> fetchBalanceAndLedgersReportList(
+  Future<BalanceAndLedgersReport> fetchBalanceAndLedgersReportList(
       BalanceAndLedgersParam balanceAndLedgersParam);
 }

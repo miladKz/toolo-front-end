@@ -245,16 +245,18 @@
  "titleDisplayStyleCol2": "ستونی 2",
  "titleDisplayStyleCol4": "ستونی 4",
  "titleDisplayStyleCol8": "ستونی 8",
- "titleDisplayStyleCol10": "ستونی 10",
+ "titleDisplayStyleCol6": "ستونی 6",
  "titleOpeningDocument": "سند افتتاحیه",
  "titleClosingDocument": "سند اختتامیه",
  "titleCurrencyExchangeDocument": "سند تسعیر ارز",
  "titleTemporaryAccountClosingDocument": "سند بستن حساب های موقت",
- "titleAutomaticSizeAdjustment": "تنظیم اتوماتیک اندازه",
+ "titleHesabEntezami": "حساب های انتظامی",
  "titleOnlyInCirculation": "فقط گردش دارها",
  "titleOnlyLeftovers": "فقط مانده دارها",
  "titleOnlyDebitBalances": "فقط مانده های بدهکار",
  "titleOnlyCreditorBalances": "فقط مانده های بستانکار",
+ "titleAutomaticSizeAdjustment": "تنظیم اتوماتیک اندازه",
+ "titleHamrahZirSath": "همراه با زیر سطح",
  "titleAccountingDocument": "سند حسابداری",
  "titleSaveType": "نوع ذخیره",
  "titleInDate": "در تاریخ",
@@ -291,6 +293,7 @@
  "floating2": "شناوری 2",
  "floating3": "شناوری 3",
  "similarPeriodInTheCurrentPeriod": "مدت مشابه در دوره جاری",
- "theSamePeriodInThePreviousYear": "مدت مشابه در سال قبل"
+ "theSamePeriodInThePreviousYear": "مدت مشابه در سال قبل",
+ "setFilter": "اعمال فیلتر"
 
 }

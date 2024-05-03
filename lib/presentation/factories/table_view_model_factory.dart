@@ -1,9 +1,11 @@
-import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
-import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
-import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
+import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
+import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/people.dart';
 import 'package:toolo_gostar/main.dart';
@@ -193,5 +195,29 @@ class DataTableViewModelFactory {
 
 
     return DataTableViewModel(labels: labels, data: accountList);
+  }
+
+  static DataTableViewModel? createTableViewModelFromReportTDP(
+      {required BalanceAndLedgersReport balanceAndLedgersReport}) {
+    List<BalanceAndLedgers> values = List.empty(growable: true);
+    final List<String> keys = List.empty(growable: true);
+    final List<String> labels =
+        balanceAndLedgersReport.reportColumnTitle.expand((e) {
+      if (e.children.isEmpty) {
+        keys.add(e.name);
+        return [e.title];
+      } else {
+        return e.children.map((e) {
+          keys.add(e.name);
+          return e.title;
+        });
+      }
+    }).toList();
+
+    values = balanceAndLedgersReport.balanceAndLedgers
+        .map((e) => e.getFieldsValue(keys))
+        .toList();
+
+    return DataTableViewModel(labels: labels, data: values);
   }
 }

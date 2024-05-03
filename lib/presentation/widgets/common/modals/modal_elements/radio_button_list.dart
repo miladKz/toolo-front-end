@@ -1,14 +1,22 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_form.dart';
 class CustomGridRadioButtonList extends StatefulWidget {
   final double width;
   final double height;
   final List<String> radioButtonTitle;
   final TextEditingController controller;
+  final List<int> values;
   int selectedRadio = 0;
 
-  CustomGridRadioButtonList({super.key, required this.width, required this.height, required this.radioButtonTitle, required this.controller});
+   CustomGridRadioButtonList(
+      {super.key,
+      required this.width,
+      required this.height,
+      required this.radioButtonTitle,
+       this.values=  const [],
+      required this.controller});
 
   @override
   State<CustomGridRadioButtonList> createState() => _CustomGridRadioButtonListState();
@@ -19,7 +27,12 @@ class _CustomGridRadioButtonListState extends State<CustomGridRadioButtonList> {
   Widget build(BuildContext context) {
 
     double maxWidth = widget.width;
-    widget.controller.value=TextEditingValue(text: widget.selectedRadio.toString());
+    if(widget.values.isEmpty){
+      widget.controller.text= '0';
+    }else{
+      widget.controller.text= widget.values[0].toString();
+    }
+
     return SizedBox(
       width: maxWidth,
       child: GridView.builder(
@@ -40,6 +53,12 @@ class _CustomGridRadioButtonListState extends State<CustomGridRadioButtonList> {
             onChanged: (int value) {
               setState(() {
                 widget.selectedRadio = value;
+                if(widget.values.isEmpty){
+                  widget.controller.text = widget.selectedRadio.toString();
+                }else{
+                  widget.controller.text = widget.values[index].toString();
+                }
+
               });
             },
           );

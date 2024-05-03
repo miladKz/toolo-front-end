@@ -889,7 +889,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   }
 
   @override
-  Future<List<BalanceAndLedgersReport>> fetchBalanceAndLedgersReportList(
+  Future<BalanceAndLedgersReport> fetchBalanceAndLedgersReportList(
       BalanceAndLedgersParam balanceAndLedgersParam) async {
     try {
       BalanceAndLedgersParamDto balanceAndLedgersParamDto =
@@ -899,13 +899,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
           await remoteDataSource.fetchBalanceAndLedgersReportList(
               token: token, param: balanceAndLedgersParamDto);
       if (serverResponse.isSuccess) {
-        List<BalanceAndLedgersReport> items = List.empty(growable: true);
+        print('fetchBalanceAndLedgersReportList: ${serverResponse.data}');
         //todo: replace item to correct key
-        final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
-        items = List<BalanceAndLedgersReport>.from(itemsAsMap.map((data) {
-          return BalanceAndLedgersReportDto.fromMap(data);
-        }));
-        return items;
+        final Map<String, dynamic> itemsAsMap = serverResponse.data!;
+        return BalanceAndLedgersReportDto.fromMap(itemsAsMap);
       } else {
         throw serverResponse.message;
       }
@@ -917,22 +914,31 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   BalanceAndLedgersParamDto getBalanceAndLedgersParamAsDto(
       BalanceAndLedgersParam balanceAndLedgersParam) {
     return BalanceAndLedgersParamDto(
-      activeYear: balanceAndLedgersParam.activeYear,
-      fromDate: balanceAndLedgersParam.fromDate,
-      toDate: balanceAndLedgersParam.toDate,
-      accountCd: balanceAndLedgersParam.accountCd,
-      fromNumber: balanceAndLedgersParam.fromNumber,
-      toNumber: balanceAndLedgersParam.toNumber,
-      fromNumber2: balanceAndLedgersParam.fromNumber2,
-      toNumber2: balanceAndLedgersParam.toNumber2,
-      categoryId: balanceAndLedgersParam.categoryId,
-      saveTypeId: balanceAndLedgersParam.saveTypeId,
-      withOpening: balanceAndLedgersParam.withOpening,
-      withClosing: balanceAndLedgersParam.withClosing,
-      withEffect: balanceAndLedgersParam.withEffect,
-      withProfitAndLoss: balanceAndLedgersParam.withProfitAndLoss,
-      accountLevel: balanceAndLedgersParam.accountLevel,
-      withSubLevels: balanceAndLedgersParam.withSubLevels,
-    );
+        activeYear: balanceAndLedgersParam.activeYear,
+        fromDate: balanceAndLedgersParam.fromDate,
+        toDate: balanceAndLedgersParam.toDate,
+        accountCd: balanceAndLedgersParam.accountCd,
+        fromNumber: balanceAndLedgersParam.fromNumber,
+        toNumber: balanceAndLedgersParam.toNumber,
+        fromNumber2: balanceAndLedgersParam.fromNumber2,
+        toNumber2: balanceAndLedgersParam.toNumber2,
+        categoryId: balanceAndLedgersParam.categoryId,
+        saveTypeId: balanceAndLedgersParam.saveTypeId,
+        accountLevel: balanceAndLedgersParam.accountLevel,
+        displayColumn: balanceAndLedgersParam.displayColumn,
+        withEftetahie: balanceAndLedgersParam.withEftetahie,
+        withEkhtetamieh: balanceAndLedgersParam.withEkhtetamieh,
+        withTasir: balanceAndLedgersParam.withTasir,
+        withSoodZian: balanceAndLedgersParam.withSoodZian,
+        withZirSath: balanceAndLedgersParam.withZirSath,
+        withBastanHesabhayeMovaqat:
+            balanceAndLedgersParam.withBastanHesabhayeMovaqat,
+        withEntezamiAccounts: balanceAndLedgersParam.withEntezamiAccounts,
+        withFaqatGardeshDarha: balanceAndLedgersParam.withFaqatGardeshDarha,
+        withFaqatMandeDarha: balanceAndLedgersParam.withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed:
+            balanceAndLedgersParam.withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes:
+            balanceAndLedgersParam.withFaqatMandeDarhayeBes);
   }
 }

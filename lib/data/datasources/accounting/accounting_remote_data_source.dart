@@ -649,11 +649,11 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Future<ServerResponseDto> fetchBalanceAndLedgersReportList(
       {required String token,
       required BalanceAndLedgersParamDto param}) async {
-    String apiAddress = "/apiacc/rep/taraz-ha-dafater-pelekani";
+    String apiAddress = "/api/acc/rep/taraz-ha-dafater-pelekani";
     try {
       Response<dynamic> response = await httpClient.get(
         apiAddress,
-        queryParameters: param.toMap(),
+        data: param.toMap(),
         options: _getHeaders(token),
       );
       log('fetchCounterPartyDetailList :${getData(response)}');

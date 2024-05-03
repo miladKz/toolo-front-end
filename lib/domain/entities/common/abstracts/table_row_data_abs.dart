@@ -7,5 +7,5 @@ abstract class ITableRowData extends Equatable {
   ITableRowData({required this.id, required this.name});
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [name];
 }

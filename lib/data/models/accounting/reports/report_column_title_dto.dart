@@ -11,10 +11,14 @@ class ReportColumnTitleDto extends ReportColumnTitle {
   });
 
   factory ReportColumnTitleDto.fromMap(Map<String, dynamic> map) {
+    List<ReportColumnTitleDto> children =
+    List<ReportColumnTitleDto>.from(map.findAsDynamic("Childs").map((data) {
+      return ReportColumnTitleDto.fromMap(data);
+    })).toList();
     return ReportColumnTitleDto(
         order: map.findAsInt("Order"),
-        name: map.findAsString("Name"),
+        name: map.findAsString("Name").clearNull(),
         title: map.findAsString("Title"),
-        children: map.findAsDynamic("Childs"));
+        children: children);
   }
 }

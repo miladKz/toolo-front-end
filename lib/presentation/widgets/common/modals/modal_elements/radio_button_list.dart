@@ -28,7 +28,7 @@ class _CustomGridRadioButtonListState extends State<CustomGridRadioButtonList> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 2,
-          mainAxisSpacing: 6,
+          mainAxisSpacing: 4,
           childAspectRatio: (widget.width / widget.height) ,
         ),
         itemCount: widget.radioButtonTitle.length,

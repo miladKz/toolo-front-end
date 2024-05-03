@@ -31,9 +31,8 @@ class CustomTitleOnBorder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: width,
-          height: height,
+        Container(
+          constraints: BoxConstraints(maxWidth: width,minHeight: height),
           child: Stack(
             fit: StackFit.passthrough,
             alignment: AlignmentDirectional.center,

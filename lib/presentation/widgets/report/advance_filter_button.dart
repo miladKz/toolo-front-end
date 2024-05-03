@@ -29,6 +29,7 @@ class _AdvanceFiltersButtonState extends State<AdvanceFiltersButton> {
           });
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: widget.height,

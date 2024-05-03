@@ -26,12 +26,12 @@ TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
 TextEditingController controllerRadioButton = TextEditingController();
 
-class FilterTDPView extends StatelessWidget {
+class FilterJTView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
   final Function(dynamic) onChangeFilter;
 
-  const FilterTDPView({super.key, required this.onChangeFilter});
+  const FilterJTView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class FilterTDPView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body: const Filters(
+            body:  Filters(
               height: 70,
             ),
           ),
@@ -52,7 +52,7 @@ class FilterTDPView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.height});
+   Filters({super.key, required this.height});
 
   final double height;
 
@@ -407,23 +407,37 @@ class Filters extends StatelessWidget {
   }
 
   Widget column2({required double width}) {
-    final List<String> radioButtonTitle = [
-      localization.titleDisplayStyleCol2,
-      localization.titleDisplayStyleCol4,
-      localization.titleDisplayStyleCol8,
-      localization.titleDisplayStyleCol10,
+    final List<String> checkBoxNames = [
+      localization.titleOpeningDocument,
+      localization.titleClosingDocument,
+      localization.titleCurrencyExchangeDocument,
+      localization.titleTemporaryAccountClosingDocument,
+      localization.titleAutomaticSizeAdjustment,
+      localization.titleOnlyInCirculation,
+      localization.titleOnlyLeftovers,
+      localization.titleOnlyDebitBalances,
+      localization.titleOnlyDebitBalances,
     ];
+    double maxWidth = width;
+    double itemWidth = maxWidth / 2;
+    double itemHeight = 48;
     return SizedBox(
-      width: width,
+      width: maxWidth,
       child: Column(
         children: [
           linearTitle(title: localization.titleDisplayStyle),
           verticalGapDivider,
-          CustomGridRadioButtonList(
-              width: width,
-              height: height,
-              radioButtonTitle: radioButtonTitle,
-              controller: controllerRadioButton),
+          GridView.count(
+            primary: false,
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            childAspectRatio: (itemWidth / itemHeight),
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            crossAxisCount: 2,
+            children: getCheckBoxList(checkBoxNames),
+          ),
+          linearGap,
         ],
       ),
     );
@@ -448,6 +462,10 @@ class Filters extends StatelessWidget {
       ],
     );
   }
+  Widget linearGap= Container(
+    height: 1,
+    color: const Color(0xffCCCCCC),
+  );
 
   Widget showListCheckBox({required double width}) {
     final List<String> checkBoxNames = [

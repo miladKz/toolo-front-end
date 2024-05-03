@@ -439,6 +439,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         counterpartyBankList: counterpartyBankList,
         categoryList: categoryList);
 
+    emit(SuccessFetchBaseDataModel(baseDataModel: baseDataModel));
     debugPrint(baseDataModel.toString());
   }
 

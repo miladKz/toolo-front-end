@@ -32,8 +32,10 @@ class _RadioButtonFormState extends State<RadioButtonForm> {
           title: FormItemTitle(
             title: widget.title,
           ),
+          contentPadding: EdgeInsets.zero,
           value: widget.index,
           groupValue: widget.selectedRadio,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           onChanged: (int? value) {
             widget.onChanged(value!);
           },

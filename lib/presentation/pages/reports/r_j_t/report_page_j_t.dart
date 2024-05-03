@@ -3,14 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_j_t.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_d_p.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_g_t_sh.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_m.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ReportPageTDP extends StatelessWidget {
-  const ReportPageTDP({super.key});
+class ReportPageJT extends StatelessWidget {
+  const ReportPageJT({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +15,8 @@ class ReportPageTDP extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       direction: Axis.horizontal,
       children: [
-        Flexible(flex: 3, child: rightReportFilterView()),
-        const Flexible(flex: 7, child: LeftReportFilterView()),
+        Flexible(flex: 2, child: rightReportFilterView()),
+        const Flexible(flex: 8, child: LeftReportFilterView()),
       ],
     );
   }
@@ -27,7 +24,7 @@ class ReportPageTDP extends StatelessWidget {
   Widget rightReportFilterView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FilterTMView(
+      child: FilterJTView(
         onChangeFilter: (body) {},
       ),
     );

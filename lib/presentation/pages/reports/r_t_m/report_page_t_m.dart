@@ -9,8 +9,8 @@ import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t
 
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ReportPageTDP extends StatelessWidget {
-  const ReportPageTDP({super.key});
+class ReportPageTM extends StatelessWidget {
+  const ReportPageTM({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class ReportPageTDP extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       direction: Axis.horizontal,
       children: [
-        Flexible(flex: 3, child: rightReportFilterView()),
-        const Flexible(flex: 7, child: LeftReportFilterView()),
+        Flexible(flex: 2, child: rightReportFilterView()),
+        const Flexible(flex: 8, child: LeftReportFilterView()),
       ],
     );
   }

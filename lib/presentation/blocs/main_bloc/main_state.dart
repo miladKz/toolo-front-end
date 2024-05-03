@@ -383,3 +383,12 @@ class FailedSyncCustomerDetail extends MainState {
   @override
   List<Object?> get props => [errorMessage];
 }
+
+class SuccessFetchBaseDataModel extends MainState {
+  final BaseDataModel baseDataModel;
+
+  SuccessFetchBaseDataModel({required this.baseDataModel});
+
+  @override
+  List<Object?> get props => [baseDataModel];
+}

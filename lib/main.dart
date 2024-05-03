@@ -12,10 +12,10 @@ import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
 import 'package:toolo_gostar/presentation/pages/test_screen.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return screenMain();
+        return screenReport();
       }),
     );
   }
@@ -137,13 +137,21 @@ Widget screenMain() {
 }
 
 Widget screenReport() {
-  return BlocProvider(
-    create: (_) {
-      return locator<ReportBloc>();
+  return MultiBlocProvider(providers: [
+    BlocProvider(
+      create: (_) {
+        return locator<ReportBloc>();
     },
-    child: const ScreenReportTarazDafaterPelekani(),
-  );
+    ),
+    BlocProvider(
+      create: (_) {
+        return locator<MainBloc>();
+      },
+    ),
+  ], child: const ScreenReportTarazDafaterPelekani());
 }
+
+
 
 bool get isDialogOpen {
   bool? isDialogOpen = Get.isDialogOpen;

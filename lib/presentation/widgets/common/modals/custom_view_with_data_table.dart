@@ -47,7 +47,7 @@ class CustomViewWithDataTable extends StatelessWidget {
   final Function(ITableRowData)? onDoubleTap;
   @override
   Widget build(BuildContext context) {
-    CustomDataTable customDataTable = CustomDataTable(viewModel: viewModel);
+    CustomDataTable customDataTable = CustomDataTable(viewModel: viewModel,onTap: onTap,);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

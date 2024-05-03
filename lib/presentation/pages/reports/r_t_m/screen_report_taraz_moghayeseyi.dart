@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
 import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_t_g_t_sh/report_page_t_g_t_sh.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_t_m/report_page_t_m.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/report_page_t_d_p.dart';
 
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ScreenReportTarazDafaterPelekani extends StatefulWidget {
-  const ScreenReportTarazDafaterPelekani({super.key});
+class ScreenReportTarazMoghayeseyi extends StatefulWidget {
+  const ScreenReportTarazMoghayeseyi({super.key});
 
   @override
-  State<ScreenReportTarazDafaterPelekani> createState() => _ScreenReportTarazDafaterPelekaniState();
+  State<ScreenReportTarazMoghayeseyi> createState() => _ScreenReportTarazMoghayeseyiState();
 }
 
-class _ScreenReportTarazDafaterPelekaniState extends State<ScreenReportTarazDafaterPelekani> {
+class _ScreenReportTarazMoghayeseyiState extends State<ScreenReportTarazMoghayeseyi> {
   @override
   void initState() {
     super.initState();
@@ -66,7 +67,7 @@ class _InitViewState extends State<InitView> {
       locator.get<MainBloc>().add(FetchBaseData());
     }
     listenToBaseData();
-    return widget.isBaseDataFetch ? const ReportPageTDP():const Center(child: CircularProgressIndicator(),);
+    return widget.isBaseDataFetch ? const ReportPageTM():const Center(child: CircularProgressIndicator(),);
   }
 
   void listenToBaseData() {

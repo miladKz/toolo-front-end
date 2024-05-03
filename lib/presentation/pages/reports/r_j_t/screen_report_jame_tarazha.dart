@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
 import 'package:toolo_gostar/di/di.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_j_t/report_page_j_t.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/report_page_t_d_p.dart';
 
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ScreenReportTarazDafaterPelekani extends StatefulWidget {
-  const ScreenReportTarazDafaterPelekani({super.key});
+class ScreenReportJameTarazha extends StatefulWidget {
+  const ScreenReportJameTarazha({super.key});
 
   @override
-  State<ScreenReportTarazDafaterPelekani> createState() => _ScreenReportTarazDafaterPelekaniState();
+  State<ScreenReportJameTarazha> createState() => _ScreenReportJameTarazhaState();
 }
 
-class _ScreenReportTarazDafaterPelekaniState extends State<ScreenReportTarazDafaterPelekani> {
+class _ScreenReportJameTarazhaState extends State<ScreenReportJameTarazha> {
   @override
   void initState() {
     super.initState();
@@ -66,7 +66,7 @@ class _InitViewState extends State<InitView> {
       locator.get<MainBloc>().add(FetchBaseData());
     }
     listenToBaseData();
-    return widget.isBaseDataFetch ? const ReportPageTDP():const Center(child: CircularProgressIndicator(),);
+    return widget.isBaseDataFetch ? const ReportPageJT():const Center(child: CircularProgressIndicator(),);
   }
 
   void listenToBaseData() {

@@ -1,6 +1,5 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
@@ -21,7 +20,13 @@ class GetTafziliFromAccountWidget extends StatelessWidget{
   final TextEditingController controllerDocumentCode ;
   final TextEditingController controllerDocCodDesc ;
 
-  const GetTafziliFromAccountWidget({super.key, required this.controllerDocumentCode, required this.controllerDocCodDesc});
+  final bool withTafzili;
+
+  const GetTafziliFromAccountWidget(
+      {super.key,
+      required this.controllerDocumentCode,
+      required this.controllerDocCodDesc,
+       this.withTafzili=false});
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +36,25 @@ class GetTafziliFromAccountWidget extends StatelessWidget{
     List<TafziliDataBody> tafziliDataBodyList = List.empty(growable: true);
     return LayoutBuilder(builder: (context, constraints) {
       double rowWidth=constraints.maxWidth;
-      return Column(children: [
-        AccountCodeObject(rowWidth: rowWidth, controllerDocumentCode: controllerDocumentCode, controllerDocCodDesc: controllerDocCodDesc),
-        verticalGapDivider,
-        TafziliDetailRow(
-            rowWidth: constraints.maxWidth*0.7,
-            controllersTafzili: controllersTafzili,
-            tafziliDataBodyList: tafziliDataBodyList),
-      ],);
-    },);
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AccountCodeObject(
+                rowWidth: rowWidth,
+                controllerDocumentCode: controllerDocumentCode,
+                controllerDocCodDesc: controllerDocCodDesc,
+                withTafzili: withTafzili),
+            verticalGapDivider,
+            withTafzili
+                ? TafziliDetailRow(
+                    rowWidth: constraints.maxWidth,
+                    controllersTafzili: controllersTafzili,
+                    tafziliDataBodyList: tafziliDataBodyList)
+                : const SizedBox().visible(false),
+          ],
+        );
+      },);
   }
 }
 
@@ -47,12 +62,14 @@ class AccountCodeObject extends StatefulWidget {
   final double rowWidth;
   final TextEditingController controllerDocumentCode;
   final TextEditingController controllerDocCodDesc;
+  final bool withTafzili;
 
   const AccountCodeObject(
       {super.key,
         required this.rowWidth,
         required this.controllerDocumentCode,
-        required this.controllerDocCodDesc});
+      required this.controllerDocCodDesc,
+      required this.withTafzili});
 
   @override
   State<AccountCodeObject> createState() => _AccountCodeObjectState();
@@ -95,9 +112,12 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
                       TextEditingValue(text: accountItem.accountcd);
                   widget.controllerDocCodDesc.value =
                       TextEditingValue(text: accountItem.description);
-                  locator.get<MainBloc>().add(
-                      MainFetchTafziliGroupAndChildListWithAccountId(
-                          accountId: accountItem.id));
+                  if (widget.withTafzili) {
+                    locator.get<MainBloc>().add(
+                        MainFetchTafziliGroupAndChildListWithAccountId(
+                            accountId: accountItem.id));
+                  }
+
                   Navigator.of(context).pop();
                 },
               ),
@@ -109,8 +129,7 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          FormItemTitle(title: localization.accountCode),
-          titleInputSpacing,
+          FormItemTitle(title: ''),
           FormTextField(
             textHint: '66',
             controller: controller,
@@ -135,7 +154,6 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         FormItemTitle(title: ''),
-        titleInputSpacing,
         FormTextField(
           textHint: '0',
           controller: controller,
@@ -204,7 +222,7 @@ class _TafziliDetailRowState extends State<TafziliDetailRow> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FormItemTitle(title: item.name),
+        FormItemTitle(title: item.name, textColor: const Color(0xffA7A7A7)),
         titleInputSpacing,
         TafziliDropBox(
           itemWidth: itemWidth,

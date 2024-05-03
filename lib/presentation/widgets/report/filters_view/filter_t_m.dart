@@ -26,12 +26,12 @@ TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
 TextEditingController controllerRadioButton = TextEditingController();
 
-class FilterTDPView extends StatelessWidget {
+class FilterTMView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
   final Function(dynamic) onChangeFilter;
 
-  const FilterTDPView({super.key, required this.onChangeFilter});
+  const FilterTMView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class FilterTDPView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body: const Filters(
+            body: Filters(
               height: 70,
             ),
           ),
@@ -52,7 +52,7 @@ class FilterTDPView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.height});
+  Filters({super.key, required this.height});
 
   final double height;
 
@@ -70,13 +70,8 @@ class Filters extends StatelessWidget {
         return Column(
           children: [
             baseFilterTitle(
-                title: localization.titleDocument,
-                body: row1(width: width),
-                width: width,
-                height: height),
-            baseFilterTitle(
                 title: localization.titleDate,
-                body: row2(width: width),
+                body: row1(width: width),
                 width: width,
                 height: height),
             baseFilterTitle(
@@ -87,23 +82,17 @@ class Filters extends StatelessWidget {
                 width: width,
                 height: height),
             baseFilterTitle(
-                title: localization.titleReference,
-                body: row3(width: width),
-                width: width,
-                height: height),
-            baseFilterTitle(
                 title: localization.titleSeparation,
-                body: row4(width: width),
+                body: row2(width: width),
                 width: width,
                 height: height),
             const SizedBox(
               height: 6,
             ),
             column1(width: width),
-            const SizedBox(
-              height: 6,
-            ),
             column2(width: width),
+            verticalGapDivider,
+            linearGap,
             verticalGapDivider,
             showListCheckBox(width: width),
           ],
@@ -155,59 +144,6 @@ class Filters extends StatelessWidget {
   }
 
   Widget row1({required double width}) {
-    final double itemWidth = (width / 2) - 50;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        documentItem(
-            itemWidth: itemWidth,
-            title: localization.titleFromDocument,
-            hint: '1',
-            controller: controllerFromDocument),
-        largeFilterDivider(),
-        documentItem(
-            itemWidth: itemWidth,
-            title: localization.titleToDocument,
-            hint: '999',
-            controller: controllerToDocument),
-      ],
-    );
-  }
-
-  Widget documentItem(
-      {required double itemWidth,
-      required String title,
-      required TextEditingController controller,
-      required String hint}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: getFilterBodyTitleStyle,
-        ),
-        smallFilterDivider(),
-        SizedBox(
-          width: itemWidth,
-          child: TextFormField(
-            textAlign: TextAlign.right,
-            decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: getFilterBodyStyle,
-                contentPadding: const EdgeInsets.only(right: 2, left: 2)),
-            maxLines: 1,
-            controller: controller,
-            style: getFilterBodyStyle,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget row2({required double width}) {
     final double itemWidth = (width / 2) - 50;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -269,68 +205,16 @@ class Filters extends StatelessWidget {
     );
   }
 
-  Widget row3({required double width}) {
-    final double itemWidth = (width / 2) - 50;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        referenceItem(
-            itemWidth: itemWidth,
-            title: localization.titleFromReference,
-            hint: '1',
-            controller: controllerFromReference),
-        largeFilterDivider(),
-        referenceItem(
-            itemWidth: itemWidth,
-            title: localization.titleToReference,
-            hint: '999',
-            controller: controllerToReference),
-      ],
-    );
-  }
 
-  Widget referenceItem(
-      {required double itemWidth,
-      required String title,
-      required TextEditingController controller,
-      required String hint}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: getFilterBodyTitleStyle,
-        ),
-        smallFilterDivider(),
-        SizedBox(
-          width: itemWidth,
-          child: TextFormField(
-            textAlign: TextAlign.right,
-            decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: getFilterBodyStyle,
-                contentPadding: const EdgeInsets.only(right: 2, left: 2)),
-            maxLines: 1,
-            controller: controller,
-            style: getFilterBodyStyle,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-          ),
-        )
-      ],
-    );
-  }
 
-  Widget row4({required double width}) {
+
+  Widget row2({required double width}) {
     final double itemWidth = width - 20;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         separationItem(
-            itemWidth: itemWidth,
-            hint: '',
-            controller: controllerSeparation),
+            itemWidth: itemWidth, hint: '', controller: controllerSeparation),
       ],
     );
   }
@@ -339,7 +223,7 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<CategoryModel> items= baseDataModel.categoryList;
+    List<CategoryModel> items = baseDataModel.categoryList;
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -352,35 +236,9 @@ class Filters extends StatelessWidget {
     );
   }
 
-  Widget row5({required double width}) {
-    final double itemWidth = width - 20;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        groupItem(
-            itemWidth: itemWidth, hint: 'اشخاص', controller: controllerGroup),
-      ],
-    );
-  }
 
-  Widget groupItem(
-      {required double itemWidth,
-      required TextEditingController controller,
-      required String hint}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.titlePersonnel),
-    ];
-    return GenericDropDown<IDropDownItem>(
-      isEnable: true,
-      itemWidth: itemWidth,
-      value: items[0],
-      items: items,
-      hint: hint,
-      onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
-      },
-    );
-  }
+
+
 
   Widget column1({required double width}) {
     final List<String> radioButtonTitle = [
@@ -408,16 +266,14 @@ class Filters extends StatelessWidget {
 
   Widget column2({required double width}) {
     final List<String> radioButtonTitle = [
-      localization.titleDisplayStyleCol2,
-      localization.titleDisplayStyleCol4,
-      localization.titleDisplayStyleCol8,
-      localization.titleDisplayStyleCol10,
+      localization.similarPeriodInTheCurrentPeriod,
+      localization.theSamePeriodInThePreviousYear,
     ];
     return SizedBox(
       width: width,
       child: Column(
         children: [
-          linearTitle(title: localization.titleDisplayStyle),
+          linearGap,
           verticalGapDivider,
           CustomGridRadioButtonList(
               width: width,
@@ -448,6 +304,11 @@ class Filters extends StatelessWidget {
       ],
     );
   }
+
+  Widget linearGap = Container(
+    height: 1,
+    color: const Color(0xffCCCCCC),
+  );
 
   Widget showListCheckBox({required double width}) {
     final List<String> checkBoxNames = [

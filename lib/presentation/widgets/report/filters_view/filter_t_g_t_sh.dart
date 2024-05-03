@@ -26,12 +26,12 @@ TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
 TextEditingController controllerRadioButton = TextEditingController();
 
-class FilterTDPView extends StatelessWidget {
+class FilterTGTShView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
   final Function(dynamic) onChangeFilter;
 
-  const FilterTDPView({super.key, required this.onChangeFilter});
+  const FilterTGTShView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class FilterTDPView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body: const Filters(
+            body: Filters(
               height: 70,
             ),
           ),
@@ -52,7 +52,7 @@ class FilterTDPView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.height});
+  Filters({super.key, required this.height});
 
   final double height;
 
@@ -80,13 +80,6 @@ class Filters extends StatelessWidget {
                 width: width,
                 height: height),
             baseFilterTitle(
-                title: localization.accountCode,
-                body: GetTafziliFromAccountWidget(
-                    controllerDocumentCode: controllerDocumentCode,
-                    controllerDocCodDesc: controllerDocCodDesc),
-                width: width,
-                height: height),
-            baseFilterTitle(
                 title: localization.titleReference,
                 body: row3(width: width),
                 width: width,
@@ -100,10 +93,8 @@ class Filters extends StatelessWidget {
               height: 6,
             ),
             column1(width: width),
-            const SizedBox(
-              height: 6,
-            ),
-            column2(width: width),
+            verticalGapDivider,
+            linearGap,
             verticalGapDivider,
             showListCheckBox(width: width),
           ],
@@ -328,9 +319,7 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         separationItem(
-            itemWidth: itemWidth,
-            hint: '',
-            controller: controllerSeparation),
+            itemWidth: itemWidth, hint: '', controller: controllerSeparation),
       ],
     );
   }
@@ -339,7 +328,7 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<CategoryModel> items= baseDataModel.categoryList;
+    List<CategoryModel> items = baseDataModel.categoryList;
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -384,30 +373,6 @@ class Filters extends StatelessWidget {
 
   Widget column1({required double width}) {
     final List<String> radioButtonTitle = [
-      localization.balanceGroup,
-      localization.balanceAll,
-      localization.balanceCertain,
-      localization.balanceTafziliSabet1,
-      localization.balanceTafziliSabet2,
-    ];
-    return SizedBox(
-      width: width,
-      child: Column(
-        children: [
-          linearTitle(title: localization.balanceType),
-          verticalGapDivider,
-          CustomGridRadioButtonList(
-              width: width,
-              height: height,
-              radioButtonTitle: radioButtonTitle,
-              controller: controllerRadioButton),
-        ],
-      ),
-    );
-  }
-
-  Widget column2({required double width}) {
-    final List<String> radioButtonTitle = [
       localization.titleDisplayStyleCol2,
       localization.titleDisplayStyleCol4,
       localization.titleDisplayStyleCol8,
@@ -418,7 +383,6 @@ class Filters extends StatelessWidget {
       child: Column(
         children: [
           linearTitle(title: localization.titleDisplayStyle),
-          verticalGapDivider,
           CustomGridRadioButtonList(
               width: width,
               height: height,
@@ -448,6 +412,11 @@ class Filters extends StatelessWidget {
       ],
     );
   }
+
+  Widget linearGap = Container(
+    height: 1,
+    color: const Color(0xffCCCCCC),
+  );
 
   Widget showListCheckBox({required double width}) {
     final List<String> checkBoxNames = [

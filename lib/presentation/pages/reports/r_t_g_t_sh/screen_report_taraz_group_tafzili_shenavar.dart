@@ -34,10 +34,7 @@ class _ScreenReportTarazGroupTafziliShenavarState extends State<ScreenReportTara
             },
             child: BlocBuilder<ReportBloc, ReportState>(
               buildWhen: (previous, current) {
-                if (current is MainInitial) {
-                  return true;
-                }
-                return false;
+                return (current is MainInitial);
               },
               builder: (context, state) {
                 return Container(

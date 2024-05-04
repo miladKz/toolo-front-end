@@ -149,18 +149,23 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
 
   Widget documentCodeDescBox(
       {required double width, required TextEditingController controller}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FormItemTitle(title: ''),
-        FormTextField(
-          textHint: '0',
-          controller: controller,
-          enable: false,
-          widgetWidth: width,
-        ),
-      ],
+    return InkWell(
+      onTap: () {
+
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          FormItemTitle(title: ''),
+          FormTextField(
+            textHint: '0',
+            controller: controller,
+            enable: false,
+            widgetWidth: width,
+          ),
+        ],
+      ),
     );
   }
 }

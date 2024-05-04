@@ -58,7 +58,7 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
 
   void listenToApi() {
     final state = context.watch<ReportBloc>().state;
-    if (state is ReportSuccessTTSH) {
+    if (state is ReportSuccessTTSh) {
       setState(() {
         widget.dataTableViewModel =
             DataTableViewModelFactory.createTableViewModelFromReportTTSH(

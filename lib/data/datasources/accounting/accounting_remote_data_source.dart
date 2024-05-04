@@ -20,6 +20,7 @@ import 'package:toolo_gostar/data/models/accounting/reports/body/balance_and_led
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_group_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body_dto.dart';
 
 import '../../../domain/entities/base/param/customer_data_detail_param.dart';
 import '../../models/accounting/counterparty_detail_dto.dart';
@@ -700,6 +701,21 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   Future<ServerResponseDto> fetchReportTarazTafziliGroup(
       {required String token, required ReportTarazTafziliGroupBodyDto body}) async {
     String apiAddress = "/api/acc/rep/taraz-tafzili-group";
+    try {
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: body.toMap(),
+        options: _getHeaders(token),
+      );
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+  Future<ServerResponseDto> fetchReportTarazTafziliShenavarHesab(
+      {required String token, required ReportTarazTafziliShenavarHesabBodyDto body}) async {
+    String apiAddress = "/api/acc/rep/taraz-tafzili-hesab";
     try {
       Response<dynamic> response = await httpClient.post(
         apiAddress,

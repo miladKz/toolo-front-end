@@ -26,8 +26,10 @@ import 'package:toolo_gostar/data/models/accounting/document/params/document_tot
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_group_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_jame_taraz_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_group_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar__hesab_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
@@ -40,10 +42,12 @@ import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledg
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_group_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shebavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
 import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
@@ -1018,6 +1022,28 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
+  @override
+  Future<ReportTarazTafziliShenavarHesab> fetchReportTarazTafziliShenavarHesab(
+      ReportTarazTafziliShenavarHesabBody tarazTafziliShenavarHesabBody) async {
+    try {
+      ReportTarazTafziliShenavarHesabBodyDto tarazTafziliShenavarHesabBodyDto =
+          getReportTarazTafziliShenavarHesabBodyDto(tarazTafziliShenavarHesabBody);
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchReportTarazTafziliShenavarHesab(
+              token: token, body: tarazTafziliShenavarHesabBodyDto);
+      if (serverResponse.isSuccess) {
+        final Map<String, dynamic> itemsAsMap = serverResponse.data!;
+        print('fetchReportJameTaraz: ${serverResponse.data}');
+        return ReportTarazTafziliShenavarHesabDto.fromMap(itemsAsMap);
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   ReportJameTarazBodyDto getReportJameTarazBodyDto(
       ReportJameTarazBody reportJameTarazBody) {
     return ReportJameTarazBodyDto(
@@ -1080,6 +1106,28 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   ReportTarazTafziliGroupBodyDto getReportTarazTafziliGroupBodyDto(
       ReportTarazTafziliGroupBody body) {
     return ReportTarazTafziliGroupBodyDto(
+        activeYear: body.activeYear,
+        fromDate: body.fromDate,
+        toDate: body.toDate,
+        accountCd: body.accountCd,
+        fromNumber: body.fromNumber,
+        toNumber: body.toNumber,
+        fromNumber2: body.fromNumber2,
+        toNumber2: body.toNumber2,
+        categoryId: body.categoryId,
+        withEftetahie: body.withEftetahie,
+        withEkhtetamieh: body.withEkhtetamieh,
+        withTasir: body.withTasir,
+        withBastanHesabhayeMovaqat: body.withBastanHesabhayeMovaqat,
+        withFaqatGardeshDarha: body.withFaqatGardeshDarha,
+        withFaqatMandeDarha: body.withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: body.withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
+        displayColumn: body.displayColumn);
+  }
+  ReportTarazTafziliShenavarHesabBodyDto getReportTarazTafziliShenavarHesabBodyDto(
+      ReportTarazTafziliShenavarHesabBody body) {
+    return ReportTarazTafziliShenavarHesabBodyDto(
         activeYear: body.activeYear,
         fromDate: body.fromDate,
         toDate: body.toDate,

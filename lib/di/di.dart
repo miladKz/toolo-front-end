@@ -35,6 +35,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_jame_taraz_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_group_list_usecases.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_shenavar_hesab_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_shenavar_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/tafzili_group_and_child_list_with_account_id_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
@@ -176,6 +177,8 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
       .registerLazySingleton(() => FetchReportTarazTafziliShenavarListUseCase(locator()));
   locator
       .registerLazySingleton(() => FetchReportTarazTafziliGroupListUseCase(locator()));
+  locator
+      .registerLazySingleton(() => FetchReportTarazTafziliShenavarHesabListUseCase(locator()));
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));

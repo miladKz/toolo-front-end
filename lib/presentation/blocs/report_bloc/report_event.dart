@@ -26,11 +26,29 @@ class RepFetchReportJT extends ReportEvent {
   @override
   List<Object?> get props => [body];
 }
-
-class RepFetchReportTTSH extends ReportEvent {
+class RepFetchReportTTSh extends ReportEvent {
   final ReportTarazTafziliShenavarBody body;
 
-  const RepFetchReportTTSH({required this.body});
+  const RepFetchReportTTSh({required this.body});
+
+  @override
+  List<Object?> get props => [body];
+}
+
+
+class RepFetchReportTTG extends ReportEvent {
+  final ReportTarazTafziliGroupBody body;
+
+  const RepFetchReportTTG({required this.body});
+
+  @override
+  List<Object?> get props => [body];
+}
+
+class RepFetchReportTTShH extends ReportEvent {
+  final ReportTarazTafziliShenavarHesabBody body;
+
+  const RepFetchReportTTShH({required this.body});
 
   @override
   List<Object?> get props => [body];

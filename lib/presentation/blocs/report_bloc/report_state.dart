@@ -37,10 +37,30 @@ class ReportSuccessJT extends ReportState {
   List<Object?> get props => [model];
 }
 
-class ReportSuccessTTSH extends ReportState {
+class ReportSuccessTTSh extends ReportState {
   final ReportTarazTafziliShenavar model;
 
-  const ReportSuccessTTSH({required this.model});
+  const ReportSuccessTTSh({required this.model});
+
+  @override
+  List<Object?> get props => [model];
+}
+
+
+class ReportSuccessTTG extends ReportState {
+  final ReportTarazTafziliGroup model;
+
+  const ReportSuccessTTG({required this.model});
+
+
+  @override
+  List<Object?> get props => [model];
+}
+
+class ReportSuccessTTShH extends ReportState {
+  final ReportTarazTafziliShenavarHesab model;
+
+  const ReportSuccessTTShH({required this.model});
 
 
   @override

@@ -72,11 +72,13 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterHintStyle => const TextStyle(
       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
 
-  late List<FormCheckBox> checkBoxList;
+  late List<FormCheckBox> showTypeCheckBoxList;
+  late List<FormCheckBox> additionalCheckBoxList;
 
   @override
   Widget build(BuildContext context) {
-    checkBoxList = List.empty(growable: true);
+    showTypeCheckBoxList = List.empty(growable: true);
+    additionalCheckBoxList = List.empty(growable: true);
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
@@ -364,7 +366,7 @@ class Filters extends StatelessWidget {
       items: items,
       hint: hint,
       onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
+        controller.text = '${value?.id}';
       },
     );
   }
@@ -450,7 +452,7 @@ class Filters extends StatelessWidget {
             mainAxisSpacing: 2,
             crossAxisSpacing: 2,
             crossAxisCount: 2,
-            children: getCheckBoxList(checkBoxNames),
+            children: getCheckBoxList(checkBoxNames, showTypeCheckBoxList),
           ),
           linearGap,
         ],
@@ -508,16 +510,17 @@ class Filters extends StatelessWidget {
         mainAxisSpacing: 2,
         crossAxisSpacing: 2,
         crossAxisCount: 2,
-        children: getCheckBoxList(checkBoxNames),
+        children: getCheckBoxList(checkBoxNames, additionalCheckBoxList),
       ),
     );
   }
 
-  List<FormCheckBox> getCheckBoxList(List<String> checkBoxName) {
+  List<FormCheckBox> getCheckBoxList(
+      List<String> checkBoxName, List<FormCheckBox> formCheckBoxList) {
     for (String title in checkBoxName) {
-      checkBoxList.add(FormCheckBox(value: true, title: title));
+      formCheckBoxList.add(FormCheckBox(value: true, title: title));
     }
-    return checkBoxList;
+    return formCheckBoxList;
   }
 
   ReportJameTarazBody getFilterBody() {
@@ -532,44 +535,56 @@ class Filters extends StatelessWidget {
     int categoryId = controllerSeparation.text.toInt();
 
     bool withEftetahie = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleOpeningDocument);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOpeningDocument);
     bool withEkhtetamieh = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleClosingDocument);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleClosingDocument);
     bool withTasir = getCheckBoxValue(
-        checkBoxList: checkBoxList,
+        checkBoxList: additionalCheckBoxList,
         title: localization.titleCurrencyExchangeDocument);
     bool withBastanHesabhayeMovaqat = getCheckBoxValue(
-        checkBoxList: checkBoxList,
+        checkBoxList: additionalCheckBoxList,
         title: localization.titleTemporaryAccountClosingDocument);
     bool withEntezamiAccounts = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleHesabEntezami);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleHesabEntezami);
     bool withFaqatGardeshDarha = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleOnlyInCirculation);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyInCirculation);
     bool withFaqatMandeDarha = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleOnlyLeftovers);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyLeftovers);
     bool withFaqatMandeDarhayeBed = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.titleOnlyDebitBalances);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyDebitBalances);
     bool withFaqatMandeDarhayeBes = getCheckBoxValue(
-        checkBoxList: checkBoxList,
+        checkBoxList: additionalCheckBoxList,
         title: localization.titleOnlyCreditorBalances);
     bool withSoodZian = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.profitAndLoss);
+        checkBoxList: additionalCheckBoxList,
+        title: localization.profitAndLoss);
     bool showMandeEftetahie = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.openingRemaining);
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.openingRemaining);
     bool showGardeshAvalDore = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.firstPeriodRemaining);
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.firstPeriodRemaining);
     bool showMandeAvalDore = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.firstPeriodCirculation);
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.firstPeriodCirculation);
     bool showGardeshTeyDore = getCheckBoxValue(
-        checkBoxList: checkBoxList,
+        checkBoxList: showTypeCheckBoxList,
         title: localization.duringPeriodCirculation);
     bool showMandeTeyDore = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.duringPeriodRemaining);
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.duringPeriodRemaining);
     bool showGardeshPayanDore = getCheckBoxValue(
-        checkBoxList: checkBoxList,
+        checkBoxList: showTypeCheckBoxList,
         title: localization.endingPeriodCirculation);
     bool showMandePayanDore = getCheckBoxValue(
-        checkBoxList: checkBoxList, title: localization.endingPeriodRemaining);
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.endingPeriodRemaining);
 
     ReportJameTarazBody body = ReportJameTarazBody(
         activeYear: 0,

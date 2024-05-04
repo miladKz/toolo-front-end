@@ -25,12 +25,12 @@ TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
 TextEditingController controllerRadioButton = TextEditingController();
 
-class FilterTGTShView extends StatelessWidget {
+class FilterTGTShHView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
   final Function(dynamic) onChangeFilter;
 
-  const FilterTGTShView({super.key, required this.onChangeFilter});
+  const FilterTGTShHView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {

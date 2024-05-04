@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/atras_direction.dart';
 import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_t_g_t_sh/report_page_t_g_t_sh.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_t_g_t_sh_h/report_page_t_g_t_sh_h.dart';
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
 
 import '../../../blocs/main_bloc/main_bloc.dart';
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ScreenReportTarazGroupTafziliShenavar extends StatefulWidget {
-  const ScreenReportTarazGroupTafziliShenavar({super.key});
+class ScreenReportTarazGroupTafziliShenavarHesab extends StatefulWidget {
+  const ScreenReportTarazGroupTafziliShenavarHesab({super.key});
 
   @override
-  State<ScreenReportTarazGroupTafziliShenavar> createState() => _ScreenReportTarazGroupTafziliShenavarState();
+  State<ScreenReportTarazGroupTafziliShenavarHesab> createState() => _ScreenReportTarazGroupTafziliShenavarHesabState();
 }
 
-class _ScreenReportTarazGroupTafziliShenavarState extends State<ScreenReportTarazGroupTafziliShenavar> {
+class _ScreenReportTarazGroupTafziliShenavarHesabState extends State<ScreenReportTarazGroupTafziliShenavarHesab> {
   @override
   void initState() {
     super.initState();
@@ -66,7 +66,7 @@ class _InitViewState extends State<InitView> {
       locator.get<MainBloc>().add(FetchBaseData());
     }
     listenToBaseData();
-    return widget.isBaseDataFetch ? const ReportPageTGTSh():const Center(child: CircularProgressIndicator(),);
+    return widget.isBaseDataFetch ? const ReportPageTGTShH():const Center(child: CircularProgressIndicator(),);
   }
 
   void listenToBaseData() {

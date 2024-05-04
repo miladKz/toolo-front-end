@@ -6,7 +6,9 @@ import 'package:toolo_gostar/domain/entities/accounting/document/document_master
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
 import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
@@ -115,6 +117,10 @@ abstract class IAccountingRepository {
 
   Future<BalanceAndLedgersReport> fetchBalanceAndLedgersReportList(
       BalanceAndLedgersBody balanceAndLedgersParam);
+
   Future<ReportJameTaraz> fetchReportJameTaraz(
       ReportJameTarazBody reportJameTarazBody);
+
+  Future<ReportTarazTafziliShenavar> fetchReportTarazTafziliShenavar(
+      ReportTarazTafziliShenavarBody tarazTafziliShenavarBody);
 }

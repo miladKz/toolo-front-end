@@ -5,7 +5,7 @@ import '../../../../domain/entities/accounting/reports/report_column_title.dart'
 class ReportColumnTitleDto extends ReportColumnTitle {
   ReportColumnTitleDto({
     required super.order,
-    required super.name,
+    required super.fieldName,
     required super.title,
     required super.children,
   });
@@ -17,7 +17,7 @@ class ReportColumnTitleDto extends ReportColumnTitle {
     })).toList();
     return ReportColumnTitleDto(
         order: map.findAsInt("Order"),
-        name: map.findAsString("Name").clearNull(),
+        fieldName: map.findAsString("FieldName").clearNull(),
         title: map.findAsString("Title"),
         children: children);
   }

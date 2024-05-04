@@ -28,9 +28,9 @@ class _CustomGridRadioButtonListState extends State<CustomGridRadioButtonList> {
 
     double maxWidth = widget.width;
     if(widget.values.isEmpty){
-      widget.controller.text= '0';
+      widget.controller.text= '${widget.selectedRadio}';
     }else{
-      widget.controller.text= widget.values[0].toString();
+      widget.controller.text= widget.values[widget.selectedRadio].toString();
     }
 
     return SizedBox(

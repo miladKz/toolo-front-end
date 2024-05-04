@@ -204,11 +204,11 @@ class DataTableViewModelFactory {
     final List<String> labels =
         balanceAndLedgersReport.reportColumnTitle.expand((e) {
       if (e.children.isEmpty) {
-        keys.add(e.name);
+        keys.add(e.fieldName);
         return [e.title];
       } else {
         return e.children.map((e) {
-          keys.add(e.name);
+          keys.add(e.fieldName);
           return e.title;
         });
       }

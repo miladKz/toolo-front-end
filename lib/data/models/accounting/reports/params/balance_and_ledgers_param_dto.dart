@@ -27,9 +27,8 @@ class BalanceAndLedgersParamDto extends BalanceAndLedgersParam {
       required super.withFaqatMandeDarhayeBes});
 
   Map<String, dynamic> toMap() {
-
     return {
-      "ActiveYear": activeYear,
+      //"ActiveYear": activeYear,
       "FromDate": fromDate,
       "ToDate": toDate,
       "Accountcd": accountCd,
@@ -38,7 +37,7 @@ class BalanceAndLedgersParamDto extends BalanceAndLedgersParam {
       "FromNumber2": fromNumber2,
       "ToNumber2": toNumber2,
       "CategoryId": categoryId,
-      "SaveTypeId": saveTypeId,
+      //"SaveTypeId": saveTypeId,
       "AccountLevel": accountLevel,
       "DisplayColumn": displayColumn,
       "WithEftetahie": withEftetahie,

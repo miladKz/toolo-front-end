@@ -650,8 +650,9 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       {required String token,
       required BalanceAndLedgersParamDto param}) async {
     String apiAddress = "/api/acc/rep/taraz-ha-dafater-pelekani";
+    log('fetchCounterPartyDetailList body =====>:${param.toMap()}');
     try {
-      Response<dynamic> response = await httpClient.get(
+      Response<dynamic> response = await httpClient.post(
         apiAddress,
         data: param.toMap(),
         options: _getHeaders(token),

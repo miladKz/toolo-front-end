@@ -82,7 +82,7 @@ class BalanceAndLedgers extends ITableRowData{
 
     for(String key in keys){
       if (fieldMap.containsKey(key)) {
-        props.add(ReportBaseDataTableModel(id: -1,name: '${fieldMap.findAsDynamic(key)}')) ;
+        props.add('${fieldMap.findAsDynamic(key)}') ;
       } else {
         throw ArgumentError('Invalid key: $key');
       }
@@ -90,7 +90,6 @@ class BalanceAndLedgers extends ITableRowData{
     return this;
   }
 
-  @override
-  // TODO: implement props
-  List<Object?> get props =>List.empty(growable: true);
+
+  List<Object>  props =List.empty(growable: true);
 }

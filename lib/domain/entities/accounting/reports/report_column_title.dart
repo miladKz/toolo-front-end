@@ -1,13 +1,13 @@
 class ReportColumnTitle {
   int order;
-  String name;
+  String fieldName;
   String title;
 
   List<ReportColumnTitle> children;
 
   ReportColumnTitle({
     required this.order,
-    required this.name,
+    required this.fieldName,
     required this.title,
     required this.children,
   });

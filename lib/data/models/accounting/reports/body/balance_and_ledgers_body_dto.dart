@@ -1,7 +1,8 @@
-import '../../../../../domain/entities/accounting/reports/params/balance_and_ledgers_param.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 
-class BalanceAndLedgersParamDto extends BalanceAndLedgersParam {
-  BalanceAndLedgersParamDto(
+
+class BalanceAndLedgersBodyDto extends BalanceAndLedgersBody {
+  BalanceAndLedgersBodyDto(
       {required super.activeYear,
       required super.fromDate,
       required super.toDate,

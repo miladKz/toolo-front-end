@@ -16,10 +16,11 @@ import 'package:toolo_gostar/data/models/accounting/document/params/document_mas
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/balance_and_ledgers_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
 
 import '../../../domain/entities/base/param/customer_data_detail_param.dart';
 import '../../models/accounting/counterparty_detail_dto.dart';
-import '../../models/accounting/reports/params/balance_and_ledgers_param_dto.dart';
 
 class AccountingRemoteDataSource with HttpResponseValidator {
   final Dio httpClient;
@@ -648,13 +649,30 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> fetchBalanceAndLedgersReportList(
       {required String token,
-      required BalanceAndLedgersParamDto param}) async {
+      required BalanceAndLedgersBodyDto body}) async {
     String apiAddress = "/api/acc/rep/taraz-ha-dafater-pelekani";
-    log('fetchCounterPartyDetailList body =====>:${param.toMap()}');
     try {
       Response<dynamic> response = await httpClient.post(
         apiAddress,
-        data: param.toMap(),
+        data: body.toMap(),
+        options: _getHeaders(token),
+      );
+      log('fetchCounterPartyDetailList :${getData(response)}');
+      return ServerResponseDto.fromMap(getData(response));
+    } on DioException catch (e) {
+      log(e);
+      throw HttpException(e.toString());
+    }
+  }
+
+  Future<ServerResponseDto> fetchReportJameTaraz(
+      {required String token,
+      required ReportJameTarazBodyDto body}) async {
+    String apiAddress = "/api/acc/rep/jame-taraz-ha";
+    try {
+      Response<dynamic> response = await httpClient.post(
+        apiAddress,
+        data: body.toMap(),
         options: _getHeaders(token),
       );
       log('fetchCounterPartyDetailList :${getData(response)}');

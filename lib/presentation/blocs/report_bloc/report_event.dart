@@ -6,15 +6,23 @@ abstract class ReportEvent extends Equatable {
 
 class RepInitial extends ReportEvent {
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
-class RepFetchRepostTDP extends ReportEvent {
-  final BalanceAndLedgersParam body;
 
-  const RepFetchRepostTDP({required this.body});
+class RepFetchReportTDP extends ReportEvent {
+  final BalanceAndLedgersBody body;
 
+  const RepFetchReportTDP({required this.body});
 
   @override
-  List<Object?> get props => [bool];
+  List<Object?> get props => [body];
+}
+
+class RepFetchReportJT extends ReportEvent {
+  final ReportJameTarazBody body;
+
+  const RepFetchReportJT({required this.body});
+
+  @override
+  List<Object?> get props => [body];
 }

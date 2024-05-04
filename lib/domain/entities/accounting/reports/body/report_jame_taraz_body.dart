@@ -1,4 +1,4 @@
-class BalanceAndLedgersParam {
+class ReportJameTarazBody {
   final int activeYear;
   final String fromDate;
   final String toDate;
@@ -8,23 +8,26 @@ class BalanceAndLedgersParam {
   final int fromNumber2;
   final int toNumber2;
   final int categoryId;
-  final int saveTypeId;
-  ///نوع تراز
   final int accountLevel;
-  final int displayColumn;
   final bool withEftetahie;
   final bool withEkhtetamieh;
   final bool withTasir;
   final bool withSoodZian;
-  final bool withZirSath;
   final bool withBastanHesabhayeMovaqat;
   final bool withEntezamiAccounts;
   final bool withFaqatGardeshDarha;
   final bool withFaqatMandeDarha;
   final bool withFaqatMandeDarhayeBed;
   final bool withFaqatMandeDarhayeBes;
+  final bool showMandeEftetahie;
+  final bool showGardeshAvalDore;
+  final bool showMandeAvalDore;
+  final bool showGardeshTeyDore;
+  final bool showMandeTeyDore;
+  final bool showGardeshPayanDore;
+  final bool showMandePayanDore;
 
-  BalanceAndLedgersParam(
+  ReportJameTarazBody(
       {required this.activeYear,
       required this.fromDate,
       required this.toDate,
@@ -34,18 +37,23 @@ class BalanceAndLedgersParam {
       required this.fromNumber2,
       required this.toNumber2,
       required this.categoryId,
-      required this.saveTypeId,
       required this.accountLevel,
-      required this.displayColumn,
       required this.withEftetahie,
       required this.withEkhtetamieh,
       required this.withTasir,
       required this.withSoodZian,
-      required this.withZirSath,
       required this.withBastanHesabhayeMovaqat,
       required this.withEntezamiAccounts,
       required this.withFaqatGardeshDarha,
       required this.withFaqatMandeDarha,
       required this.withFaqatMandeDarhayeBed,
-      required this.withFaqatMandeDarhayeBes});
+      required this.withFaqatMandeDarhayeBes,
+      required this.showMandeEftetahie,
+      required this.showGardeshAvalDore,
+      required this.showMandeAvalDore,
+      required this.showGardeshTeyDore,
+      required this.showMandeTeyDore,
+      required this.showGardeshPayanDore,
+      required this.showMandePayanDore            });
+
 }

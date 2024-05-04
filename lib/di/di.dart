@@ -33,6 +33,7 @@ import 'package:toolo_gostar/domain/usecases/accounting/get_actions_use_case.dar
 import 'package:toolo_gostar/domain/usecases/accounting/get_cash_box_list.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_people_list_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/get_revolving_found_list.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_jame_taraz_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/tafzili_group_and_child_list_with_account_id_use_case.dart';
 import 'package:toolo_gostar/domain/usecases/auth/get_user_data_usecase.dart';
 import 'package:toolo_gostar/domain/usecases/auth/login_usecase.dart';
@@ -53,12 +54,12 @@ import '../domain/usecases/accounting/base/update_standard_detail_use_case.dart'
 import '../domain/usecases/accounting/create_account_use_case.dart';
 import '../domain/usecases/accounting/delete_account_use_case.dart';
 import '../domain/usecases/accounting/delete_counter_party_use_case.dart';
-import '../domain/usecases/accounting/report/fetch_balance_and_ledgers_report_list_usecases.dart';
 import '../domain/usecases/accounting/get_accounting_list_use_case.dart';
 import '../domain/usecases/accounting/get_bank_list.dart';
 import '../domain/usecases/accounting/get_card_reader_list.dart';
 import '../domain/usecases/accounting/get_customer_detail_list_use_case.dart';
 import '../domain/usecases/accounting/get_detail_account_group_list_use_case.dart';
+import '../domain/usecases/accounting/report/fetch_balance_and_ledgers_report_list_usecases.dart';
 import '../domain/usecases/accounting/update_account_use_case.dart';
 import '../domain/usecases/accounting/update_counter_party_use_case.dart';
 import '../domain/usecases/accounting/update_counterparty_detail_use_case.dart';
@@ -165,8 +166,10 @@ Future<void> setupLocator(SharedPreferences sharedPreferences) async {
       .registerLazySingleton(() => UpdateCounterpartyDetailUseCase(locator()));
 
   //AccountingReportsUseCases
+  locator.registerLazySingleton(
+      () => FetchBalanceAndLedgersReportListUseCase(locator()));
   locator
-      .registerLazySingleton(() => FetchBalanceAndLedgersReportListUseCase(locator()));
+      .registerLazySingleton(() => FetchReportJameTarazListUseCase(locator()));
   //AuthRepository
   locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(locator(), locator()));

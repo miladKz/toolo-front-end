@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/params/balance_and_ledgers_param.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
-import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
@@ -120,8 +118,8 @@ class Filters extends StatelessWidget {
             BtnSetFilter(
                 width: width,
                 onTap: () {
-                  BalanceAndLedgersParam body = getFilterBody();
-                  locator.get<ReportBloc>().add(RepFetchRepostTDP(body: body));
+                  BalanceAndLedgersBody body = getFilterBody();
+                  locator.get<ReportBloc>().add(RepFetchReportTDP(body: body));
                 }),
           ],
         );
@@ -480,7 +478,7 @@ class Filters extends StatelessWidget {
     return checkBoxList;
   }
 
-  BalanceAndLedgersParam getFilterBody() {
+  BalanceAndLedgersBody getFilterBody() {
     int accountLevel = controllerTarazType.text.toInt();
     String fromDate = controllerFromDate.text;
     String toDate = controllerToDate.text;
@@ -517,7 +515,7 @@ class Filters extends StatelessWidget {
     bool withZirSath = getCheckBoxValue(
         checkBoxList: checkBoxList, title: localization.titleHamrahZirSath);
 
-    BalanceAndLedgersParam body=   BalanceAndLedgersParam(
+    BalanceAndLedgersBody body = BalanceAndLedgersBody(
         activeYear: 0,
         fromDate: fromDate,
         toDate: toDate,

@@ -1,5 +1,6 @@
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
+
 import '../../../entities/accounting/reports/balance_and_ledgers_report.dart';
-import '../../../entities/accounting/reports/params/balance_and_ledgers_param.dart';
 import '../../../repositories/accounting/accounting_repository.dart';
 
 class FetchBalanceAndLedgersReportListUseCase {
@@ -8,7 +9,7 @@ class FetchBalanceAndLedgersReportListUseCase {
   FetchBalanceAndLedgersReportListUseCase(this._repository);
 
   @override
-  Future<BalanceAndLedgersReport> call({required BalanceAndLedgersParam body}
+  Future<BalanceAndLedgersReport> call({required BalanceAndLedgersBody body}
      ) async {
     return _repository.fetchBalanceAndLedgersReportList(body);
   }

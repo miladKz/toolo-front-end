@@ -23,6 +23,8 @@ import 'package:toolo_gostar/data/models/accounting/document/document_total_pric
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_jame_taraz_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
@@ -31,7 +33,9 @@ import 'package:toolo_gostar/domain/entities/accounting/document/doc_total_price
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/params/balance_and_ledgers_param.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
 import 'package:toolo_gostar/domain/entities/accounting/tafzili_group_and_child.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/bank_acc_type.dart';
@@ -59,7 +63,7 @@ import '../../models/accounting/base_dto/city_dto.dart';
 import '../../models/accounting/counterparty_dto.dart';
 import '../../models/accounting/document/detail_group_dto.dart';
 import '../../models/accounting/reports/balance_and_ledgers_report_dto.dart';
-import '../../models/accounting/reports/params/balance_and_ledgers_param_dto.dart';
+import '../../models/accounting/reports/body/balance_and_ledgers_body_dto.dart';
 
 class AccountingRepositoryImpl implements IAccountingRepository {
   final AccountingRemoteDataSource remoteDataSource;
@@ -890,14 +894,14 @@ class AccountingRepositoryImpl implements IAccountingRepository {
 
   @override
   Future<BalanceAndLedgersReport> fetchBalanceAndLedgersReportList(
-      BalanceAndLedgersParam balanceAndLedgersParam) async {
+      BalanceAndLedgersBody balanceAndLedgersBody) async {
     try {
-      BalanceAndLedgersParamDto balanceAndLedgersParamDto =
-          getBalanceAndLedgersParamAsDto(balanceAndLedgersParam);
+      BalanceAndLedgersBodyDto balanceAndLedgersParamDto =
+          getBalanceAndLedgersParamAsDto(balanceAndLedgersBody);
       String token = _getToken();
       ServerResponseDto serverResponse =
           await remoteDataSource.fetchBalanceAndLedgersReportList(
-              token: token, param: balanceAndLedgersParamDto);
+              token: token, body: balanceAndLedgersParamDto);
       if (serverResponse.isSuccess) {
         print('fetchBalanceAndLedgersReportList: ${serverResponse.data}');
         //todo: replace item to correct key
@@ -911,9 +915,9 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
-  BalanceAndLedgersParamDto getBalanceAndLedgersParamAsDto(
-      BalanceAndLedgersParam balanceAndLedgersParam) {
-    return BalanceAndLedgersParamDto(
+  BalanceAndLedgersBodyDto getBalanceAndLedgersParamAsDto(
+      BalanceAndLedgersBody balanceAndLedgersParam) {
+    return BalanceAndLedgersBodyDto(
         activeYear: balanceAndLedgersParam.activeYear,
         fromDate: balanceAndLedgersParam.fromDate,
         toDate: balanceAndLedgersParam.toDate,
@@ -940,5 +944,58 @@ class AccountingRepositoryImpl implements IAccountingRepository {
             balanceAndLedgersParam.withFaqatMandeDarhayeBed,
         withFaqatMandeDarhayeBes:
             balanceAndLedgersParam.withFaqatMandeDarhayeBes);
+  }
+
+  @override
+  Future<ReportJameTaraz> fetchReportJameTaraz(
+      ReportJameTarazBody jameTarazBody) async {
+    try {
+      ReportJameTarazBodyDto jameTarazBodyDto =
+          getReportJameTarazBodyDto(jameTarazBody);
+      String token = _getToken();
+      ServerResponseDto serverResponse = await remoteDataSource
+          .fetchReportJameTaraz(token: token, body: jameTarazBodyDto);
+      if (serverResponse.isSuccess) {
+        final Map<String, dynamic> itemsAsMap = serverResponse.data!;
+        return ReportJameTarazDto.fromMap(itemsAsMap);
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  ReportJameTarazBodyDto getReportJameTarazBodyDto(
+      ReportJameTarazBody reportJameTarazBody) {
+    return ReportJameTarazBodyDto(
+        activeYear: reportJameTarazBody.activeYear,
+        fromDate: reportJameTarazBody.fromDate,
+        toDate: reportJameTarazBody.toDate,
+        accountCd: reportJameTarazBody.accountCd,
+        fromNumber: reportJameTarazBody.fromNumber,
+        toNumber: reportJameTarazBody.toNumber,
+        fromNumber2: reportJameTarazBody.fromNumber2,
+        toNumber2: reportJameTarazBody.toNumber2,
+        categoryId: reportJameTarazBody.categoryId,
+        accountLevel: reportJameTarazBody.accountLevel,
+        withEftetahie: reportJameTarazBody.withEftetahie,
+        withEkhtetamieh: reportJameTarazBody.withEkhtetamieh,
+        withTasir: reportJameTarazBody.withTasir,
+        withSoodZian: reportJameTarazBody.withSoodZian,
+        withBastanHesabhayeMovaqat:
+            reportJameTarazBody.withBastanHesabhayeMovaqat,
+        withEntezamiAccounts: reportJameTarazBody.withEntezamiAccounts,
+        withFaqatGardeshDarha: reportJameTarazBody.withFaqatGardeshDarha,
+        withFaqatMandeDarha: reportJameTarazBody.withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: reportJameTarazBody.withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: reportJameTarazBody.withFaqatMandeDarhayeBes,
+        showMandeEftetahie: reportJameTarazBody.showMandeEftetahie,
+        showGardeshAvalDore: reportJameTarazBody.showGardeshAvalDore,
+        showMandeAvalDore: reportJameTarazBody.showMandeAvalDore,
+        showGardeshTeyDore: reportJameTarazBody.showGardeshTeyDore,
+        showMandeTeyDore: reportJameTarazBody.showMandeTeyDore,
+        showGardeshPayanDore: reportJameTarazBody.showGardeshPayanDore,
+        showMandePayanDore: reportJameTarazBody.showMandePayanDore);
   }
 }

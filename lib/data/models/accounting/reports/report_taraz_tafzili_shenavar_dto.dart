@@ -1,6 +1,8 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_column_title_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_jame_taraz_data_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_data_dto.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_shenavar_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
 
 class ReportTarazTafziliShenavarDto extends ReportTarazTafziliShenavar {
@@ -13,9 +15,9 @@ class ReportTarazTafziliShenavarDto extends ReportTarazTafziliShenavar {
     final dataListMap = map.findAsDynamic("Data");
     final titlesMap = map.findAsDynamic("Titles");
 
-    List<ReportJameTarazDataDto> dataList =
-        List<ReportJameTarazDataDto>.from(dataListMap.map((data) {
-      return ReportJameTarazDataDto.fromMap(data);
+    List<ReportTarazTafziliShenavarDataDto> dataList =
+        List<ReportTarazTafziliShenavarDataDto>.from(dataListMap.map((data) {
+      return ReportTarazTafziliShenavarDataDto.fromMap(data);
     })).toList();
 
     List<ReportColumnTitleDto> titleList =

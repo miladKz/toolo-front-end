@@ -9,13 +9,13 @@ import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/customer_data_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/base_dto/param/standard_detail_param_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/counterparty_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/body/create_document_detail_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/body/create_document_master_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_detail_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/base_dto/standard_detail_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/balance_and_ledgers_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
 
@@ -343,9 +343,9 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 
   ///get Neshani And SayerMoshakhasat List
-  Future<ServerResponseDto> fetchCustomerDataDetailList({
-    required String token,required CustomerDataDetailParamDto param
-  }) async {
+  Future<ServerResponseDto> fetchCustomerDataDetailList(
+      {required String token,
+      required CustomerDataDetailParamDto param}) async {
     String apiAddress = "/api/acc/moshtarian-detail/list";
     try {
       Response<dynamic> response = await httpClient.get(
@@ -359,6 +359,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
+
   //______________________________________Base Api____________________________________
 
   Future<ServerResponseDto> fetchBankAccTypeList({
@@ -413,8 +414,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     }
   }
 
-
-
   Future<ServerResponseDto> fetchCustomerStatusList({
     required String token,
   }) async {
@@ -431,7 +430,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       throw HttpException(e.toString());
     }
   }
-
 
   Future<ServerResponseDto> fetchDocumentTypeList({
     required String token,
@@ -648,8 +646,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 
   Future<ServerResponseDto> fetchBalanceAndLedgersReportList(
-      {required String token,
-      required BalanceAndLedgersBodyDto body}) async {
+      {required String token, required BalanceAndLedgersBodyDto body}) async {
     String apiAddress = "/api/acc/rep/taraz-ha-dafater-pelekani";
     try {
       Response<dynamic> response = await httpClient.post(
@@ -657,7 +654,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: body.toMap(),
         options: _getHeaders(token),
       );
-      log('fetchCounterPartyDetailList :${getData(response)}');
+      log('fetchBalanceAndLedgersReportList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -666,8 +663,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
   }
 
   Future<ServerResponseDto> fetchReportJameTaraz(
-      {required String token,
-      required ReportJameTarazBodyDto body}) async {
+      {required String token, required ReportJameTarazBodyDto body}) async {
     String apiAddress = "/api/acc/rep/jame-taraz-ha";
     try {
       Response<dynamic> response = await httpClient.post(
@@ -675,7 +671,8 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: body.toMap(),
         options: _getHeaders(token),
       );
-      log('fetchCounterPartyDetailList :${getData(response)}');
+      log('fetchReportJameTaraz Body:${body.toMap().toString()}');
+      log('fetchReportJameTaraz :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);

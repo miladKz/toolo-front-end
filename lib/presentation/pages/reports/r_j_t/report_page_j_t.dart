@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_j_t.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_d_p.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
+import '../../../factories/table_view_model_factory.dart';
+import '../../../view_models/table_view_model.dart';
+import '../../../widgets/common/modals/custom_view_with_data_table.dart';
 
 class ReportPageJT extends StatelessWidget {
   const ReportPageJT({super.key});
@@ -16,7 +17,7 @@ class ReportPageJT extends StatelessWidget {
       direction: Axis.horizontal,
       children: [
         Flexible(flex: 2, child: rightReportFilterView()),
-        const Flexible(flex: 8, child: LeftReportFilterView()),
+        Flexible(flex: 8, child: LeftReportFilterView()),
       ],
     );
   }
@@ -29,14 +30,14 @@ class ReportPageJT extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class LeftReportFilterView extends StatefulWidget {
-  const LeftReportFilterView({
+  LeftReportFilterView({
     super.key,
   });
 
+  DataTableViewModel? dataTableViewModel;
 
   @override
   State<LeftReportFilterView> createState() => _LeftReportFilterViewState();
@@ -51,16 +52,31 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return Container();
+            return widget.dataTableViewModel == null
+                ? emptyData()
+                : CustomViewWithDataTable(
+                    isShowActionButtons: false,
+                    isShowSearchBox: false,
+                    backgroundColor: const Color(0xffF8F8F8),
+                    formWidth: constraints.maxWidth,
+                    onTap: (data) {},
+                    viewModel: widget.dataTableViewModel!,
+                  );
           },
         ));
   }
 
   void listenToApi() {
     final state = context.watch<ReportBloc>().state;
+    if (state is ReportSuccessJT) {
+      setState(() {
+        widget.dataTableViewModel =
+            DataTableViewModelFactory.createTableViewModelFromReportJT(
+                reportJameTaraz: state.model);
+      });
+    }
   }
 }
-
 
 Widget emptyData() {
   return const Center(

@@ -12,7 +12,7 @@ import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_j_t/screen_report_jame_tarazha.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
@@ -79,7 +79,8 @@ Widget screenAuth() {
 }
 
 Widget screenDocDetail() {
-  DocumentMaster documentMaster =  DocumentMaster(id: 5,
+  DocumentMaster documentMaster = DocumentMaster(
+      id: 5,
       activeYear: "03/10/12",
       bargeTypeID: 1,
       bargeTypeName: "bargeTypeName",
@@ -112,7 +113,7 @@ Widget screenDocDetail() {
     create: (_) {
       return locator.get<DocDetailBloc>();
     },
-    child:  ScreenDocumentDetail(
+    child: ScreenDocumentDetail(
       documentMaster: documentMaster,
     ),
   );
@@ -141,17 +142,15 @@ Widget screenReport() {
     BlocProvider(
       create: (_) {
         return locator<ReportBloc>();
-    },
+      },
     ),
     BlocProvider(
       create: (_) {
         return locator<MainBloc>();
       },
     ),
-  ], child: const ScreenReportTarazDafaterPelekani());
+  ], child: const ScreenReportJameTarazha());
 }
-
-
 
 bool get isDialogOpen {
   bool? isDialogOpen = Get.isDialogOpen;

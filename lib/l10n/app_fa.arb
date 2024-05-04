@@ -294,6 +294,13 @@
  "floating3": "شناوری 3",
  "similarPeriodInTheCurrentPeriod": "مدت مشابه در دوره جاری",
  "theSamePeriodInThePreviousYear": "مدت مشابه در سال قبل",
- "setFilter": "اعمال فیلتر"
+ "setFilter": "اعمال فیلتر",
+ "openingRemaining":"مانده افتتاحیه",
+ "firstPeriodRemaining":"مانده اول دوره",
+ "firstPeriodCirculation":"گردش اول دوره",
+ "duringPeriodCirculation":"گردش طی دوره",
+ "duringPeriodRemaining":"مانده طی دوره",
+ "endingPeriodCirculation":"گردش پایان دوره",
+ "endingPeriodRemaining":"مانده پایان دوره"
 
 }

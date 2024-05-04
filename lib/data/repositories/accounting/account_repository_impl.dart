@@ -904,7 +904,6 @@ class AccountingRepositoryImpl implements IAccountingRepository {
               token: token, body: balanceAndLedgersParamDto);
       if (serverResponse.isSuccess) {
         print('fetchBalanceAndLedgersReportList: ${serverResponse.data}');
-        //todo: replace item to correct key
         final Map<String, dynamic> itemsAsMap = serverResponse.data!;
         return BalanceAndLedgersReportDto.fromMap(itemsAsMap);
       } else {
@@ -957,6 +956,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
           .fetchReportJameTaraz(token: token, body: jameTarazBodyDto);
       if (serverResponse.isSuccess) {
         final Map<String, dynamic> itemsAsMap = serverResponse.data!;
+        print('fetchReportJameTaraz: ${serverResponse.data}');
         return ReportJameTarazDto.fromMap(itemsAsMap);
       } else {
         throw serverResponse.message;

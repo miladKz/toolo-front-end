@@ -1,10 +1,13 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
 import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
@@ -14,6 +17,11 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/r
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
 
+import '../../../../di/di.dart';
+import '../../../../domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import '../btn_set_filter.dart';
+
+TextEditingController controllerTarazType = TextEditingController();
 TextEditingController controllerFromDocument = TextEditingController();
 TextEditingController controllerToDocument = TextEditingController();
 TextEditingController controllerFromDate = TextEditingController();
@@ -24,7 +32,6 @@ TextEditingController controllerFromReference = TextEditingController();
 TextEditingController controllerToReference = TextEditingController();
 TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
-TextEditingController controllerRadioButton = TextEditingController();
 
 class FilterJTView extends StatelessWidget {
   final double height = 70;
@@ -41,7 +48,7 @@ class FilterJTView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body:  Filters(
+            body: Filters(
               height: 70,
             ),
           ),
@@ -52,7 +59,7 @@ class FilterJTView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-   Filters({super.key, required this.height});
+  Filters({super.key, required this.height});
 
   final double height;
 
@@ -62,11 +69,14 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
 
-   TextStyle get getFilterHintStyle => const TextStyle(
-       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
-  
+  TextStyle get getFilterHintStyle => const TextStyle(
+      color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
+
+  late List<FormCheckBox> checkBoxList;
+
   @override
   Widget build(BuildContext context) {
+    checkBoxList = List.empty(growable: true);
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
@@ -109,6 +119,12 @@ class Filters extends StatelessWidget {
             column2(width: width),
             verticalGapDivider,
             showListCheckBox(width: width),
+            BtnSetFilter(
+                width: width,
+                onTap: () {
+                  ReportJameTarazBody body = getFilterBody();
+                  locator.get<ReportBloc>().add(RepFetchReportJT(body: body));
+                })
           ],
         );
       },
@@ -331,9 +347,7 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         separationItem(
-            itemWidth: itemWidth,
-            hint: '',
-            controller: controllerSeparation),
+            itemWidth: itemWidth, hint: '', controller: controllerSeparation),
       ],
     );
   }
@@ -342,7 +356,7 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<CategoryModel> items= baseDataModel.categoryList;
+    List<CategoryModel> items = baseDataModel.categoryList;
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -403,7 +417,7 @@ class Filters extends StatelessWidget {
               width: width,
               height: height,
               radioButtonTitle: radioButtonTitle,
-              controller: controllerRadioButton),
+              controller: controllerTarazType),
         ],
       ),
     );
@@ -411,15 +425,13 @@ class Filters extends StatelessWidget {
 
   Widget column2({required double width}) {
     final List<String> checkBoxNames = [
-      localization.titleOpeningDocument,
-      localization.titleClosingDocument,
-      localization.titleCurrencyExchangeDocument,
-      localization.titleTemporaryAccountClosingDocument,
-      localization.titleAutomaticSizeAdjustment,
-      localization.titleOnlyInCirculation,
-      localization.titleOnlyLeftovers,
-      localization.titleOnlyDebitBalances,
-      localization.titleOnlyDebitBalances,
+      localization.openingRemaining,
+      localization.firstPeriodRemaining,
+      localization.firstPeriodCirculation,
+      localization.duringPeriodCirculation,
+      localization.duringPeriodRemaining,
+      localization.endingPeriodCirculation,
+      localization.endingPeriodRemaining,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;
@@ -465,7 +477,8 @@ class Filters extends StatelessWidget {
       ],
     );
   }
-  Widget linearGap= Container(
+
+  Widget linearGap = Container(
     height: 1,
     color: const Color(0xffCCCCCC),
   );
@@ -500,12 +513,103 @@ class Filters extends StatelessWidget {
     );
   }
 
-  List<Widget> getCheckBoxList(List<String> checkBoxName) {
-    List<Widget> widgets = List.empty(growable: true);
+  List<FormCheckBox> getCheckBoxList(List<String> checkBoxName) {
     for (String title in checkBoxName) {
-      widgets.add(FormCheckBox(value: true, title: title));
+      checkBoxList.add(FormCheckBox(value: true, title: title));
     }
+    return checkBoxList;
+  }
 
-    return widgets;
+  ReportJameTarazBody getFilterBody() {
+    int accountLevel = controllerTarazType.text.toInt();
+    String fromDate = controllerFromDate.text;
+    String toDate = controllerToDate.text;
+    String accountCd = controllerDocumentCode.text;
+    int fromNumber = controllerFromDocument.text.toInt();
+    int toNumber = controllerToDocument.text.toInt();
+    int fromNumber2 = controllerFromReference.text.toInt();
+    int toNumber2 = controllerToReference.text.toInt();
+    int categoryId = controllerSeparation.text.toInt();
+
+    bool withEftetahie = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOpeningDocument);
+    bool withEkhtetamieh = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleClosingDocument);
+    bool withTasir = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleCurrencyExchangeDocument);
+    bool withBastanHesabhayeMovaqat = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleTemporaryAccountClosingDocument);
+    bool withEntezamiAccounts = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleHesabEntezami);
+    bool withFaqatGardeshDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyInCirculation);
+    bool withFaqatMandeDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyLeftovers);
+    bool withFaqatMandeDarhayeBed = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.titleOnlyDebitBalances);
+    bool withFaqatMandeDarhayeBes = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyCreditorBalances);
+    bool withSoodZian = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.profitAndLoss);
+    bool showMandeEftetahie = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.openingRemaining);
+    bool showGardeshAvalDore = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.firstPeriodRemaining);
+    bool showMandeAvalDore = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.firstPeriodCirculation);
+    bool showGardeshTeyDore = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.duringPeriodCirculation);
+    bool showMandeTeyDore = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.duringPeriodRemaining);
+    bool showGardeshPayanDore = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.endingPeriodCirculation);
+    bool showMandePayanDore = getCheckBoxValue(
+        checkBoxList: checkBoxList, title: localization.endingPeriodRemaining);
+
+    ReportJameTarazBody body = ReportJameTarazBody(
+        activeYear: 0,
+        fromDate: fromDate,
+        toDate: toDate,
+        accountCd: accountCd,
+        fromNumber: fromNumber,
+        toNumber: toNumber,
+        fromNumber2: fromNumber2,
+        toNumber2: toNumber2,
+        categoryId: categoryId,
+        accountLevel: accountLevel,
+        withEftetahie: withEftetahie,
+        withEkhtetamieh: withEkhtetamieh,
+        withTasir: withTasir,
+        withSoodZian: withSoodZian,
+        withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
+        withEntezamiAccounts: withEntezamiAccounts,
+        withFaqatGardeshDarha: withFaqatGardeshDarha,
+        withFaqatMandeDarha: withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
+        showMandeEftetahie: showMandeEftetahie,
+        showGardeshAvalDore: showGardeshAvalDore,
+        showMandeAvalDore: showMandeAvalDore,
+        showGardeshTeyDore: showGardeshTeyDore,
+        showMandeTeyDore: showMandeTeyDore,
+        showGardeshPayanDore: showGardeshPayanDore,
+        showMandePayanDore: showMandePayanDore);
+    return body;
+  }
+
+  bool getCheckBoxValue(
+      {required List<FormCheckBox> checkBoxList, required String title}) {
+    final FormCheckBox? formCheckBox =
+        checkBoxList.firstWhereOrNull((element) => element.title == title);
+    if (formCheckBox != null) {
+      return formCheckBox.value;
+    } else {
+      return false;
+    }
   }
 }

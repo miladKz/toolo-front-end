@@ -1,62 +1,61 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
-import 'package:toolo_gostar/presentation/view_models/report_base_data_table_model.dart';
 
-class ReportJameTarazData extends ITableRowData{
+class ReportJameTarazData extends ITableRowData {
   final String accountName;
   final String accountCd;
+  final double openingTurnoverDebit;
+  final double openingTurnoverCredit;
+  final double closingTurnoverDebit;
+  final double closingTurnoverCredit;
+  final double periodTurnoverDebit;
+  final double periodTurnoverCredit;
   final double openingBalanceDebit;
   final double openingBalanceCredit;
-  final double turnoverDebit;
-  final double turnoverCredit;
+  final double startingBalanceDebit;
+  final double startingBalanceCredit;
   final double closingBalanceDebit;
   final double closingBalanceCredit;
-  final double turnoverAndOpeningBalanceDebit;
-  final double turnoverAndOpeningBalanceCredit;
-  final double endingPeriodBalanceDebit;
-  final double endingPeriodBalanceCredit;
-  final double endingOpeningBalanceDebit;
-  final double endingOpeningBalanceCredit;
-  final double endingBalanceDebit;
-  final double endingBalanceCredit;
+  final double periodBalanceDebit;
+  final double periodBalanceCredit;
 
   ReportJameTarazData({
     required this.accountName,
     required this.accountCd,
+    required this.openingTurnoverDebit,
+    required this.openingTurnoverCredit,
+    required this.closingTurnoverDebit,
+    required this.closingTurnoverCredit,
+    required this.periodTurnoverDebit,
+    required this.periodTurnoverCredit,
     required this.openingBalanceDebit,
     required this.openingBalanceCredit,
-    required this.turnoverDebit,
-    required this.turnoverCredit,
+    required this.startingBalanceDebit,
+    required this.startingBalanceCredit,
     required this.closingBalanceDebit,
     required this.closingBalanceCredit,
-    required this.turnoverAndOpeningBalanceDebit,
-    required this.turnoverAndOpeningBalanceCredit,
-    required this.endingPeriodBalanceDebit,
-    required this.endingPeriodBalanceCredit,
-    required this.endingOpeningBalanceDebit,
-    required this.endingOpeningBalanceCredit,
-    required this.endingBalanceDebit,
-    required this.endingBalanceCredit,
-  }):super(id: -1,name: accountName);
+    required this.periodBalanceDebit,
+    required this.periodBalanceCredit,
+  }) : super(id: -1, name: accountName);
 
   factory ReportJameTarazData.empty() {
     return ReportJameTarazData(
       accountName: '',
       accountCd: '',
+      openingTurnoverDebit: 0,
+      openingTurnoverCredit: 0,
+      closingTurnoverDebit: 0,
+      closingTurnoverCredit: 0,
+      periodTurnoverDebit: 0,
+      periodTurnoverCredit: 0,
       openingBalanceDebit: 0,
       openingBalanceCredit: 0,
-      turnoverDebit: 0,
-      turnoverCredit: 0,
+      startingBalanceDebit: 0,
+      startingBalanceCredit: 0,
       closingBalanceDebit: 0,
       closingBalanceCredit: 0,
-      turnoverAndOpeningBalanceDebit: 0,
-      turnoverAndOpeningBalanceCredit: 0,
-      endingPeriodBalanceDebit: 0,
-      endingPeriodBalanceCredit: 0,
-      endingOpeningBalanceDebit: 0,
-      endingOpeningBalanceCredit: 0,
-      endingBalanceCredit: 0,
-      endingBalanceDebit: 0,
+      periodBalanceDebit: 0,
+      periodBalanceCredit: 0,
     );
   }
 
@@ -64,25 +63,25 @@ class ReportJameTarazData extends ITableRowData{
     final Map<String, dynamic> fieldMap = {
       'AccountName': accountName,
       'Accountcd': accountCd,
-      'MablaghEbtedaBed': openingBalanceDebit,
-      'MablaghEbtedaBes': openingBalanceCredit,
-      'MablaghGardeshBed': turnoverDebit,
-      'MablaghGardeshBes': turnoverCredit,
-      'MablaghGardeshPayanBed': closingBalanceDebit,
-      'MablaghGardeshPayanBes': closingBalanceCredit,
-      'MablaghGardeshVaEbtedaBed': turnoverAndOpeningBalanceDebit,
-      'MablaghGardeshVaEbtedaBes': turnoverAndOpeningBalanceCredit,
-      'MablaghMandeDoreBed': endingPeriodBalanceDebit,
-      'MablaghMandeDoreBes': endingPeriodBalanceCredit,
-      'MablaghMandeEbtedaBed': endingOpeningBalanceDebit,
-      'MablaghMandeEbtedaBes': endingOpeningBalanceCredit,
-      "MablaghMandePayanBed": endingBalanceDebit,
-      "MablaghMandePayanBes": endingBalanceCredit
+      'GardeshAvalDoreBed': openingTurnoverDebit,
+      'GardeshAvalDoreBes': openingTurnoverCredit,
+      'GardeshPayanDoreBed': closingTurnoverDebit,
+      'GardeshPayanDoreBes': closingTurnoverCredit,
+      'GardeshTeyDoreBed': periodTurnoverDebit,
+      'GardeshTeyDoreBes': periodTurnoverCredit,
+      'MandeAvalDoreBed': openingBalanceDebit,
+      'MandeAvalDoreBes': openingBalanceCredit,
+      'MandeEftetahieBed': startingBalanceDebit,
+      'MandeEftetahieBes': startingBalanceCredit,
+      'MandePayanDoreBed': closingBalanceDebit,
+      'MandePayanDoreBes': closingBalanceCredit,
+      "MandeTeyDoreBed": periodBalanceDebit,
+      "MandeTeyDoreBes": periodBalanceCredit
     };
 
-    for(String key in keys){
+    for (String key in keys) {
       if (fieldMap.containsKey(key)) {
-        props.add('${fieldMap.findAsDynamic(key)}') ;
+        props.add('${fieldMap.findAsDynamic(key)}');
       } else {
         throw ArgumentError('Invalid key: $key');
       }
@@ -90,6 +89,5 @@ class ReportJameTarazData extends ITableRowData{
     return this;
   }
 
-
-  List<Object>  props =List.empty(growable: true);
+  List<Object> props = List.empty(growable: true);
 }

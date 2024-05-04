@@ -804,7 +804,6 @@ class _PeopleModalState extends State<PeopleModal> {
   SizedBox personalNameBox({required double width}) {
     return SizedBox(
       width: width,
-
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1028,7 +1027,6 @@ class _PeopleModalState extends State<PeopleModal> {
   }
 
   addressSection() {
-    print("ASDASDASDASDSADASDASD");
     return [
       FormItemTitle(
         title: localization.otherFeatures,

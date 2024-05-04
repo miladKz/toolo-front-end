@@ -33,7 +33,7 @@ class FilterTDPView extends StatelessWidget {
           height: constraints.maxHeight,
           child: AdvanceFiltersButton(
             height: height,
-            body:  Filters(
+            body: Filters(
               height: 70,
             ),
           ),
@@ -44,7 +44,7 @@ class FilterTDPView extends StatelessWidget {
 }
 
 class Filters extends StatelessWidget {
-   Filters({super.key, required this.height});
+  Filters({super.key, required this.height});
 
   final double height;
 
@@ -54,21 +54,29 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
 
-   TextStyle get getFilterHintStyle => const TextStyle(
-       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
-   
-  TextEditingController controllerFromDocument = TextEditingController(text: '1');
-  TextEditingController controllerToDocument = TextEditingController(text: '100');
-  TextEditingController controllerFromDate = TextEditingController(text: '1403/02/01');
-  TextEditingController controllerToDate = TextEditingController(text: '1403/02/30');
-  TextEditingController controllerDocumentCode = TextEditingController(text: '');
+  TextStyle get getFilterHintStyle => const TextStyle(
+      color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
+
+  TextEditingController controllerFromDocument =
+      TextEditingController(text: '1');
+  TextEditingController controllerToDocument =
+      TextEditingController(text: '100');
+  TextEditingController controllerFromDate =
+      TextEditingController(text: '1403/02/01');
+  TextEditingController controllerToDate =
+      TextEditingController(text: '1403/02/30');
+  TextEditingController controllerDocumentCode =
+      TextEditingController(text: '');
   TextEditingController controllerDocCodDesc = TextEditingController(text: '');
-  TextEditingController controllerFromReference = TextEditingController(text: '1');
-  TextEditingController controllerToReference = TextEditingController(text: '100');
+  TextEditingController controllerFromReference =
+      TextEditingController(text: '1');
+  TextEditingController controllerToReference =
+      TextEditingController(text: '100');
   TextEditingController controllerSeparation = TextEditingController(text: '');
   TextEditingController controllerGroup = TextEditingController(text: '');
   TextEditingController controllerTarazType = TextEditingController(text: '');
-  TextEditingController controllerDisplayColumnNumber = TextEditingController(text: '2');
+  TextEditingController controllerDisplayColumnNumber =
+      TextEditingController(text: '2');
   List<FormCheckBox> checkBoxList = List.empty(growable: true);
 
   @override
@@ -343,9 +351,7 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         separationItem(
-            itemWidth: itemWidth,
-            hint: '',
-            controller: controllerSeparation),
+            itemWidth: itemWidth, hint: '', controller: controllerSeparation),
       ],
     );
   }
@@ -354,8 +360,8 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<CategoryModel> items= baseDataModel.categoryList;
-    controllerSeparation.text = '${ items[0].id}';
+    List<CategoryModel> items = baseDataModel.categoryList;
+    controllerSeparation.text = '${items[0].id}';
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -544,8 +550,8 @@ class Filters extends StatelessWidget {
 
   bool getCheckBoxValue(
       {required List<FormCheckBox> checkBoxList, required String title}) {
-    final FormCheckBox? formCheckBox = checkBoxList.firstWhereOrNull(
-        (element) => element.title == localization.titleOpeningDocument);
+    final FormCheckBox? formCheckBox =
+        checkBoxList.firstWhereOrNull((element) => element.title == title);
     if (formCheckBox != null) {
       return formCheckBox.value;
     } else {

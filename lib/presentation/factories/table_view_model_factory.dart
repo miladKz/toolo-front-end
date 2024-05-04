@@ -3,6 +3,7 @@ import 'package:toolo_gostar/domain/entities/accounting/document/document_master
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz_data.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
@@ -10,6 +11,7 @@ import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/domain/entities/common/people.dart';
 import 'package:toolo_gostar/main.dart';
 
+import '../../domain/entities/accounting/reports/report_jame_taraz.dart';
 import '../../domain/entities/common/bank.dart';
 import '../../domain/entities/common/card_reader.dart';
 import '../../domain/entities/common/cash_box.dart';
@@ -18,7 +20,8 @@ import '../../domain/entities/common/revolving_fund.dart';
 import '../view_models/table_view_model.dart';
 
 class DataTableViewModelFactory {
-  static DataTableViewModel createTableViewModelFromCityList(List<City> cities) {
+  static DataTableViewModel createTableViewModelFromCityList(
+      List<City> cities) {
     final List<String> labels = [
       localization.code,
       localization.province,
@@ -30,8 +33,6 @@ class DataTableViewModelFactory {
 
   static DataTableViewModel createTableViewModelFromAccountingDocumentMaster(
       {required List<DocumentMaster> documentMaster}) {
-
-
     final List<String> labels = [
       localization.titleReference,
       localization.titleDaily,
@@ -50,10 +51,11 @@ class DataTableViewModelFactory {
 
     return DataTableViewModel(labels: labels, data: documentMaster);
   }
-  static DataTableViewModel createTableViewModelFromAccountingDocumentMasterDetail(
-      {required List<DocumentMasterDetail> documentMasterDetail,}) {
 
-
+  static DataTableViewModel
+      createTableViewModelFromAccountingDocumentMasterDetail({
+    required List<DocumentMasterDetail> documentMasterDetail,
+  }) {
     final List<String> labels = [
       localization.accountCode,
       localization.titleAccountName,
@@ -185,14 +187,13 @@ class DataTableViewModelFactory {
     return DataTableViewModel(labels: labels, data: standardDetailList);
   }
 
-  static DataTableViewModel createTableViewModelFromAccountHaveTafziliGroup({required List<AccountHaveTafziliGroup> accountList}) {
-
+  static DataTableViewModel createTableViewModelFromAccountHaveTafziliGroup(
+      {required List<AccountHaveTafziliGroup> accountList}) {
     final List<String> labels = [
       localization.code,
       localization.name,
       localization.description
     ];
-
 
     return DataTableViewModel(labels: labels, data: accountList);
   }
@@ -217,6 +218,28 @@ class DataTableViewModelFactory {
     values = balanceAndLedgersReport.balanceAndLedgers
         .map((e) => e.getFieldsValue(keys))
         .toList();
+
+    return DataTableViewModel(labels: labels, data: values);
+  }
+
+  static DataTableViewModel? createTableViewModelFromReportJT(
+      {required ReportJameTaraz reportJameTaraz}) {
+    List<ReportJameTarazData> values = List.empty(growable: true);
+    final List<String> keys = List.empty(growable: true);
+    final List<String> labels = reportJameTaraz.reportColumnTitle.expand((e) {
+      if (e.children.isEmpty) {
+        keys.add(e.fieldName);
+        return [e.title];
+      } else {
+        return e.children.map((e) {
+          keys.add(e.fieldName);
+          return e.title;
+        });
+      }
+    }).toList();
+
+    values =
+        reportJameTaraz.dataList.map((e) => e.getFieldsValue(keys)).toList();
 
     return DataTableViewModel(labels: labels, data: values);
   }

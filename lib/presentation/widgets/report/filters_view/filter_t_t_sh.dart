@@ -104,7 +104,10 @@ class Filters extends StatelessWidget {
             verticalGapDivider,
             linearGap,
             verticalGapDivider,
-            showListCheckBox(width: width),
+            showListCheckBox1(width: width),
+            linearGap,
+            verticalGapDivider,
+            showListCheckBox2(width: width),
           ],
         );
       },
@@ -364,21 +367,32 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.floating1),
-      DropDownItem(name: localization.floating2),
-      DropDownItem(name: localization.floating3),
-    ];
-    return GenericDropDown<IDropDownItem>(
-      isEnable: true,
-      itemWidth: itemWidth,
-      value: items[0],
-      items: items,
-      hint: hint,
-      onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
-      },
-    );
+  return  InkWell(
+    onTap: () {
+
+    },
+      child: SizedBox(
+          width: itemWidth,
+          child: TextFormField(
+          textAlign: TextAlign.right,
+          enabled: false,
+          decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: getFilterHintStyle,
+          suffixIcon: IconButton(
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                size: 20,
+              ),
+              onPressed: () {}),
+          contentPadding: const EdgeInsets.only(right: 2, left: 2)),
+      maxLines: 1,
+      controller: controller,
+      style: getFilterBodyStyle,
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+      )),
+  );
   }
 
   Widget column1({required double width}) {
@@ -428,7 +442,7 @@ class Filters extends StatelessWidget {
     color: const Color(0xffCCCCCC),
   );
 
-  Widget showListCheckBox({required double width}) {
+  Widget showListCheckBox1({required double width}) {
     final List<String> checkBoxNames = [
       localization.titleOpeningDocument,
       localization.titleClosingDocument,
@@ -439,6 +453,36 @@ class Filters extends StatelessWidget {
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
       localization.titleOnlyDebitBalances,
+    ];
+    double maxWidth = width;
+    double itemWidth = maxWidth / 2;
+    double itemHeight = 48;
+    return SizedBox(
+      width: maxWidth,
+      child: GridView.count(
+        primary: false,
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        childAspectRatio: (itemWidth / itemHeight),
+        mainAxisSpacing: 2,
+        crossAxisSpacing: 2,
+        crossAxisCount: 2,
+        children: getCheckBoxList(checkBoxNames),
+      ),
+    );
+  }
+  Widget showListCheckBox2({required double width}) {
+    final List<String> checkBoxNames = [
+      localization.titleCustomers,
+      localization.titleSupplier,
+      localization.titlePersonnel,
+      localization.titleIntermediary,
+      localization.titleInvestor,
+      localization.titlePartners,
+      localization.titleRecipientsFacility,
+      localization.titleFacilitators,
+      localization.titleRelatedPersons,
+      localization.titleOther,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;

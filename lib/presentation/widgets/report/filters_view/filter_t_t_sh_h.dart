@@ -84,6 +84,7 @@ class Filters extends StatelessWidget {
             baseFilterTitle(
                 title: localization.accountCode,
                 body: GetTafziliFromAccountWidget(
+                  withTafzili: true,
                     controllerDocumentCode: controllerDocumentCode,
                     controllerDocCodDesc: controllerDocCodDesc),
                 width: width,
@@ -96,11 +97,6 @@ class Filters extends StatelessWidget {
             baseFilterTitle(
                 title: localization.titleSeparation,
                 body: row4(width: width),
-                width: width,
-                height: height),
-            baseFilterTitle(
-                title: localization.reportBasedOn,
-                body: row5(width: width),
                 width: width,
                 height: height),
             const SizedBox(
@@ -355,37 +351,6 @@ class Filters extends StatelessWidget {
     );
   }
 
-  Widget row5({required double width}) {
-    final double itemWidth = width - 20;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        groupItem(
-            itemWidth: itemWidth, hint: '', controller: controllerGroup),
-      ],
-    );
-  }
-
-  Widget groupItem(
-      {required double itemWidth,
-        required TextEditingController controller,
-        required String hint}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.floating1),
-      DropDownItem(name: localization.floating2),
-      DropDownItem(name: localization.floating3),
-    ];
-    return GenericDropDown<IDropDownItem>(
-      isEnable: true,
-      itemWidth: itemWidth,
-      value: items[0],
-      items: items,
-      hint: hint,
-      onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
-      },
-    );
-  }
 
   Widget column1({required double width}) {
     final List<String> radioButtonTitle = [

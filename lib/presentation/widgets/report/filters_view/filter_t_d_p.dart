@@ -77,7 +77,7 @@ class Filters extends StatelessWidget {
   TextEditingController controllerTarazType = TextEditingController(text: '');
   TextEditingController controllerDisplayColumnNumber =
       TextEditingController(text: '2');
-  List<FormCheckBox> checkBoxList = List.empty(growable: true);
+  late List<FormCheckBox> checkBoxList;
 
   @override
   Widget build(BuildContext context) {

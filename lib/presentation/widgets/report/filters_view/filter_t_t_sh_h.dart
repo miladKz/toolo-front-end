@@ -1,12 +1,12 @@
-import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/domain/entities/base/category.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
-import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
+import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
+import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
@@ -14,39 +14,46 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/r
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
 
-import '../../../di/di.dart';
-import '../common/modals/modal_elements/form_button.dart';
+TextEditingController controllerFromDocument = TextEditingController();
+TextEditingController controllerToDocument = TextEditingController();
+TextEditingController controllerFromDate = TextEditingController();
+TextEditingController controllerToDate = TextEditingController();
+TextEditingController controllerDocumentCode = TextEditingController();
+TextEditingController controllerDocCodDesc = TextEditingController();
+TextEditingController controllerFromReference = TextEditingController();
+TextEditingController controllerToReference = TextEditingController();
+TextEditingController controllerSeparation = TextEditingController();
+TextEditingController controllerGroup = TextEditingController();
+TextEditingController controllerRadioButton = TextEditingController();
 
-
-TextEditingController controllerFromDocument=TextEditingController();
-TextEditingController controllerToDocument=TextEditingController();
-TextEditingController controllerFromDate=TextEditingController();
-TextEditingController controllerToDate=TextEditingController();
-TextEditingController controllerFromReference=TextEditingController();
-TextEditingController controllerToReference=TextEditingController();
-TextEditingController controllerSeparation=TextEditingController();
-TextEditingController controllerGroup=TextEditingController();
-TextEditingController controllerRadioButton=TextEditingController();
-class BalanceReportFilter extends StatelessWidget {
+class FilterTTShHView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
+  final Function(dynamic) onChangeFilter;
 
-  const BalanceReportFilter({super.key});
+  const FilterTTShHView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
-    return AdvanceFiltersButton( height: height,body: const Filters(
-      width: 300,
-      height: 70,
-    ),);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          child: AdvanceFiltersButton(
+            height: height,
+            body: Filters(
+              height: 70,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
-
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.width, required this.height});
+  Filters({super.key, required this.height});
 
-  final double width;
   final double height;
 
   TextStyle get getFilterBodyTitleStyle => const TextStyle(
@@ -54,43 +61,59 @@ class Filters extends StatelessWidget {
 
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
+  TextStyle get getFilterHintStyle => const TextStyle(
+      color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          baseFilterTitle(
-              title: localization.titleDocument,
-              body: row1(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleDate,
-              body: row2(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleReference,
-              body: row3(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleSeparation,
-              body: row4(width: width),
-              width: width,
-              height: height),
-          baseFilterTitle(
-              title: localization.titleGroup,
-              body: row5(width: width),
-              width: width,
-              height: height),
-          const SizedBox(
-            height: 6,
-          ),
-          column1(width: width)
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
+        return Column(
+          children: [
+            baseFilterTitle(
+                title: localization.titleDocument,
+                body: row1(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleDate,
+                body: row2(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.accountCode,
+                body: GetTafziliFromAccountWidget(
+                    controllerDocumentCode: controllerDocumentCode,
+                    controllerDocCodDesc: controllerDocCodDesc),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleReference,
+                body: row3(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.titleSeparation,
+                body: row4(width: width),
+                width: width,
+                height: height),
+            baseFilterTitle(
+                title: localization.reportBasedOn,
+                body: row5(width: width),
+                width: width,
+                height: height),
+            const SizedBox(
+              height: 6,
+            ),
+            column1(width: width),
+            verticalGapDivider,
+            linearGap,
+            verticalGapDivider,
+            showListCheckBox(width: width),
+          ],
+        );
+      },
     );
   }
 
@@ -98,13 +121,13 @@ class Filters extends StatelessWidget {
       {required String title,
       required Widget body,
       required double width,
-      required double height}) {
+      double height = 80}) {
     return CustomTitleOnBorder(
       width: width,
       height: height,
       borderRadius: BorderRadius.circular(8),
       title: title,
-      body: body,
+      body: Center(child: body),
     );
   }
 
@@ -176,7 +199,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,
@@ -235,7 +258,7 @@ class Filters extends StatelessWidget {
               textAlign: TextAlign.right,
               decoration: InputDecoration(
                   hintText: hint,
-                  hintStyle: getFilterBodyStyle,
+                  hintStyle: getFilterHintStyle,
                   contentPadding: const EdgeInsets.only(right: 2, left: 2)),
               maxLines: 1,
               controller: controller,
@@ -291,7 +314,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,
@@ -310,9 +333,7 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         separationItem(
-            itemWidth: itemWidth,
-            hint: 'بدون تفکیک',
-            controller: controllerSeparation),
+            itemWidth: itemWidth, hint: '', controller: controllerSeparation),
       ],
     );
   }
@@ -321,12 +342,8 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.titleSeparation1),
-      DropDownItem(name: localization.titleSeparation2),
-      DropDownItem(name: localization.titleSeparation3)
-    ];
-    return GenericDropDown<IDropDownItem>(
+    List<CategoryModel> items = baseDataModel.categoryList;
+    return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
       value: items[0],
@@ -344,19 +361,19 @@ class Filters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         groupItem(
-            itemWidth: itemWidth,
-            hint: 'اشخاص',
-            controller: controllerGroup),
+            itemWidth: itemWidth, hint: '', controller: controllerGroup),
       ],
     );
   }
 
   Widget groupItem(
       {required double itemWidth,
-      required TextEditingController controller,
-      required String hint}) {
+        required TextEditingController controller,
+        required String hint}) {
     List<DropDownItem> items = [
-      DropDownItem(name: localization.titlePersonnel),
+      DropDownItem(name: localization.floating1),
+      DropDownItem(name: localization.floating2),
+      DropDownItem(name: localization.floating3),
     ];
     return GenericDropDown<IDropDownItem>(
       isEnable: true,
@@ -376,33 +393,29 @@ class Filters extends StatelessWidget {
       localization.titleDisplayStyleCol4,
       localization.titleDisplayStyleCol6,
       localization.titleDisplayStyleCol8,
-
     ];
     return SizedBox(
       width: width,
       child: Column(
         children: [
-          titleDisplay(),
-          verticalGapDivider,
+          linearTitle(title: localization.titleDisplayStyle),
           CustomGridRadioButtonList(
               width: width,
               height: height,
               radioButtonTitle: radioButtonTitle,
               controller: controllerRadioButton),
-          verticalGapDivider,
-          showListCheckBox(width: width),
         ],
       ),
     );
   }
 
-  Row titleDisplay() {
+  Row linearTitle({required String title}) {
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 8),
           child: Text(
-            localization.titleDisplayStyle,
+            title,
             style: getFilterBodyTitleStyle.copyWith(
                 color: const Color(0xffA7A7A7)),
           ),
@@ -415,6 +428,11 @@ class Filters extends StatelessWidget {
       ],
     );
   }
+
+  Widget linearGap = Container(
+    height: 1,
+    color: const Color(0xffCCCCCC),
+  );
 
   Widget showListCheckBox({required double width}) {
     final List<String> checkBoxNames = [
@@ -449,7 +467,7 @@ class Filters extends StatelessWidget {
   List<Widget> getCheckBoxList(List<String> checkBoxName) {
     List<Widget> widgets = List.empty(growable: true);
     for (String title in checkBoxName) {
-      widgets.add(FormCheckBox(value: true, title: title, borderColor: const Color(0xFF6392DE),));
+      widgets.add(FormCheckBox(value: true, title: title));
     }
 
     return widgets;

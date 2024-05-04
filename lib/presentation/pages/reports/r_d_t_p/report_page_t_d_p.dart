@@ -4,6 +4,9 @@ import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dar
 import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/custom_view_with_data_table.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_d_p.dart';
+import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_g_t_sh.dart';
+import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh_h.dart';
+import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
 
@@ -25,7 +28,7 @@ class ReportPageTDP extends StatelessWidget {
   Widget rightReportFilterView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FilterTDPView(
+      child: FilterTTShHView(
         onChangeFilter: (body) {},
       ),
     );

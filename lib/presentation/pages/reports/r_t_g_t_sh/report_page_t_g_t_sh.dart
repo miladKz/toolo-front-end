@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_g_t_sh_h.dart';
+import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_g_t_sh.dart';
+import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh_h.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
 
-class ReportPageTGTShH extends StatelessWidget {
-  const ReportPageTGTShH({super.key});
+class ReportPageTGTSh extends StatelessWidget {
+  const ReportPageTGTSh({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ReportPageTGTShH extends StatelessWidget {
   Widget rightReportFilterView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FilterTGTShHView(
+      child: FilterTGTShView(
         onChangeFilter: (body) {},
       ),
     );

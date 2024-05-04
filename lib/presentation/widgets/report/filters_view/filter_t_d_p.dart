@@ -56,6 +56,9 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
 
+   TextStyle get getFilterHintStyle => const TextStyle(
+       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
+   
   TextEditingController controllerFromDocument = TextEditingController(text: '1');
   TextEditingController controllerToDocument = TextEditingController(text: '100');
   TextEditingController controllerFromDate = TextEditingController(text: '1403/02/01');
@@ -208,7 +211,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,
@@ -267,7 +270,7 @@ class Filters extends StatelessWidget {
               textAlign: TextAlign.right,
               decoration: InputDecoration(
                   hintText: hint,
-                  hintStyle: getFilterBodyStyle,
+                  hintStyle: getFilterHintStyle,
                   contentPadding: const EdgeInsets.only(right: 2, left: 2)),
               maxLines: 1,
               controller: controller,
@@ -323,7 +326,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,

@@ -6,6 +6,7 @@ import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
+import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
@@ -25,12 +26,12 @@ TextEditingController controllerSeparation = TextEditingController();
 TextEditingController controllerGroup = TextEditingController();
 TextEditingController controllerRadioButton = TextEditingController();
 
-class FilterTGTShHView extends StatelessWidget {
+class FilterTGTShView extends StatelessWidget {
   final double height = 70;
   final double inputHeight = 70;
   final Function(dynamic) onChangeFilter;
 
-  const FilterTGTShHView({super.key, required this.onChangeFilter});
+  const FilterTGTShView({super.key, required this.onChangeFilter});
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,9 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterBodyStyle => const TextStyle(
       color: Color(0xff69696A), fontSize: 10, fontWeight: FontWeight.w400);
 
+  TextStyle get getFilterHintStyle => const TextStyle(
+      color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
+  
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -184,7 +188,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,
@@ -243,7 +247,7 @@ class Filters extends StatelessWidget {
               textAlign: TextAlign.right,
               decoration: InputDecoration(
                   hintText: hint,
-                  hintStyle: getFilterBodyStyle,
+                  hintStyle: getFilterHintStyle,
                   contentPadding: const EdgeInsets.only(right: 2, left: 2)),
               maxLines: 1,
               controller: controller,
@@ -299,7 +303,7 @@ class Filters extends StatelessWidget {
             textAlign: TextAlign.right,
             decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: getFilterBodyStyle,
+                hintStyle: getFilterHintStyle,
                 contentPadding: const EdgeInsets.only(right: 2, left: 2)),
             maxLines: 1,
             controller: controller,

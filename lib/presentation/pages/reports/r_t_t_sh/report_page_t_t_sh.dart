@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh_h.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
+import '../../../factories/table_view_model_factory.dart';
+import '../../../view_models/table_view_model.dart';
 
 class ReportPageTTSh extends StatelessWidget {
   const ReportPageTTSh({super.key});
@@ -15,7 +16,7 @@ class ReportPageTTSh extends StatelessWidget {
       direction: Axis.horizontal,
       children: [
         Flexible(flex: 3, child: rightReportFilterView()),
-        const Flexible(flex: 7, child: LeftReportFilterView()),
+        Flexible(flex: 7, child: LeftReportFilterView()),
       ],
     );
   }
@@ -31,9 +32,11 @@ class ReportPageTTSh extends StatelessWidget {
 }
 
 class LeftReportFilterView extends StatefulWidget {
-  const LeftReportFilterView({
+  LeftReportFilterView({
     super.key,
   });
+
+  DataTableViewModel? dataTableViewModel;
 
   @override
   State<LeftReportFilterView> createState() => _LeftReportFilterViewState();
@@ -55,6 +58,13 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
 
   void listenToApi() {
     final state = context.watch<ReportBloc>().state;
+    if (state is ReportSuccessTTSH) {
+      setState(() {
+        widget.dataTableViewModel =
+            DataTableViewModelFactory.createTableViewModelFromReportTTSH(
+                reportTarazTafziliShenavar: state.model);
+      });
+    }
   }
 }
 

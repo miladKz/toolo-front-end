@@ -5,7 +5,9 @@ import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledg
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_group_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_shenavar_hesab_data.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_moghayeseyi_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz_data.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
@@ -323,5 +325,27 @@ class DataTableViewModelFactory {
     ];
 
     return DataTableViewModel(labels: labels, data: detailGroupList);
+  }
+
+  static createTableViewModelFromReportTM({required ReportTarazMoghayeseyi data}) {
+
+    List<ReportTarazMoghayeseyiData> values = List.empty(growable: true);
+    final List<String> keys = List.empty(growable: true);
+    final List<String> labels = data.reportColumnTitle.expand((e) {
+      if (e.children.isEmpty) {
+        keys.add(e.fieldName);
+        return [e.title];
+      } else {
+        return e.children.map((e) {
+          keys.add(e.fieldName);
+          return e.title;
+        });
+      }
+    }).toList();
+
+    values =
+        data.dataList.map((e) => e.getFieldsValue(keys)).toList();
+
+    return DataTableViewModel(labels: labels, data: values);
   }
 }

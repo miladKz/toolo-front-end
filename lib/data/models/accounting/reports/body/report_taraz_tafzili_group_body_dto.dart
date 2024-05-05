@@ -26,6 +26,7 @@ class ReportTarazTafziliGroupBodyDto extends ReportTarazTafziliGroupBody {
       "ActiveYear": activeYear,
       "FromDate": fromDate,
       "ToDate": toDate,
+      "AccountCd": accountCd,
       "FromNumber": fromNumber,
       "ToNumber": toNumber,
       "FromNumber2": fromNumber2,

@@ -1131,7 +1131,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         activeYear: body.activeYear,
         fromDate: body.fromDate,
         toDate: body.toDate,
-        accountCd: body.accountCd,
+        fromAccountcd: body.fromAccountcd,
         fromNumber: body.fromNumber,
         toNumber: body.toNumber,
         fromNumber2: body.fromNumber2,
@@ -1145,6 +1145,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         withFaqatMandeDarha: body.withFaqatMandeDarha,
         withFaqatMandeDarhayeBed: body.withFaqatMandeDarhayeBed,
         withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
-        displayColumn: body.displayColumn);
+        displayColumn: body.displayColumn,
+        tafziliGroupCode: body.tafziliGroupCode);
   }
 }

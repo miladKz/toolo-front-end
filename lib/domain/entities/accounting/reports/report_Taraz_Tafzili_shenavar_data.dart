@@ -14,8 +14,8 @@ class ReportTarazTafziliShenavarData extends ITableRowData {
   final double mablaghMandePayanBes;
   final String tafziliCode;
   final int tafziliGroupCode;
-  final int tafziliID;
   final String tafziliName;
+
 
   ReportTarazTafziliShenavarData(
       {required this.accountName,
@@ -30,9 +30,8 @@ class ReportTarazTafziliShenavarData extends ITableRowData {
       required this.mablaghMandePayanBes,
       required this.tafziliCode,
       required this.tafziliGroupCode,
-      required this.tafziliID,
       required this.tafziliName})
-      : super(id: tafziliID, name: tafziliName);
+      : super(id: -1, name: tafziliName);
 
   ReportTarazTafziliShenavarData getFieldsValue(List<String> keys) {
     final Map<String, dynamic> fieldMap = {
@@ -48,7 +47,6 @@ class ReportTarazTafziliShenavarData extends ITableRowData {
       "MablaghMandePayanBes": mablaghMandePayanBes,
       "TafziliCode": tafziliCode,
       "TafziliGroupCode": tafziliGroupCode,
-      "TafziliID": tafziliID,
       "TafziliName": tafziliName
     };
 

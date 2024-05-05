@@ -15,7 +15,6 @@ class ReportTarazTafziliShenavarDataDto extends ReportTarazTafziliShenavarData {
       required super.mablaghMandePayanBes,
       required super.tafziliCode,
       required super.tafziliGroupCode,
-      required super.tafziliID,
       required super.tafziliName});
 
   factory ReportTarazTafziliShenavarDataDto.fromMap(Map<String, dynamic> map) {
@@ -32,7 +31,6 @@ class ReportTarazTafziliShenavarDataDto extends ReportTarazTafziliShenavarData {
       mablaghMandePayanBes: map.findAsDouble("MablaghMandePayanBes"),
       tafziliCode: map.findAsString("TafziliCode"),
       tafziliGroupCode: map.findAsInt("TafziliGroupCode"),
-      tafziliID: map.findAsInt("TafziliID"),
       tafziliName: map.findAsString("TafziliName"),
     );
   }

@@ -2,12 +2,13 @@ class ReportTarazTafziliShenavarHesabBody {
   final int activeYear;
   final String fromDate;
   final String toDate;
-  final String accountCd;
+  final String fromAccountcd;
   final int fromNumber;
   final int toNumber;
   final int fromNumber2;
   final int toNumber2;
   final int categoryId;
+  final int tafziliGroupCode;
   final int displayColumn;
   final bool withEftetahie;
   final bool withEkhtetamieh;
@@ -22,12 +23,13 @@ class ReportTarazTafziliShenavarHesabBody {
       {required this.activeYear,
       required this.fromDate,
       required this.toDate,
-      required this.accountCd,
+      required this.fromAccountcd,
       required this.fromNumber,
       required this.toNumber,
       required this.fromNumber2,
       required this.toNumber2,
       required this.categoryId,
+      required this.tafziliGroupCode,
       required this.displayColumn,
       required this.withEftetahie,
       required this.withEkhtetamieh,

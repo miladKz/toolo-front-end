@@ -39,12 +39,12 @@ class MainBaseBody extends StatelessWidget {
 
   Workspace workSpaceMenu = Workspace();
   ActionPinnedMenu pinnedWorkSpaceMenu = ActionPinnedMenu();
-  AccountTreeViewBuilder accountTreeView = AccountTreeViewBuilder();
 
   @override
   Widget build(BuildContext context) {
     double widthScree = MediaQuery.sizeOf(context).width;
-    return Row(
+    return Flex(
+      direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         rightColumn(widthScree, context),
@@ -90,7 +90,7 @@ class MainBaseBody extends StatelessWidget {
   }
 
   Widget actionTreeView(widthScreen) {
-    double width = (widthScreen * 0.2).clamp(230, 280.0);
+    double width = 300;//(widthScreen * 0.2).clamp(270, 300.0);
     return Container(
       width: width,
       decoration: BoxDecoration(

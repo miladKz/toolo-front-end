@@ -1,18 +1,26 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
-import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
+import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
-import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/modal_opener_button.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
+
+import '../../../../di/di.dart';
+import '../../../../domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
+import '../../../../domain/entities/base/detail_group_root.dart';
+import '../../../blocs/report_bloc/report_bloc.dart';
+import '../../../factories/table_view_model_factory.dart';
+import '../btn_set_filter.dart';
 
 TextEditingController controllerFromDocument = TextEditingController();
 TextEditingController controllerToDocument = TextEditingController();
@@ -23,7 +31,7 @@ TextEditingController controllerDocCodDesc = TextEditingController();
 TextEditingController controllerFromReference = TextEditingController();
 TextEditingController controllerToReference = TextEditingController();
 TextEditingController controllerSeparation = TextEditingController();
-TextEditingController controllerGroup = TextEditingController();
+TextEditingController controllerGroup = TextEditingController(text: '0');
 TextEditingController controllerRadioButton = TextEditingController();
 
 class FilterTTShView extends StatelessWidget {
@@ -64,9 +72,13 @@ class Filters extends StatelessWidget {
 
   TextStyle get getFilterHintStyle => const TextStyle(
       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
-  
+  late List<FormCheckBox> checkBoxList;
+  late List<FormCheckBox> additionalCheckBoxList;
+
   @override
   Widget build(BuildContext context) {
+    checkBoxList = List.empty(growable: true);
+    additionalCheckBoxList = List.empty(growable: true);
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
@@ -108,6 +120,13 @@ class Filters extends StatelessWidget {
             linearGap,
             verticalGapDivider,
             showListCheckBox2(width: width),
+            verticalGapDivider,
+            BtnSetFilter(
+                width: width,
+                onTap: () {
+                  ReportTarazTafziliShenavarBody body = getFilterBody();
+                  locator.get<ReportBloc>().add(RepFetchReportTTSh(body: body));
+                })
           ],
         );
       },
@@ -354,11 +373,29 @@ class Filters extends StatelessWidget {
 
   Widget row5({required double width}) {
     final double itemWidth = width - 20;
+    DataTableViewModel dataTableViewModel =
+        DataTableViewModelFactory.createTableViewModelFromDetailGroupRootList(
+            detailGroupList: baseDataModel.detailGroupRootList);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        groupItem(
-            itemWidth: itemWidth, hint: '', controller: controllerGroup),
+        ModalOpenerButton(
+            buttonWidth: itemWidth,
+            formWidth: 650,
+            value: '',
+            dialogTitle: localization.titleDetailGroup,
+            onSelectItemFromTableModal: (item) {
+              if (item != null) {
+                try {
+                  DetailGroupRoot detailGroup = item as DetailGroupRoot;
+                  controllerGroup.text = detailGroup.id.toString();
+                } catch (e) {
+                  debugPrint(e.toString());
+                }
+              }
+            },
+            dataTableViewModel: dataTableViewModel,
+            formKey: key)
       ],
     );
   }
@@ -367,32 +404,30 @@ class Filters extends StatelessWidget {
       {required double itemWidth,
       required TextEditingController controller,
       required String hint}) {
-  return  InkWell(
-    onTap: () {
-
-    },
+    return InkWell(
+      onTap: () {},
       child: SizedBox(
           width: itemWidth,
           child: TextFormField(
-          textAlign: TextAlign.right,
-          enabled: false,
-          decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: getFilterHintStyle,
-          suffixIcon: IconButton(
-              icon: const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                size: 20,
-              ),
-              onPressed: () {}),
-          contentPadding: const EdgeInsets.only(right: 2, left: 2)),
-      maxLines: 1,
-      controller: controller,
-      style: getFilterBodyStyle,
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-      )),
-  );
+            textAlign: TextAlign.right,
+            enabled: false,
+            decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: getFilterHintStyle,
+                suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 20,
+                    ),
+                    onPressed: () {}),
+                contentPadding: const EdgeInsets.only(right: 2, left: 2)),
+            maxLines: 1,
+            controller: controller,
+            style: getFilterBodyStyle,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+          )),
+    );
   }
 
   Widget column1({required double width}) {
@@ -467,10 +502,11 @@ class Filters extends StatelessWidget {
         mainAxisSpacing: 2,
         crossAxisSpacing: 2,
         crossAxisCount: 2,
-        children: getCheckBoxList(checkBoxNames),
+        children: getCheckBoxList(checkBoxNames, checkBoxList),
       ),
     );
   }
+
   Widget showListCheckBox2({required double width}) {
     final List<String> checkBoxNames = [
       localization.titleCustomers,
@@ -497,17 +533,90 @@ class Filters extends StatelessWidget {
         mainAxisSpacing: 2,
         crossAxisSpacing: 2,
         crossAxisCount: 2,
-        children: getCheckBoxList(checkBoxNames),
+        children: getCheckBoxList(checkBoxNames, additionalCheckBoxList),
       ),
     );
   }
 
-  List<Widget> getCheckBoxList(List<String> checkBoxName) {
-    List<Widget> widgets = List.empty(growable: true);
+  List<FormCheckBox> getCheckBoxList(
+      List<String> checkBoxName, List<FormCheckBox> formCheckBoxList) {
     for (String title in checkBoxName) {
-      widgets.add(FormCheckBox(value: true, title: title));
+      formCheckBoxList.add(FormCheckBox(value: true, title: title));
     }
+    return formCheckBoxList;
+  }
 
-    return widgets;
+  ReportTarazTafziliShenavarBody getFilterBody() {
+    String fromDate = controllerFromDate.text;
+    String toDate = controllerToDate.text;
+    String accountCd = controllerDocumentCode.text;
+    int fromNumber = controllerFromDocument.text.toInt();
+    int toNumber = controllerToDocument.text.toInt();
+    int fromNumber2 = controllerFromReference.text.toInt();
+    int toNumber2 = controllerToReference.text.toInt();
+    int categoryId = controllerSeparation.text.toInt();
+    int tafziliGroupCode = controllerGroup.text.toInt();
+    int displayColumn = controllerRadioButton.text.toInt();
+
+    bool withEftetahie = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOpeningDocument);
+    bool withEkhtetamieh = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleClosingDocument);
+    bool withTasir = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleCurrencyExchangeDocument);
+    bool withBastanHesabhayeMovaqat = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleTemporaryAccountClosingDocument);
+    bool withFaqatGardeshDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyInCirculation);
+    bool withFaqatMandeDarha = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyLeftovers);
+    bool withFaqatMandeDarhayeBed = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyDebitBalances);
+    bool withFaqatMandeDarhayeBes = getCheckBoxValue(
+        checkBoxList: checkBoxList,
+        title: localization.titleOnlyCreditorBalances);
+
+    ReportTarazTafziliShenavarBody body = ReportTarazTafziliShenavarBody(
+      activeYear: 0,
+      fromDate: fromDate,
+      toDate: toDate,
+      accountCd: accountCd,
+      fromNumber: fromNumber,
+      toNumber: toNumber,
+      fromNumber2: fromNumber2,
+      toNumber2: toNumber2,
+      categoryId: categoryId,
+      withEftetahie: withEftetahie,
+      withEkhtetamieh: withEkhtetamieh,
+      withTasir: withTasir,
+      withSoodZian: false,
+      withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
+      withEntezamiAccounts: false,
+      withFaqatGardeshDarha: withFaqatGardeshDarha,
+      withFaqatMandeDarha: withFaqatMandeDarha,
+      withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
+      withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
+      tafziliGroupCode: tafziliGroupCode,
+      displayColumn: displayColumn,
+    );
+    return body;
+  }
+
+  bool getCheckBoxValue(
+      {required List<FormCheckBox> checkBoxList, required String title}) {
+    final FormCheckBox? formCheckBox =
+        checkBoxList.firstWhereOrNull((element) => element.title == title);
+    if (formCheckBox != null) {
+      return formCheckBox.value;
+    } else {
+      return false;
+    }
   }
 }

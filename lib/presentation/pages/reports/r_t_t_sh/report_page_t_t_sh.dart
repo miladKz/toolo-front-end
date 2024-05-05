@@ -5,6 +5,7 @@ import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t
 import '../../../blocs/report_bloc/report_bloc.dart';
 import '../../../factories/table_view_model_factory.dart';
 import '../../../view_models/table_view_model.dart';
+import '../../../widgets/common/modals/custom_view_with_data_table.dart';
 
 class ReportPageTTSh extends StatelessWidget {
   const ReportPageTTSh({super.key});
@@ -51,7 +52,16 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return Container();
+            return widget.dataTableViewModel == null
+                ? emptyData()
+                : CustomViewWithDataTable(
+              isShowActionButtons: false,
+              isShowSearchBox: false,
+              backgroundColor: const Color(0xffF8F8F8),
+              formWidth: constraints.maxWidth,
+              onTap: (data) {},
+              viewModel: widget.dataTableViewModel!,
+            );
           },
         ));
   }

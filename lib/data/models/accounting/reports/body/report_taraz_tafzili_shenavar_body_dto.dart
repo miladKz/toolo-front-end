@@ -42,7 +42,7 @@ class ReportTarazTafziliShenavarBodyDto extends ReportTarazTafziliShenavarBody {
       "WithEftetahie": withEftetahie,
       "WithEkhtetamieh": withEkhtetamieh,
       "WithTasir": withTasir,
-      "WithSoodZian": withSoodZian,
+      /*"WithSoodZian": withSoodZian,*/
       "WithBastanHesabhayeMovaqat": withBastanHesabhayeMovaqat,
       "WithEntezamiAccounts": withEntezamiAccounts,
       "WithFaqatGardeshDarha": withFaqatGardeshDarha,

@@ -990,7 +990,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
               token: token, body: tarazTafziliShenavarBodyDto);
       if (serverResponse.isSuccess) {
         final Map<String, dynamic> itemsAsMap = serverResponse.data!;
-        print('fetchReportJameTaraz: ${serverResponse.data}');
+        print('fetchReportTTsh: ${serverResponse.data}');
         return ReportTarazTafziliShenavarDto.fromMap(itemsAsMap);
       } else {
         throw serverResponse.message;

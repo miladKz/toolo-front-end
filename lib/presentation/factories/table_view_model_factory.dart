@@ -18,6 +18,7 @@ import 'package:toolo_gostar/main.dart';
 import '../../domain/entities/accounting/reports/report_Taraz_Tafzili_shenavar_data.dart';
 import '../../domain/entities/accounting/reports/report_jame_taraz.dart';
 import '../../domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
+import '../../domain/entities/base/detail_group_root.dart';
 import '../../domain/entities/common/bank.dart';
 import '../../domain/entities/common/card_reader.dart';
 import '../../domain/entities/common/cash_box.dart';
@@ -312,5 +313,15 @@ class DataTableViewModelFactory {
         data.dataList.map((e) => e.getFieldsValue(keys)).toList();
 
     return DataTableViewModel(labels: labels, data: values);
+  }
+
+  static DataTableViewModel createTableViewModelFromDetailGroupRootList(
+      {required List<DetailGroupRoot> detailGroupList}) {
+    final List<String> labels = [
+      localization.code,
+      localization.name,
+    ];
+
+    return DataTableViewModel(labels: labels, data: detailGroupList);
   }
 }

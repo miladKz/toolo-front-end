@@ -6,21 +6,23 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_group_body.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_balance_and_ledgers_report_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_jame_taraz_list_usecases.dart';
+import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_moghayeseyi_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_group_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_shenavar_hesab_list_usecases.dart';
 import 'package:toolo_gostar/domain/usecases/accounting/report/fetch_report_taraz_tafzili_shenavar_list_usecases.dart';
 
 part 'report_event.dart';
-
 part 'report_state.dart';
 
 class ReportBloc extends Bloc<ReportEvent, ReportState>  {
@@ -30,6 +32,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
     on<RepFetchReportTTSh>(_fetchReportTTSh);
     on<RepFetchReportTTShH>(_fetchReportTTShH);
     on<RepFetchReportTTG>(_fetchReportTTG);
+    on<RepFetchReportTM>(_fetchReportTM);
   }
 
   FutureOr<void> _fetchRepostTDP(RepFetchReportTDP event,
@@ -82,5 +85,16 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
     emit(const ReportLoadingOnView(isShow: false));
     await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessTTShH(model: model));
+  }
+
+  FutureOr<void> _fetchReportTM(
+      RepFetchReportTM event, Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
+    FetchReportTarazMoghayeseyiListUseCase useCase =
+        locator<FetchReportTarazMoghayeseyiListUseCase>();
+    ReportTarazMoghayeseyi model = await useCase(body: event.body);
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 10));
+    emit(ReportSuccessTM(model: model));
   }
 }

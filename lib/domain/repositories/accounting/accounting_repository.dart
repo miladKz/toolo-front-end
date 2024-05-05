@@ -6,10 +6,12 @@ import 'package:toolo_gostar/domain/entities/accounting/document/document_master
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_group_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
@@ -133,4 +135,7 @@ abstract class IAccountingRepository {
 
   Future<ReportTarazTafziliShenavarHesab> fetchReportTarazTafziliShenavarHesab(
       ReportTarazTafziliShenavarHesabBody tarazTafziliShenavarHesabBody) ;
+
+  Future<ReportTarazMoghayeseyi> fetchReportTarazMoghayeseyi(
+      ReportTarazMoghayeseyiBody tarazMoghayeseyiBody);
 }

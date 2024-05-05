@@ -66,3 +66,13 @@ class ReportSuccessTTShH extends ReportState {
   @override
   List<Object?> get props => [model];
 }
+
+class ReportSuccessTM extends ReportState {
+  final ReportTarazMoghayeseyi model;
+
+  const ReportSuccessTM({required this.model});
+
+
+  @override
+  List<Object?> get props => [model];
+}

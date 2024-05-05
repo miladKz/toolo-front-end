@@ -24,12 +24,15 @@ import 'package:toolo_gostar/data/models/accounting/document/params/document_mas
 import 'package:toolo_gostar/data/models/accounting/document/params/document_master_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_moghayeseyi_body_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_moghayeseyi_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_group_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_jame_taraz_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_moghayeseyi_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_group_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar__hesab_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_hesab_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
@@ -41,10 +44,12 @@ import 'package:toolo_gostar/domain/entities/accounting/document/document_master
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_group_body.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
@@ -1044,6 +1049,28 @@ class AccountingRepositoryImpl implements IAccountingRepository {
     }
   }
 
+  @override
+  Future<ReportTarazMoghayeseyi> fetchReportTarazMoghayeseyi(
+      ReportTarazMoghayeseyiBody tarazMoghayeseyiBody) async {
+    try {
+      ReportTarazMoghayeseyiBodyDto tarazMoghayeseyiBodyDto =
+          getReportTarazMoghayeseyiBodyDto(tarazMoghayeseyiBody);
+      String token = _getToken();
+      ServerResponseDto serverResponse =
+          await remoteDataSource.fetchReportTarazMoghayeseyi(
+              token: token, body: tarazMoghayeseyiBodyDto);
+      if (serverResponse.isSuccess) {
+        final Map<String, dynamic> itemsAsMap = serverResponse.data!;
+        print('fetchReportJameTaraz: ${serverResponse.data}');
+        return ReportTarazMoghayeseyiDto.fromMap(itemsAsMap);
+      } else {
+        throw serverResponse.message;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   ReportJameTarazBodyDto getReportJameTarazBodyDto(
       ReportJameTarazBody reportJameTarazBody) {
     return ReportJameTarazBodyDto(
@@ -1127,6 +1154,30 @@ class AccountingRepositoryImpl implements IAccountingRepository {
   ReportTarazTafziliShenavarHesabBodyDto getReportTarazTafziliShenavarHesabBodyDto(
       ReportTarazTafziliShenavarHesabBody body) {
     return ReportTarazTafziliShenavarHesabBodyDto(
+        activeYear: body.activeYear,
+        fromDate: body.fromDate,
+        toDate: body.toDate,
+        fromAccountcd: body.fromAccountcd,
+        fromNumber: body.fromNumber,
+        toNumber: body.toNumber,
+        fromNumber2: body.fromNumber2,
+        toNumber2: body.toNumber2,
+        categoryId: body.categoryId,
+        withEftetahie: body.withEftetahie,
+        withEkhtetamieh: body.withEkhtetamieh,
+        withTasir: body.withTasir,
+        withBastanHesabhayeMovaqat: body.withBastanHesabhayeMovaqat,
+        withFaqatGardeshDarha: body.withFaqatGardeshDarha,
+        withFaqatMandeDarha: body.withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: body.withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
+        displayColumn: body.displayColumn,
+        tafziliGroupCode: body.tafziliGroupCode);
+  }
+
+  ReportTarazMoghayeseyiBodyDto getReportTarazMoghayeseyiBodyDto(
+      ReportTarazMoghayeseyiBody body) {
+    return ReportTarazMoghayeseyiBodyDto(
         activeYear: body.activeYear,
         fromDate: body.fromDate,
         toDate: body.toDate,

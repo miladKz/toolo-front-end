@@ -20,18 +20,18 @@ class GetTafziliFromAccountWidget extends StatelessWidget{
   final TextEditingController controllerDocumentCode ;
   final TextEditingController controllerDocCodDesc ;
 
+  final List<TextEditingController> controllersTafzili;
   final bool withTafzili;
 
-  const GetTafziliFromAccountWidget(
+  GetTafziliFromAccountWidget(
       {super.key,
       required this.controllerDocumentCode,
       required this.controllerDocCodDesc,
-       this.withTafzili=false});
+      this.controllersTafzili = const [],
+      this.withTafzili=false});
 
   @override
   Widget build(BuildContext context) {
-    final List<TextEditingController> controllersTafzili =
-    List.empty(growable: true);
 
     List<TafziliDataBody> tafziliDataBodyList = List.empty(growable: true);
     return LayoutBuilder(builder: (context, constraints) {
@@ -232,11 +232,11 @@ class _TafziliDetailRowState extends State<TafziliDetailRow> {
         TafziliDropBox(
           itemWidth: itemWidth,
           childItems: item.tafziliList,
-          controller: TextEditingController(text: ''),
+          controller: controller,
           onSelectItem: (item) {
             debugPrint(
                 'Tafzili onSelectItem: name= ${item.name} and id= ${item.id}');
-            controller.value = TextEditingValue(text: '${item.id}');
+            controller.text = '${item.id}';
           },
         ),
         /*Row(

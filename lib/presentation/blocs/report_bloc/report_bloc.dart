@@ -43,10 +43,12 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
 
   FutureOr<void> _fetchReportJT(
       RepFetchReportJT event, Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
     FetchReportJameTarazListUseCase useCase =
         locator<FetchReportJameTarazListUseCase>();
     ReportJameTaraz model = await useCase(body: event.body);
-
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessJT(model: model));
   }
 
@@ -55,7 +57,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
     FetchReportTarazTafziliShenavarListUseCase useCase =
         locator<FetchReportTarazTafziliShenavarListUseCase>();
     ReportTarazTafziliShenavar model = await useCase(body: event.body);
-
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessTTSh(model: model));
   }
 
@@ -66,16 +69,18 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
         locator<FetchReportTarazTafziliGroupListUseCase>();
     ReportTarazTafziliGroup model = await useCase(body: event.body);
     emit(const ReportLoadingOnView(isShow: false));
-    await Future.delayed(const Duration(milliseconds: 30));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessTTG(model: model));
   }
 
   FutureOr<void> _fetchReportTTShH(
       RepFetchReportTTShH event, Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
     FetchReportTarazTafziliShenavarHesabListUseCase useCase =
         locator<FetchReportTarazTafziliShenavarHesabListUseCase>();
     ReportTarazTafziliShenavarHesab model = await useCase(body: event.body);
-
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessTTShH(model: model));
   }
 }

@@ -507,4 +507,99 @@ class Filters extends StatelessWidget {
 
     return widgets;
   }
+
+  ReportJameTarazBody getFilterBody()
+  {
+    int accountLevel = controllerTarazType.text.toInt();
+    String fromDate = controllerFromDate.text;
+    String toDate = controllerToDate.text;
+    String accountCd = controllerDocumentCode.text;
+    int fromNumber = controllerFromDocument.text.toInt();
+    int toNumber = controllerToDocument.text.toInt();
+    int fromNumber2 = controllerFromReference.text.toInt();
+    int toNumber2 = controllerToReference.text.toInt();
+    int categoryId = controllerSeparation.text.toInt();
+
+    bool withEftetahie = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOpeningDocument);
+    bool withEkhtetamieh = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleClosingDocument);
+    bool withTasir = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleCurrencyExchangeDocument);
+    bool withBastanHesabhayeMovaqat = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleTemporaryAccountClosingDocument);
+    bool withEntezamiAccounts = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleHesabEntezami);
+    bool withFaqatGardeshDarha = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyInCirculation);
+    bool withFaqatMandeDarha = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyLeftovers);
+    bool withFaqatMandeDarhayeBed = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyDebitBalances);
+    bool withFaqatMandeDarhayeBes = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOnlyCreditorBalances);
+    bool withSoodZian = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.profitAndLoss);
+    bool showMandeEftetahie = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.openingRemaining);
+    bool showGardeshAvalDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.firstPeriodRemaining);
+    bool showMandeAvalDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.firstPeriodCirculation);
+    bool showGardeshTeyDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.duringPeriodCirculation);
+    bool showMandeTeyDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.duringPeriodRemaining);
+    bool showGardeshPayanDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.endingPeriodCirculation);
+    bool showMandePayanDore = getCheckBoxValue(
+        checkBoxList: showTypeCheckBoxList,
+        title: localization.endingPeriodRemaining);
+
+    ReportJameTarazBody body = ReportJameTarazBody(
+        activeYear: 0,
+        fromDate: fromDate,
+        toDate: toDate,
+        accountCd: accountCd,
+        fromNumber: fromNumber,
+        toNumber: toNumber,
+        fromNumber2: fromNumber2,
+        toNumber2: toNumber2,
+        categoryId: categoryId,
+        accountLevel: accountLevel,
+        withEftetahie: withEftetahie,
+        withEkhtetamieh: withEkhtetamieh,
+        withTasir: withTasir,
+        withSoodZian: withSoodZian,
+        withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
+        withEntezamiAccounts: withEntezamiAccounts,
+        withFaqatGardeshDarha: withFaqatGardeshDarha,
+        withFaqatMandeDarha: withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
+        showMandeEftetahie: showMandeEftetahie,
+        showGardeshAvalDore: showGardeshAvalDore,
+        showMandeAvalDore: showMandeAvalDore,
+        showGardeshTeyDore: showGardeshTeyDore,
+        showMandeTeyDore: showMandeTeyDore,
+        showGardeshPayanDore: showGardeshPayanDore,
+        showMandePayanDore: showMandePayanDore);
+    return body;
+  }
 }

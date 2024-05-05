@@ -1,4 +1,4 @@
-import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shebavar_hesab_body.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_shenavar_hesab.dart';
 
 import '../../../repositories/accounting/accounting_repository.dart';

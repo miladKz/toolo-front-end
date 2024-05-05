@@ -43,6 +43,31 @@ class FilterTDPView extends StatelessWidget {
   }
 }
 
+
+
+
+
+
+TextEditingController controllerFromDocument =
+TextEditingController(text: '1');
+TextEditingController controllerToDocument =
+TextEditingController(text: '100');
+TextEditingController controllerFromDate =
+TextEditingController(text: '1403/02/01');
+TextEditingController controllerToDate =
+TextEditingController(text: '1403/02/30');
+TextEditingController controllerDocumentCode =
+TextEditingController(text: '');
+TextEditingController controllerDocCodDesc = TextEditingController(text: '');
+TextEditingController controllerFromReference =
+TextEditingController(text: '1');
+TextEditingController controllerToReference =
+TextEditingController(text: '100');
+TextEditingController controllerSeparation = TextEditingController(text: '');
+TextEditingController controllerGroup = TextEditingController(text: '');
+TextEditingController controllerTarazType = TextEditingController(text: '');
+TextEditingController controllerDisplayColumnNumber =
+TextEditingController(text: '2');
 class Filters extends StatelessWidget {
   Filters({super.key, required this.height});
 
@@ -57,26 +82,6 @@ class Filters extends StatelessWidget {
   TextStyle get getFilterHintStyle => const TextStyle(
       color: Color(0xffb3b3b4), fontSize: 10, fontWeight: FontWeight.w400);
 
-  TextEditingController controllerFromDocument =
-      TextEditingController(text: '1');
-  TextEditingController controllerToDocument =
-      TextEditingController(text: '100');
-  TextEditingController controllerFromDate =
-      TextEditingController(text: '1403/02/01');
-  TextEditingController controllerToDate =
-      TextEditingController(text: '1403/02/30');
-  TextEditingController controllerDocumentCode =
-      TextEditingController(text: '');
-  TextEditingController controllerDocCodDesc = TextEditingController(text: '');
-  TextEditingController controllerFromReference =
-      TextEditingController(text: '1');
-  TextEditingController controllerToReference =
-      TextEditingController(text: '100');
-  TextEditingController controllerSeparation = TextEditingController(text: '');
-  TextEditingController controllerGroup = TextEditingController(text: '');
-  TextEditingController controllerTarazType = TextEditingController(text: '');
-  TextEditingController controllerDisplayColumnNumber =
-      TextEditingController(text: '2');
   late List<FormCheckBox> checkBoxList;
 
   @override

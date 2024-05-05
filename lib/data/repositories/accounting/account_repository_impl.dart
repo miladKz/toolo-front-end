@@ -1109,7 +1109,6 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         activeYear: body.activeYear,
         fromDate: body.fromDate,
         toDate: body.toDate,
-        accountCd: body.accountCd,
         fromNumber: body.fromNumber,
         toNumber: body.toNumber,
         fromNumber2: body.fromNumber2,

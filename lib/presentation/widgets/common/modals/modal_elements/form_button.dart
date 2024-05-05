@@ -26,7 +26,7 @@ class _FormButtonState extends State<FormButton> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.itemWidth,
-      child: TextButton(
+      child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: widget.background,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

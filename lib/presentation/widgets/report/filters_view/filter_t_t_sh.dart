@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
-import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
-import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
@@ -452,7 +449,7 @@ class Filters extends StatelessWidget {
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
-      localization.titleOnlyDebitBalances,
+      localization.titleOnlyCreditorBalances,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;

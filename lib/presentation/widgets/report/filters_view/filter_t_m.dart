@@ -323,7 +323,7 @@ class Filters extends StatelessWidget {
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
-      localization.titleOnlyDebitBalances,
+      localization.titleOnlyCreditorBalances,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;

@@ -3,7 +3,9 @@ import 'package:toolo_gostar/domain/entities/accounting/document/document_master
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_group_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz_data.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
 import 'package:toolo_gostar/domain/entities/base/available_bank_.dart';
 import 'package:toolo_gostar/domain/entities/base/standard_detail.dart';
 import 'package:toolo_gostar/domain/entities/common/bank_in_selective_modal.dart';
@@ -264,6 +266,27 @@ class DataTableViewModelFactory {
 
     values =
         reportTarazTafziliShenavar.dataList.map((e) => e.getFieldsValue(keys)).toList();
+
+    return DataTableViewModel(labels: labels, data: values);
+  }
+
+  static DataTableViewModel? createTableViewModelFromReportTGTSh({required ReportTarazTafziliGroup reportTarazTafziliGroup}) {
+    List<ReportTarazTafziliGroupData> values = List.empty(growable: true);
+    final List<String> keys = List.empty(growable: true);
+    final List<String> labels = reportTarazTafziliGroup.reportColumnTitle.expand((e) {
+      if (e.children.isEmpty) {
+        keys.add(e.fieldName);
+        return [e.title];
+      } else {
+        return e.children.map((e) {
+          keys.add(e.fieldName);
+          return e.title;
+        });
+      }
+    }).toList();
+
+    values =
+        reportTarazTafziliGroup.dataList.map((e) => e.getFieldsValue(keys)).toList();
 
     return DataTableViewModel(labels: labels, data: values);
   }

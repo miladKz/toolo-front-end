@@ -5,7 +5,6 @@ class ReportTarazTafziliGroupBodyDto extends ReportTarazTafziliGroupBody {
       {required super.activeYear,
       required super.fromDate,
       required super.toDate,
-      required super.accountCd,
       required super.fromNumber,
       required super.toNumber,
       required super.fromNumber2,
@@ -23,10 +22,9 @@ class ReportTarazTafziliGroupBodyDto extends ReportTarazTafziliGroupBody {
 
   Map<String, dynamic> toMap() {
     return {
-      "ActiveYear": activeYear,
+      /*"ActiveYear": activeYear,*/
       "FromDate": fromDate,
       "ToDate": toDate,
-      "AccountCd": accountCd,
       "FromNumber": fromNumber,
       "ToNumber": toNumber,
       "FromNumber2": fromNumber2,

@@ -702,6 +702,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
       {required String token, required ReportTarazTafziliGroupBodyDto body}) async {
     String apiAddress = "/api/acc/rep/taraz-tafzili-group";
     try {
+      log( 'body.toMap()====> ${body.toMap()}');
       Response<dynamic> response = await httpClient.post(
         apiAddress,
         data: body.toMap(),

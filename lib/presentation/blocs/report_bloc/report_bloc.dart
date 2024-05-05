@@ -61,10 +61,12 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
 
   FutureOr<void> _fetchReportTTG(
       RepFetchReportTTG event, Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
     FetchReportTarazTafziliGroupListUseCase useCase =
         locator<FetchReportTarazTafziliGroupListUseCase>();
     ReportTarazTafziliGroup model = await useCase(body: event.body);
-
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 30));
     emit(ReportSuccessTTG(model: model));
   }
 

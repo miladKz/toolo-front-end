@@ -2,7 +2,6 @@ class ReportTarazTafziliGroupBody {
   final int activeYear;
   final String fromDate;
   final String toDate;
-  final String accountCd;
   final int fromNumber;
   final int toNumber;
   final int fromNumber2;
@@ -22,7 +21,6 @@ class ReportTarazTafziliGroupBody {
       {required this.activeYear,
       required this.fromDate,
       required this.toDate,
-      required this.accountCd,
       required this.fromNumber,
       required this.toNumber,
       required this.fromNumber2,

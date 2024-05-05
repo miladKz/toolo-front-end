@@ -359,6 +359,7 @@ class Filters extends StatelessWidget {
       required TextEditingController controller,
       required String hint}) {
     List<CategoryModel> items = baseDataModel.categoryList;
+    controllerSeparation.text = '${items[0].id}';
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -495,7 +496,7 @@ class Filters extends StatelessWidget {
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
-      localization.titleOnlyDebitBalances,
+      localization.titleOnlyCreditorBalances,
     ];
     double maxWidth = width;
     double itemWidth = maxWidth / 2;

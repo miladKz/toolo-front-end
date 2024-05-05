@@ -322,6 +322,7 @@ class DataTableViewModelFactory {
     final List<String> labels = [
       localization.code,
       localization.name,
+      localization.type
     ];
 
     return DataTableViewModel(labels: labels, data: detailGroupList);

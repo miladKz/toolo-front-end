@@ -6,7 +6,9 @@ class DetailGroupRootDto extends DetailGroupRoot {
       {required super.name,
       required super.id,
       required super.code,
-      required super.type});
+      required super.type,
+      required super.typeName,
+      });
 
   factory DetailGroupRootDto.fromMap(Map<String, dynamic> map) {
     return DetailGroupRootDto(
@@ -14,6 +16,7 @@ class DetailGroupRootDto extends DetailGroupRoot {
       name: map.findAsString("Name"),
       code: map.findAsInt("Code"),
       type: map.findAsInt("Type"),
+      typeName: map.findAsString("TypeName"),
     );
   }
 }

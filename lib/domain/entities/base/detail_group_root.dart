@@ -6,15 +6,18 @@ class DetailGroupRoot extends IDropDownItem implements ITableRowData {
   final int id;
   final int code;
   final int type;
+  final String typeName;
 
   DetailGroupRoot(
       {required super.name,
       required this.id,
       required this.code,
-      required this.type});
+      required this.type,
+      required this.typeName,
+      });
 
   @override
-  List<Object?> get props => [code, name];
+  List<Object?> get props => [code, name, typeName];
 
   @override
   set id(int id) {

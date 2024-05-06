@@ -376,7 +376,6 @@ class Filters extends StatelessWidget {
       hint: hint,
       onChanged: (value) {
         controllerSeparation.text = '${value?.id}';
-        //controller.value=TextEditingValue(text: value.toString());
       },
     );
   }

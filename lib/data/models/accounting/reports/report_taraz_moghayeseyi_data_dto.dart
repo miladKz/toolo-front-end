@@ -5,33 +5,29 @@ class ReportTarazMoghayeseyiDataDto extends ReportTarazMoghayeseyiData {
   ReportTarazMoghayeseyiDataDto(
       {required super.accountName,
       required super.accountCd,
+      required super.darsadRoshd,
       required super.mablaghGardeshBed,
+      required super.mablaghGardeshBedOld,
       required super.mablaghGardeshBes,
-      required super.mablaghGardeshPayanBed,
-      required super.mablaghGardeshPayanBes,
-      required super.mablaghMandeEbtedaBed,
-      required super.mablaghMandeEbtedaBes,
-      required super.mablaghMandePayanBed,
-      required super.mablaghMandePayanBes,
-      required super.tafziliCode,
-      required super.tafziliGroupCode,
-      required super.tafziliName});
+      required super.mablaghGardeshBesOld,
+      required super.mablaghMandeGardeshBed,
+      required super.mablaghMandeGardeshBedOld,
+      required super.mablaghMandeGardeshBes,
+      required super.mablaghMandeGardeshBesOld});
 
   factory ReportTarazMoghayeseyiDataDto.fromMap(Map<String, dynamic> map) {
     return ReportTarazMoghayeseyiDataDto(
       accountName: map.findAsString("AccountName"),
       accountCd: map.findAsString("Accountcd"),
+      darsadRoshd: map.findAsInt("DarsadRoshd"),
       mablaghGardeshBed: map.findAsDouble("MablaghGardeshBed"),
+      mablaghGardeshBedOld: map.findAsDouble("MablaghGardeshBedOld"),
       mablaghGardeshBes: map.findAsDouble("MablaghGardeshBes"),
-      mablaghGardeshPayanBed: map.findAsDouble("MablaghGardeshPayanBed"),
-      mablaghGardeshPayanBes: map.findAsDouble("MablaghGardeshPayanBes"),
-      mablaghMandeEbtedaBed: map.findAsDouble("MablaghMandeEbtedaBed"),
-      mablaghMandeEbtedaBes: map.findAsDouble("MablaghMandeEbtedaBes"),
-      mablaghMandePayanBed: map.findAsDouble("MablaghMandePayanBed"),
-      mablaghMandePayanBes: map.findAsDouble("MablaghMandePayanBes"),
-      tafziliCode: map.findAsString("TafziliCode"),
-      tafziliGroupCode: map.findAsInt("TafziliGroupCode"),
-      tafziliName: map.findAsString("TafziliName"),
+      mablaghGardeshBesOld: map.findAsDouble("MablaghGardeshBesOld"),
+      mablaghMandeGardeshBed: map.findAsDouble("MablaghMandeGardeshBed"),
+      mablaghMandeGardeshBedOld: map.findAsDouble("MablaghMandeGardeshBedOld"),
+      mablaghMandeGardeshBes: map.findAsDouble("MablaghMandeGardeshBes"),
+      mablaghMandeGardeshBesOld: map.findAsDouble("MablaghMandeGardeshBesOld"),
     );
   }
 }

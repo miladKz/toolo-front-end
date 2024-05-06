@@ -12,7 +12,10 @@ import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_j_t/screen_report_jame_tarazha.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_t_m/screen_report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/presentation/pages/reports/r_t_t_sh/screen_report_taraz_tafzili_shenavar.dart';
+import 'package:toolo_gostar/presentation/pages/reports/r_t_t_sh_h/screen_report_taraz_tafzili_shenavar_hesab.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
 import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
@@ -149,7 +152,7 @@ Widget screenReport() {
         return locator<MainBloc>();
       },
     ),
-  ], child: const ScreenReportTarazTafziliShenavar());
+  ], child: const ScreenReportTarazMoghayeseyi());
 }
 
 bool get isDialogOpen {

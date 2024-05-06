@@ -8,6 +8,7 @@ import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/constants/color_constants.dart';
 import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_builder.dart';
+import 'package:toolo_gostar/presentation/widgets/main/main_base_body.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../blocs/report_bloc/report_bloc.dart';
@@ -109,10 +110,9 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
       debugPrint('Action onItemSelect. item= ${item.toString()}');
       widget.onTap();
       actionsSubTitleSelected == widget.item.id;
-
       item.endPoint.isEmpty
-          ? callApiByEndpoint(item.description)
-          : callApiByEndpoint(item.endPoint);
+          ? callApiByEndpoint(item.description,context:context)
+          : callApiByEndpoint(item.endPoint,context:context);
     });
   }
 
@@ -127,7 +127,7 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
   }
 }
 
-void callApiByEndpoint(String endPoint) {
+void callApiByEndpoint(String endPoint, {required BuildContext context}) {
   debugPrint('callApiByEndpoint endPoint=$endPoint');
   if (endPoint.contains('/api/acc/accounts')) {
     locator.get<MainBloc>().add(MainAccountList());
@@ -156,6 +156,14 @@ void callApiByEndpoint(String endPoint) {
     navigateToReportScreen(const ScreenReportTarazTafziliShenavarHesab());
   }else if (endPoint.contains('گزارش ترازنامه مقایسه ای')) {
     navigateToReportScreen(const ScreenReportTarazMoghayeseyi());
+  }else if (endPoint.contains('سند افتتاحیه جدید')) {
+    openNewDocumentDialog(context:context);
+  }else if (endPoint.contains('سند استقرار جدید')) {
+    openNewDocumentDialog(context:context);
+  }else if (endPoint.contains('سند اختتامیه جدید')) {
+    openNewDocumentDialog(context:context);
+  }else if (endPoint.contains('سند حسابداری جدید')) {
+    openNewDocumentDialog(context:context);
   } else if (endPoint.contains('شناور')) {
     locator.get<MainBloc>().add(MainAnotherList(
         endpoint: "", apiEnum: ApiEnum.managementFloatingDetails));
@@ -171,6 +179,15 @@ void callApiByEndpoint(String endPoint) {
         .get<MainBloc>()
         .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.unknown));
   }
+}
+
+void openNewDocumentDialog( {required BuildContext context}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ShowCreateOrUpdateDocumentMasterModal(
+            maxWidth: 700, isCreate: true);
+      });
 }
 
 void navigateToReportScreen(Widget reportScreen) {

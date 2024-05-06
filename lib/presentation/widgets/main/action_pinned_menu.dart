@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:toolo_gostar/data/enum/api_enum.dart';
-import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_tree_view_item.dart';
 import 'package:toolo_gostar/presentation/widgets/main/workspace_menu_item.dart';
 
@@ -89,7 +87,7 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
                       isSelected: widget.selectedItem == action,
                       title: action.description,
                       onTap: () {
-                        setSelectedItem(action);
+                        setSelectedItem(action,context:context);
                       },
                     );
                   }).toList(),
@@ -111,10 +109,10 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
     }
   }
 
-  void setSelectedItem(AccountingAction item) {
+  void setSelectedItem(AccountingAction item, {required BuildContext context}) {
     return setState(() {
       widget.selectedItem = item;
-      item.endPoint.isEmpty?callApiByEndpoint(item.description): callApiByEndpoint(item.endPoint);
+      item.endPoint.isEmpty?callApiByEndpoint(item.description,context:context): callApiByEndpoint(item.endPoint,context:context);
     });
   }
 

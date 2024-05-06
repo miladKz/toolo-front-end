@@ -34,6 +34,9 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'viewModel in data table size======>>>>props.length= ${widget.viewModel.data[0].props.length} and lable.length= ${widget.viewModel.labels.length}');
+
     final List<DataColumn> columns = widget.viewModel.labels
         .map((label) => DataColumn2(
             label: Text(label, overflow: TextOverflow.ellipsis, maxLines: 1),

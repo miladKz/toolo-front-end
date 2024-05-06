@@ -734,7 +734,7 @@ class AccountingRemoteDataSource with HttpResponseValidator {
 
   Future<ServerResponseDto> fetchReportTarazMoghayeseyi(
       {required String token, required ReportTarazMoghayeseyiBodyDto body}) async {
-    String apiAddress = "/api/acc/rep/taraz-moghayese";
+    String apiAddress = "/api/acc/rep/taraz-moqayesei";
     try {
       log( 'body.toMap()====> ${body.toMap()}');
       Response<dynamic> response = await httpClient.post(

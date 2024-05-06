@@ -67,14 +67,13 @@ class _LeftReportFilterViewState extends State<LeftReportFilterView> {
         ));
   }
 
-  void listenToApi() {
+  void listenToApi() async {
     final state = context.watch<ReportBloc>().state;
     if (state is ReportSuccessTM) {
-      setState(() {
-        widget.dataTableViewModel =
-            DataTableViewModelFactory.createTableViewModelFromReportTM(
-                data: state.model);
-      });
+      widget.dataTableViewModel =
+          await DataTableViewModelFactory.createTableViewModelFromReportTM(
+              data: state.model);
+      setState(() {});
     }
   }
 }

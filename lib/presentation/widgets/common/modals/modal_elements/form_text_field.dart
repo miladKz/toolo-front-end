@@ -43,27 +43,26 @@ class FormTextField extends StatelessWidget {
         width: widgetWidth,
         child: TextFormField(
           keyboardType: inputType,
-          maxLines: maxLines,
           inputFormatters: [inputFormatter],
           enabled: enable,
           controller: controller,
           onChanged: (value) {},
           style: const TextStyle(fontSize: 12, color: Color(0xFF989B9F)),
-          validator: (value) {
+          /* validator: (value) {
             if (value == "") {
               return errorText;
             }
-          },
+            return null;
+          },*/
           onEditingComplete: onEditingComplete,
           decoration: InputDecoration(
-              hintText: textHint,
-              suffixIcon: suffixIcon,
-              prefixIcon: prefixIcon,
-              hintStyle: const TextStyle(
+              labelText: textHint,
+              labelStyle: const TextStyle(
                   color: Color(0xFF989B9F),
                   fontSize: 12,
                   fontWeight: FontWeight.w400),
-              contentPadding: const EdgeInsets.fromLTRB(5, 12, 12, 5)),
+              contentPadding: const EdgeInsets.fromLTRB(5, 12, 12, 5),
+              floatingLabelBehavior: FloatingLabelBehavior.never),
         ));
   }
 }

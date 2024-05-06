@@ -4,10 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/base/category.dart';
-import 'package:toolo_gostar/domain/entities/common/abstracts/drop_down_item_abs.dart';
-import 'package:toolo_gostar/domain/entities/common/drop_down_item.dart';
 import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
@@ -48,21 +45,17 @@ class FilterTMView extends StatelessWidget {
 
 
 
-TextEditingController controllerFromDocument = TextEditingController(text: '1');
-TextEditingController controllerToDocument = TextEditingController(text: '100');
 TextEditingController controllerFromDate =
 TextEditingController(text: '1403/02/01');
 TextEditingController controllerToDate =
 TextEditingController(text: '1403/02/30');
-TextEditingController controllerFromReference =
-TextEditingController(text: '1');
-TextEditingController controllerToReference =
-TextEditingController(text: '100');
 TextEditingController controllerDocumentCode = TextEditingController();
 TextEditingController controllerDocCodDesc = TextEditingController();
 TextEditingController controllerSeparation = TextEditingController(text: '');
 TextEditingController controllerPeriodicRadioButton =
-TextEditingController(text: '2');
+    TextEditingController(text: '2');
+TextEditingController controllerTarazType = TextEditingController(text: '');
+
 class Filters extends StatelessWidget {
   Filters({super.key, required this.height});
 
@@ -107,6 +100,8 @@ class Filters extends StatelessWidget {
               height: 6,
             ),
             column1(width: width),
+            verticalGapDivider,
+            column2(width: width),
             verticalGapDivider,
             linearGap,
             verticalGapDivider,
@@ -248,6 +243,7 @@ class Filters extends StatelessWidget {
       required TextEditingController controller,
       required String hint}) {
     List<CategoryModel> items = baseDataModel.categoryList;
+    controllerSeparation.text = '${items[0].id}';
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -255,7 +251,7 @@ class Filters extends StatelessWidget {
       items: items,
       hint: hint,
       onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
+        controllerSeparation.text = '${value?.id}';
       },
     );
   }
@@ -265,6 +261,31 @@ class Filters extends StatelessWidget {
 
 
   Widget column1({required double width}) {
+    final List<String> radioButtonTitle = [
+      localization.balanceGroup,
+      localization.balanceAll,
+      localization.balanceCertain,
+      localization.balanceTafziliSabet1,
+      localization.balanceTafziliSabet2,
+    ];
+    return SizedBox(
+      width: width,
+      child: Column(
+        children: [
+          linearTitle(title: localization.balanceType),
+          verticalGapDivider,
+          CustomGridRadioButtonList(
+              width: width,
+              height: height,
+              radioButtonTitle: radioButtonTitle,
+              values: const [0, 1, 2, 3, 4],
+              controller: controllerTarazType),
+        ],
+      ),
+    );
+  }
+
+  Widget column2({required double width}) {
     final List<String> radioButtonTitle = [
       localization.similarPeriodInTheCurrentPeriod,
       localization.theSamePeriodInThePreviousYear,
@@ -279,13 +300,12 @@ class Filters extends StatelessWidget {
               width: width,
               height: height,
               radioButtonTitle: radioButtonTitle,
-              values: const [0,1],
+              values: const [0, 1],
               controller: controllerPeriodicRadioButton),
         ],
       ),
     );
   }
-
 
   Row linearTitle({required String title}) {
     return Row(
@@ -318,7 +338,7 @@ class Filters extends StatelessWidget {
       localization.titleClosingDocument,
       localization.titleCurrencyExchangeDocument,
       localization.titleTemporaryAccountClosingDocument,
-      localization.titleAutomaticSizeAdjustment,
+      localization.titleHesabEntezami,
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,
@@ -354,13 +374,10 @@ class Filters extends StatelessWidget {
   ReportTarazMoghayeseyiBody getFilterBody() {
     String fromDate = controllerFromDate.text;
     String toDate = controllerToDate.text;
+    int accountLevel = controllerTarazType.text.toInt();
     String accountCd = controllerDocumentCode.text;
-    int fromNumber = controllerFromDocument.text.toInt();
-    int toNumber = controllerToDocument.text.toInt();
-    int fromNumber2 = controllerFromReference.text.toInt();
-    int toNumber2 = controllerToReference.text.toInt();
     int categoryId = controllerSeparation.text.toInt();
-    int displayColumn = controllerPeriodicRadioButton.text.toInt();
+    int byOldYear = controllerPeriodicRadioButton.text.toInt();
 
     bool withEftetahie = getCheckBoxValue(
         checkBoxList: additionalCheckBoxList,
@@ -386,15 +403,13 @@ class Filters extends StatelessWidget {
     bool withFaqatMandeDarhayeBes = getCheckBoxValue(
         checkBoxList: additionalCheckBoxList,
         title: localization.titleOnlyCreditorBalances);
-
+    bool withEntezamiAccounts = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleHesabEntezami);
     return ReportTarazMoghayeseyiBody(
         activeYear: 0,
         fromDate: fromDate,
         toDate: toDate,
-        fromNumber: fromNumber,
-        toNumber: toNumber,
-        fromNumber2: fromNumber2,
-        toNumber2: toNumber2,
         categoryId: categoryId,
         withEftetahie: withEftetahie,
         withEkhtetamieh: withEkhtetamieh,
@@ -404,8 +419,11 @@ class Filters extends StatelessWidget {
         withFaqatMandeDarha: withFaqatMandeDarha,
         withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
         withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
-        displayColumn: displayColumn,
-        fromAccountcd: accountCd, tafziliGroupCode: 0,);
+      accountcd: accountCd,
+      accountLevel: accountLevel,
+      byOldYear: byOldYear,
+      withEntezamiAccounts: withEntezamiAccounts,
+    );
   }
 
   bool getCheckBoxValue(

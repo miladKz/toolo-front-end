@@ -417,7 +417,6 @@ class Filters extends StatelessWidget {
       localization.titleClosingDocument,
       localization.titleCurrencyExchangeDocument,
       localization.titleTemporaryAccountClosingDocument,
-      localization.titleAutomaticSizeAdjustment,
       localization.titleOnlyInCirculation,
       localization.titleOnlyLeftovers,
       localization.titleOnlyDebitBalances,

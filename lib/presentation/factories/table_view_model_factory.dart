@@ -6,6 +6,7 @@ import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledg
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_group_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_shenavar_hesab_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_moghayeseyi_data.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_column_title.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_jame_taraz_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_moghayeseyi.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_taraz_tafzili_group.dart';
@@ -328,11 +329,12 @@ class DataTableViewModelFactory {
     return DataTableViewModel(labels: labels, data: detailGroupList);
   }
 
-  static createTableViewModelFromReportTM({required ReportTarazMoghayeseyi data}) {
-
+  static Future<DataTableViewModel> createTableViewModelFromReportTM(
+      {required ReportTarazMoghayeseyi data}) async {
     List<ReportTarazMoghayeseyiData> values = List.empty(growable: true);
     final List<String> keys = List.empty(growable: true);
-    final List<String> labels = data.reportColumnTitle.expand((e) {
+    final List<String> labels = List.empty(growable: true);
+    /* final List<String> labels = data.reportColumnTitle.expand((e) {
       if (e.children.isEmpty) {
         keys.add(e.fieldName);
         return [e.title];
@@ -342,11 +344,31 @@ class DataTableViewModelFactory {
           return e.title;
         });
       }
-    }).toList();
+    }).toList();*/
+
+    await getFieldNames(
+        titles: data.reportColumnTitle, labelNames: labels, fieldNames: keys);
 
     values =
         data.dataList.map((e) => e.getFieldsValue(keys)).toList();
 
     return DataTableViewModel(labels: labels, data: values);
+  }
+
+  static Future<void> getFieldNames(
+      {required List<ReportColumnTitle> titles,
+      required List<String> fieldNames,
+      required List<String> labelNames}) async {
+    for (var title in titles) {
+      if (title.children.isNotEmpty) {
+        await getFieldNames(
+            titles: title.children,
+            fieldNames: fieldNames,
+            labelNames: labelNames);
+      } else {
+        fieldNames.add(title.fieldName);
+        labelNames.add(title.title);
+      }
+    }
   }
 }

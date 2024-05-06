@@ -6,13 +6,10 @@ class ReportTarazMoghayeseyiBodyDto extends ReportTarazMoghayeseyiBody {
       {required super.activeYear,
       required super.fromDate,
       required super.toDate,
-      required super.fromAccountcd,
-      required super.fromNumber,
-      required super.toNumber,
-      required super.fromNumber2,
-      required super.toNumber2,
+      required super.accountcd,
       required super.categoryId,
-      required super.displayColumn,
+      required super.accountLevel,
+      required super.byOldYear,
       required super.withEftetahie,
       required super.withEkhtetamieh,
       required super.withTasir,
@@ -21,21 +18,18 @@ class ReportTarazMoghayeseyiBodyDto extends ReportTarazMoghayeseyiBody {
       required super.withFaqatMandeDarha,
       required super.withFaqatMandeDarhayeBed,
       required super.withFaqatMandeDarhayeBes,
-      required super.tafziliGroupCode});
+      required super.withEntezamiAccounts});
 
   Map<String, dynamic> toMap() {
     return {
       /*"ActiveYear": activeYear,*/
       "FromDate": fromDate,
       "ToDate": toDate,
-      "FromNumber": fromNumber,
-      "ToNumber": toNumber,
-      "FromAccountcd": fromAccountcd,
-      "FromNumber2": fromNumber2,
-      "ToNumber2": toNumber2,
+      "Accountcd": accountcd,
       "CategoryID": categoryId,
-      "TafziliGroupCode": tafziliGroupCode,
-      "DisplayColumn": displayColumn,
+      "AccountLevel": accountLevel,
+      "ByOldYear": byOldYear,
+      "WithEntezamiAccounts": withEntezamiAccounts,
       "WithEftetahie": withEftetahie,
       "WithEkhtetamieh": withEkhtetamieh,
       "WithTasir": withTasir,

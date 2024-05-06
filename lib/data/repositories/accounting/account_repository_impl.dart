@@ -1190,11 +1190,6 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         activeYear: body.activeYear,
         fromDate: body.fromDate,
         toDate: body.toDate,
-        fromAccountcd: body.fromAccountcd,
-        fromNumber: body.fromNumber,
-        toNumber: body.toNumber,
-        fromNumber2: body.fromNumber2,
-        toNumber2: body.toNumber2,
         categoryId: body.categoryId,
         withEftetahie: body.withEftetahie,
         withEkhtetamieh: body.withEkhtetamieh,
@@ -1203,8 +1198,11 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         withFaqatGardeshDarha: body.withFaqatGardeshDarha,
         withFaqatMandeDarha: body.withFaqatMandeDarha,
         withFaqatMandeDarhayeBed: body.withFaqatMandeDarhayeBed,
-        withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
-        displayColumn: body.displayColumn,
-        tafziliGroupCode: body.tafziliGroupCode);
+      withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
+      accountcd: body.accountcd,
+      accountLevel: body.accountLevel,
+      byOldYear: body.byOldYear,
+      withEntezamiAccounts: body.withEntezamiAccounts,
+    );
   }
 }

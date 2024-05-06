@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FormItemTitle extends StatelessWidget {
@@ -20,29 +19,20 @@ class FormItemTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
     return SizedBox
       (
-      child:  Expanded(
-        child: Text(
-          title,
-          maxLines: maxLine,
-          overflow: TextOverflow.ellipsis,
-          style: style ??
-              TextStyle(
-                  color: textColor,
-                  fontSize: fontSize,
-                  fontWeight: fontWeight,
-                  ),
-        ),
+      child: Text(
+        title,
+        maxLines: maxLine,
+        overflow: TextOverflow.ellipsis,
+        style: style ??
+            TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+            ),
       ),
     );
   }
-  void _onTapDown(GlobalKey<TooltipState> tooltipkey) {
-    tooltipkey.currentState?.ensureTooltipVisible();
-  }
 
-  void _onTapUpAndCancel(GlobalKey<TooltipState> tooltipkey) {
-    tooltipkey.currentState?.deactivate();
-  }
 }

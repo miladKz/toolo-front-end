@@ -517,7 +517,6 @@ class Filters extends StatelessWidget {
       localization.titlePartners,
       localization.titleRecipientsFacility,
       localization.titleFacilitators,
-      localization.titleRelatedPersons,
       localization.titleOther,
     ];
     double maxWidth = width;
@@ -559,11 +558,9 @@ class Filters extends StatelessWidget {
     int displayColumn = controllerRadioButton.text.toInt();
 
     bool withEftetahie = getCheckBoxValue(
-        checkBoxList: checkBoxList,
-        title: localization.titleOpeningDocument);
+        checkBoxList: checkBoxList, title: localization.titleOpeningDocument);
     bool withEkhtetamieh = getCheckBoxValue(
-        checkBoxList: checkBoxList,
-        title: localization.titleClosingDocument);
+        checkBoxList: checkBoxList, title: localization.titleClosingDocument);
     bool withTasir = getCheckBoxValue(
         checkBoxList: checkBoxList,
         title: localization.titleCurrencyExchangeDocument);
@@ -571,41 +568,77 @@ class Filters extends StatelessWidget {
         checkBoxList: checkBoxList,
         title: localization.titleTemporaryAccountClosingDocument);
     bool withFaqatGardeshDarha = getCheckBoxValue(
-        checkBoxList: checkBoxList,
-        title: localization.titleOnlyInCirculation);
+        checkBoxList: checkBoxList, title: localization.titleOnlyInCirculation);
     bool withFaqatMandeDarha = getCheckBoxValue(
-        checkBoxList: checkBoxList,
-        title: localization.titleOnlyLeftovers);
+        checkBoxList: checkBoxList, title: localization.titleOnlyLeftovers);
     bool withFaqatMandeDarhayeBed = getCheckBoxValue(
-        checkBoxList: checkBoxList,
-        title: localization.titleOnlyDebitBalances);
+        checkBoxList: checkBoxList, title: localization.titleOnlyDebitBalances);
     bool withFaqatMandeDarhayeBes = getCheckBoxValue(
         checkBoxList: checkBoxList,
         title: localization.titleOnlyCreditorBalances);
 
+    bool isMoshtari = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleCustomers);
+    bool isTamin = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleSupplier);
+    bool isVasete = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleIntermediary);
+
+    bool isSarmayePazir = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleInvestor);
+
+    bool isShoraka = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titlePartners);
+    bool isKarkonan = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titlePersonnel);
+    bool isTashilatGirande = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleRecipientsFacility);
+
+    bool isTashilatDahande = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleFacilitators);
+    bool isSayer = getCheckBoxValue(
+        checkBoxList: additionalCheckBoxList,
+        title: localization.titleOther);
+
+
+
     ReportTarazTafziliShenavarBody body = ReportTarazTafziliShenavarBody(
-      activeYear: 0,
-      fromDate: fromDate,
-      toDate: toDate,
-      accountCd: accountCd,
-      fromNumber: fromNumber,
-      toNumber: toNumber,
-      fromNumber2: fromNumber2,
-      toNumber2: toNumber2,
-      categoryId: categoryId,
-      withEftetahie: withEftetahie,
-      withEkhtetamieh: withEkhtetamieh,
-      withTasir: withTasir,
-      withSoodZian: false,
-      withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
-      withEntezamiAccounts: false,
-      withFaqatGardeshDarha: withFaqatGardeshDarha,
-      withFaqatMandeDarha: withFaqatMandeDarha,
-      withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
-      withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
-      tafziliGroupCode: tafziliGroupCode,
-      displayColumn: displayColumn,
-    );
+        activeYear: 0,
+        fromDate: fromDate,
+        toDate: toDate,
+        accountCd: accountCd,
+        fromNumber: fromNumber,
+        toNumber: toNumber,
+        fromNumber2: fromNumber2,
+        toNumber2: toNumber2,
+        categoryId: categoryId,
+        withEftetahie: withEftetahie,
+        withEkhtetamieh: withEkhtetamieh,
+        withTasir: withTasir,
+        withBastanHesabhayeMovaqat: withBastanHesabhayeMovaqat,
+        withFaqatGardeshDarha: withFaqatGardeshDarha,
+        withFaqatMandeDarha: withFaqatMandeDarha,
+        withFaqatMandeDarhayeBed: withFaqatMandeDarhayeBed,
+        withFaqatMandeDarhayeBes: withFaqatMandeDarhayeBes,
+        tafziliGroupCode: tafziliGroupCode,
+        displayColumn: displayColumn,
+        isKarkonan: isKarkonan,
+        isMoshtari: isMoshtari,
+        isSarmayePazir: isSarmayePazir,
+        isSayer: isSayer,
+        isShoraka: isShoraka,
+        isTamin: isTamin,
+        isTashilatDahande: isTashilatDahande,
+        isTashilatGirande: isTashilatGirande,
+        isVasete: isVasete);
     return body;
   }
 

@@ -151,7 +151,7 @@ Widget screenReport() {
         return locator<MainBloc>();
       },
     ),
-  ], child: const ScreenReportTarazTafziliShenavarHesab());
+  ], child: const ScreenReportTarazTafziliShenavar());
 }
 
 bool get isDialogOpen {

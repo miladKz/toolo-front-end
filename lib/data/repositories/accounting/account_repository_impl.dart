@@ -25,15 +25,14 @@ import 'package:toolo_gostar/data/models/accounting/document/params/document_mas
 import 'package:toolo_gostar/data/models/accounting/document/params/document_total_price_param_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_jame_taraz_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_moghayeseyi_body_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_moghayeseyi_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_group_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_jame_taraz_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_moghayeseyi_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_group_dto.dart';
-import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_hesab_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_dto.dart';
+import 'package:toolo_gostar/data/models/accounting/reports/report_taraz_tafzili_shenavar_hesab_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/tafzili_group_and_chlids_dto.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account.dart';
 import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_group.dart';
@@ -1032,7 +1031,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ReportTarazTafziliShenavarHesabBody tarazTafziliShenavarHesabBody) async {
     try {
       ReportTarazTafziliShenavarHesabBodyDto tarazTafziliShenavarHesabBodyDto =
-          getReportTarazTafziliShenavarHesabBodyDto(tarazTafziliShenavarHesabBody);
+          getReportTarazTafziliShenavarHesabBodyDto(
+              tarazTafziliShenavarHesabBody);
       String token = _getToken();
       ServerResponseDto serverResponse =
           await remoteDataSource.fetchReportTarazTafziliShenavarHesab(
@@ -1119,15 +1119,22 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         withEftetahie: body.withEftetahie,
         withEkhtetamieh: body.withEkhtetamieh,
         withTasir: body.withTasir,
-        withSoodZian: body.withSoodZian,
         withBastanHesabhayeMovaqat: body.withBastanHesabhayeMovaqat,
-        withEntezamiAccounts: body.withEntezamiAccounts,
         withFaqatGardeshDarha: body.withFaqatGardeshDarha,
         withFaqatMandeDarha: body.withFaqatMandeDarha,
         withFaqatMandeDarhayeBed: body.withFaqatMandeDarhayeBed,
         withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
         tafziliGroupCode: body.tafziliGroupCode,
-        displayColumn: body.displayColumn);
+        displayColumn: body.displayColumn,
+        isKarkonan: body.isKarkonan,
+        isMoshtari: body.isMoshtari,
+        isSarmayePazir: body.isSarmayePazir,
+        isSayer: body.isSayer,
+        isShoraka: body.isShoraka,
+        isTamin: body.isTamin,
+        isTashilatDahande: body.isTashilatDahande,
+        isTashilatGirande: body.isTashilatGirande,
+        isVasete: body.isVasete);
   }
 
   ReportTarazTafziliGroupBodyDto getReportTarazTafziliGroupBodyDto(
@@ -1151,8 +1158,10 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         withFaqatMandeDarhayeBes: body.withFaqatMandeDarhayeBes,
         displayColumn: body.displayColumn);
   }
-  ReportTarazTafziliShenavarHesabBodyDto getReportTarazTafziliShenavarHesabBodyDto(
-      ReportTarazTafziliShenavarHesabBody body) {
+
+  ReportTarazTafziliShenavarHesabBodyDto
+      getReportTarazTafziliShenavarHesabBodyDto(
+          ReportTarazTafziliShenavarHesabBody body) {
     return ReportTarazTafziliShenavarHesabBodyDto(
         activeYear: body.activeYear,
         fromDate: body.fromDate,

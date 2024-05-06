@@ -355,7 +355,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         }
       }
     } catch (e) {
-      emit(FailedUpdateCounterparty(errorMessage: e.toString()));
+      //emit(FailedUpdateCounterparty(errorMessage: e.toString()));
     }
   }
 

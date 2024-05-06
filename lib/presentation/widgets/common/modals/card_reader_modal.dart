@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
@@ -52,9 +54,16 @@ class _CardReaderModalState extends State<CardReaderModal> {
   final TextEditingController descriptionController =
       TextEditingController(text: '');
   bool currencyTypeDropBoxVisibility = false;
-
-  late Widget relatedBankModalOpenerButtonInstance =
-      relatedBankModalOpenerButton(width: widget.formWidth);
+  late Widget relatedBankModalOpenerButtonInstance = RelatedBankWidget(
+    formWidth: widget.formWidth,
+    formKey: widget._formKey,
+    currencyTypeName: getCurrencyTypeName(),
+    relatedBankName: getRelatedBankName(),
+    onSelectItem: (selectedBank) {
+      widget.cardReader.updateBankId(selectedBank.id);
+      widget.cardReader.updateCurrencyType(selectedBank.currencyType);
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +74,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
     nameController.text =
         widget.isUpdate ? widget.cardReader.name.toString() : '';
     terminalNumberController.text =
-        widget.isUpdate ? widget.cardReader.detailId.toString() : '';
+        widget.isUpdate ? widget.cardReader.nationalCode.toString() : '';
     descriptionController.text =
         widget.isUpdate ? widget.cardReader.description : '';
 
@@ -81,10 +90,6 @@ class _CardReaderModalState extends State<CardReaderModal> {
             width: widget.formWidth, controller: terminalNumberController),
         verticalGapDivider,
         relatedBankModalOpenerButtonInstance,
-        verticalGapDivider,
-        if (currencyTypeDropBoxVisibility) ...[
-          currencyTypeField(width: widget.formWidth)
-        ],
         verticalGapDivider,
         descriptionBox(
             width: widget.formWidth, controller: descriptionController),
@@ -112,15 +117,8 @@ class _CardReaderModalState extends State<CardReaderModal> {
             } on FormatException {
               terminalCode = 0;
             }
+            widget.cardReader.updateNationalCode(terminalCode.toString());
 
-            int bankId;
-            try {
-              bankId = int.parse(terminalNumberController.text);
-            } on FormatException {
-              bankId = 0;
-            }
-            widget.cardReader.updateDetailCode(terminalCode);
-            //todo:  widget.cardReader.updateBankId();
             widget.cardReader.updateDescription(descriptionController.text);
             if (widget.isUpdate) {
               locator
@@ -235,63 +233,6 @@ class _CardReaderModalState extends State<CardReaderModal> {
     );
   }
 
-  Widget relatedBankModalOpenerButton({required double width}) {
-    String value = (widget.isUpdate) ? getRelatedBankName() : '';
-    DataTableViewModel dataTableViewModel =
-        DataTableViewModelFactory.createTableViewModelFromBankAccTypeList(
-            baseDataModel.counterpartyBankList);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FormItemTitle(title: localization.relatedBank),
-        titleInputSpacing,
-        ModalOpenerButton(
-          dialogTitle: localization.titleBankList,
-          buttonWidth: width,
-          formWidth: widget.formWidth - 200,
-          value: value,
-          formKey: widget._formKey,
-          onSelectItemFromTableModal: (bank) {
-            if (bank != null) {
-              try {
-                Counterparty bankCounterparty = bank as Counterparty;
-                widget.cardReader.updateBankId(bankCounterparty.id);
-                widget.cardReader
-                    .updateCurrencyType(bankCounterparty.currencyType);
-                setState(() {
-                  currencyTypeDropBoxVisibility = true;
-                });
-              } catch (e) {
-                setState(() {
-                  currencyTypeDropBoxVisibility = false;
-                });
-              }
-            }
-          },
-          dataTableViewModel: dataTableViewModel,
-        ),
-      ],
-    );
-  }
-
-  Widget currencyTypeField({required double width}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FormItemTitle(title: localization.titleCurrencyType),
-        titleInputSpacing,
-        FormTextField(
-          inputType: TextInputType.number,
-          textHint: getCurrencyTypeName(),
-          enable: false,
-          widgetWidth: width,
-        ),
-      ],
-    );
-  }
-
   Widget descriptionBox(
       {required double width, required TextEditingController controller}) {
     return Column(
@@ -320,13 +261,28 @@ class _CardReaderModalState extends State<CardReaderModal> {
     widget.tempCardReader = CardReader(counterparty: widget.cardReader.copy());
   }
 
-  String getCurrencyTypeName() {
-    return baseDataModel.currencyTypeList
-            .firstWhere(
-              (element) => element.id == widget.cardReader.currencyType,
-            )
-            .name ??
-        '';
+  void checkState() {
+    final state = context.watch<MainBloc>().state;
+    if (state is MainLoadingOnButton) {
+      setState(() {
+        widget.isShowProgress = state.isShow;
+      });
+    } else if (state is SuccessUpdateCounterparty ||
+        state is SuccessCreateCounterparty) {
+      Navigator.of(context).pop();
+    } else if (state is FailedUpdateCounterparty) {
+      debugPrint('editGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    } else if (state is FailedCreateCounterparty) {
+      debugPrint('createGroup error: ${state.errorMessage}');
+      Navigator.of(context).pop();
+      Future.delayed(const Duration(microseconds: 20)).then((value) =>
+          showSnack(
+              title: localization.errorTitle, message: state.errorMessage));
+    }
   }
 
   String getRelatedBankName() {
@@ -342,27 +298,105 @@ class _CardReaderModalState extends State<CardReaderModal> {
     return bankName;
   }
 
-  void checkState() {
-    final state = context.watch<MainBloc>().state;
-    if (state is MainLoadingOnButton) {
-      setState(() {
-        widget.isShowProgress = state.isShow;
-      });
-    } else if (state is SuccessUpdateCounterparty ||
-        state is SuccessCreateCounterparty) {
-      Navigator.of(context).pop();
-    } else if (state is FailedUpdateCounterparty) {
-      debugPrint(' editGroup error: ${state.errorMessage}');
-      Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) =>
-          showSnack(
-              title: localization.errorTitle, message: state.errorMessage));
-    } else if (state is FailedCreateCounterparty) {
-      debugPrint(' editGroup error: ${state.errorMessage}');
-      Navigator.of(context).pop();
-      Future.delayed(const Duration(microseconds: 20)).then((value) =>
-          showSnack(
-              title: localization.errorTitle, message: state.errorMessage));
+  String getCurrencyTypeName() {
+    String currencyTypeName = '';
+    for (CurrencyType currencyType in baseDataModel.currencyTypeList) {
+      if (widget.cardReader.currencyType == currencyType.id) {
+        currencyTypeName = currencyType.name;
+      }
     }
+    return currencyTypeName;
+  }
+}
+
+class RelatedBankWidget extends StatefulWidget {
+  RelatedBankWidget(
+      {super.key,
+      required this.formWidth,
+      required this.currencyTypeName,
+      required this.formKey,
+      required this.relatedBankName,
+      required this.onSelectItem});
+
+  double formWidth;
+
+  final GlobalKey<FormState> formKey;
+  Function(Counterparty) onSelectItem;
+  String relatedBankName;
+  String currencyTypeName;
+
+  @override
+  State<RelatedBankWidget> createState() => _RelatedBankWidgetState();
+}
+
+class _RelatedBankWidgetState extends State<RelatedBankWidget> {
+  bool currencyTypeDropBoxVisibility = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        relatedBankModalOpenerButton(width: widget.formWidth),
+        verticalGapDivider,
+        if (currencyTypeDropBoxVisibility || widget.currencyTypeName.isNotEmpty) ...[
+          currencyTypeField(width: widget.formWidth)
+        ],
+      ],
+    );
+  }
+
+  Widget relatedBankModalOpenerButton({required double width}) {
+    DataTableViewModel dataTableViewModel =
+        DataTableViewModelFactory.createTableViewModelFromBankAccTypeList(
+            baseDataModel.counterpartyBankList);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.relatedBank),
+        titleInputSpacing,
+        ModalOpenerButton(
+          dialogTitle: localization.titleBankList,
+          buttonWidth: width,
+          formWidth: widget.formWidth - 200,
+          value: widget.relatedBankName,
+          formKey: widget.formKey,
+          onSelectItemFromTableModal: (bank) {
+            if (bank != null) {
+              try {
+                Counterparty bankCounterparty = bank as Counterparty;
+                widget.onSelectItem(bankCounterparty);
+                setState(() {
+                  widget.relatedBankName = bank.name;
+                  currencyTypeDropBoxVisibility = true;
+                });
+              } catch (e) {
+                setState(() {
+                  currencyTypeDropBoxVisibility = false;
+                });
+              }
+            }
+          },
+          dataTableViewModel: dataTableViewModel,
+        ),
+      ],
+    );
+  }
+
+  Widget currencyTypeField({required double width}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FormItemTitle(title: localization.titleCurrencyType),
+        titleInputSpacing,
+        FormTextField(
+          inputType: TextInputType.number,
+          textHint: widget.currencyTypeName,
+          enable: false,
+          widgetWidth: width,
+        ),
+      ],
+    );
   }
 }

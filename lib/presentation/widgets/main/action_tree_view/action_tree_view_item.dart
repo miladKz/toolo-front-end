@@ -11,6 +11,11 @@ import 'package:toolo_gostar/presentation/widgets/main/action_tree_view/action_t
 
 import '../../../../gen/assets.gen.dart';
 import '../../../blocs/report_bloc/report_bloc.dart';
+import '../../../pages/reports/r_j_t/screen_report_jame_tarazha.dart';
+import '../../../pages/reports/r_t_g_t_sh/screen_report_taraz_group_tafzili_shenavar.dart';
+import '../../../pages/reports/r_t_m/screen_report_taraz_moghayeseyi.dart';
+import '../../../pages/reports/r_t_t_sh/screen_report_taraz_tafzili_shenavar.dart';
+import '../../../pages/reports/r_t_t_sh_h/screen_report_taraz_tafzili_shenavar_hesab.dart';
 
 class ActionsTreeViewItem extends StatefulWidget {
   final AccountingAction item;
@@ -101,7 +106,6 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
 
   void onItemSelect(AccountingAction item) {
     setState(() {
-
       debugPrint('Action onItemSelect. item= ${item.toString()}');
       widget.onTap();
       actionsSubTitleSelected == widget.item.id;
@@ -127,16 +131,6 @@ void callApiByEndpoint(String endPoint) {
   debugPrint('callApiByEndpoint endPoint=$endPoint');
   if (endPoint.contains('/api/acc/accounts')) {
     locator.get<MainBloc>().add(MainAccountList());
-  } else if (endPoint.contains('شناور')) {
-    locator.get<MainBloc>().add(MainAnotherList(
-        endpoint: "", apiEnum: ApiEnum.managementFloatingDetails));
-  } else if (endPoint.contains('ارتباط حساب')) {
-    locator.get<MainBloc>().add(MainAnotherList(
-        endpoint: "", apiEnum: ApiEnum.managementRelationShipAccount));
-  } else if (endPoint.contains('اشخاص')) {
-    locator
-        .get<MainBloc>()
-        .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementPeople));
   } else if (endPoint.contains('بانک')) {
     locator.get<MainBloc>().add(
         MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementBankBranch));
@@ -150,14 +144,43 @@ void callApiByEndpoint(String endPoint) {
     locator
         .get<MainBloc>()
         .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
-  } else if (endPoint.contains('گزارشات و فهرستها')) {
-    Get.to(BlocProvider.value(
-      value: locator.get<ReportBloc>(),
-      child: ScreenReportTarazDafaterPelekani(),
-    ));
+  } else if (endPoint.contains('گزارش ترازها و دفاتر پلکانی')) {
+    navigateToReportScreen(const ScreenReportTarazDafaterPelekani());
+  } else if (endPoint.contains('گزارش جامع ترازها')) {
+    navigateToReportScreen(const ScreenReportJameTarazha());
+  } else if (endPoint.contains('گزارش تراز گروه تفصیل شناور')) {
+    navigateToReportScreen(const ScreenReportTarazGroupTafziliShenavar());
+  } else if (endPoint.contains('گزارش تراز تفصیل شناور')) {
+    navigateToReportScreen(const ScreenReportTarazTafziliShenavar());
+  } else if (endPoint.contains('گزارش تراز تفصیل شناور-حساب')) {
+    navigateToReportScreen(const ScreenReportTarazTafziliShenavarHesab());
+  }else if (endPoint.contains('گزارش ترازنامه مقایسه ای')) {
+    navigateToReportScreen(const ScreenReportTarazMoghayeseyi());
+  } else if (endPoint.contains('شناور')) {
+    locator.get<MainBloc>().add(MainAnotherList(
+        endpoint: "", apiEnum: ApiEnum.managementFloatingDetails));
+  } else if (endPoint.contains('ارتباط حساب')) {
+    locator.get<MainBloc>().add(MainAnotherList(
+        endpoint: "", apiEnum: ApiEnum.managementRelationShipAccount));
+  } else if (endPoint.contains('اشخاص')) {
+    locator
+        .get<MainBloc>()
+        .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementPeople));
   } else {
     locator
         .get<MainBloc>()
         .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.unknown));
   }
+}
+
+void navigateToReportScreen(Widget reportScreen) {
+  Get.to(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<ReportBloc>.value(value: locator<ReportBloc>()),
+        BlocProvider<MainBloc>.value(value: locator<MainBloc>()),
+      ],
+      child: reportScreen,
+    ),
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_t_sh.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
@@ -16,8 +17,8 @@ class ReportPageTTSh extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       direction: Axis.horizontal,
       children: [
-        Flexible(flex: 3, child: rightReportFilterView()),
-        Flexible(flex: 7, child: LeftReportFilterView()),
+        Flexible(flex: flexReportFilter, child: rightReportFilterView()),
+        Flexible(flex: flexReportTableView, child: LeftReportFilterView()),
       ],
     );
   }

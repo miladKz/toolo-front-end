@@ -41,13 +41,11 @@ class NewDocumentRowModal extends StatefulWidget {
   final int voucherMSID;
   final Color iconColor;
   final Function(bool isSuccess) onCreateOrUpdateStatus;
+
+  int accountID = 0;
   final TextEditingController controllerDocumentCode =
       TextEditingController(text: '');
 
-  final TextEditingController controllerFloatingDetail =
-      TextEditingController(text: '');
-  final TextEditingController controllerFloatingDetailDesc =
-      TextEditingController(text: '');
   final TextEditingController controllerDocCodDesc =
       TextEditingController(text: '');
 
@@ -57,9 +55,9 @@ class NewDocumentRowModal extends StatefulWidget {
   final TextEditingController controllerDetailDocument =
       TextEditingController(text: '');
   final TextEditingController controllerArticle =
-      TextEditingController(text: '');
+      TextEditingController(text: '0');
   final TextEditingController controllerAmount =
-      TextEditingController(text: '');
+      TextEditingController(text: '0');
 
   final TextEditingController controllerCreditorCurrencyAmount =
       TextEditingController(text: '0');
@@ -70,7 +68,7 @@ class NewDocumentRowModal extends StatefulWidget {
   final TextEditingController controllerExchangeParity =
       TextEditingController(text: '0');
   final TextEditingController controllerExchangeRate =
-      TextEditingController(text: '');
+      TextEditingController(text: '0');
   final TextEditingController controllerDebtorAmount =
       TextEditingController(text: '0');
   final TextEditingController controllerCreditorAmount =
@@ -88,6 +86,7 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
 
   @override
   Widget build(BuildContext context) {
+    listenToCreateDoc(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,12 +124,11 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
           formWidth: widget.formWidth,
           formKey: widget._formKey,
           onConfirm: () {
-            listenToCreateDoc(context);
-            CreateDocumentDetailBodyDto createDocumentDetailBody =
+            CreateDocumentDetailBodyDto createDocumentDetailBodyDto =
                 getCreateDocumentDetailBody();
             locator
                 .get<DocDetailBloc>()
-                .add(DocCreateDocumentDetail(param: createDocumentDetailBody));
+                .add(DocCreateDocumentDetail(param: createDocumentDetailBodyDto));
           },
         ),
       ],
@@ -150,21 +148,21 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
     DocumentDetailBody documentDetailBody = DocumentDetailBody(
         voucherMSID: widget.voucherMSID,
         rowNumber: 0,
-        article: int.parse(widget.controllerArticle.text),
-        accountID: int.parse(widget.controllerDocumentCode.text),
+        article: widget.controllerArticle.text.toInt(),
+        accountID: widget.accountID,
         mablagh: mablagh,
-        description: widget.controllerFloatingDetail.text,
+        description: widget.controllerDetailDocument.text,
         arzRowNumber: 1,
         arzMablagh: arzMablagh,
-        nerkhBarabari: int.parse(widget.controllerExchangeParity.text),
-        value1: int.parse(widget.controllerAmount.text));
+        nerkhBarabari: widget.controllerExchangeParity.text.toInt(),
+        value1: widget.controllerAmount.text.toInt());
 
-    CreateDocumentDetailBodyDto createDocumentDetailBody =
+    CreateDocumentDetailBodyDto createDocumentDetailBodyDto =
         CreateDocumentDetailBodyDto(
             documentDetailBody: documentDetailBody,
             tafziliDataBodyList: tafziliDataBodyList);
 
-    return createDocumentDetailBody;
+    return createDocumentDetailBodyDto;
   }
 
   Widget row1({required double rowWidth}) {
@@ -174,6 +172,9 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
         rowWidth: rowWidth,
         controllerDocumentCode: widget.controllerDocumentCode,
         controllerDocCodDesc: widget.controllerDocCodDesc,
+        onAccountSelect: (accountItem) {
+          widget.accountID = accountItem.id;
+        },
       ),
     );
   }
@@ -340,11 +341,19 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
         children: [
           debtorCurrencyAmountBox(
               width: itemWidth,
-              controller: widget.controllerDebtorCurrencyAmount),
+            controller: widget.controllerDebtorCurrencyAmount,
+            onEditingComplete: () {
+              widget.controllerCreditorCurrencyAmount.text = '0';
+            },
+          ),
           horizontalGapDivider,
           creditorCurrencyAmountBox(
               width: itemWidth,
-              controller: widget.controllerCreditorCurrencyAmount),
+            controller: widget.controllerCreditorCurrencyAmount,
+            onEditingComplete: () {
+              widget.controllerDebtorCurrencyAmount.text = '0';
+            },
+          ),
         ],
       ),
     );
@@ -611,30 +620,6 @@ class _TafziliDetailRowState extends State<TafziliDetailRow> {
             controller.value = TextEditingValue(text: '${item.id}');
           },
         ),
-        /*Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            tafziliDropBox(
-              itemWidth: itemWidth*2,
-              childItems: item.tafziliList,
-              controller: TextEditingController(text: ''),
-              onSelectItem: (item) {
-                debugPrint('Tafzili onSelectItem: name= ${item.name} and id= ${item.id}');
-                controllerName.value =TextEditingValue(text: item.name);
-                controllerName.text = item.name;
-                controller.value = TextEditingValue(text: '${item.id}');
-              },
-            ),
-           */ /* horizontalGapDivider,
-            FormTextField(
-              textHint: '',
-              controller: controllerName,
-              enable: true,
-              widgetWidth: itemWidth,
-            ),*/ /*
-          ],
-        )*/
       ],
     );
   }
@@ -762,12 +747,13 @@ class AccountCodeObject extends StatefulWidget {
   final double rowWidth;
   final TextEditingController controllerDocumentCode;
   final TextEditingController controllerDocCodDesc;
-
+  final Function(AccountHaveTafziliGroup) onAccountSelect;
   const AccountCodeObject(
       {super.key,
       required this.rowWidth,
       required this.controllerDocumentCode,
-      required this.controllerDocCodDesc});
+      required this.controllerDocCodDesc,
+      required this.onAccountSelect});
 
   @override
   State<AccountCodeObject> createState() => _AccountCodeObjectState();
@@ -804,8 +790,10 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
               width: formWidth,
               body: AccountHaveTafziliGroupModal(
                 onSelected: (AccountHaveTafziliGroup accountItem) {
+                  widget.onAccountSelect(accountItem);
                   debugPrint(
                       'AccountHaveTafziliGroupModal: ${accountItem.displayName}');
+
                   widget.controllerDocumentCode.value =
                       TextEditingValue(text: accountItem.accountcd);
                   widget.controllerDocCodDesc.value =
@@ -867,12 +855,12 @@ double getMablagh(
     required TextEditingController controllerCreditorAmount}) {
   double debAmount = controllerDebtorAmount.text.isEmpty
       ? 0
-      : double.parse(controllerDebtorAmount.text).toDouble();
+      : controllerDebtorAmount.text.toDouble();
   double creditorAmount = controllerCreditorAmount.text.isEmpty
       ? 0
-      : double.parse(controllerCreditorAmount.text).toDouble();
+      : controllerCreditorAmount.text.toDouble();
 
-  return debAmount > 0 ? debAmount : (creditorAmount * -1);
+  return debAmount > 0 ? debAmount : (creditorAmount>0?(creditorAmount * -1):0);
 }
 
 double getarzMablagh(
@@ -880,10 +868,10 @@ double getarzMablagh(
     required TextEditingController controllerCreditorCurrencyAmount}) {
   double debAmount = controllerDebtorCurrencyAmount.text.isEmpty
       ? 0
-      : double.parse(controllerDebtorCurrencyAmount.text).toDouble();
+      : controllerDebtorCurrencyAmount.text.toDouble();
   double creditorAmount = controllerCreditorCurrencyAmount.text.isEmpty
       ? 0
-      : double.parse(controllerCreditorCurrencyAmount.text).toDouble();
+      : controllerCreditorCurrencyAmount.text.toDouble();
 
-  return debAmount > 0 ? debAmount : (creditorAmount * -1);
+  return (debAmount > 0 ? debAmount : (creditorAmount>0?(creditorAmount * -1):0));
 }

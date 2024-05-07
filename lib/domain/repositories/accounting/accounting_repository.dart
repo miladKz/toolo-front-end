@@ -37,7 +37,7 @@ import '../../../data/models/accounting/document/params/document_master_detail_p
 import '../../../data/models/accounting/document/params/document_master_param_dto.dart';
 import '../../../data/models/accounting/document/params/document_total_price_param_dto.dart';
 import '../../entities/accounting/account_with_tafzili_group.dart';
-import '../../entities/accounting/reports/balance_and_ledgers_report.dart';
+import '../../entities/accounting/reports/report_t_d_p_data.dart';
 import '../../entities/base/param/standard_detail_param.dart';
 import '../../entities/common/counterparty.dart';
 import '../../entities/common/counterparty_detail.dart';

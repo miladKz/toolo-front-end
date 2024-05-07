@@ -48,7 +48,7 @@ class _CounterpartyDetailViewerState extends State<CounterpartyDetailViewer> {
       child: ListView.builder(
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
-          return Expanded(
+          return Flexible(
             child: Column(
               children: [detailRowItem(index), divider(dividerThickness: 1)],
             ),

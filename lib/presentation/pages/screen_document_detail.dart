@@ -10,7 +10,6 @@ import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/c
 import 'package:toolo_gostar/presentation/widgets/common/progress_dialog.dart';
 import 'package:toolo_gostar/presentation/widgets/main/documents/document_detail_page.dart';
 import 'package:toolo_gostar/presentation/widgets/main/documents/modals/new_document_row_modal.dart';
-
 class ScreenDocumentDetail extends StatefulWidget {
   const ScreenDocumentDetail({super.key, required this.documentMaster});
 
@@ -91,10 +90,13 @@ class ShowCreateOrUpdateDocumentDetailModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int voucherMSID = locator.get<DocDetailBloc>().currentDocMaster == null
+        ? 0
+        : locator.get<DocDetailBloc>().currentDocMaster!.id;
     final Widget body = NewDocumentRowModal(
       formWidth: maxWidth,
       formKey: GlobalKey<FormState>(),
-      voucherMSID: 10,
+      voucherMSID: voucherMSID,
       onCreateOrUpdateStatus: (bool isSuccess) {
         onCreateOrUpdateStatus(isSuccess);
       },

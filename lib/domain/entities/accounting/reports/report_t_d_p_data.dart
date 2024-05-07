@@ -3,7 +3,7 @@ import 'package:toolo_gostar/domain/entities/accounting/reports/report_column_ti
 import 'balance_and_ledgers.dart';
 
 class BalanceAndLedgersReport {
-  List<BalanceAndLedgers> balanceAndLedgers;
+  List<ReportTarazDafaterPelekaniData> balanceAndLedgers;
   List<ReportColumnTitle> reportColumnTitle;
 
   BalanceAndLedgersReport({

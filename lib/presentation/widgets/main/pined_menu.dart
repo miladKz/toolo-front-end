@@ -25,9 +25,10 @@ class _PinedMenu extends State<PinedMenu> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: const Color(0xFF929292).withOpacity(0.25), width: 1)),
-        child: Row(
+        child: Flex(
+          direction: Axis.horizontal,
           children: [
-            Expanded(
+            Flexible(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

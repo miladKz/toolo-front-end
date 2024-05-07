@@ -32,7 +32,8 @@ class _ProfileState extends State<Profile> {
           userName = state.userData.userName;
           displayName = state.userData.displayName;
         }
-        return Row(
+        return Flex(
+          direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(

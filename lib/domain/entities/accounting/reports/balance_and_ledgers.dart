@@ -2,7 +2,7 @@ import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
 import 'package:toolo_gostar/presentation/view_models/report_base_data_table_model.dart';
 
-class BalanceAndLedgers extends ITableRowData{
+class ReportTarazDafaterPelekaniData extends ITableRowData{
   final String accountName;
   final String accountCd;
   final double openingBalanceDebit;
@@ -20,7 +20,7 @@ class BalanceAndLedgers extends ITableRowData{
   final double endingBalanceDebit;
   final double endingBalanceCredit;
 
-  BalanceAndLedgers({
+  ReportTarazDafaterPelekaniData({
     required this.accountName,
     required this.accountCd,
     required this.openingBalanceDebit,
@@ -39,8 +39,8 @@ class BalanceAndLedgers extends ITableRowData{
     required this.endingBalanceCredit,
   }):super(id: -1,name: accountName);
 
-  factory BalanceAndLedgers.empty() {
-    return BalanceAndLedgers(
+  factory ReportTarazDafaterPelekaniData.empty() {
+    return ReportTarazDafaterPelekaniData(
       accountName: '',
       accountCd: '',
       openingBalanceDebit: 0,
@@ -60,7 +60,7 @@ class BalanceAndLedgers extends ITableRowData{
     );
   }
 
-  BalanceAndLedgers getFieldsValue(List<String> keys) {
+  ReportTarazDafaterPelekaniData getFieldsValue(List<String> keys) {
     final Map<String, dynamic> fieldMap = {
       'AccountName': accountName,
       'Accountcd': accountCd,
@@ -79,7 +79,7 @@ class BalanceAndLedgers extends ITableRowData{
       "MablaghMandePayanBed": endingBalanceDebit,
       "MablaghMandePayanBes": endingBalanceCredit
     };
-
+    props.clear();
     for(String key in keys){
       if (fieldMap.containsKey(key)) {
         props.add('${fieldMap.findAsDynamic(key)}') ;

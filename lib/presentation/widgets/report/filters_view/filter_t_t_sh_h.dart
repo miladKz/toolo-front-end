@@ -1,6 +1,7 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_tafzili_shenavar_hesab_body.dart';
@@ -11,8 +12,10 @@ import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
 import 'package:toolo_gostar/presentation/widgets/common/get_tafzili_from_account_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/linear_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/advance_filter_button.dart';
@@ -29,14 +32,36 @@ class FilterTTShHView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SizedBox(
-          height: constraints.maxHeight,
-          child: AdvanceFiltersButton(
-            height: height,
-            body: Filters(
-              height: 70,
+        return Flex(
+          direction: Axis.vertical,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24,
+                      color: Color(0xff6C3483),
+                    )),
+                FormItemTitle(title: localization.titleReportTTShH),
+              ],
             ),
-          ),
+            verticalGapDivider,
+            linearGap,
+            Flexible(
+              child: SingleChildScrollView(
+                child: AdvanceFiltersButton(
+                  height: height,
+                  body: Filters(
+                    height: 70,
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -397,30 +422,6 @@ class Filters extends StatelessWidget {
     );
   }
 
-  Row linearTitle({required String title}) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Text(
-            title,
-            style: getFilterBodyTitleStyle.copyWith(
-                color: const Color(0xffA7A7A7)),
-          ),
-        ),
-        Expanded(
-            child: Container(
-          height: 1,
-          color: const Color(0xffCCCCCC),
-        ))
-      ],
-    );
-  }
-
-  Widget linearGap = Container(
-    height: 1,
-    color: const Color(0xffCCCCCC),
-  );
 
   Widget showListCheckBox({required double width}) {
     final List<String> checkBoxNames = [

@@ -141,7 +141,7 @@ Row authBox({required AuthBloc authBloc}) {
           ),
         ),
       ),
-      Expanded(
+      Flexible(
           child: InkWell(
         onTap: isEnable
             ? () {

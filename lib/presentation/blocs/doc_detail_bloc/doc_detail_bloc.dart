@@ -37,7 +37,7 @@ class DocDetailBloc extends Bloc<DocDetailEvent, DocDetailState> {
     final List<DocumentMasterDetail> items =
         await useCase(documentMasterDetailParamDto: event.param);
     emit(DocLoadingOnView(isShow: false));
-    await Future.delayed(const Duration(milliseconds: 15));
+    await Future.delayed(const Duration(milliseconds: 50));
     emit(SuccessFetchDocumentDetail(documentMasterDetailList: items));
   }
 
@@ -67,7 +67,7 @@ class DocDetailBloc extends Bloc<DocDetailEvent, DocDetailState> {
           locator<CreateDocumentDetailUseCase>();
       bool isSuccess = await useCase(documentDetailBodyDto: event.param);
       emit(DocLoadingOnView(isShow: false));
-      await Future.delayed(const Duration(milliseconds: 20));
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(CreateDocumentDetailStatus(isSuccess: isSuccess));
     } catch (e) {
       emit(CreateDocumentDetailStatus(isSuccess: false));

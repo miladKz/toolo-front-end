@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:toolo_gostar/data/enum/api_enum.dart';
 import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
+import 'package:toolo_gostar/main.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/constants/color_constants.dart';
 import 'package:toolo_gostar/presentation/pages/reports/r_d_t_p/screen_report_taraz_dafater_pelekani.dart';
@@ -128,6 +129,8 @@ class _ActionsTreeViewItemState extends State<ActionsTreeViewItem> {
 }
 
 void callApiByEndpoint(String endPoint, {required BuildContext context}) {
+
+
   debugPrint('callApiByEndpoint endPoint=$endPoint');
   if (endPoint.contains('/api/acc/accounts')) {
     locator.get<MainBloc>().add(MainAccountList());
@@ -140,22 +143,22 @@ void callApiByEndpoint(String endPoint, {required BuildContext context}) {
   } else if (endPoint.contains('کارت')) {
     locator.get<MainBloc>().add(
         MainAnotherList(endpoint: "", apiEnum: ApiEnum.managementCardReader));
-  } else if (endPoint.contains('اسناد حسابداری')) {
+  } else if (endPoint.contains('نمایش')) {
     locator
         .get<MainBloc>()
         .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
-  } else if (endPoint.contains('گزارش ترازها و دفاتر پلکانی')) {
-    navigateToReportScreen(const ScreenReportTarazDafaterPelekani());
-  } else if (endPoint.contains('گزارش جامع ترازها')) {
-    navigateToReportScreen(const ScreenReportJameTarazha());
-  } else if (endPoint.contains('گزارش تراز گروه تفصیل شناور')) {
-    navigateToReportScreen(const ScreenReportTarazGroupTafziliShenavar());
-  } else if (endPoint.contains('گزارش تراز تفصیل شناور')) {
-    navigateToReportScreen(const ScreenReportTarazTafziliShenavar());
-  } else if (endPoint.contains('گزارش تراز تفصیل شناور-حساب')) {
-    navigateToReportScreen(const ScreenReportTarazTafziliShenavarHesab());
-  }else if (endPoint.contains('گزارش ترازنامه مقایسه ای')) {
-    navigateToReportScreen(const ScreenReportTarazMoghayeseyi());
+  } else if (endPoint.contains(localization.titleReportTDP)) {
+    navigateToReportScreen(const ScreenReportTarazDafaterPelekani(),'reportScreen');
+  } else if (endPoint.contains(localization.titleReportJT)) {
+    navigateToReportScreen(const ScreenReportJameTarazha(),'reportScreen');
+  } else if (endPoint.contains(localization.titleReportTGTSh)) {
+    navigateToReportScreen(const ScreenReportTarazGroupTafziliShenavar(),'reportScreen');
+  } else if (endPoint.contains(localization.titleReportTTSh)) {
+    navigateToReportScreen(const ScreenReportTarazTafziliShenavar(),'reportScreen');
+  } else if (endPoint.contains(localization.titleReportTTShH)) {
+    navigateToReportScreen(const ScreenReportTarazTafziliShenavarHesab(),'reportScreen');
+  }else if (endPoint.contains(localization.titleReportTM)) {
+    navigateToReportScreen(const ScreenReportTarazMoghayeseyi(),'reportScreen');
   }else if (endPoint.contains('سند افتتاحیه جدید')) {
     openNewDocumentDialog(context:context);
   }else if (endPoint.contains('سند استقرار جدید')) {
@@ -190,14 +193,24 @@ void openNewDocumentDialog( {required BuildContext context}) {
       });
 }
 
-void navigateToReportScreen(Widget reportScreen) {
-  Get.to(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<ReportBloc>.value(value: locator<ReportBloc>()),
-        BlocProvider<MainBloc>.value(value: locator<MainBloc>()),
-      ],
-      child: reportScreen,
+void navigateToReportScreen(Widget reportScreen,String title) {
+ /* Get.to(
+    GetPage(
+      name: '/$title',
+      page: () => MultiBlocProvider(
+        providers: [
+          BlocProvider<ReportBloc>.value(value: locator<ReportBloc>()),
+          BlocProvider<MainBloc>.value(value: locator<MainBloc>()),
+        ],
+        child: reportScreen,
+      ),
     ),
-  );
+  );*/
+  Get.to(MultiBlocProvider(
+    providers: [
+      BlocProvider<ReportBloc>.value(value: locator<ReportBloc>()),
+      BlocProvider<MainBloc>.value(value: locator<MainBloc>()),
+    ],
+    child: reportScreen,
+  ),routeName: title);
 }

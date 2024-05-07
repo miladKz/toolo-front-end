@@ -51,7 +51,7 @@ class ReportTarazTafziliShenavarHesabData extends ITableRowData {
       "TafziliID": tafziliID,
       "TafziliName": tafziliName
     };
-
+    props.clear();
     for (String key in keys) {
       if (fieldMap.containsKey(key)) {
         props.add('${fieldMap.findAsDynamic(key)}');

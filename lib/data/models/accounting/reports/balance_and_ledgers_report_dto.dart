@@ -1,7 +1,7 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:toolo_gostar/data/models/accounting/reports/report_column_title_dto.dart';
 
-import '../../../../domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import '../../../../domain/entities/accounting/reports/report_t_d_p_data.dart';
 import 'balance_and_ledgers_dto.dart';
 
 class BalanceAndLedgersReportDto extends BalanceAndLedgersReport {

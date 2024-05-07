@@ -48,7 +48,7 @@ class _ActionPinnedMenuState extends State<ActionPinnedMenu> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
+              Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

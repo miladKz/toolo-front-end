@@ -1,4 +1,5 @@
 import 'package:atras_data_parser/atras_data_parser.dart';
+import 'package:flutter/material.dart';
 import 'package:toolo_gostar/data/enum/counter_party_kinds.dart';
 import 'package:toolo_gostar/data/models/accounting/account_have_tafzili_group_dto.dart';
 import 'package:toolo_gostar/data/models/accounting/accounting_acction_dto.dart';
@@ -40,7 +41,7 @@ import 'package:toolo_gostar/domain/entities/accounting/accounting_action.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/doc_total_price.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_t_d_p_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
@@ -337,8 +338,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       ServerResponseDto serverResponse = await remoteDataSource
           .updateCounterparty(token: token, param: counterpartyDto);
       if (serverResponse.isSuccess) {
-        final itemsAsMap = serverResponse.data!.findAsDynamic('Item');
-        return CounterpartyDto.fromMap(itemsAsMap);
+        return counterparty;
       } else {
         throw serverResponse.message;
       }
@@ -466,7 +466,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
       if (serverResponse.isSuccess) {
         return true;
       } else {
-        throw serverResponse.message;
+        debugPrint('createDocumentDetail error===> ${serverResponse.message}');
+       return false;
       }
     } catch (e) {
       rethrow;
@@ -489,7 +490,8 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         }));
         return items;
       } else {
-        throw serverResponse.message;
+        debugPrint('fetchDocumentMasterDetailList error===> ${serverResponse.message}');
+        return List.empty(growable: true);
       }
     } catch (e) {
       rethrow;
@@ -507,6 +509,7 @@ class AccountingRepositoryImpl implements IAccountingRepository {
         final itemsAsMap = serverResponse.data!.findAsDynamic('Items');
         return DocumentTotalPriceDto.fromMap(itemsAsMap);
       } else {
+        debugPrint('fetchDocumentTotalPrice error===> ${serverResponse.message}');
         throw serverResponse.message;
       }
     } catch (e) {

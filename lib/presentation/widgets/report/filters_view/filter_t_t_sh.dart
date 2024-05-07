@@ -8,8 +8,10 @@ import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/custom_title_on_border.dart';
 import 'package:toolo_gostar/presentation/widgets/common/jalali_date_picker.dart';
+import 'package:toolo_gostar/presentation/widgets/common/linear_widget.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/check_box_form.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/drop_down_generic.dart';
+import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/modal_opener_button.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/radio_button_list.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
@@ -22,17 +24,17 @@ import '../../../blocs/report_bloc/report_bloc.dart';
 import '../../../factories/table_view_model_factory.dart';
 import '../btn_set_filter.dart';
 
-TextEditingController controllerFromDocument = TextEditingController();
-TextEditingController controllerToDocument = TextEditingController();
-TextEditingController controllerFromDate = TextEditingController();
-TextEditingController controllerToDate = TextEditingController();
-TextEditingController controllerDocumentCode = TextEditingController();
-TextEditingController controllerDocCodDesc = TextEditingController();
-TextEditingController controllerFromReference = TextEditingController();
-TextEditingController controllerToReference = TextEditingController();
-TextEditingController controllerSeparation = TextEditingController();
+TextEditingController controllerFromDocument = TextEditingController(text: '');
+TextEditingController controllerToDocument = TextEditingController(text: '');
+TextEditingController controllerFromDate = TextEditingController(text: '');
+TextEditingController controllerToDate = TextEditingController(text: '');
+TextEditingController controllerDocumentCode = TextEditingController(text: '');
+TextEditingController controllerDocCodDesc = TextEditingController(text: '');
+TextEditingController controllerFromReference = TextEditingController(text: '');
+TextEditingController controllerToReference = TextEditingController(text: '');
+TextEditingController controllerSeparation = TextEditingController(text: '');
 TextEditingController controllerGroup = TextEditingController(text: '0');
-TextEditingController controllerRadioButton = TextEditingController();
+TextEditingController controllerRadioButton = TextEditingController(text: '');
 
 class FilterTTShView extends StatelessWidget {
   final double height = 70;
@@ -45,14 +47,30 @@ class FilterTTShView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SizedBox(
-          height: constraints.maxHeight,
-          child: AdvanceFiltersButton(
-            height: height,
-            body: Filters(
-              height: 70,
+        return Flex(
+          direction: Axis.vertical,
+          children: [
+            Row(
+              children: [
+                IconButton(onPressed: () {
+                  Get.back();
+                }, icon: const Icon(Icons.close,size: 24,color: Color(0xff6C3483),)),
+                FormItemTitle(title: localization.titleReportTTSh),
+              ],
             ),
-          ),
+            verticalGapDivider,
+            linearGap,
+            Flexible(
+              child: SingleChildScrollView(
+                child: AdvanceFiltersButton(
+                  height: height,
+                  body: Filters(
+                    height: 70,
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -359,6 +377,7 @@ class Filters extends StatelessWidget {
       required TextEditingController controller,
       required String hint}) {
     List<CategoryModel> items = baseDataModel.categoryList;
+    controllerSeparation.text = '${items[0].id}';
     return GenericDropDown<CategoryModel>(
       isEnable: true,
       itemWidth: itemWidth,
@@ -366,7 +385,7 @@ class Filters extends StatelessWidget {
       items: items,
       hint: hint,
       onChanged: (value) {
-        //controller.value=TextEditingValue(text: value.toString());
+        controller.text = '${value?.id}';
       },
     );
   }
@@ -452,30 +471,8 @@ class Filters extends StatelessWidget {
     );
   }
 
-  Row linearTitle({required String title}) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Text(
-            title,
-            style: getFilterBodyTitleStyle.copyWith(
-                color: const Color(0xffA7A7A7)),
-          ),
-        ),
-        Expanded(
-            child: Container(
-          height: 1,
-          color: const Color(0xffCCCCCC),
-        ))
-      ],
-    );
-  }
 
-  Widget linearGap = Container(
-    height: 1,
-    color: const Color(0xffCCCCCC),
-  );
+
 
   Widget showListCheckBox1({required double width}) {
     final List<String> checkBoxNames = [

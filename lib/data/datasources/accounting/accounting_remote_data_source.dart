@@ -186,7 +186,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log('updateCounterparty msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('updateCounterparty msg: $e}');
@@ -249,11 +248,13 @@ class AccountingRemoteDataSource with HttpResponseValidator {
     String apiAddress = "/api/acc/voucher/detail";
     debugPrint('/api/acc/voucher/detail ${body.toMap()}');
     try {
+      log('createDocumentDetail body==>> ${body.toMap().toString()}');
       Response<dynamic> response = await httpClient.post(
         apiAddress,
         data: body.toMap(),
         options: _getHeaders(token),
       );
+      log('createDocumentDetail response==>> ${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -319,7 +320,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         queryParameters: param.toMap(),
         options: _getHeaders(token),
       );
-      debugPrint('detail/list-with-tafzili?5: ${getData(response).toString()}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -337,8 +337,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         queryParameters: param.toMap(),
         options: _getHeaders(token),
       );
-      debugPrint(
-          'api/acc/voucher/detail/total-price: ${getData(response).toString()}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -375,7 +373,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchBankAccTypeList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -392,7 +389,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchBourseTypeList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -409,7 +405,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchCurrencyTypeList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -427,7 +422,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchCustomerStatusList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -444,7 +438,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchDocumentTypeList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -462,7 +455,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchPersonTypeList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -480,7 +472,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchPrefixList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -498,7 +489,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         queryParameters: param.toMap(),
         options: _getHeaders(token),
       );
-      log('fetchStandardDetailList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -517,7 +507,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchStandardDetailList :${getData(response)}');
 
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
@@ -535,7 +524,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('fetchBankList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -552,7 +540,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log(response.data);
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('create standardDetail msg: $e}');
@@ -570,7 +557,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log('update standardDetail msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('update standardDetail msg: $e}');
@@ -606,7 +592,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         apiAddress,
         options: _getHeaders(token),
       );
-      log('getCounterPartyDetailList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -623,7 +608,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log('create CounterpartyDetail msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('create CounterpartyDetail msg: $e}');
@@ -641,7 +625,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: param.toMap(),
         options: _getHeaders(token),
       );
-      log('update CounterpartyDetail msg: ${response.data}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log('update standardDetail msg: $e}');
@@ -658,7 +641,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         data: body.toMap(),
         options: _getHeaders(token),
       );
-      log('fetchBalanceAndLedgersReportList :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);
@@ -676,7 +658,6 @@ class AccountingRemoteDataSource with HttpResponseValidator {
         options: _getHeaders(token),
       );
       log('fetchReportJameTaraz Body:${body.toMap().toString()}');
-      log('fetchReportJameTaraz :${getData(response)}');
       return ServerResponseDto.fromMap(getData(response));
     } on DioException catch (e) {
       log(e);

@@ -35,7 +35,7 @@ class _TabButtonState extends State<TabButton> {
   @override
   Widget build(BuildContext context) {
     print(widget.isSelected);
-    return Expanded(
+    return Flexible(
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [

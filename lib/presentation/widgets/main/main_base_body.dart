@@ -229,7 +229,8 @@ class _LeftSectionViewState extends State<LeftSectionView> {
     switch (apiEnum) {
       case ApiEnum.accountList:
         {
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.accountMainToolbar,
@@ -241,13 +242,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementFloatingDetails:
         {
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                   isActionShow: true,
                   toolBarEnum:
                       ToolBarEnum.floatingDetailManagementModalToolbar),
-              Expanded(
+              Flexible(
                 child: FloatingDetailTreeView(items: FakeData.getFloatingDetailList),
               ),
             ],
@@ -255,13 +257,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
         }
       case ApiEnum.managementRelationShipAccount:
         {
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.groupRelationshipManagementMainToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: FloatingDetailTreeView(
                     items: FakeData.getRelationShipAccountManagement),
               ),
@@ -271,13 +274,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
       case ApiEnum.managementPeople:
         {
           DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromPersonList(mainBloc.counterpartyList);
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.peopleManagementModalToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -290,13 +294,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
       case ApiEnum.managementBankBranch:
         {
           DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromBankList(mainBloc.counterpartyList);
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.bankBranchManagementModalToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -309,13 +314,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
       case ApiEnum.managementRevolvingFund:
         {
           DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromRevolvingFund(mainBloc.counterpartyList);
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.revolvingFundManagementModalToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -328,13 +334,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
       case ApiEnum.managementCardReader:
         {
           DataTableViewModel dataTableViewModel = DataTableViewModelFactory.createTableViewModelFromCardReaderList(mainBloc.counterpartyList);
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.cardReaderManagementModalToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -355,13 +362,14 @@ class _LeftSectionViewState extends State<LeftSectionView> {
               .createTableViewModelFromAccountingDocumentMaster(
               documentMaster: mainBloc.documentMasterList);
 
-          return Column(
+          return Flex(
+            direction: Axis.vertical,
             children: [
               myCustomToolbar(
                 toolBarEnum: ToolBarEnum.accountDocumentMainToolbar,
                 isActionShow: true,
               ),
-              Expanded(
+              Flexible(
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -401,16 +409,21 @@ class _LeftSectionViewState extends State<LeftSectionView> {
   }
 
   void gotoDocumentDetailScreen({required DocumentMaster documentMaster}) {
-
-
-    Get.to(BlocProvider(
-      create: (_) {
-        return locator.get<DocDetailBloc>();
-      },
-      child: ScreenDocumentDetail(
-        documentMaster: documentMaster,
-      ),
-    ));
+    Get.to(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: locator.get<DocDetailBloc>(),
+            ),
+            BlocProvider.value(
+              value: locator.get<MainBloc>(),
+            ),
+          ],
+          child: ScreenDocumentDetail(
+            documentMaster: documentMaster,
+          ),
+        ),
+        routeName: 'documentDetail');
   }
 }
 
@@ -425,7 +438,7 @@ class AccountWidget extends StatelessWidget {
 
     debugPrint(
         '_AccountWidgetState buil AccountWidget');
-    return Expanded(
+    return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

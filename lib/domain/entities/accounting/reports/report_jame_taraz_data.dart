@@ -78,7 +78,7 @@ class ReportJameTarazData extends ITableRowData {
       "MandeTeyDoreBed": periodBalanceDebit,
       "MandeTeyDoreBes": periodBalanceCredit
     };
-
+    props.clear();
     for (String key in keys) {
       if (fieldMap.containsKey(key)) {
         props.add('${fieldMap.findAsDynamic(key)}');

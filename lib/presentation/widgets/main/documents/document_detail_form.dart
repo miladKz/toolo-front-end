@@ -279,14 +279,15 @@ class _ExpandedAccountingDocumentWidgetState
     double maxWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: maxWidth,
-      child: Row(
+      child: Flex(
+        direction: Axis.horizontal,
         children: [
           FormItemTitle(
             title: '$title:',
             style: titleStile,
           ),
           horizontalGapDivider,
-          Expanded(
+          Flexible(
             child: FormItemTitle(
               title: '$value',
               maxLine: 1,
@@ -388,7 +389,7 @@ class _PriceAmountBoxState extends State<PriceAmountBox> {
     );
     return SizedBox(
       width: width,
-      child: Expanded(
+      child: Flexible(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -541,14 +542,15 @@ class _ExpandedCurrentDocumentDataWidgetState
     double maxWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: maxWidth,
-      child: Row(
+      child: Flex(
+        direction: Axis.horizontal,
         children: [
           FormItemTitle(
             title: '$title:',
             style: titleStile,
           ),
           horizontalGapDivider,
-          Expanded(
+          Flexible(
             child: FormItemTitle(
               title: '$value',
               maxLine: 1,

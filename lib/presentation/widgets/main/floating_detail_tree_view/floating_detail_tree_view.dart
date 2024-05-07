@@ -21,7 +21,7 @@ class FloatingDetailTreeView extends StatefulWidget {
 class _FakeTreeViewBuilderState extends State<FloatingDetailTreeView> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: widget.items.isNotEmpty
           ? ListView.builder(
         itemCount: widget.items.length,

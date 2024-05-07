@@ -201,7 +201,7 @@ class _CollapsibleSidebarState extends State<CollapsibleSidebar>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
+            Flexible(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 reverse: widget.fitItemsToBottom,

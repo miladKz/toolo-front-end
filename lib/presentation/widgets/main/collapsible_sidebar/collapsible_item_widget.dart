@@ -71,7 +71,7 @@ class _CollapsibleItemWidgetState extends State<CollapsibleItemWidget> {
   }
 
   Widget get _title {
-    return Expanded(
+    return Flexible(
       child: Opacity(
         opacity: widget.scale,
         child: Transform.translate(

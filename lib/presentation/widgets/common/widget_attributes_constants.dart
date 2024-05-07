@@ -5,6 +5,9 @@ const Widget titleInputSpacing = SizedBox(
 );
 const Widget verticalGapDivider = SizedBox(
   height: 10,
-);const Widget horizontalGapDivider = SizedBox(
+);
+const Widget horizontalGapDivider = SizedBox(
   width: 2,
 );
+const int flexReportFilter = 23;
+const int flexReportTableView = 100-flexReportFilter;

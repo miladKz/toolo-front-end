@@ -45,10 +45,11 @@ class _DocumentDetailPageState extends State<DocumentDetailPage> {
             mainAxisSize: MainAxisSize.max,
             direction: Axis.horizontal,
             children: [
-              Expanded(
+              Flexible(
+                flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8),
-                  child: Column(
+                  child:  Column(
                     children: [
                       myCustomToolbar(
                           toolBarEnum: ToolBarEnum.accountDocumentDetailMainToolbar,isActionShow: true),

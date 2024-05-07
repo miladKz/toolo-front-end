@@ -24,7 +24,7 @@ class _AccountTreeViewBuilderState extends State<AccountTreeViewBuilder> {
   @override
   Widget build(BuildContext context) {
     updateList();
-    return Expanded(
+    return Flexible(
         child: widget.items.isNotEmpty
             ? ListView.builder(
                 itemCount: widget.items.length,

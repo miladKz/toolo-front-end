@@ -1,6 +1,6 @@
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 
-import '../../../entities/accounting/reports/balance_and_ledgers_report.dart';
+import '../../../entities/accounting/reports/report_t_d_p_data.dart';
 import '../../../repositories/accounting/accounting_repository.dart';
 
 class FetchBalanceAndLedgersReportListUseCase {

@@ -272,11 +272,12 @@ class _PeopleModalState extends State<PeopleModal> {
         fontSize: 15,
       ),
       divider(),
-      Row(
+      Flex(
+        direction: Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
+          Flexible(
               child: Column(
             children: [
               FormCheckBox(
@@ -316,7 +317,7 @@ class _PeopleModalState extends State<PeopleModal> {
               )
             ],
           )),
-          Expanded(
+          Flexible(
               child: Column(
             children: [
               FormCheckBox(

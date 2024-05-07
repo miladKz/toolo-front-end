@@ -47,7 +47,7 @@ class _WorkspaceState extends State<Workspace> {
             mainAxisAlignment: MainAxisAlignment.start,
             direction: Axis.horizontal,
             children: [
-              Expanded(
+              Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
 import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/custom_view_with_data_table.dart';
+import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
 import 'package:toolo_gostar/presentation/widgets/report/filters_view/filter_t_d_p.dart';
 
 import '../../../blocs/report_bloc/report_bloc.dart';
@@ -16,8 +17,8 @@ class ReportPageTDP extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       direction: Axis.horizontal,
       children: [
-        Flexible(flex: 3, child: rightReportFilterView()),
-         Flexible(flex: 7, child: LeftReportFilterView()),
+        Flexible(flex: flexReportFilter, child: rightReportFilterView()),
+        Flexible(flex: flexReportTableView, child: LeftReportFilterView()),
       ],
     );
   }

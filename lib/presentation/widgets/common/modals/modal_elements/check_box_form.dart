@@ -55,7 +55,7 @@ class _FormCheckBoxState extends State<FormCheckBox> {
             const SizedBox(
               width: 5,
             ),
-            Expanded(
+            Flexible(
               child: FormItemTitle(
                 title: widget.title,
                 maxLine: 1,

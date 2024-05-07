@@ -54,7 +54,7 @@ class InitView extends StatefulWidget{
 
   @override
   State<InitView> createState() => _InitViewState();
-  bool isBaseDataFetch=false;
+  bool isBaseDataFetch=baseDataModel.categoryList.isNotEmpty;
 }
 
 class _InitViewState extends State<InitView> {

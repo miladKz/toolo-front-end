@@ -301,6 +301,13 @@
  "duringPeriodCirculation":"گردش طی دوره",
  "duringPeriodRemaining":"مانده طی دوره",
  "endingPeriodCirculation":"گردش پایان دوره",
- "endingPeriodRemaining":"مانده پایان دوره"
+ "endingPeriodRemaining":"مانده پایان دوره",
+ "titleReportTDP":"گزارش ترازها و دفاتر پلکانی",
+ "titleReportJT":"گزارش جامع ترازها",
+ "titleReportTGTSh":"گزارش تراز گروه تفصیل شناور",
+ "titleReportTTSh":"گزارش تراز تفصیل شناور",
+ "titleReportTTShH":"گزارش تراز تفصیل شناور-حساب",
+ "titleReportTM":"گزارش ترازنامه مقایسه ای"
+
 
 }

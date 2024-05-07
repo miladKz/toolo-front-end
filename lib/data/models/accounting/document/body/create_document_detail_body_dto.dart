@@ -25,7 +25,7 @@ class CreateDocumentDetailBodyDto extends CreateDocumentDetailBody {
 
   List<Map<String, dynamic>> tafziliListData(
       List<TafziliDataBody> tafziliDataBodyList) {
-    List<Map<String, dynamic>> itemsMap = List.empty();
+    List<Map<String, dynamic>> itemsMap = List.empty(growable: true);
 
     for (var item in tafziliDataBodyList) {
       itemsMap.add(

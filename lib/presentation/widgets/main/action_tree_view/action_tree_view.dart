@@ -67,11 +67,11 @@ class _ActionTreeViewState extends State<ActionTreeView> {
     );
   }
 
-  Row getTitle(double textScale, bool isExpanded) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget getTitle(double textScale, bool isExpanded) {
+    return Flex(
+      direction: Axis.horizontal,
       children: [
-        Expanded(
+        Flexible(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_t_d_p_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/balance_and_ledgers_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_jame_taraz_body.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/body/report_taraz_moghayeseyi_body.dart';
@@ -37,10 +37,12 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
 
   FutureOr<void> _fetchRepostTDP(RepFetchReportTDP event,
       Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
     FetchBalanceAndLedgersReportListUseCase useCase =
         locator<FetchBalanceAndLedgersReportListUseCase>();
     BalanceAndLedgersReport model=  await useCase(body: event.body);
-
+    emit(const ReportLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 10));
     emit(ReportSuccessTDP(model: model));
   }
 
@@ -57,6 +59,7 @@ class ReportBloc extends Bloc<ReportEvent, ReportState>  {
 
   FutureOr<void> _fetchReportTTSh(
       RepFetchReportTTSh event, Emitter<ReportState> emit) async {
+    emit(const ReportLoadingOnView(isShow: true));
     FetchReportTarazTafziliShenavarListUseCase useCase =
         locator<FetchReportTarazTafziliShenavarListUseCase>();
     ReportTarazTafziliShenavar model = await useCase(body: event.body);

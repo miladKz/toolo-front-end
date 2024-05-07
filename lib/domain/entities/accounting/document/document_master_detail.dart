@@ -43,13 +43,13 @@ class DocumentMasterDetail extends ITableRowData {
   List<Object?> get props => [
         accountcd,
         accountsGroupName,
-        accountsDescription,
+        description,
 
         ///mablagh bedehkar
         mablagh > 0 ? mablagh.abs() : 0,
 
         ///mablagh bestankar
-        mablagh < 0 ? mablagh.abs() : 0,
+        mablagh < 0 ? mablagh : 0,
         article,
         arzMablagh,
         arzName,

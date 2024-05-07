@@ -7,7 +7,7 @@ class DocumentMasterDetailParamDto extends DocumentMasterDetailParam {
   //todo change VoucherMSID value with input data
   Map<String, dynamic> toMap() {
     return {
-      "VoucherMSID": 5,
+      "VoucherMSID": voucherMSID,
     };
   }
 }

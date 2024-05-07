@@ -47,8 +47,7 @@ class CustomViewWithDataTable extends StatelessWidget {
   final Function(ITableRowData)? onDoubleTap;
   @override
   Widget build(BuildContext context) {
-    CustomDataTable customDataTable = CustomDataTable(viewModel: viewModel,onTap: onTap,);
-
+    ITableRowData? selectedItem;
     formKey ??= GlobalKey<FormState>();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -64,7 +63,16 @@ class CustomViewWithDataTable extends StatelessWidget {
             verticalGapDivider,
           ],
         ).visible(isShowSearchBox),
-        customDataTable,
+        CustomDataTable(
+          viewModel: viewModel,
+          onTap: (item) {
+            selectedItem = item;
+            if (onTap != null) {
+              onTap!(item);
+            }
+          },
+          onDoubleTap: onDoubleTap,
+        ),
         const SizedBox(
           height: 20,
         ),
@@ -72,9 +80,8 @@ class CustomViewWithDataTable extends StatelessWidget {
           formWidth: formWidth,
           formKey: formKey!,
           onConfirm: () {
-            if (onClickOnConfirmCallback != null &&
-                customDataTable.selectedItem != null) {
-              onClickOnConfirmCallback!(customDataTable.selectedItem);
+            if (onClickOnConfirmCallback != null && selectedItem != null) {
+              onClickOnConfirmCallback!(selectedItem);
             }
           },
         ).visible(isShowActionButtons)

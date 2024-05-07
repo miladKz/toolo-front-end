@@ -2,7 +2,7 @@ import 'package:toolo_gostar/domain/entities/accounting/account_with_tafzili_gro
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/domain/entities/accounting/document/document_master_detail.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers.dart';
-import 'package:toolo_gostar/domain/entities/accounting/reports/balance_and_ledgers_report.dart';
+import 'package:toolo_gostar/domain/entities/accounting/reports/report_t_d_p_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_group_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_Tafzili_shenavar_hesab_data.dart';
 import 'package:toolo_gostar/domain/entities/accounting/reports/report_Taraz_moghayeseyi_data.dart';
@@ -210,7 +210,7 @@ class DataTableViewModelFactory {
 
   static DataTableViewModel? createTableViewModelFromReportTDP(
       {required BalanceAndLedgersReport balanceAndLedgersReport}) {
-    List<BalanceAndLedgers> values = List.empty(growable: true);
+    List<ReportTarazDafaterPelekaniData> values = List.empty(growable: true);
     final List<String> keys = List.empty(growable: true);
     final List<String> labels =
         balanceAndLedgersReport.reportColumnTitle.expand((e) {

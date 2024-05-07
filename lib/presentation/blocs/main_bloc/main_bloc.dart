@@ -139,9 +139,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       debugPrint('Atras method _mainActionList useCase: $useCase');
       actions = await useCase();
       emit(MainLoadingOnView(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 50));
       filteredActions = _filterActions(WorkSpaceItems.accounting);
       emit(AccountingActionsSuccess(filteredActions));
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 100));
       add(FetchBaseData());
     } catch (e) {
       e.toString();
@@ -225,8 +226,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     } else if (event.apiEnum == ApiEnum.accountDocument) {
       FetchDocumentMasterListUseCase useCase =
           locator<FetchDocumentMasterListUseCase>();
-      documentMasterList = await useCase(
-          documentMasterParamDto: DocumentMasterParamDto(bargeTypeID: -1));
+      try{
+        documentMasterList = await useCase(
+            documentMasterParamDto: DocumentMasterParamDto(bargeTypeID: -1));
+      }catch(e){
+        documentMasterList=List.empty(growable: true);
+      }
+
     }
     emit(ApiChange(apiEnum: ApiEnum.unknown));
     await Future.delayed(const Duration(milliseconds: 10));
@@ -252,6 +258,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       UpdateAccountUseCase useCase = locator<UpdateAccountUseCase>();
       Account account = await useCase(event.account);
       emit(MainLoadingOnButton(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(MainUpdatedAccountSuccess(account));
       reGetAccounts();
     } catch (e) {
@@ -271,6 +278,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     DeleteAccountUseCase useCase = locator<DeleteAccountUseCase>();
     String message = await useCase(event.account);
     emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 50));
     selectedDataTreeItem = null;
     emit(MainDeletedAccountSuccess(message));
     reGetAccounts();
@@ -327,6 +335,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         syncDetailListWithServer(event.counterparty);
       }
       emit(MainLoadingOnButton(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(SuccessCreateCounterparty(counterparty));
       reGetCounterParty(counterparty);
     } catch (e) {
@@ -366,6 +375,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       UpdateCounterpartyUseCase useCase = locator<UpdateCounterpartyUseCase>();
       Counterparty counterparty = await useCase(event.counterparty);
       emit(MainLoadingOnButton(isShow: false));
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(SuccessUpdateCounterparty(counterparty));
       reGetCounterParty(counterparty);
     } catch (e) {
@@ -379,13 +389,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     DeleteCounterpartyUseCase useCase = locator<DeleteCounterpartyUseCase>();
     String message = await useCase(event.counterparty);
     emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 50));
     selectedCounterparty = null;
     emit(SuccessDeletedCounterparty(message));
     reGetCounterParty(event.counterparty);
   }
 
   void reGetCounterParty(Counterparty counterparty) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 300));
     add(MainAnotherList(
         endpoint: "",
         apiEnum: getCorrectApiFromCounterpartyKind(counterparty)));
@@ -660,13 +671,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _fetchAccountHaveTafziliGroup(
       MainFetchAccountHaveTafziliGroup event, Emitter<MainState> emit) async {
     try {
-      emit(MainLoadingOnView(isShow: true));
-      //emit(MainLoadingOnButton(isShow: true));
       FetchAccountListHaveTafziliGroupUseCase useCase =
           locator<FetchAccountListHaveTafziliGroupUseCase>();
       List<AccountHaveTafziliGroup> items = await useCase();
-      emit(MainLoadingOnView(isShow: false));
-      await Future.delayed(const Duration(milliseconds: 20));
       emit(SuccessFetchAccountHaveTafziliGroup(items: items));
     } catch (e) {
       emit(MainLoadingOnView(isShow: false));

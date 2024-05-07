@@ -2,7 +2,7 @@ import 'package:atras_data_parser/atras_data_parser.dart';
 
 import '../../../../domain/entities/accounting/reports/balance_and_ledgers.dart';
 
-class BalanceAndLedgersDto extends BalanceAndLedgers {
+class BalanceAndLedgersDto extends ReportTarazDafaterPelekaniData {
   BalanceAndLedgersDto({
     required super.accountName,
     required super.accountCd,

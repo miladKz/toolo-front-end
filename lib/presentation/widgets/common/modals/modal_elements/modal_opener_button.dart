@@ -17,6 +17,7 @@ class ModalOpenerButton extends StatefulWidget {
       required this.dialogTitle,
       required this.onSelectItemFromTableModal,
       required this.dataTableViewModel,
+      this.toolBarEnum = ToolBarEnum.standardDetailToolbar,
       required formKey});
 
   final double buttonWidth;
@@ -24,7 +25,11 @@ class ModalOpenerButton extends StatefulWidget {
   String value;
   String dialogTitle;
   DataTableViewModel? dataTableViewModel;
+  ToolBarEnum toolBarEnum;
+
   final void Function(ITableRowData?) onSelectItemFromTableModal;
+  late TextEditingController nameController =
+      TextEditingController(text: value);
 
   @override
   State<ModalOpenerButton> createState() => _ModalOpenerButtonState();
@@ -49,16 +54,14 @@ class _ModalOpenerButtonState extends State<ModalOpenerButton> {
                 body: CustomViewWithDataTable(
                     isShowActionButtons: true,
                     formWidth: widget.formWidth,
-                    toolBarEnum: ToolBarEnum.standardDetailToolbar,
+                    toolBarEnum: widget.toolBarEnum,
                     viewModel: widget.dataTableViewModel!,
                     onClickOnConfirmCallback: (selectedItem) {
                       this.selectedItem = selectedItem;
-
                       Navigator.of(context).pop();
-                      setState(() {
-                        widget.value = (selectedItem as ITableRowData).name;
-                        widget.onSelectItemFromTableModal(selectedItem);
-                      });
+                      widget.nameController.text =
+                          (selectedItem as ITableRowData).name;
+                      widget.onSelectItemFromTableModal(selectedItem);
                     },
                     formKey: _formKey),
               );
@@ -80,7 +83,7 @@ class _ModalOpenerButtonState extends State<ModalOpenerButton> {
             FormItemTitle(
               title: (widget.dataTableViewModel == null)
                   ? localization.titleLoading
-                  : widget.value,
+                  : widget.nameController.text,
               fontWeight: FontWeight.normal,
             ),
             const Icon(Icons.arrow_drop_down_outlined),

@@ -481,7 +481,7 @@ class _GenerateNewBankState extends State<GenerateNewBank> {
         state is SuccessCreateCounterparty) {
       Navigator.of(context).pop();
     } else if (state is FailedUpdateCounterparty) {
-      debugPrint('generate counterpartyBank error: ${state.errorMessage}');
+      debugPrint('uodate counterpartyBank error: ${state.errorMessage}');
       //Navigator.of(context).pop();
       Future.delayed(const Duration(microseconds: 20)).then((value) =>
           showSnack(

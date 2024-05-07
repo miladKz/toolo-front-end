@@ -30,7 +30,7 @@ List<Widget> standardDetailToolbarActionItems(
             context: context,
             builder: (BuildContext context) {
               return CustomDialog(
-                title: localization.newRevolvingFund,
+                title: localization.descriptionOfDocuments,
                 width: 350,
                 body: StandardDetailModal(
                     formWidth: 350,

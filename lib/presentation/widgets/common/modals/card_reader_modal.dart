@@ -9,6 +9,7 @@ import 'package:toolo_gostar/presentation/view_models/table_view_model.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_item_title.dart';
 import 'package:toolo_gostar/presentation/widgets/common/modals/modal_elements/form_text_field.dart';
 import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_constants.dart';
+import 'package:toolo_gostar/presentation/widgets/main/actions_toolbar/toolbar_enum.dart';
 
 import '../../../../../main.dart';
 import '../../../../di/di.dart';
@@ -38,6 +39,7 @@ class CardReaderModal extends StatefulWidget {
   late Bank bankList;
   bool isShowProgress = false;
   late bool isUpdate;
+   bool isInit = true;
 
   @override
   State<CardReaderModal> createState() => _CardReaderModalState();
@@ -54,29 +56,23 @@ class _CardReaderModalState extends State<CardReaderModal> {
   final TextEditingController descriptionController =
       TextEditingController(text: '');
   bool currencyTypeDropBoxVisibility = false;
-  late Widget relatedBankModalOpenerButtonInstance = RelatedBankWidget(
-    formWidth: widget.formWidth,
-    formKey: widget._formKey,
-    currencyTypeName: getCurrencyTypeName(),
-    relatedBankName: getRelatedBankName(),
-    onSelectItem: (selectedBank) {
-      widget.cardReader.updateBankId(selectedBank.id);
-      widget.cardReader.updateCurrencyType(selectedBank.currencyType);
-    },
-  );
 
   @override
   Widget build(BuildContext context) {
     checkState();
-    widget.isUpdate = (widget.cardReader.id != 0);
-    codeController.text =
-        widget.isUpdate ? widget.cardReader.code.toString() : '';
-    nameController.text =
-        widget.isUpdate ? widget.cardReader.name.toString() : '';
-    terminalNumberController.text =
-        widget.isUpdate ? widget.cardReader.nationalCode.toString() : '';
-    descriptionController.text =
-        widget.isUpdate ? widget.cardReader.description : '';
+
+    if(widget.isInit){
+      widget.isUpdate = (widget.cardReader.id != 0);
+      codeController.text =
+      widget.isUpdate ? widget.cardReader.code.toString() : '';
+      nameController.text =
+      widget.isUpdate ? widget.cardReader.name.toString() : '';
+      terminalNumberController.text =
+      widget.isUpdate ? widget.cardReader.nationalCode.toString() : '';
+      descriptionController.text =
+      widget.isUpdate ? widget.cardReader.description : '';
+      widget.isInit = false;
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -89,7 +85,15 @@ class _CardReaderModalState extends State<CardReaderModal> {
         terminalNumberBox(
             width: widget.formWidth, controller: terminalNumberController),
         verticalGapDivider,
-        relatedBankModalOpenerButtonInstance,
+        RelatedBankWidget(
+          formWidth: widget.formWidth,
+          formKey: widget._formKey,
+          relatedBank: getRelatedBank(),
+          onSelectItem: (selectedBank) {
+            widget.cardReader.updateBankId(selectedBank.id);
+            widget.cardReader.updateCurrencyType(selectedBank.currencyType);
+          },
+        ),
         verticalGapDivider,
         descriptionBox(
             width: widget.formWidth, controller: descriptionController),
@@ -262,6 +266,7 @@ class _CardReaderModalState extends State<CardReaderModal> {
   }
 
   void checkState() {
+
     final state = context.watch<MainBloc>().state;
     if (state is MainLoadingOnButton) {
       setState(() {
@@ -285,46 +290,32 @@ class _CardReaderModalState extends State<CardReaderModal> {
     }
   }
 
-  String getRelatedBankName() {
-    String bankName = '';
+  Counterparty? getRelatedBank() {
+    Counterparty? relatedBank;
     for (Counterparty counterparty in baseDataModel.counterpartyBankList) {
       if (widget.cardReader.parentId == counterparty.id) {
-        bankName = counterparty.name;
+        relatedBank = counterparty;
       }
     }
-    if (bankName.isNotEmpty) {
-      currencyTypeDropBoxVisibility = true;
-    }
-    return bankName;
+
+    return relatedBank;
   }
 
-  String getCurrencyTypeName() {
-    String currencyTypeName = '';
-    for (CurrencyType currencyType in baseDataModel.currencyTypeList) {
-      if (widget.cardReader.currencyType == currencyType.id) {
-        currencyTypeName = currencyType.name;
-      }
-    }
-    return currencyTypeName;
-  }
 }
 
 class RelatedBankWidget extends StatefulWidget {
   RelatedBankWidget(
       {super.key,
       required this.formWidth,
-      required this.currencyTypeName,
       required this.formKey,
-      required this.relatedBankName,
+      required this.relatedBank,
       required this.onSelectItem});
 
   double formWidth;
 
   final GlobalKey<FormState> formKey;
   Function(Counterparty) onSelectItem;
-  String relatedBankName;
-  String currencyTypeName;
-
+  Counterparty? relatedBank;
   @override
   State<RelatedBankWidget> createState() => _RelatedBankWidgetState();
 }
@@ -338,7 +329,7 @@ class _RelatedBankWidgetState extends State<RelatedBankWidget> {
       children: [
         relatedBankModalOpenerButton(width: widget.formWidth),
         verticalGapDivider,
-        if (currencyTypeDropBoxVisibility || widget.currencyTypeName.isNotEmpty) ...[
+        if (currencyTypeDropBoxVisibility || getCurrencyTypeName().isNotEmpty) ...[
           currencyTypeField(width: widget.formWidth)
         ],
       ],
@@ -358,16 +349,16 @@ class _RelatedBankWidgetState extends State<RelatedBankWidget> {
         ModalOpenerButton(
           dialogTitle: localization.titleBankList,
           buttonWidth: width,
-          formWidth: widget.formWidth - 200,
-          value: widget.relatedBankName,
+          formWidth: widget.formWidth,
+          toolBarEnum: ToolBarEnum.bankBranchManagementModalToolbar,
+          value: widget.relatedBank != null ? widget.relatedBank!.name:'',
           formKey: widget.formKey,
           onSelectItemFromTableModal: (bank) {
             if (bank != null) {
               try {
-                Counterparty bankCounterparty = bank as Counterparty;
-                widget.onSelectItem(bankCounterparty);
+                widget.relatedBank = bank as Counterparty;
+                widget.onSelectItem(widget.relatedBank!);
                 setState(() {
-                  widget.relatedBankName = bank.name;
                   currencyTypeDropBoxVisibility = true;
                 });
               } catch (e) {
@@ -392,11 +383,21 @@ class _RelatedBankWidgetState extends State<RelatedBankWidget> {
         titleInputSpacing,
         FormTextField(
           inputType: TextInputType.number,
-          textHint: widget.currencyTypeName,
-          enable: false,
+          textHint: getCurrencyTypeName(),
+          enable: true,
           widgetWidth: width,
         ),
       ],
     );
+  }
+
+  String getCurrencyTypeName() {
+    String currencyTypeName = '';
+    for (CurrencyType currencyType in baseDataModel.currencyTypeList) {
+      if (widget.relatedBank != null && widget.relatedBank!.currencyType == currencyType.id) {
+        currencyTypeName = currencyType.name;
+      }
+    }
+    return currencyTypeName;
   }
 }

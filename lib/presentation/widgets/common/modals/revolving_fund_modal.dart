@@ -289,7 +289,7 @@ class _RevolvingFundModalState extends State<RevolvingFundModal> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FormItemTitle(title: localization.relatedBank),
+        FormItemTitle(title: localization.revolvingFundType),
         titleInputSpacing,
         ModalOpenerButton(
           dialogTitle: localization.titleBankList,

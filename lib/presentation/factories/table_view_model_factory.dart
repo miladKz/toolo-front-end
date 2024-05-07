@@ -176,6 +176,7 @@ class DataTableViewModelFactory {
     final List<String> labels = [
       localization.code,
       localization.name,
+      localization.address,
     ];
     final List<BankInSelectiveModal> bankList = List.empty(growable: true);
 

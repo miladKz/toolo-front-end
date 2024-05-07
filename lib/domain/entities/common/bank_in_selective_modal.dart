@@ -55,5 +55,5 @@ class BankInSelectiveModal extends Counterparty {
         );
 
   @override
-  List<Object?> get props => [code, name];
+  List<Object?> get props => [code, name, address];
 }

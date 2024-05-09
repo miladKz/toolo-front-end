@@ -277,8 +277,8 @@ class _ExpandedAccountingDocumentWidgetState
       fontWeight: FontWeight.w700,
     );
     double maxWidth = MediaQuery.of(context).size.width;
-    return SizedBox(
-      width: maxWidth,
+    return Container(
+      constraints: BoxConstraints(maxWidth: maxWidth),
       child: Flex(
         direction: Axis.horizontal,
         children: [
@@ -328,51 +328,49 @@ class _PriceAmountBoxState extends State<PriceAmountBox> {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : SizedBox(
-            width: widget.maxWidth,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xff929292).withOpacity(0.25),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          item(
-                              title: localization.titleDebtorSum,
-                              value: widget.documentTotalPrice!.bedTotalPrice
-                                  .abs(),
-                              width: itemWidth),
-                          item(
-                              title: localization.titleCreditorSum,
-                              value: widget.documentTotalPrice!.besTotalPrice
-                                  .abs(),
-                              width: itemWidth),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 1,
-                      height: 30,
-                      color: const Color(0xff6C3483),
-                    ),
-                    item(
-                        title: localization.titleRemaining,
-                        value: widget.documentTotalPrice!.totalPrice,
-                        width: itemWidth),
-                  ],
+        : Container(
+          decoration: BoxDecoration(
+              color: const Color(0xff929292).withOpacity(0.25),
+              borderRadius: BorderRadius.circular(5)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      item(
+                          title: localization.titleDebtorSum,
+                          value: widget.documentTotalPrice!.bedTotalPrice
+                              .abs(),
+                          width: itemWidth),
+                      item(
+                          title: localization.titleCreditorSum,
+                          value: widget.documentTotalPrice!.besTotalPrice
+                              .abs(),
+                          width: itemWidth),
+                    ],
+                  ),
                 ),
-              ),
+                Container(
+                  width: 1,
+                  height: 30,
+                  color: const Color(0xff6C3483),
+                ),
+                item(
+                    title: localization.titleRemaining,
+                    value: widget.documentTotalPrice!.totalPrice,
+                    width: itemWidth),
+              ],
             ),
-          );
+          ),
+        );
   }
 
   Widget item(
@@ -387,27 +385,26 @@ class _PriceAmountBoxState extends State<PriceAmountBox> {
       fontSize: 10,
       fontWeight: FontWeight.w700,
     );
-    return SizedBox(
-      width: width,
-      child: Flexible(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FormItemTitle(
-              title: '$title:',
-              style: titleStyle,
+    return Container(
+     constraints: BoxConstraints(maxWidth: width),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          FormItemTitle(
+            title: '$title:',
+            style: titleStyle,
+          ),
+          horizontalGapDivider,
+          Flexible(
+            child: FormItemTitle(
+              title: '$value',
+              maxLine: 1,
+              style: valueTextStyle,
             ),
-            horizontalGapDivider,
-            Flexible(
-              child: FormItemTitle(
-                title: '$value',
-                maxLine: 1,
-                style: valueTextStyle,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -540,8 +537,8 @@ class _ExpandedCurrentDocumentDataWidgetState
       fontWeight: FontWeight.w700,
     );
     double maxWidth = MediaQuery.of(context).size.width;
-    return SizedBox(
-      width: maxWidth,
+    return Container(
+      constraints: BoxConstraints(maxWidth: maxWidth),
       child: Flex(
         direction: Axis.horizontal,
         children: [

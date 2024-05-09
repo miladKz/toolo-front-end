@@ -480,11 +480,12 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
     return tafziliDataBodyList;
   }
 
-  void listenToCreateDoc(BuildContext context) {
+  void listenToCreateDoc(BuildContext context) async{
     final state = context.watch<DocDetailBloc>().state;
     if (state is CreateDocumentDetailStatus) {
-      widget.onCreateOrUpdateStatus(state.isSuccess);
       Navigator.of(context).pop();
+      await Future.delayed(const Duration(milliseconds: 20));
+      widget.onCreateOrUpdateStatus(state.isSuccess);
       if (!state.isSuccess) {
         Future.delayed(const Duration(microseconds: 20)).then((value) =>
             showSnack(

@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toolo_gostar/presentation/widgets/common/snakbar.dart';
@@ -30,11 +31,11 @@ class EditGroupForm extends StatefulWidget {
 
 class _EditGroupFormState extends State<EditGroupForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController groupCodeController = TextEditingController();
-  TextEditingController groupNameController = TextEditingController();
-  TextEditingController orderIndexOneController = TextEditingController();
-  TextEditingController orderIndexTwoController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController(text: '');
+  TextEditingController groupCodeController = TextEditingController(text: '');
+  TextEditingController groupNameController = TextEditingController(text: '');
+  TextEditingController orderIndexOneController = TextEditingController(text: '');
+  TextEditingController orderIndexTwoController = TextEditingController(text: '');
 
   @override
   void initState() {
@@ -45,7 +46,10 @@ class _EditGroupFormState extends State<EditGroupForm> {
   @override
   Widget build(BuildContext context) {
     groupCodeController.text = widget.account.groupCode;
+    groupNameController.text = widget.account.displayName;
     descriptionController.text = widget.account.description;
+    orderIndexOneController.text='${widget.account.indexOrder1}';
+    orderIndexTwoController.text='${widget.account.indexOrder2}';
     LiquidityType? liquidityType;
     if (widget.account.mahiatRialy > -1) {
       liquidityType = LiquidityType.fromValue(widget.account.mahiatRialy);
@@ -425,9 +429,9 @@ class _ActionsButtonWidgetState extends State<ActionsButtonWidget> {
                       widget.widget.account
                           .updateDisplayName(widget.groupNameController.text);
                       widget.widget.account.updateIndexOrder1(
-                          int.parse(widget.orderIndexOneController.text));
+                          widget.orderIndexOneController.text.toInt());
                       widget.widget.account.updateIndexOrder1(
-                          int.parse(widget.orderIndexTwoController.text));
+                          widget.orderIndexTwoController.text.toInt());
 
                       locator
                           .get<MainBloc>()

@@ -6,20 +6,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toolo_gostar/di/di.dart';
-import 'package:toolo_gostar/domain/entities/accounting/document/document_master.dart';
 import 'package:toolo_gostar/gen/fonts.gen.dart';
 import 'package:toolo_gostar/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:toolo_gostar/presentation/blocs/doc_detail_bloc/doc_detail_bloc.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
-import 'package:toolo_gostar/presentation/blocs/report_bloc/report_bloc.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_j_t/screen_report_jame_tarazha.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_t_m/screen_report_taraz_moghayeseyi.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_t_t_sh/screen_report_taraz_tafzili_shenavar.dart';
-import 'package:toolo_gostar/presentation/pages/reports/r_t_t_sh_h/screen_report_taraz_tafzili_shenavar_hesab.dart';
 import 'package:toolo_gostar/presentation/pages/screen_auth.dart';
-import 'package:toolo_gostar/presentation/pages/screen_document_detail.dart';
 import 'package:toolo_gostar/presentation/pages/screen_main.dart';
-import 'package:toolo_gostar/presentation/pages/test_screen.dart';
 import 'package:toolo_gostar/presentation/theme/material_color.dart';
 
 part 'presentation/theme/my_theme.dart';
@@ -61,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       home: Builder(builder: (context) {
         themData = Theme.of(context);
         localization = AppLocalizations.of(context)!;
-        return screenMain();
+        return screenAuth();
       }),
     );
   }
@@ -81,55 +72,6 @@ Widget screenAuth() {
   );
 }
 
-Widget screenDocDetail() {
-  DocumentMaster documentMaster = DocumentMaster(
-      id: 5,
-      activeYear: "03/10/12",
-      bargeTypeID: 1,
-      bargeTypeName: "bargeTypeName",
-      categoryID: 2,
-      categoryName: "categoryName",
-      comment: "comment",
-      dateBarge: "dateBarge",
-      dateBargeCustom: "dateBargeCustom",
-      description: "description",
-      isActive: true,
-      modulesID: 3,
-      modulesName: "حسابداری",
-      mustBeReCreate: false,
-      number: 10,
-      number2: 20,
-      numberBarge: 30,
-      numberCustom: 35,
-      numberDaily: 5,
-      numberMonthly: 50,
-      persianDate: "persianDate",
-      persianTime: "persianTime",
-      saveTypeID: 0,
-      saveTypeName: "موقت",
-      tarazPrice: 0,
-      totalPrice: 50000,
-      creditorSum: 0,
-      debtorSum: 50000,
-      remaining: 50000);
-  return BlocProvider(
-    create: (_) {
-      return locator.get<DocDetailBloc>();
-    },
-    child: ScreenDocumentDetail(
-      documentMaster: documentMaster,
-    ),
-  );
-}
-
-Widget testScreen() {
-  return BlocProvider(
-    create: (_) {
-      return locator<MainBloc>();
-    },
-    child: TestScreen(),
-  );
-}
 
 Widget screenMain() {
   return BlocProvider(
@@ -140,6 +82,7 @@ Widget screenMain() {
   );
 }
 
+/*
 Widget screenReport() {
   return MultiBlocProvider(providers: [
     BlocProvider(
@@ -154,6 +97,7 @@ Widget screenReport() {
     ),
   ], child: const ScreenReportTarazMoghayeseyi());
 }
+*/
 
 bool get isDialogOpen {
   bool? isDialogOpen = Get.isDialogOpen;

@@ -134,7 +134,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       MainActionList event, Emitter<MainState> emit) async {
     try {
       debugPrint('Atras method _mainActionList: ');
-      emit(MainLoadingOnView(isShow: false));
+      emit(MainLoadingOnView(isShow: true));
       GetActionsUseCase useCase = locator<GetActionsUseCase>();
       debugPrint('Atras method _mainActionList useCase: $useCase');
       actions = await useCase();

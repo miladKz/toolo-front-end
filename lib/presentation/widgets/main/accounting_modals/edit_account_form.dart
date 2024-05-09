@@ -16,8 +16,6 @@ class EditAccountForm extends StatefulWidget {
   Account account;
   bool isNew;
 
-  //Account tmpAaccount;
-
   EditAccountForm(
       {super.key,
       required this.account,
@@ -38,6 +36,10 @@ class _EditAccountFormState extends State<EditAccountForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    accountNameController.text = widget.account.displayName;
+    accountCodeController.text = widget.account.accountcd;
+    descriptionController.text = widget.account.description;
     if (widget.account.type >= 0) {
       accountType = RialType.fromValue(widget.account.type);
     }

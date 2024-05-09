@@ -103,6 +103,8 @@ class Filters extends StatelessWidget {
   Widget build(BuildContext context) {
     additionalCheckBoxList = List.empty(growable: true);
     controllersTafzili = List.empty(growable: true);
+    controllerDocumentCode.text='';
+    controllerDocCodDesc.text='';
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;

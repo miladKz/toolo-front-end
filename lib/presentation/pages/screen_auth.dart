@@ -42,7 +42,7 @@ class _ScreenAuthState extends State<ScreenAuth> {
             Get.to(BlocProvider.value(
               value: locator<FiscalYearBloc>(),
               child: const ScreenFiscalYear(),
-            ));
+            ),routeName: 'fiscalYear');
           }
         },
         child: BlocBuilder<AuthBloc, AuthState>(

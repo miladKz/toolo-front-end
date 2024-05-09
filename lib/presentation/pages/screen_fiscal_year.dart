@@ -36,7 +36,7 @@ class _ScreenFiscalYearState extends State<ScreenFiscalYear> {
             isDisable = false;
 
             if (state is FiscalYearFinishWork) {
-              Get.offAll(screenMain());
+              Get.offAll(screenMain(),routeName: 'main');
             }
           }
         },

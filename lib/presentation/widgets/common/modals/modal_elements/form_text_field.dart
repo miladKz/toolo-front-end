@@ -58,7 +58,7 @@ class FormTextField extends StatelessWidget {
           decoration: InputDecoration(
               labelText: textHint,
               labelStyle: const TextStyle(
-                  color: Color(0xFF989B9F),
+                  color: Color(0xFFC2C6CB),
                   fontSize: 12,
                   fontWeight: FontWeight.w400),
               contentPadding: const EdgeInsets.fromLTRB(5, 12, 12, 5),

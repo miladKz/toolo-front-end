@@ -20,9 +20,6 @@ import 'package:toolo_gostar/presentation/widgets/common/widget_attributes_const
 import 'package:toolo_gostar/presentation/widgets/main/account_have_tafzili_group_modal.dart';
 
 import '../../../../../../main.dart';
-import '../../../../../domain/entities/common/abstracts/drop_down_item_abs.dart';
-import '../../../../../domain/entities/common/drop_down_item.dart';
-import '../../../common/modals/modal_elements/drop_down_generic.dart';
 import '../../../common/modals/modal_elements/modal_action_buttons.dart';
 
 class NewDocumentRowModal extends StatefulWidget {
@@ -86,6 +83,8 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
 
   @override
   Widget build(BuildContext context) {
+
+
     listenToCreateDoc(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -141,7 +140,7 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
     double mablagh = getMablagh(
         controllerDebtorAmount: widget.controllerDebtorAmount,
         controllerCreditorAmount: widget.controllerCreditorAmount);
-    double arzMablagh = getarzMablagh(
+    double arzMablagh = getArzMablagh(
         controllerDebtorCurrencyAmount: widget.controllerDebtorCurrencyAmount,
         controllerCreditorCurrencyAmount:
             widget.controllerCreditorCurrencyAmount);
@@ -197,63 +196,6 @@ class _NewDocumentRowModalState extends State<NewDocumentRowModal> {
     );
   }
 
-  Widget row3({required double rowWidth}) {
-    double itemWidth = getItemWidth(maxWidth: rowWidth, itemsCount: 2);
-    return SizedBox(
-      width: rowWidth,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          separationTypeDropBox(width: itemWidth),
-          horizontalGapDivider,
-          sheetNumberBox(
-              width: itemWidth, controller: widget.controllerSheetNumber),
-        ],
-      ),
-    );
-  }
-
-  Widget separationTypeDropBox({required double width}) {
-    List<DropDownItem> items = [
-      DropDownItem(name: localization.titleSeparation1),
-      DropDownItem(name: localization.titleSeparation2),
-      DropDownItem(name: localization.titleSeparation3),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FormItemTitle(title: localization.titleSeparationType),
-        titleInputSpacing,
-        GenericDropDown<IDropDownItem>(
-          isEnable: true,
-          itemWidth: width - 5,
-          value: items[0],
-          items: items,
-          onChanged: (value) {},
-        ),
-      ],
-    );
-  }
-
-  Widget sheetNumberBox(
-      {required double width, required TextEditingController controller}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FormItemTitle(title: localization.titleSheetNumber),
-        titleInputSpacing,
-        FormTextField(
-          controller: controller,
-          enable: true,
-          widgetWidth: width,
-        ),
-      ],
-    );
-  }
 
   Widget documentDetailBox(
       {required double width, required TextEditingController controller}) {
@@ -798,10 +740,10 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
                       TextEditingValue(text: accountItem.accountcd);
                   widget.controllerDocCodDesc.value =
                       TextEditingValue(text: accountItem.description);
+                  Navigator.of(context).pop();
                   locator.get<MainBloc>().add(
                       MainFetchTafziliGroupAndChildListWithAccountId(
                           accountId: accountItem.id));
-                  Navigator.of(context).pop();
                 },
               ),
             ); // Pass your account data here
@@ -863,7 +805,7 @@ double getMablagh(
   return debAmount > 0 ? debAmount : (creditorAmount>0?(creditorAmount * -1):0);
 }
 
-double getarzMablagh(
+double getArzMablagh(
     {required TextEditingController controllerDebtorCurrencyAmount,
     required TextEditingController controllerCreditorCurrencyAmount}) {
   double debAmount = controllerDebtorCurrencyAmount.text.isEmpty

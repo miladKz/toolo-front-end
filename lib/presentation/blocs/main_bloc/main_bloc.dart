@@ -167,11 +167,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   FutureOr<void> _mainAccountList(
       MainAccountList event, Emitter<MainState> emit) async {
     emit(ApiChange(apiEnum: ApiEnum.unknown));
+    await Future.delayed(const Duration(milliseconds: 20));
     emit(MainLoadingOnView(isShow: true));
     GetAccountListUseCase useCase = locator<GetAccountListUseCase>();
     List<Account> accountList = await useCase();
     emit(ApiChange(apiEnum: ApiEnum.accountList));
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 50));
     emit(MainLoadingOnView(isShow: false));
     await Future.delayed(const Duration(milliseconds: 20));
     emit(MainAccountSuccess(accountList));
@@ -205,6 +206,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _mainAnotherList(
       MainAnotherList event, Emitter<MainState> emit) async {
+    emit(ApiChange(apiEnum: ApiEnum.unknown));
+    await Future.delayed(const Duration(milliseconds: 20));
     emit(MainLoadingOnView(isShow: true));
     if (event.apiEnum == ApiEnum.managementRelationShipAccount) {
       GetDetailAccountGroupListUseCase useCase =
@@ -234,12 +237,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       }
 
     }
-    emit(ApiChange(apiEnum: ApiEnum.unknown));
-    await Future.delayed(const Duration(milliseconds: 10));
-    emit(ApiChange(apiEnum: event.apiEnum));
+
+    await Future.delayed(const Duration(milliseconds: 20));
     lastApiCalled = event.apiEnum;
-    await Future.delayed(const Duration(milliseconds: 100));
     emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 50));
+    emit(ApiChange(apiEnum: event.apiEnum));
   }
 
   FutureOr<void> _showDetailAccountInFormHandler(
@@ -427,6 +430,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   FutureOr<void> _fetchBaseData(
       FetchBaseData event, Emitter<MainState> emit) async {
+    emit(MainLoadingOnView(isShow: true));
     List<BankAccType> bankAccTypeList = await fetchBankAccTypeList();
     List<BourseType> bourseTypeList = await fetchBourseTypeList();
     List<CurrencyType> currencyTypeList = await fetchCurrencyTypeList();
@@ -450,6 +454,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         counterpartyBankList: counterpartyBankList,
         categoryList: categoryList);
 
+    emit(MainLoadingOnView(isShow: false));
+    await Future.delayed(const Duration(milliseconds: 50));
     emit(SuccessFetchBaseDataModel(baseDataModel: baseDataModel));
     debugPrint(baseDataModel.toString());
   }
@@ -652,13 +658,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       MainCreateDocumentMaster event, Emitter<MainState> emit) async {
     try {
       emit(MainLoadingOnView(isShow: true));
-      //emit(MainLoadingOnButton(isShow: true));
       CreateDocumentMasterUseCase useCase =
           locator<CreateDocumentMasterUseCase>();
       bool isSuccess =
           await useCase(documentMasterBodyDto: event.documentMasterBodyDto);
       emit(MainLoadingOnView(isShow: false));
-      await Future.delayed(const Duration(milliseconds: 20));
+      await Future.delayed(const Duration(milliseconds: 50));
       emit(CreateDocumentMasterStatus(isSuccess: isSuccess));
     } catch (e) {
       emit(CreateDocumentMasterStatus(isSuccess: false));

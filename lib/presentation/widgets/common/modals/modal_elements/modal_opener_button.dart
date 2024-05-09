@@ -39,7 +39,6 @@ class _ModalOpenerButtonState extends State<ModalOpenerButton> {
   ITableRowData? selectedItem;
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -58,9 +57,9 @@ class _ModalOpenerButtonState extends State<ModalOpenerButton> {
                     viewModel: widget.dataTableViewModel!,
                     onClickOnConfirmCallback: (selectedItem) {
                       this.selectedItem = selectedItem;
-                      Navigator.of(context).pop();
                       widget.nameController.text =
                           (selectedItem as ITableRowData).name;
+                      Navigator.of(context).pop();
                       widget.onSelectItemFromTableModal(selectedItem);
                     },
                     formKey: _formKey),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:toolo_gostar/domain/entities/base/currency_type.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/card_reader.dart';
 import 'package:toolo_gostar/domain/entities/common/counterparty.dart';
 import 'package:toolo_gostar/presentation/factories/table_view_model_factory.dart';
@@ -353,21 +354,7 @@ class _RelatedBankWidgetState extends State<RelatedBankWidget> {
           toolBarEnum: ToolBarEnum.bankBranchManagementModalToolbar,
           value: widget.relatedBank != null ? widget.relatedBank!.name:'',
           formKey: widget.formKey,
-          onSelectItemFromTableModal: (bank) {
-            if (bank != null) {
-              try {
-                widget.relatedBank = bank as Counterparty;
-                widget.onSelectItem(widget.relatedBank!);
-                setState(() {
-                  currencyTypeDropBoxVisibility = true;
-                });
-              } catch (e) {
-                setState(() {
-                  currencyTypeDropBoxVisibility = false;
-                });
-              }
-            }
-          },
+          onSelectItemFromTableModal: onSelectItemFromTableModal,
           dataTableViewModel: dataTableViewModel,
         ),
       ],
@@ -399,5 +386,21 @@ class _RelatedBankWidgetState extends State<RelatedBankWidget> {
       }
     }
     return currencyTypeName;
+  }
+
+  void onSelectItemFromTableModal(ITableRowData? bank) {
+    if (bank != null) {
+      try {
+        widget.relatedBank = bank as Counterparty;
+        widget.onSelectItem(widget.relatedBank!);
+        setState(() {
+          currencyTypeDropBoxVisibility = true;
+        });
+      } catch (e) {
+        setState(() {
+          currencyTypeDropBoxVisibility = false;
+        });
+      }
+    }
   }
 }

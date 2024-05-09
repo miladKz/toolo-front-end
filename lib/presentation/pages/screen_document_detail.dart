@@ -93,15 +93,16 @@ class ShowCreateOrUpdateDocumentDetailModal extends StatelessWidget {
     int voucherMSID = locator.get<DocDetailBloc>().currentDocMaster == null
         ? 0
         : locator.get<DocDetailBloc>().currentDocMaster!.id;
-    final Widget body = NewDocumentRowModal(
+    Widget body = NewDocumentRowModal(
       formWidth: maxWidth,
       formKey: GlobalKey<FormState>(),
       voucherMSID: voucherMSID,
-      onCreateOrUpdateStatus: (bool isSuccess) {
-        onCreateOrUpdateStatus(isSuccess);
-      },
+      onCreateOrUpdateStatus: onCreateOrUpdateStatus,
     );
-
+    body = BlocProvider<DocDetailBloc>.value(
+      value: docBloc,
+      child: body,
+    );
     return BlocProvider<DocDetailBloc>.value(
       value: docBloc,
       child: CustomDialog(
@@ -109,10 +110,11 @@ class ShowCreateOrUpdateDocumentDetailModal extends StatelessWidget {
     );
   }
 
-  void onCreateOrUpdateStatus(bool isSuccess) {
+  void onCreateOrUpdateStatus(bool isSuccess) async{
     if (isSuccess) {
       if (locator.get<DocDetailBloc>().currentDocMaster != null) {
         int id = locator.get<DocDetailBloc>().currentDocMaster!.id;
+        await  Future.delayed(const Duration(milliseconds: 50));
         locator.get<DocDetailBloc>().add(DocFetchDocumentDetail(
             param: DocumentMasterDetailParamDto(voucherMSID: id)));
       }

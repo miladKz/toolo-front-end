@@ -188,7 +188,7 @@ void openNewDocumentDialog( {required BuildContext context}) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ShowCreateOrUpdateDocumentMasterModal(
+        return  ShowCreateOrUpdateDocumentMasterModal(
             maxWidth: 700, isCreate: true);
       });
 }

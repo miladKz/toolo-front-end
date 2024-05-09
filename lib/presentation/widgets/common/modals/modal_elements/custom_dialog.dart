@@ -4,12 +4,12 @@ import 'package:toolo_gostar/di/di.dart';
 import 'package:toolo_gostar/presentation/blocs/main_bloc/main_bloc.dart';
 
 class CustomDialog extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  String title;
-  double width;
-  Widget body;
 
-  CustomDialog(
+ final String title;
+ final double width;
+ final Widget body;
+
+  const CustomDialog(
       {super.key,
       required this.title,
       required this.width,
@@ -17,6 +17,7 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero, // Remove padding around the dialog
@@ -31,7 +32,7 @@ class CustomDialog extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10, right: 10),
             padding: const EdgeInsets.all(20),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

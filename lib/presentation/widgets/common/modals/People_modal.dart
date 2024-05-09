@@ -5,6 +5,7 @@ import 'package:toolo_gostar/domain/entities/base/customer_status.dart';
 import 'package:toolo_gostar/domain/entities/base/enums/customer_detail_type.dart';
 import 'package:toolo_gostar/domain/entities/base/param/customer_data_detail_param.dart';
 import 'package:toolo_gostar/domain/entities/base/prefix.dart';
+import 'package:toolo_gostar/domain/entities/common/abstracts/table_row_data_abs.dart';
 import 'package:toolo_gostar/domain/entities/common/city.dart';
 
 import '../../../../di/di.dart';
@@ -614,7 +615,7 @@ class _PeopleModalState extends State<PeopleModal> {
     List<CustomerStatus> customerStatusList = baseDataModel.customerStatusList;
     CustomerStatus? selectedCustomerStatus = customerStatusList
         .firstWhere((element) => element.id == widget.people.customerStatus);
-
+    widget.people.customerStatus = customerStatusList[0].id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -745,7 +746,7 @@ class _PeopleModalState extends State<PeopleModal> {
 
     BourseType? selectedBursType = bursTypeList
         .firstWhere((element) => element.id == widget.people.bursType);
-
+    widget.people.bursType = bursTypeList[0].id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -912,6 +913,7 @@ class _PeopleModalState extends State<PeopleModal> {
 
   Column prefixBox({required double width}) {
     List<Prefix> prefixList = baseDataModel.prefixList;
+    widget.people.prefixId = prefixList[0].id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -940,6 +942,7 @@ class _PeopleModalState extends State<PeopleModal> {
     ];
     PeopleCounterpartyType? selectedCounterpartyType = counterpartyTypes
         .firstWhere((element) => element.id == widget.people.type);
+    widget.people.type = counterpartyTypes[0].id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -963,8 +966,8 @@ class _PeopleModalState extends State<PeopleModal> {
     );
   }
 
-  Container OptionButtonsRow() {
-    return Container(
+  Widget OptionButtonsRow() {
+    return SizedBox(
       child: Row(
         children: [
           TabButton(
@@ -1093,17 +1096,7 @@ class _PeopleModalState extends State<PeopleModal> {
           formWidth: widget.formWidth - 200,
           value: value,
           formKey: widget._formKey,
-          onSelectItemFromTableModal: (revolvingFoundType) {
-            if (revolvingFoundType != null) {
-              try {
-                StandardDetail standardDetail =
-                    revolvingFoundType as StandardDetail;
-                widget.people.type = standardDetail.id;
-              } catch (e) {
-                debugPrint("cast failed: $e");
-              }
-            }
-          },
+          onSelectItemFromTableModal: onSelectItemFromTableModal,
           dataTableViewModel: dataTableViewModel,
         ),
       ],
@@ -1162,6 +1155,17 @@ class _PeopleModalState extends State<PeopleModal> {
       } else if (state.counterpartyDetail.valueType ==
           CustomerDetailType.additionalAddress.value) {
         widget.people.additionalDetailList.remove(state.counterpartyDetail);
+      }
+    }
+  }
+
+  void onSelectItemFromTableModal(ITableRowData? revolvingFoundType) {
+    if (revolvingFoundType != null) {
+      try {
+        StandardDetail standardDetail = revolvingFoundType as StandardDetail;
+        widget.people.type = standardDetail.id;
+      } catch (e) {
+        debugPrint("cast failed: $e");
       }
     }
   }

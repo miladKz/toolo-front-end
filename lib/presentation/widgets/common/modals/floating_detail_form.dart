@@ -111,7 +111,6 @@ class FloatingDetailForm extends StatelessWidget {
     detailGroup.add(DetailGroup(id: 3, name: "سایر", code: '',type: 0,children: []));*/
 
     List<DetailGroupRoot> detailGroup =baseDataModel.detailGroupRootList;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,

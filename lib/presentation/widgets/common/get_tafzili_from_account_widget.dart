@@ -112,13 +112,14 @@ class _AccountCodeObjectState extends State<AccountCodeObject> {
                       TextEditingValue(text: accountItem.accountcd);
                   widget.controllerDocCodDesc.value =
                       TextEditingValue(text: accountItem.description);
+                  Navigator.of(context).pop();
                   if (widget.withTafzili) {
                     locator.get<MainBloc>().add(
                         MainFetchTafziliGroupAndChildListWithAccountId(
                             accountId: accountItem.id));
                   }
 
-                  Navigator.of(context).pop();
+
                 },
               ),
             ); // Pass your account data here

@@ -1,3 +1,4 @@
+import 'package:atras_data_parser/atras_data_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -55,33 +56,36 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
   final TextEditingController controllerDocumentCode =
   TextEditingController(text: '');
 
-  final TextEditingController controllerSubNo = TextEditingController(text: '');
+  final TextEditingController controllerSubNo =
+      TextEditingController(text: '2');
 
   final TextEditingController controllerDocumentDate =
-  TextEditingController(text: '');
+      TextEditingController(text: '1403/02/20');
 
   final TextEditingController controllerSubDate =
-  TextEditingController(text: '');
+      TextEditingController(text: '1403/02/10');
 
   final TextEditingController controllerCategory =
   TextEditingController(text: '');
 
   final TextEditingController controllerSheetNumber =
-  TextEditingController(text: '');
+      TextEditingController(text: '10');
 
   final TextEditingController controllerDetailDocument =
-  TextEditingController(text: '');
+      TextEditingController(text: 'test1');
 
   final TextEditingController controllerDocumentType =
   TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     if (!isCreate) {
       if (documentMaster != null) {
         initControllers(documentMaster!);
       }
     }
+
     listenToCreateDoc(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -195,7 +199,9 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
         InkWell(
           onTap: () async {
             String? selectDate = await JalaliDatePicker.getDate();
-            controller.value = TextEditingValue(text: selectDate!);
+            if (selectDate != null) {
+              controller.text = selectDate;
+            }
           },
           child: FormTextField(
             textHint: '1403/01/18',
@@ -226,7 +232,9 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
         InkWell(
           onTap: () async {
             String? selectDate = await JalaliDatePicker.getDate();
-            controller.value = TextEditingValue(text: selectDate!);
+            if (selectDate != null) {
+              controller.text = selectDate;
+            }
           },
           child: FormTextField(
             textHint: '1403/01/16',
@@ -264,7 +272,7 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
 
   Widget separationTypeDropBox({required double width}) {
     List<CategoryModel> items = baseDataModel.categoryList;
-
+    controllerCategory.text = '${items[0].id}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -277,8 +285,7 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
           value:categoryModel ?? items[0],
           items: items,
           onChanged: (value) {
-            controllerCategory.value =
-                TextEditingValue(text: value!.id.toString());
+            controllerCategory.text = value!.id.toString();
           },
         ),
       ],
@@ -308,7 +315,7 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
     bool isEnable = bargeTypeId < 0;
     DocumentType? currentType = items.firstWhereOrNull((element) => element.id==bargeTypeId);
     DocumentType value = currentType??items[0];
-    controllerDocumentType.value = TextEditingValue(text: value.id.toString());
+    controllerDocumentType.text = value.id.toString();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -321,8 +328,7 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
           value: value,
           items: items,
           onChanged: (value) {
-            controllerDocumentType.value =
-                TextEditingValue(text: value!.id.toString());
+            controllerDocumentType.text = value!.id.toString();
           },
         ),
       ],
@@ -358,17 +364,17 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
   }
 
   CreateDocumentMasterBodyDto getDocumentMasterBodyDto() {
-    int categoryID = int.parse(controllerCategory.text);
+    int categoryID = controllerCategory.text.toInt();
     int docCode = controllerDocumentCode.text.isEmpty
         ? 0
-        : int.parse(controllerDocumentCode.text);
-    int numberCustom = int.parse(controllerSubNo.text);
+        : controllerDocumentCode.text.toInt();
+    int numberCustom = controllerSubNo.text.toInt();
     String dateBarge = controllerDocumentDate.text;
     String description = controllerDetailDocument.text;
     String dateBargeCustom = controllerSubDate.text;
 
-    int bargeTypeID = int.parse(controllerDocumentType.text);
-    int bargeNumber = int.parse(controllerSheetNumber.text);
+    int bargeTypeID = controllerDocumentType.text.toInt();
+    int bargeNumber = controllerSheetNumber.text.toInt();
     return CreateDocumentMasterBodyDto(
         categoryID: categoryID,
         number2: docCode,
@@ -381,13 +387,14 @@ class CreateOrUpdateDocumentMasterModal extends StatelessWidget {
         comment: '');
   }
 
-  void listenToCreateDoc(BuildContext context) {
+  void listenToCreateDoc(BuildContext context) async {
     final state = context
         .watch<MainBloc>()
         .state;
     if (state is CreateDocumentMasterStatus) {
-      onCreateOrUpdateStatus(state.isSuccess);
       Navigator.of(context).pop();
+      await Future.delayed(const Duration(milliseconds: 20));
+      onCreateOrUpdateStatus(state.isSuccess);
       if (!state.isSuccess) {
         Future.delayed(const Duration(microseconds: 20)).then((value) =>
             showSnack(

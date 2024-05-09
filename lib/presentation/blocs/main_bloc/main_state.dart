@@ -165,7 +165,7 @@ class ApiChange extends MainState {
   ApiChange({required this.apiEnum});
 
   @override
-  List<Object?> get props => [apiEnum, Random().nextInt(10000)];
+  List<Object?> get props => [apiEnum, Random().nextInt(100000)];
 }
 
 class SuccessCreateCounterparty extends MainState {

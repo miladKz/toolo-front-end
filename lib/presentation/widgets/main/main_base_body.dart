@@ -225,7 +225,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
 
   Widget getChild({required double maxWidth, required ApiEnum apiEnum}) {
     final formKey = GlobalKey<FormState>();
-    MainBloc mainBloc = context.watch<MainBloc>();
+    MainBloc mainBloc = locator.get<MainBloc>();
     switch (apiEnum) {
       case ApiEnum.accountList:
         {
@@ -236,7 +236,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 toolBarEnum: ToolBarEnum.accountMainToolbar,
                 isActionShow: true,
               ),
-              AccountWidget()
+              const AccountWidget()
             ],
           );
         }
@@ -352,12 +352,6 @@ class _LeftSectionViewState extends State<LeftSectionView> {
           );
         }  case ApiEnum.accountDocument:
         {
-          /*    showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return ShowCreateOrUpdateDocumentMasterModal(
-                    maxWidth: maxWidth, isCreate: true);
-              });*/
           DataTableViewModel dataTableViewModel = DataTableViewModelFactory
               .createTableViewModelFromAccountingDocumentMaster(
               documentMaster: mainBloc.documentMasterList);
@@ -370,6 +364,7 @@ class _LeftSectionViewState extends State<LeftSectionView> {
                 isActionShow: true,
               ),
               Flexible(
+                flex: 1,
                 child: CustomViewWithDataTable(
                     isShowActionButtons: false,
                     formWidth: maxWidth,
@@ -401,10 +396,12 @@ class _LeftSectionViewState extends State<LeftSectionView> {
 
   void listenToApi() {
     final state = context.watch<MainBloc>().state;
+    debugPrint('state is::: $state');
     if (state is ApiChange) {
       setState(() {
         widget.apiEnum = state.apiEnum;
       });
+      debugPrint('state.apiEnum is::: $state.apiEnum');
     }
   }
 
@@ -468,6 +465,8 @@ class _AccountDetailViewState extends State<AccountDetailView> {
 
   void checkState() {
     final state = context.watch<MainBloc>().state;
+
+    debugPrint('MainAccountDetailInFormVisibility state is::: $state');
     if (state is MainAccountDetailInFormVisibility) {
       if (state.isShow) {
         setState(() {
@@ -517,35 +516,35 @@ class ShowCreateOrUpdateDocumentMasterModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget body = isCreate
+    Widget body = isCreate
         ? CreateOrUpdateDocumentMasterModal.create(
       formWidth: maxWidth,
       formKey: GlobalKey<FormState>(),
-      onCreateOrUpdateStatus: (isSuccess) {
-        onCreateOrUpdateStatus(isSuccess);
-      },
-    )
+            onCreateOrUpdateStatus: onCreateOrUpdateStatus,
+          )
         : CreateOrUpdateDocumentMasterModal.update(
       formWidth: maxWidth,
       formKey: GlobalKey<FormState>(),
       documentMaster: documentMaster,
-      onCreateOrUpdateStatus: (isSuccess) {
-        onCreateOrUpdateStatus(isSuccess);
-      },
+            onCreateOrUpdateStatus: onCreateOrUpdateStatus,
           );
 
-    return BlocProvider<MainBloc>.value(
+    body = BlocProvider<MainBloc>.value(
       value: mainBloc,
-      child: CustomDialog(
-          title: localization.titleNewDocument, width: maxWidth, body: body),
+      child: body,
     );
+    return CustomDialog(
+        title: localization.titleNewDocument, width: maxWidth, body: body);
   }
 
-  void onCreateOrUpdateStatus(bool isSuccess) {
-    if (mainBloc.lastApiCalled == ApiEnum.accountDocument) {
-      locator
-          .get<MainBloc>()
-          .add(MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+  void onCreateOrUpdateStatus(bool isSuccess) async{
+    if (isSuccess) {
+      if (mainBloc.lastApiCalled == ApiEnum.accountDocument) {
+     await  Future.delayed(const Duration(milliseconds: 50));
+     mainBloc.add(
+         MainAnotherList(endpoint: "", apiEnum: ApiEnum.accountDocument));
+
+      }
     }
   }
 }
